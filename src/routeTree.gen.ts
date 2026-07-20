@@ -10,33 +10,221 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SlugRouteImport } from './routes/$slug'
+import { Route as A2uiGenerativeRouteImport } from './routes/a2ui-generative'
+import { Route as ClaudeCodeResearchRouteImport } from './routes/claude-code-research'
+import { Route as DesigningNextGenAiProductsRouteImport } from './routes/designing-next-gen-ai-products'
+import { Route as GoogleCloudRouteImport } from './routes/google-cloud'
+import { Route as HowIUseAiToCreateRouteImport } from './routes/how-i-use-ai-to-create'
+import { Route as HumanAiResearchRouteImport } from './routes/human-ai-research'
+import { Route as ListenRouteImport } from './routes/listen'
+import { Route as MakingDesignFunRouteImport } from './routes/making-design-fun'
+import { Route as PlayRouteImport } from './routes/play'
+import { Route as ProductLaunchFrom01RouteImport } from './routes/product-launch-from-0-1'
+import { Route as ReimaginingTheChatbotRouteImport } from './routes/reimagining-the-chatbot'
+import { Route as ThinkRouteImport } from './routes/think'
+import { Route as WhatDoPrototypesPrototypeRouteImport } from './routes/what-do-prototypes-prototype'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlugRoute = SlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const A2uiGenerativeRoute = A2uiGenerativeRouteImport.update({
+  id: '/a2ui-generative',
+  path: '/a2ui-generative',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClaudeCodeResearchRoute = ClaudeCodeResearchRouteImport.update({
+  id: '/claude-code-research',
+  path: '/claude-code-research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesigningNextGenAiProductsRoute =
+  DesigningNextGenAiProductsRouteImport.update({
+    id: '/designing-next-gen-ai-products',
+    path: '/designing-next-gen-ai-products',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GoogleCloudRoute = GoogleCloudRouteImport.update({
+  id: '/google-cloud',
+  path: '/google-cloud',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowIUseAiToCreateRoute = HowIUseAiToCreateRouteImport.update({
+  id: '/how-i-use-ai-to-create',
+  path: '/how-i-use-ai-to-create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HumanAiResearchRoute = HumanAiResearchRouteImport.update({
+  id: '/human-ai-research',
+  path: '/human-ai-research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListenRoute = ListenRouteImport.update({
+  id: '/listen',
+  path: '/listen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MakingDesignFunRoute = MakingDesignFunRouteImport.update({
+  id: '/making-design-fun',
+  path: '/making-design-fun',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayRoute = PlayRouteImport.update({
+  id: '/play',
+  path: '/play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductLaunchFrom01Route = ProductLaunchFrom01RouteImport.update({
+  id: '/product-launch-from-0-1',
+  path: '/product-launch-from-0-1',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReimaginingTheChatbotRoute = ReimaginingTheChatbotRouteImport.update({
+  id: '/reimagining-the-chatbot',
+  path: '/reimagining-the-chatbot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThinkRoute = ThinkRouteImport.update({
+  id: '/think',
+  path: '/think',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WhatDoPrototypesPrototypeRoute =
+  WhatDoPrototypesPrototypeRouteImport.update({
+    id: '/what-do-prototypes-prototype',
+    path: '/what-do-prototypes-prototype',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
+  '/a2ui-generative': typeof A2uiGenerativeRoute
+  '/claude-code-research': typeof ClaudeCodeResearchRoute
+  '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
+  '/google-cloud': typeof GoogleCloudRoute
+  '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
+  '/human-ai-research': typeof HumanAiResearchRoute
+  '/listen': typeof ListenRoute
+  '/making-design-fun': typeof MakingDesignFunRoute
+  '/play': typeof PlayRoute
+  '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
+  '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
+  '/think': typeof ThinkRoute
+  '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
+  '/a2ui-generative': typeof A2uiGenerativeRoute
+  '/claude-code-research': typeof ClaudeCodeResearchRoute
+  '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
+  '/google-cloud': typeof GoogleCloudRoute
+  '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
+  '/human-ai-research': typeof HumanAiResearchRoute
+  '/listen': typeof ListenRoute
+  '/making-design-fun': typeof MakingDesignFunRoute
+  '/play': typeof PlayRoute
+  '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
+  '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
+  '/think': typeof ThinkRoute
+  '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
+  '/a2ui-generative': typeof A2uiGenerativeRoute
+  '/claude-code-research': typeof ClaudeCodeResearchRoute
+  '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
+  '/google-cloud': typeof GoogleCloudRoute
+  '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
+  '/human-ai-research': typeof HumanAiResearchRoute
+  '/listen': typeof ListenRoute
+  '/making-design-fun': typeof MakingDesignFunRoute
+  '/play': typeof PlayRoute
+  '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
+  '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
+  '/think': typeof ThinkRoute
+  '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/$slug'
+    | '/a2ui-generative'
+    | '/claude-code-research'
+    | '/designing-next-gen-ai-products'
+    | '/google-cloud'
+    | '/how-i-use-ai-to-create'
+    | '/human-ai-research'
+    | '/listen'
+    | '/making-design-fun'
+    | '/play'
+    | '/product-launch-from-0-1'
+    | '/reimagining-the-chatbot'
+    | '/think'
+    | '/what-do-prototypes-prototype'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/$slug'
+    | '/a2ui-generative'
+    | '/claude-code-research'
+    | '/designing-next-gen-ai-products'
+    | '/google-cloud'
+    | '/how-i-use-ai-to-create'
+    | '/human-ai-research'
+    | '/listen'
+    | '/making-design-fun'
+    | '/play'
+    | '/product-launch-from-0-1'
+    | '/reimagining-the-chatbot'
+    | '/think'
+    | '/what-do-prototypes-prototype'
+  id:
+    | '__root__'
+    | '/'
+    | '/$slug'
+    | '/a2ui-generative'
+    | '/claude-code-research'
+    | '/designing-next-gen-ai-products'
+    | '/google-cloud'
+    | '/how-i-use-ai-to-create'
+    | '/human-ai-research'
+    | '/listen'
+    | '/making-design-fun'
+    | '/play'
+    | '/product-launch-from-0-1'
+    | '/reimagining-the-chatbot'
+    | '/think'
+    | '/what-do-prototypes-prototype'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SlugRoute: typeof SlugRoute
+  A2uiGenerativeRoute: typeof A2uiGenerativeRoute
+  ClaudeCodeResearchRoute: typeof ClaudeCodeResearchRoute
+  DesigningNextGenAiProductsRoute: typeof DesigningNextGenAiProductsRoute
+  GoogleCloudRoute: typeof GoogleCloudRoute
+  HowIUseAiToCreateRoute: typeof HowIUseAiToCreateRoute
+  HumanAiResearchRoute: typeof HumanAiResearchRoute
+  ListenRoute: typeof ListenRoute
+  MakingDesignFunRoute: typeof MakingDesignFunRoute
+  PlayRoute: typeof PlayRoute
+  ProductLaunchFrom01Route: typeof ProductLaunchFrom01Route
+  ReimaginingTheChatbotRoute: typeof ReimaginingTheChatbotRoute
+  ThinkRoute: typeof ThinkRoute
+  WhatDoPrototypesPrototypeRoute: typeof WhatDoPrototypesPrototypeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +236,134 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$slug': {
+      id: '/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof SlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/a2ui-generative': {
+      id: '/a2ui-generative'
+      path: '/a2ui-generative'
+      fullPath: '/a2ui-generative'
+      preLoaderRoute: typeof A2uiGenerativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claude-code-research': {
+      id: '/claude-code-research'
+      path: '/claude-code-research'
+      fullPath: '/claude-code-research'
+      preLoaderRoute: typeof ClaudeCodeResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/designing-next-gen-ai-products': {
+      id: '/designing-next-gen-ai-products'
+      path: '/designing-next-gen-ai-products'
+      fullPath: '/designing-next-gen-ai-products'
+      preLoaderRoute: typeof DesigningNextGenAiProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/google-cloud': {
+      id: '/google-cloud'
+      path: '/google-cloud'
+      fullPath: '/google-cloud'
+      preLoaderRoute: typeof GoogleCloudRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-i-use-ai-to-create': {
+      id: '/how-i-use-ai-to-create'
+      path: '/how-i-use-ai-to-create'
+      fullPath: '/how-i-use-ai-to-create'
+      preLoaderRoute: typeof HowIUseAiToCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/human-ai-research': {
+      id: '/human-ai-research'
+      path: '/human-ai-research'
+      fullPath: '/human-ai-research'
+      preLoaderRoute: typeof HumanAiResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/listen': {
+      id: '/listen'
+      path: '/listen'
+      fullPath: '/listen'
+      preLoaderRoute: typeof ListenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/making-design-fun': {
+      id: '/making-design-fun'
+      path: '/making-design-fun'
+      fullPath: '/making-design-fun'
+      preLoaderRoute: typeof MakingDesignFunRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/play': {
+      id: '/play'
+      path: '/play'
+      fullPath: '/play'
+      preLoaderRoute: typeof PlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product-launch-from-0-1': {
+      id: '/product-launch-from-0-1'
+      path: '/product-launch-from-0-1'
+      fullPath: '/product-launch-from-0-1'
+      preLoaderRoute: typeof ProductLaunchFrom01RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reimagining-the-chatbot': {
+      id: '/reimagining-the-chatbot'
+      path: '/reimagining-the-chatbot'
+      fullPath: '/reimagining-the-chatbot'
+      preLoaderRoute: typeof ReimaginingTheChatbotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/think': {
+      id: '/think'
+      path: '/think'
+      fullPath: '/think'
+      preLoaderRoute: typeof ThinkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/what-do-prototypes-prototype': {
+      id: '/what-do-prototypes-prototype'
+      path: '/what-do-prototypes-prototype'
+      fullPath: '/what-do-prototypes-prototype'
+      preLoaderRoute: typeof WhatDoPrototypesPrototypeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SlugRoute: SlugRoute,
+  A2uiGenerativeRoute: A2uiGenerativeRoute,
+  ClaudeCodeResearchRoute: ClaudeCodeResearchRoute,
+  DesigningNextGenAiProductsRoute: DesigningNextGenAiProductsRoute,
+  GoogleCloudRoute: GoogleCloudRoute,
+  HowIUseAiToCreateRoute: HowIUseAiToCreateRoute,
+  HumanAiResearchRoute: HumanAiResearchRoute,
+  ListenRoute: ListenRoute,
+  MakingDesignFunRoute: MakingDesignFunRoute,
+  PlayRoute: PlayRoute,
+  ProductLaunchFrom01Route: ProductLaunchFrom01Route,
+  ReimaginingTheChatbotRoute: ReimaginingTheChatbotRoute,
+  ThinkRoute: ThinkRoute,
+  WhatDoPrototypesPrototypeRoute: WhatDoPrototypesPrototypeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
