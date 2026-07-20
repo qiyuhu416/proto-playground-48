@@ -250,6 +250,21 @@ function Index() {
     ],
   };
 
+  const tableOfContents: Record<string, string[]> = {
+    "how-i-use-ai-to-create": ["§1 · Prototype = Research mindset", "§2 · Built to elicit errors"],
+    "what-do-prototypes-prototype": ["§1 · Prototype = Research mindset", "Not all prototypes need to be coded", "§2 · Built to elicit errors"],
+    "designing-next-gen-ai-products": ["§1 · Designing the relationship", "§2 · Designing the feeling", "§3 · Where to NOT use AI", "Three core lessons"],
+    "designing-for-conversations-that-earn-trust": ["§1 · The seat AI leaves open", "§2 · What AI can't do", "§3 · The gap between doing and meaning", "What this means"],
+    "design-as-a-research-tool": ["The Challenge", "Approach", "Key Insight", "Outcome", "Research Frameworks Used"],
+    "physical-ai": ["The Challenge", "Why AI?", "Mapping AI to Error", "The System", "The User Flow", "Final Design", "Team & Collaboration"],
+    "google-cloud": ["The Challenge", "Research Methodology", "The Deliverables", "Key Insights", "Impact & Outcomes"],
+    "how-i-prototype": ["Prototypes aren't just outputs", "§1 · Explore what-ifs", "§2 · Explain the prototype", "§3 · For others to prototype", "The shared mindset"],
+    "reimagining-the-chatbot": ["Task Analysis", "Assumptions at Each Step", "Prototypes Exploring These Dimensions", "What Gets Tested"],
+    "making-design-fun": ["The philosophy", "Curiosity, not FOMO", "The experiments", "One block of prompts"],
+    "proactive": ["About", "Control Panel", "Prototype Testing"],
+    "personalization": ["The Starting Question", "Beyond Features", "For Me, With Me, As Me"],
+  };
+
   const filtered = useMemo(
     () =>
       selectedStage === "All"
@@ -262,6 +277,7 @@ function Index() {
     const href = item.externalLink || `/${item.slug}`;
     const target = item.externalLink ? "_blank" : undefined;
     const rel = item.externalLink ? "noopener noreferrer" : undefined;
+    const toc = tableOfContents[item.slug] || [];
 
     return (
       <a
@@ -276,6 +292,22 @@ function Index() {
             : "bg-white border-neutral-900")
         }
       >
+        {/* TOC Tooltip - only for articles and items with TOC */}
+        {(item.kind === "Article" || toc.length > 0) && (
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none group-hover:pointer-events-auto">
+            <div className="bg-neutral-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg border border-neutral-700">
+              <div className="font-semibold mb-1.5 text-neutral-300">Contents</div>
+              <ul className="space-y-1">
+                {toc.slice(0, 4).map((section, idx) => (
+                  <li key={idx} className="text-neutral-400 text-[11px]">
+                    • {section}
+                  </li>
+                ))}
+                {toc.length > 4 && <li className="text-neutral-500 text-[11px] mt-2">+{toc.length - 4} more</li>}
+              </ul>
+            </div>
+          </div>
+        )}
         <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-neutral-300">
           {item.thumbnail ? (
             <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
