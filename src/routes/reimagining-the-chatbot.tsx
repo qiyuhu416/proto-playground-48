@@ -60,6 +60,86 @@ function CollectionComponent() {
             fundamentals:
           </p>
 
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Task Analysis: What "Asking a Question" Takes</h2>
+          <img
+            src="/articles/task-analysis-flow.png"
+            alt="Six-step task analysis flow"
+            className="w-full rounded-xl my-6 border border-neutral-200"
+          />
+          <p className="text-sm text-neutral-600 italic mb-8">
+            A user's interaction with a chatbot involves six distinct steps—each with its own friction points and assumptions.
+          </p>
+
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Assumptions at Each Step</h2>
+          <img
+            src="/articles/task-assumptions.png"
+            alt="Assumptions made at each step"
+            className="w-full rounded-xl my-6 border border-neutral-200"
+          />
+          <p className="text-sm text-neutral-600 italic mb-8">
+            Every step carries hidden assumptions about what users know, what the system can do, and how they work together.
+          </p>
+
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Prototypes Exploring These Dimensions</h2>
+
+          <div className="space-y-8 my-8">
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">AI–AI Interaction</h3>
+              <p className="text-neutral-600 mb-4">
+                When two AI agents communicate, what happens? This prototype visualizes real-time conversation between systems, exploring how they resolve misunderstandings and align intent.
+              </p>
+              <video
+                controls
+                className="w-full rounded-xl border-4 border-neutral-900"
+              >
+                <source src="/articles/chatbot-ai-ai.mov" type="video/quicktime" />
+                Your browser doesn't support video playback.
+              </video>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">I Am Always Here—Just Let Me Know</h3>
+              <p className="text-neutral-600 mb-4">
+                What if the AI didn't wait to be asked? This prototype reimagines the assistant as proactive and present, reducing the cognitive load of "knowing what to ask." It explores the assumption that users must always initiate.
+              </p>
+              <video
+                controls
+                className="w-full rounded-xl border-4 border-neutral-900"
+              >
+                <source src="/articles/chatbot-always-here.mov" type="video/quicktime" />
+                Your browser doesn't support video playback.
+              </video>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">Knowledge Graph Visualization</h3>
+              <p className="text-neutral-600 mb-4">
+                When AI generates an answer, where does it come from? This prototype visualizes the reasoning process—showing connections between concepts, sources, and inferences. Making the invisible thinking visible.
+              </p>
+              <video
+                controls
+                className="w-full rounded-xl border-4 border-neutral-900"
+              >
+                <source src="/articles/chatbot-knowledge-graph.mov" type="video/quicktime" />
+                Your browser doesn't support video playback.
+              </video>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">Select & Fill with Prompts</h3>
+              <p className="text-neutral-600 mb-4">
+                The core interaction model: select a region, describe what you want, and let the AI fill it in. This prototype tests whether prompting can become a natural design tool, bridging intent and execution.
+              </p>
+              <video
+                controls
+                className="w-full rounded-xl border-4 border-neutral-900"
+              >
+                <source src="/articles/chatbot-select-fill.mov" type="video/quicktime" />
+                Your browser doesn't support video playback.
+              </video>
+            </div>
+          </div>
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What Gets Tested</h2>
           <p>
             This collection explores prototypes across three dimensions of prototyping:

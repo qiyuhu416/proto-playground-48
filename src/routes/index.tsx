@@ -232,8 +232,8 @@ function Index() {
       { main: "making things fun", sub: "creativity without friction" },
     ],
     human: [
-      { main: "future is about relationship", sub: "design as a tool, AI beyond screens" },
-      { main: "AI beyond just technology", sub: "understanding what makes us human" },
+      { main: "AI beyond screens", sub: "design as a tool, AI beyond screens" },
+      { main: "relationship > interactions", sub: "understanding what makes us human" },
     ],
     Organization: [
       { main: "tools that amplify", sub: "building infrastructure for capability" },
