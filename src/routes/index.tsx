@@ -51,6 +51,15 @@ const ITEMS: ItemWithSlug[] = [
     highlightWord: "How",
   },
   {
+    slug: "how-i-prototype",
+    title: "How I prototype",
+    blurb: "Three types of prototypes as a collaboration tool. Explore what-ifs, explain thinking, enable others.",
+    category: "Implementation",
+    kind: "Article",
+    meta: "6 min read · Under NDA",
+    accent: "bg-gradient-to-br from-emerald-100 to-teal-200",
+  },
+  {
     slug: "ai-ai-interaction",
     title: "AI–AI interaction",
     blurb: "Visualizing how two AI agents communicate and resolve differences in real-time.",
