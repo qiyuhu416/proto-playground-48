@@ -117,6 +117,13 @@ function ArticleComponent() {
             When we pitched it to the manager, we invited him to be the user. It quickly helped us navigate the intersection between UX and technology by putting ourselves in users' shoes and immersively analyzing the tech capability. And most importantly... it was so MUCH FUN!!
           </p>
 
+          <img
+            src="/articles/how-i-prototype.png"
+            alt="Three types of prototypes: explore what-ifs, explain the prototype, for others to prototype"
+            className="w-full rounded-2xl my-8 border-4 border-neutral-900"
+          />
+          <p className="text-sm text-neutral-500 italic">Prototypes serve different purposes at different stages of the process.</p>
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Built to elicit errors</h2>
 
           <p>
