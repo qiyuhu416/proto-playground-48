@@ -118,11 +118,12 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "google-cloud",
     title: "Google Cloud - Conversational AI",
-    blurb: "Designing conversational interfaces for cloud services and AI-powered workflows.",
+    blurb: "Embedding AI into the product discovery experience for startup customers.",
     category: "Implementation",
     kind: "Prototype",
-    meta: "External project",
+    meta: "Research · 0→1",
     accent: "bg-gradient-to-br from-blue-100 to-cyan-200",
+    thumbnail: "/articles/google-cloud-thumb.png",
   },
   {
     slug: "a2ui-generative",
