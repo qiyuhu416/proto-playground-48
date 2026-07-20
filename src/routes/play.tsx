@@ -138,6 +138,7 @@ function PlayComponent() {
               slug: "hand-gesture-interactions",
               category: "Look & Feel",
               meta: "Motion · Video",
+              image: "/articles/hand-gesture-thumb.jpg",
             },
             {
               title: "Making design fun",
