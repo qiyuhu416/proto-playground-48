@@ -33,6 +33,8 @@ type Item = {
   meta: string;
   accent: string; // tailwind bg for the visual tile
   highlightWord?: string;
+  externalLink?: string;
+  thumbnail?: string;
 };
 
 type ItemWithSlug = Item & { slug: string };
@@ -78,11 +80,13 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "product-launch-from-0-1",
     title: "Product launch from 0–1",
-    blurb: "",
+    blurb: "Building Meetfood from concept to launch—a food discovery app connecting people to local cuisine.",
     category: "Role",
     kind: "Article",
     meta: "Case study",
     accent: "bg-gradient-to-br from-pink-100 to-red-200",
+    externalLink: "https://www.key-you-who.com/projects/app-launch",
+    thumbnail: "/articles/product-launch-thumb.png",
   },
   {
     slug: "contextual-ai-assistance",
@@ -227,65 +231,77 @@ function Index() {
     [selectedStage],
   );
 
-  const renderCard = (item: ItemWithSlug) => (
-    <a
-      key={item.slug}
-      href={`/${item.slug}`}
-      className={
-        "group relative overflow-hidden rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-0 border-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] block " +
-        (item.kind === "Article"
-          ? "bg-neutral-900 border-neutral-900"
-          : "bg-white border-neutral-900")
-      }
-    >
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-neutral-300">
-        <span
-          className={
-            "text-xs uppercase tracking-[0.2em] " +
-            (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500/80")
-          }
-        >
-          {item.kind}
-        </span>
-        <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
-          <ArrowUpRight className="h-4 w-4" />
-        </span>
-      </div>
-      <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
-        <div className="min-w-0">
-          <div
-            className={
-              "flex items-center gap-1.5 text-xs " +
-              (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500")
-            }
-          >
-            <span>{item.category}</span>
-            <span>·</span>
-            <span>{item.meta}</span>
-          </div>
-          <h3
-            className={
-              "mt-1 text-[15px] font-medium " +
-              (item.kind === "Article" ? "text-white" : "text-neutral-900")
-            }
-          >
-            {item.highlightWord && item.title.includes(item.highlightWord)
-              ? item.title.split(item.highlightWord).map((part, i, arr) => (
-                  <span key={i}>
-                    {part}
-                    {i < arr.length - 1 && (
-                      <span className={item.kind === "Article" ? "bg-white text-neutral-900 px-1 rounded" : "bg-neutral-900 text-white px-1 rounded"}>
-                        {item.highlightWord}
-                      </span>
-                    )}
-                  </span>
-                ))
-              : item.title}
-          </h3>
+  const renderCard = (item: ItemWithSlug) => {
+    const href = item.externalLink || `/${item.slug}`;
+    const target = item.externalLink ? "_blank" : undefined;
+    const rel = item.externalLink ? "noopener noreferrer" : undefined;
+
+    return (
+      <a
+        key={item.slug}
+        href={href}
+        target={target}
+        rel={rel}
+        className={
+          "group relative overflow-hidden rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-0 border-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] block " +
+          (item.kind === "Article"
+            ? "bg-neutral-900 border-neutral-900"
+            : "bg-white border-neutral-900")
+        }
+      >
+        <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-neutral-300">
+          {item.thumbnail ? (
+            <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
+          ) : (
+            <span
+              className={
+                "text-xs uppercase tracking-[0.2em] " +
+                (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500/80")
+              }
+            >
+              {item.kind}
+            </span>
+          )}
+          <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+            <ArrowUpRight className="h-4 w-4" />
+          </span>
         </div>
-      </div>
-    </a>
-  );
+        <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
+          <div className="min-w-0">
+            <div
+              className={
+                "flex items-center gap-1.5 text-xs " +
+                (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500")
+              }
+            >
+              <span>{item.category}</span>
+              <span>·</span>
+              <span>{item.meta}</span>
+            </div>
+            <h3
+              className={
+                "mt-1 text-[15px] font-medium " +
+                (item.kind === "Article" ? "text-white" : "text-neutral-900")
+              }
+            >
+              {item.highlightWord && item.title.includes(item.highlightWord)
+                ? item.title.split(item.highlightWord).map((part, i, arr) => (
+                    <span key={i}>
+                      {part}
+                      {i < arr.length - 1 && (
+                        <span className={item.kind === "Article" ? "bg-white text-neutral-900 px-1 rounded" : "bg-neutral-900 text-white px-1 rounded"}>
+                          {item.highlightWord}
+                        </span>
+                      )}
+                    </span>
+                  ))
+                : item.title}
+            </h3>
+          </div>
+        </div>
+      </a>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background text-neutral-900">
