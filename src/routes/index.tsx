@@ -217,19 +217,28 @@ function Index() {
     Organization: ["ai-ai-interaction", "claude-code-research"],
   };
 
-  const stageSubtitles: Record<string, { main: string; sub: string }> = {
-    chatbot: { main: "Conversational AI", sub: "how AI learns to communicate with care" },
-    reasoner: { main: "Making sense", sub: "visualizing how AI thinks" },
-    agent: { main: "Testing & learning", sub: "prototypes as research tools" },
-    innovator: { main: "Making & playing", sub: "vibe-coding and creative exploration" },
-    human: { main: "Understanding humans", sub: "the future is about relationships" },
-    Organization: { main: "Building infrastructure", sub: "tools that amplify capability" },
+  const stageSections: Record<string, { main: string; sub: string }[]> = {
+    chatbot: [
+      { main: "how AI communicates", sub: "designing conversations that matter" },
+      { main: "building trust through transparency", sub: "when AI asks for feedback" },
+    ],
+    reasoner: [
+      { main: "visualizing complexity", sub: "making abstract thinking visible" },
+    ],
+    agent: [
+      { main: "prototyping as learning", sub: "using tests to understand problems" },
+    ],
+    innovator: [
+      { main: "making things fun", sub: "creativity without friction" },
+    ],
+    human: [
+      { main: "future is about relationship", sub: "design as a tool, AI beyond screens" },
+      { main: "AI beyond just technology", sub: "understanding what makes us human" },
+    ],
+    Organization: [
+      { main: "tools that amplify", sub: "building infrastructure for capability" },
+    ],
   };
-
-  const humanSections = [
-    { main: "future is about relationship", sub: "design as a tool, AI beyond screens" },
-    { main: "AI beyond just technology", sub: "understanding what makes us human" },
-  ];
 
   const filtered = useMemo(
     () =>
@@ -381,10 +390,7 @@ function Index() {
                 style={{ left: "0%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`}>All</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">everything</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`}>All</span>
               </button>
 
               {/* Chatbot */}
@@ -394,10 +400,7 @@ function Index() {
                 style={{ left: "13.2%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "chatbot" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "chatbot" ? "text-neutral-900" : "text-neutral-600"}`}>chatbot</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">{stageSubtitles.chatbot.sub}</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "chatbot" ? "text-neutral-900" : "text-neutral-600"}`}>chatbot</span>
               </button>
 
               {/* Reasoner */}
@@ -407,10 +410,7 @@ function Index() {
                 style={{ left: "26.4%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "reasoner" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "reasoner" ? "text-neutral-900" : "text-neutral-600"}`}>reasoner</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">{stageSubtitles.reasoner.sub}</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "reasoner" ? "text-neutral-900" : "text-neutral-600"}`}>reasoner</span>
               </button>
 
               {/* Agent */}
@@ -420,10 +420,7 @@ function Index() {
                 style={{ left: "39.6%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "agent" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "agent" ? "text-neutral-900" : "text-neutral-600"}`}>agent</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">{stageSubtitles.agent.sub}</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "agent" ? "text-neutral-900" : "text-neutral-600"}`}>agent</span>
               </button>
 
               {/* Innovator */}
@@ -433,10 +430,7 @@ function Index() {
                 style={{ left: "52.8%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "innovator" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "innovator" ? "text-neutral-900" : "text-neutral-600"}`}>innovator</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">{stageSubtitles.innovator.sub}</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "innovator" ? "text-neutral-900" : "text-neutral-600"}`}>innovator</span>
               </button>
 
               {/* Organization */}
@@ -446,10 +440,7 @@ function Index() {
                 style={{ left: "66%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "Organization" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "Organization" ? "text-neutral-900" : "text-neutral-600"}`}>Organization</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">{stageSubtitles.Organization.sub}</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "Organization" ? "text-neutral-900" : "text-neutral-600"}`}>Organization</span>
               </button>
 
               {/* Human */}
@@ -459,10 +450,7 @@ function Index() {
                 style={{ left: "83.2%" }}
               >
                 <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "human" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <div className="text-center">
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap block ${selectedStage === "human" ? "text-neutral-900" : "text-neutral-600"}`}>human</span>
-                  <span className="text-xs text-neutral-400 whitespace-nowrap mt-0.5 block">{stageSubtitles.human.sub}</span>
-                </div>
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "human" ? "text-neutral-900" : "text-neutral-600"}`}>human</span>
               </button>
             </div>
           </div>
@@ -475,7 +463,7 @@ function Index() {
         {selectedStage === "human" ? (
           <div className="mb-12">
             <div className="space-y-12">
-              {humanSections.map((section, idx) => (
+              {stageSections.human.map((section, idx) => (
                 <div key={idx}>
                   <div className="mb-6">
                     <h3 className="text-2xl font-semibold text-neutral-900">{section.main}</h3>
@@ -489,6 +477,22 @@ function Index() {
                         return false;
                       })
                       .map((item) => renderCard(item))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : selectedStage !== "All" && stageSections[selectedStage] ? (
+          <div className="mb-12">
+            <div className="space-y-12">
+              {stageSections[selectedStage].map((section, idx) => (
+                <div key={idx}>
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-semibold text-neutral-900">{section.main}</h3>
+                    <p className="text-sm text-neutral-600 mt-1">{section.sub}</p>
+                  </div>
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {filtered.map((item) => renderCard(item))}
                   </div>
                 </div>
               ))}
