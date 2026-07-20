@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as A2uiGenerativeRouteImport } from './routes/a2ui-generative'
 import { Route as ClaudeCodeResearchRouteImport } from './routes/claude-code-research'
+import { Route as DesignAsAResearchToolRouteImport } from './routes/design-as-a-research-tool'
 import { Route as DesigningNextGenAiProductsRouteImport } from './routes/designing-next-gen-ai-products'
 import { Route as GoogleCloudRouteImport } from './routes/google-cloud'
 import { Route as HowIUseAiToCreateRouteImport } from './routes/how-i-use-ai-to-create'
@@ -43,6 +44,11 @@ const A2uiGenerativeRoute = A2uiGenerativeRouteImport.update({
 const ClaudeCodeResearchRoute = ClaudeCodeResearchRouteImport.update({
   id: '/claude-code-research',
   path: '/claude-code-research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignAsAResearchToolRoute = DesignAsAResearchToolRouteImport.update({
+  id: '/design-as-a-research-tool',
+  path: '/design-as-a-research-tool',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesigningNextGenAiProductsRoute =
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/$slug': typeof SlugRoute
   '/a2ui-generative': typeof A2uiGenerativeRoute
   '/claude-code-research': typeof ClaudeCodeResearchRoute
+  '/design-as-a-research-tool': typeof DesignAsAResearchToolRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/$slug': typeof SlugRoute
   '/a2ui-generative': typeof A2uiGenerativeRoute
   '/claude-code-research': typeof ClaudeCodeResearchRoute
+  '/design-as-a-research-tool': typeof DesignAsAResearchToolRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/a2ui-generative': typeof A2uiGenerativeRoute
   '/claude-code-research': typeof ClaudeCodeResearchRoute
+  '/design-as-a-research-tool': typeof DesignAsAResearchToolRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/a2ui-generative'
     | '/claude-code-research'
+    | '/design-as-a-research-tool'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-use-ai-to-create'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/a2ui-generative'
     | '/claude-code-research'
+    | '/design-as-a-research-tool'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-use-ai-to-create'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/a2ui-generative'
     | '/claude-code-research'
+    | '/design-as-a-research-tool'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-use-ai-to-create'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   A2uiGenerativeRoute: typeof A2uiGenerativeRoute
   ClaudeCodeResearchRoute: typeof ClaudeCodeResearchRoute
+  DesignAsAResearchToolRoute: typeof DesignAsAResearchToolRoute
   DesigningNextGenAiProductsRoute: typeof DesigningNextGenAiProductsRoute
   GoogleCloudRoute: typeof GoogleCloudRoute
   HowIUseAiToCreateRoute: typeof HowIUseAiToCreateRoute
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       path: '/claude-code-research'
       fullPath: '/claude-code-research'
       preLoaderRoute: typeof ClaudeCodeResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-as-a-research-tool': {
+      id: '/design-as-a-research-tool'
+      path: '/design-as-a-research-tool'
+      fullPath: '/design-as-a-research-tool'
+      preLoaderRoute: typeof DesignAsAResearchToolRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/designing-next-gen-ai-products': {
@@ -342,6 +362,7 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   A2uiGenerativeRoute: A2uiGenerativeRoute,
   ClaudeCodeResearchRoute: ClaudeCodeResearchRoute,
+  DesignAsAResearchToolRoute: DesignAsAResearchToolRoute,
   DesigningNextGenAiProductsRoute: DesigningNextGenAiProductsRoute,
   GoogleCloudRoute: GoogleCloudRoute,
   HowIUseAiToCreateRoute: HowIUseAiToCreateRoute,

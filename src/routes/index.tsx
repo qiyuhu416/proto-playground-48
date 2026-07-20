@@ -139,6 +139,15 @@ const ITEMS: ItemWithSlug[] = [
     accent: "bg-gradient-to-br from-orange-100 to-red-200",
   },
   {
+    slug: "design-as-a-research-tool",
+    title: "Design as a research tool",
+    blurb: "Using design methods to uncover hidden user behaviors and inform transportation policy.",
+    category: "Role",
+    kind: "Article",
+    meta: "Case study",
+    accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
+  },
+  {
     slug: "claude-code-research",
     title: "My Claude Code research",
     blurb: "Building and evolving development tools powered by AI assistance.",
@@ -170,9 +179,9 @@ function Index() {
     All: [],
     chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud"],
     reasoner: ["knowledge-graph-visualization"],
-    agent: ["ai-ai-interaction", "a2ui-generative", "human-ai-research"],
+    agent: ["ai-ai-interaction", "a2ui-generative", "human-ai-research", "designing-next-gen-ai-products", "design-as-a-research-tool"],
     innovator: ["how-i-use-ai-to-create", "making-design-fun"],
-    Organization: ["claude-code-research", "designing-next-gen-ai-products"],
+    Organization: ["claude-code-research"],
   };
 
   const filtered = useMemo(
