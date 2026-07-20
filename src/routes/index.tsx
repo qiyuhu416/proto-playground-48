@@ -356,12 +356,12 @@ function Index() {
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="space-y-12">
           {/* Timeline */}
-          <div className="relative pt-6">
-            <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible" }}>
+          <div className="relative">
+            <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "8px" }}>
               {/* Solid line from start to Organization (66%) */}
-              <line x1="0%" y1="24" x2="66%" y2="24" stroke="#d1d5db" strokeWidth="1" />
+              <line x1="0%" y1="12" x2="66%" y2="12" stroke="#d1d5db" strokeWidth="2" />
               {/* Dashed line from Organization to Human? (34%) */}
-              <line x1="66%" y1="24" x2="100%" y2="24" stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,4" />
+              <line x1="66%" y1="12" x2="100%" y2="12" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
             </svg>
 
             {/* Timeline nodes container with positioning */}
