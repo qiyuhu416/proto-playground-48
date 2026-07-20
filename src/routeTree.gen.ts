@@ -14,6 +14,7 @@ import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as A2uiGenerativeRouteImport } from './routes/a2ui-generative'
 import { Route as ClaudeCodeResearchRouteImport } from './routes/claude-code-research'
 import { Route as DesignAsAResearchToolRouteImport } from './routes/design-as-a-research-tool'
+import { Route as DesigningForConversationsThatEarnTrustRouteImport } from './routes/designing-for-conversations-that-earn-trust'
 import { Route as DesigningNextGenAiProductsRouteImport } from './routes/designing-next-gen-ai-products'
 import { Route as GoogleCloudRouteImport } from './routes/google-cloud'
 import { Route as HowIUseAiToCreateRouteImport } from './routes/how-i-use-ai-to-create'
@@ -51,6 +52,12 @@ const DesignAsAResearchToolRoute = DesignAsAResearchToolRouteImport.update({
   path: '/design-as-a-research-tool',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DesigningForConversationsThatEarnTrustRoute =
+  DesigningForConversationsThatEarnTrustRouteImport.update({
+    id: '/designing-for-conversations-that-earn-trust',
+    path: '/designing-for-conversations-that-earn-trust',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DesigningNextGenAiProductsRoute =
   DesigningNextGenAiProductsRouteImport.update({
     id: '/designing-next-gen-ai-products',
@@ -115,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/a2ui-generative': typeof A2uiGenerativeRoute
   '/claude-code-research': typeof ClaudeCodeResearchRoute
   '/design-as-a-research-tool': typeof DesignAsAResearchToolRoute
+  '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
@@ -133,6 +141,7 @@ export interface FileRoutesByTo {
   '/a2ui-generative': typeof A2uiGenerativeRoute
   '/claude-code-research': typeof ClaudeCodeResearchRoute
   '/design-as-a-research-tool': typeof DesignAsAResearchToolRoute
+  '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
@@ -152,6 +161,7 @@ export interface FileRoutesById {
   '/a2ui-generative': typeof A2uiGenerativeRoute
   '/claude-code-research': typeof ClaudeCodeResearchRoute
   '/design-as-a-research-tool': typeof DesignAsAResearchToolRoute
+  '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
     | '/a2ui-generative'
     | '/claude-code-research'
     | '/design-as-a-research-tool'
+    | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-use-ai-to-create'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/a2ui-generative'
     | '/claude-code-research'
     | '/design-as-a-research-tool'
+    | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-use-ai-to-create'
@@ -208,6 +220,7 @@ export interface FileRouteTypes {
     | '/a2ui-generative'
     | '/claude-code-research'
     | '/design-as-a-research-tool'
+    | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-use-ai-to-create'
@@ -227,6 +240,7 @@ export interface RootRouteChildren {
   A2uiGenerativeRoute: typeof A2uiGenerativeRoute
   ClaudeCodeResearchRoute: typeof ClaudeCodeResearchRoute
   DesignAsAResearchToolRoute: typeof DesignAsAResearchToolRoute
+  DesigningForConversationsThatEarnTrustRoute: typeof DesigningForConversationsThatEarnTrustRoute
   DesigningNextGenAiProductsRoute: typeof DesigningNextGenAiProductsRoute
   GoogleCloudRoute: typeof GoogleCloudRoute
   HowIUseAiToCreateRoute: typeof HowIUseAiToCreateRoute
@@ -275,6 +289,13 @@ declare module '@tanstack/react-router' {
       path: '/design-as-a-research-tool'
       fullPath: '/design-as-a-research-tool'
       preLoaderRoute: typeof DesignAsAResearchToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/designing-for-conversations-that-earn-trust': {
+      id: '/designing-for-conversations-that-earn-trust'
+      path: '/designing-for-conversations-that-earn-trust'
+      fullPath: '/designing-for-conversations-that-earn-trust'
+      preLoaderRoute: typeof DesigningForConversationsThatEarnTrustRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/designing-next-gen-ai-products': {
@@ -363,6 +384,8 @@ const rootRouteChildren: RootRouteChildren = {
   A2uiGenerativeRoute: A2uiGenerativeRoute,
   ClaudeCodeResearchRoute: ClaudeCodeResearchRoute,
   DesignAsAResearchToolRoute: DesignAsAResearchToolRoute,
+  DesigningForConversationsThatEarnTrustRoute:
+    DesigningForConversationsThatEarnTrustRoute,
   DesigningNextGenAiProductsRoute: DesigningNextGenAiProductsRoute,
   GoogleCloudRoute: GoogleCloudRoute,
   HowIUseAiToCreateRoute: HowIUseAiToCreateRoute,

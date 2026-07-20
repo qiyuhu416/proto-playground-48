@@ -156,6 +156,15 @@ const ITEMS: ItemWithSlug[] = [
     meta: "Research · Tools",
     accent: "bg-gradient-to-br from-indigo-100 to-blue-200",
   },
+  {
+    slug: "designing-for-conversations-that-earn-trust",
+    title: "Designing for conversations that earn trust",
+    blurb: "How to build AI systems that users can depend on—insights from caring AI research.",
+    category: "Role",
+    kind: "Article",
+    meta: "Research · Design",
+    accent: "bg-gradient-to-br from-green-100 to-emerald-200",
+  },
 ];
 
 const CATEGORIES = [
@@ -177,7 +186,7 @@ function Index() {
 
   const stageMap: Record<string, string[]> = {
     All: [],
-    chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud"],
+    chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud", "reimagining-the-chatbot", "designing-for-conversations-that-earn-trust"],
     reasoner: ["knowledge-graph-visualization"],
     agent: ["a2ui-generative", "designing-next-gen-ai-products"],
     innovator: ["how-i-use-ai-to-create", "making-design-fun"],
