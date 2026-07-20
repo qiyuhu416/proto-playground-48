@@ -157,7 +157,7 @@ function Index() {
   }, [about]);
 
   return (
-    <div className="min-h-screen bg-[#f4f3ef] text-neutral-900">
+    <div className="min-h-screen bg-background text-neutral-900">
       {/* About panel (above the fold) */}
       <div
         ref={aboutRef}
