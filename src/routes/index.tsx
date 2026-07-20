@@ -179,9 +179,10 @@ function Index() {
     All: [],
     chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud"],
     reasoner: ["knowledge-graph-visualization"],
-    agent: ["ai-ai-interaction", "a2ui-generative", "human-ai-research", "designing-next-gen-ai-products", "design-as-a-research-tool"],
+    agent: ["a2ui-generative", "designing-next-gen-ai-products"],
     innovator: ["how-i-use-ai-to-create", "making-design-fun"],
-    Organization: ["claude-code-research"],
+    human: ["human-ai-research", "design-as-a-research-tool"],
+    Organization: ["ai-ai-interaction", "claude-code-research"],
   };
 
   const filtered = useMemo(
