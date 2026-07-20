@@ -21,7 +21,9 @@ import { Route as HowIUseAiToCreateRouteImport } from './routes/how-i-use-ai-to-
 import { Route as HumanAiResearchRouteImport } from './routes/human-ai-research'
 import { Route as ListenRouteImport } from './routes/listen'
 import { Route as MakingDesignFunRouteImport } from './routes/making-design-fun'
+import { Route as PersonalizationRouteImport } from './routes/personalization'
 import { Route as PlayRouteImport } from './routes/play'
+import { Route as ProactiveRouteImport } from './routes/proactive'
 import { Route as ProductLaunchFrom01RouteImport } from './routes/product-launch-from-0-1'
 import { Route as ReimaginingTheChatbotRouteImport } from './routes/reimagining-the-chatbot'
 import { Route as ThinkRouteImport } from './routes/think'
@@ -89,9 +91,19 @@ const MakingDesignFunRoute = MakingDesignFunRouteImport.update({
   path: '/making-design-fun',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PersonalizationRoute = PersonalizationRouteImport.update({
+  id: '/personalization',
+  path: '/personalization',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlayRoute = PlayRouteImport.update({
   id: '/play',
   path: '/play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProactiveRoute = ProactiveRouteImport.update({
+  id: '/proactive',
+  path: '/proactive',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductLaunchFrom01Route = ProductLaunchFrom01RouteImport.update({
@@ -129,7 +141,9 @@ export interface FileRoutesByFullPath {
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
+  '/personalization': typeof PersonalizationRoute
   '/play': typeof PlayRoute
+  '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
@@ -148,7 +162,9 @@ export interface FileRoutesByTo {
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
+  '/personalization': typeof PersonalizationRoute
   '/play': typeof PlayRoute
+  '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
@@ -168,7 +184,9 @@ export interface FileRoutesById {
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
+  '/personalization': typeof PersonalizationRoute
   '/play': typeof PlayRoute
+  '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
@@ -189,7 +207,9 @@ export interface FileRouteTypes {
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
+    | '/personalization'
     | '/play'
+    | '/proactive'
     | '/product-launch-from-0-1'
     | '/reimagining-the-chatbot'
     | '/think'
@@ -208,7 +228,9 @@ export interface FileRouteTypes {
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
+    | '/personalization'
     | '/play'
+    | '/proactive'
     | '/product-launch-from-0-1'
     | '/reimagining-the-chatbot'
     | '/think'
@@ -227,7 +249,9 @@ export interface FileRouteTypes {
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
+    | '/personalization'
     | '/play'
+    | '/proactive'
     | '/product-launch-from-0-1'
     | '/reimagining-the-chatbot'
     | '/think'
@@ -247,7 +271,9 @@ export interface RootRouteChildren {
   HumanAiResearchRoute: typeof HumanAiResearchRoute
   ListenRoute: typeof ListenRoute
   MakingDesignFunRoute: typeof MakingDesignFunRoute
+  PersonalizationRoute: typeof PersonalizationRoute
   PlayRoute: typeof PlayRoute
+  ProactiveRoute: typeof ProactiveRoute
   ProductLaunchFrom01Route: typeof ProductLaunchFrom01Route
   ReimaginingTheChatbotRoute: typeof ReimaginingTheChatbotRoute
   ThinkRoute: typeof ThinkRoute
@@ -340,11 +366,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MakingDesignFunRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/personalization': {
+      id: '/personalization'
+      path: '/personalization'
+      fullPath: '/personalization'
+      preLoaderRoute: typeof PersonalizationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/play': {
       id: '/play'
       path: '/play'
       fullPath: '/play'
       preLoaderRoute: typeof PlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/proactive': {
+      id: '/proactive'
+      path: '/proactive'
+      fullPath: '/proactive'
+      preLoaderRoute: typeof ProactiveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/product-launch-from-0-1': {
@@ -392,7 +432,9 @@ const rootRouteChildren: RootRouteChildren = {
   HumanAiResearchRoute: HumanAiResearchRoute,
   ListenRoute: ListenRoute,
   MakingDesignFunRoute: MakingDesignFunRoute,
+  PersonalizationRoute: PersonalizationRoute,
   PlayRoute: PlayRoute,
+  ProactiveRoute: ProactiveRoute,
   ProductLaunchFrom01Route: ProductLaunchFrom01Route,
   ReimaginingTheChatbotRoute: ReimaginingTheChatbotRoute,
   ThinkRoute: ThinkRoute,

@@ -165,6 +165,24 @@ const ITEMS: ItemWithSlug[] = [
     meta: "Research · Design",
     accent: "bg-gradient-to-br from-green-100 to-emerald-200",
   },
+  {
+    slug: "proactive",
+    title: "Proactive",
+    blurb: "Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.",
+    category: "Implementation",
+    kind: "Prototype",
+    meta: "Research · Testing",
+    accent: "bg-gradient-to-br from-cyan-100 to-blue-200",
+  },
+  {
+    slug: "personalization",
+    title: "Personalization",
+    blurb: "Understanding what makes humans human—exploring the future of AI through the lens of personal connection.",
+    category: "Role",
+    kind: "Article",
+    meta: "Research · AI Philosophy",
+    accent: "bg-gradient-to-br from-violet-100 to-purple-200",
+  },
 ];
 
 const CATEGORIES = [
@@ -188,9 +206,9 @@ function Index() {
     All: [],
     chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud", "reimagining-the-chatbot", "designing-for-conversations-that-earn-trust"],
     reasoner: ["knowledge-graph-visualization"],
-    agent: [],
+    agent: ["proactive"],
     innovator: ["making-design-fun", "a2ui-generative"],
-    human: ["human-ai-research", "design-as-a-research-tool", "designing-next-gen-ai-products"],
+    human: ["human-ai-research", "design-as-a-research-tool", "designing-next-gen-ai-products", "personalization"],
     Organization: ["ai-ai-interaction", "claude-code-research"],
   };
 
