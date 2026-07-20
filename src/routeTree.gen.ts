@@ -22,6 +22,7 @@ import { Route as HumanAiResearchRouteImport } from './routes/human-ai-research'
 import { Route as ListenRouteImport } from './routes/listen'
 import { Route as MakingDesignFunRouteImport } from './routes/making-design-fun'
 import { Route as PersonalizationRouteImport } from './routes/personalization'
+import { Route as PhysicalAiRouteImport } from './routes/physical-ai'
 import { Route as PlayRouteImport } from './routes/play'
 import { Route as ProactiveRouteImport } from './routes/proactive'
 import { Route as ProductLaunchFrom01RouteImport } from './routes/product-launch-from-0-1'
@@ -96,6 +97,11 @@ const PersonalizationRoute = PersonalizationRouteImport.update({
   path: '/personalization',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PhysicalAiRoute = PhysicalAiRouteImport.update({
+  id: '/physical-ai',
+  path: '/physical-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlayRoute = PlayRouteImport.update({
   id: '/play',
   path: '/play',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
+  '/physical-ai': typeof PhysicalAiRoute
   '/play': typeof PlayRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
+  '/physical-ai': typeof PhysicalAiRoute
   '/play': typeof PlayRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
+  '/physical-ai': typeof PhysicalAiRoute
   '/play': typeof PlayRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
@@ -208,6 +217,7 @@ export interface FileRouteTypes {
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
+    | '/physical-ai'
     | '/play'
     | '/proactive'
     | '/product-launch-from-0-1'
@@ -229,6 +239,7 @@ export interface FileRouteTypes {
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
+    | '/physical-ai'
     | '/play'
     | '/proactive'
     | '/product-launch-from-0-1'
@@ -250,6 +261,7 @@ export interface FileRouteTypes {
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
+    | '/physical-ai'
     | '/play'
     | '/proactive'
     | '/product-launch-from-0-1'
@@ -272,6 +284,7 @@ export interface RootRouteChildren {
   ListenRoute: typeof ListenRoute
   MakingDesignFunRoute: typeof MakingDesignFunRoute
   PersonalizationRoute: typeof PersonalizationRoute
+  PhysicalAiRoute: typeof PhysicalAiRoute
   PlayRoute: typeof PlayRoute
   ProactiveRoute: typeof ProactiveRoute
   ProductLaunchFrom01Route: typeof ProductLaunchFrom01Route
@@ -373,6 +386,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PersonalizationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/physical-ai': {
+      id: '/physical-ai'
+      path: '/physical-ai'
+      fullPath: '/physical-ai'
+      preLoaderRoute: typeof PhysicalAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/play': {
       id: '/play'
       path: '/play'
@@ -433,6 +453,7 @@ const rootRouteChildren: RootRouteChildren = {
   ListenRoute: ListenRoute,
   MakingDesignFunRoute: MakingDesignFunRoute,
   PersonalizationRoute: PersonalizationRoute,
+  PhysicalAiRoute: PhysicalAiRoute,
   PlayRoute: PlayRoute,
   ProactiveRoute: ProactiveRoute,
   ProductLaunchFrom01Route: ProductLaunchFrom01Route,

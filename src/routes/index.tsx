@@ -130,15 +130,6 @@ const ITEMS: ItemWithSlug[] = [
     accent: "bg-gradient-to-br from-purple-100 to-pink-200",
   },
   {
-    slug: "human-ai-research",
-    title: "Human-AI relationship research",
-    blurb: "Exploring the evolving nature of human-AI collaboration and partnership.",
-    category: "Role",
-    kind: "Article",
-    meta: "Research",
-    accent: "bg-gradient-to-br from-orange-100 to-red-200",
-  },
-  {
     slug: "design-as-a-research-tool",
     title: "Design as a research tool",
     blurb: "Using design methods to uncover hidden user behaviors and inform transportation policy.",
@@ -146,6 +137,15 @@ const ITEMS: ItemWithSlug[] = [
     kind: "Article",
     meta: "Case study",
     accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
+  },
+  {
+    slug: "physical-ai",
+    title: "Physical AI",
+    blurb: "Exploring AI beyond screens—how intelligent systems interact with and shape the physical world.",
+    category: "Role",
+    kind: "Prototype",
+    meta: "Research · Physical",
+    accent: "bg-gradient-to-br from-slate-100 to-gray-200",
   },
   {
     slug: "claude-code-research",
@@ -208,8 +208,15 @@ function Index() {
     reasoner: ["knowledge-graph-visualization"],
     agent: ["proactive"],
     innovator: ["making-design-fun", "a2ui-generative"],
-    human: ["human-ai-research", "design-as-a-research-tool", "designing-next-gen-ai-products", "personalization"],
+    human: ["design-as-a-research-tool", "physical-ai", "designing-next-gen-ai-products", "personalization"],
     Organization: ["ai-ai-interaction", "claude-code-research"],
+  };
+
+  const stageSubtitles: Record<string, { main: string; sub: string }[]> = {
+    human: [
+      { main: "future is about relationship", sub: "" },
+      { main: "AI beyond just screens", sub: "" },
+    ],
   };
 
   const filtered = useMemo(
@@ -218,6 +225,66 @@ function Index() {
         ? ITEMS
         : ITEMS.filter((i) => stageMap[selectedStage]?.includes(i.slug)),
     [selectedStage],
+  );
+
+  const renderCard = (item: ItemWithSlug) => (
+    <a
+      key={item.slug}
+      href={`/${item.slug}`}
+      className={
+        "group relative overflow-hidden rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-0 border-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] block " +
+        (item.kind === "Article"
+          ? "bg-neutral-900 border-neutral-900"
+          : "bg-white border-neutral-900")
+      }
+    >
+      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-neutral-300">
+        <span
+          className={
+            "text-xs uppercase tracking-[0.2em] " +
+            (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500/80")
+          }
+        >
+          {item.kind}
+        </span>
+        <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+          <ArrowUpRight className="h-4 w-4" />
+        </span>
+      </div>
+      <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
+        <div className="min-w-0">
+          <div
+            className={
+              "flex items-center gap-1.5 text-xs " +
+              (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500")
+            }
+          >
+            <span>{item.category}</span>
+            <span>·</span>
+            <span>{item.meta}</span>
+          </div>
+          <h3
+            className={
+              "mt-1 text-[15px] font-medium " +
+              (item.kind === "Article" ? "text-white" : "text-neutral-900")
+            }
+          >
+            {item.highlightWord && item.title.includes(item.highlightWord)
+              ? item.title.split(item.highlightWord).map((part, i, arr) => (
+                  <span key={i}>
+                    {part}
+                    {i < arr.length - 1 && (
+                      <span className={item.kind === "Article" ? "bg-white text-neutral-900 px-1 rounded" : "bg-neutral-900 text-white px-1 rounded"}>
+                        {item.highlightWord}
+                      </span>
+                    )}
+                  </span>
+                ))
+              : item.title}
+          </h3>
+        </div>
+      </div>
+    </a>
   );
 
   return (
@@ -360,72 +427,36 @@ function Index() {
 
       {/* Grid */}
       <section className="mx-auto max-w-6xl px-6 py-8 pb-24">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((item) => (
-            <a
-              key={item.slug}
-              href={`/${item.slug}`}
-              className={
-                "group relative overflow-hidden rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-0 border-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] block " +
-                (item.kind === "Article"
-                  ? "bg-neutral-900 border-neutral-900"
-                  : "bg-white border-neutral-900")
-              }
-            >
-              <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-neutral-300">
-                <span
-                  className={
-                    "text-xs uppercase tracking-[0.2em] " +
-                    (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500/80")
-                  }
-                >
-                  {item.kind}
-                </span>
-                <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
-                  <ArrowUpRight className="h-4 w-4" />
-                </span>
-              </div>
-              <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
-                <div className="min-w-0">
-                  <div
-                    className={
-                      "flex items-center gap-1.5 text-xs " +
-                      (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500")
-                    }
-                  >
-                    <span>{item.category}</span>
-                    <span>·</span>
-                    <span>{item.meta}</span>
+        {selectedStage === "human" ? (
+          <div className="mb-12">
+            <div className="space-y-12">
+              {stageSubtitles.human.map((section, idx) => (
+                <div key={idx}>
+                  <h3 className="text-2xl font-semibold text-neutral-900 mb-6">{section.main}</h3>
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {filtered
+                      .filter((item) => {
+                        if (idx === 0) return ["design-as-a-research-tool", "physical-ai"].includes(item.slug);
+                        if (idx === 1) return ["designing-next-gen-ai-products", "personalization"].includes(item.slug);
+                        return false;
+                      })
+                      .map((item) => renderCard(item))}
                   </div>
-                  <h3
-                    className={
-                      "mt-1 text-[15px] font-medium " +
-                      (item.kind === "Article" ? "text-white" : "text-neutral-900")
-                    }
-                  >
-                    {item.highlightWord && item.title.includes(item.highlightWord)
-                      ? item.title.split(item.highlightWord).map((part, i, arr) => (
-                          <span key={i}>
-                            {part}
-                            {i < arr.length - 1 && (
-                              <span className={item.kind === "Article" ? "bg-white text-neutral-900 px-1 rounded" : "bg-neutral-900 text-white px-1 rounded"}>
-                                {item.highlightWord}
-                              </span>
-                            )}
-                          </span>
-                        ))
-                      : item.title}
-                  </h3>
                 </div>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-neutral-300 py-16 text-center text-sm text-neutral-500">
-            Nothing here yet — try another filter.
+              ))}
+            </div>
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((item) => renderCard(item))}
+            </div>
+            {filtered.length === 0 && (
+              <div className="rounded-2xl border border-dashed border-neutral-300 py-16 text-center text-sm text-neutral-500">
+                Nothing here yet — try another filter.
+              </div>
+            )}
+          </>
         )}
       </section>
 
