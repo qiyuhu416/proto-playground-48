@@ -125,6 +125,9 @@ const KINDS = [
 function Index() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]["label"]>("All");
   const [kind, setKind] = useState<(typeof KINDS)[number]["label"]>("All");
+  // About panel: "closed" | "peek" (diagram only) | "open" (4 quadrants)
+  const [about, setAbout] = useState<"closed" | "peek" | "open">("closed");
+  const aboutRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(
     () =>
@@ -136,8 +139,36 @@ function Index() {
     [category, kind],
   );
 
+  // Reveal on scroll-up at top of page
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (window.scrollY <= 2 && e.deltaY < -8 && about === "closed") {
+        setAbout("peek");
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: true });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [about]);
+
+  useEffect(() => {
+    if (about !== "closed") {
+      aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [about]);
+
   return (
     <div className="min-h-screen bg-[#f4f3ef] text-neutral-900">
+      {/* About panel (above the fold) */}
+      <div
+        ref={aboutRef}
+        className={
+          "overflow-hidden transition-all duration-700 ease-out " +
+          (about === "closed" ? "max-h-0 opacity-0" : about === "peek" ? "max-h-[80vh] opacity-100" : "max-h-[140vh] opacity-100")
+        }
+      >
+        <AboutPanel state={about} onToggle={() => setAbout(about === "open" ? "peek" : "open")} onClose={() => setAbout("closed")} />
+      </div>
+
       {/* Nav */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
         <a href="/" className="flex h-9 w-9 items-center justify-center text-neutral-900">
@@ -146,20 +177,26 @@ function Index() {
           </svg>
         </a>
         <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {["Work", "Writing", "About"].map((l, idx) => (
-            <a
-              key={l}
-              href="#"
-              className={
-                "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                (idx === 0
-                  ? "bg-neutral-900 text-white"
-                  : "text-neutral-600 hover:text-neutral-900")
-              }
-            >
-              {l}
-            </a>
-          ))}
+          {(["Work", "Writing", "About"] as const).map((l) => {
+            const isAbout = l === "About";
+            const active = (l === "Work" && about === "closed") || (isAbout && about !== "closed");
+            return (
+              <button
+                key={l}
+                onClick={() => {
+                  if (isAbout) setAbout(about === "closed" ? "peek" : "closed");
+                }}
+                className={
+                  "rounded-full px-4 py-1.5 text-sm transition-colors " +
+                  (active
+                    ? "bg-neutral-900 text-white"
+                    : "text-neutral-600 hover:text-neutral-900")
+                }
+              >
+                {l}
+              </button>
+            );
+          })}
         </nav>
         <div className="h-9 w-9" />
       </header>
@@ -179,7 +216,14 @@ function Index() {
           A personal archive of prototypes and short writing — sorted by what they're
           actually testing: implementation, look & feel, or role.
         </p>
+        <button
+          onClick={() => setAbout("peek")}
+          className="mt-6 text-xs text-neutral-400 transition-colors hover:text-neutral-700"
+        >
+          ↑ scroll up for about
+        </button>
       </section>
+
 
       {/* Filters */}
       <section className="mx-auto max-w-6xl px-6">
