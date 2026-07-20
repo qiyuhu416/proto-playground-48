@@ -188,9 +188,9 @@ function Index() {
     All: [],
     chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud", "reimagining-the-chatbot", "designing-for-conversations-that-earn-trust"],
     reasoner: ["knowledge-graph-visualization"],
-    agent: ["a2ui-generative", "designing-next-gen-ai-products"],
-    innovator: ["how-i-use-ai-to-create", "making-design-fun"],
-    human: ["human-ai-research", "design-as-a-research-tool"],
+    agent: [],
+    innovator: ["how-i-use-ai-to-create", "making-design-fun", "a2ui-generative"],
+    human: ["human-ai-research", "design-as-a-research-tool", "designing-next-gen-ai-products"],
     Organization: ["ai-ai-interaction", "claude-code-research"],
   };
 
