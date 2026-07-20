@@ -151,3 +151,8 @@
   }
 }
 
+/* Custom cursor for external links */
+a[target="_blank"] {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><defs><style>.circle{fill:none;stroke:url(%23grad);stroke-width:3}.text{font-family:Inter,sans-serif;font-size:10px;font-weight:500;fill:white;text-anchor:middle}</style><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23d946ef;stop-opacity:1"/><stop offset="100%" style="stop-color:%232563eb;stop-opacity:1"/></linearGradient></defs><circle class="circle" cx="32" cy="32" r="28"/><circle fill="%23000" cx="32" cy="32" r="26"/><text class="text" x="32" y="35">Click me</text></svg>') 32 32, auto;
+}
+

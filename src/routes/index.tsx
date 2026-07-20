@@ -151,6 +151,7 @@ const ITEMS: ItemWithSlug[] = [
     kind: "Prototype",
     meta: "Research · Physical",
     accent: "bg-gradient-to-br from-slate-100 to-gray-200",
+    thumbnail: "/articles/physical-ai-thumb.png",
   },
   {
     slug: "claude-code-research",
