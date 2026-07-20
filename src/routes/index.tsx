@@ -41,14 +41,13 @@ type ItemWithSlug = Item & { slug: string };
 
 const ITEMS: ItemWithSlug[] = [
   {
-    slug: "how-i-use-ai-to-create",
-    title: "How I use AI to create",
-    blurb: "Prototyping as a research mindset, and why AI should augment—not bypass—your thinking.",
+    slug: "what-do-prototypes-prototype",
+    title: "What do prototypes prototype?",
+    blurb: "Prototyping as a research mindset, and designing to elicit errors rather than hide them.",
     category: "Implementation",
     kind: "Article",
-    meta: "5 min read",
+    meta: "6 min read",
     accent: "bg-gradient-to-br from-amber-100 to-orange-200",
-    highlightWord: "How",
   },
   {
     slug: "how-i-prototype",
