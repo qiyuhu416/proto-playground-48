@@ -49,20 +49,41 @@ function ArticleComponent() {
           </blockquote>
 
           <p>
-            The word "prototype" might have been automatically associated with a digital phone frame where people can click around. But we could actually expand the scope here: <strong>As creation itself becomes easier, prototypes can be any form of experiments used to test "what to create."</strong>
+            The word "prototype" might have been automatically associated with a digital phone frame where people can click around. But we could actually expand the scope here:
           </p>
+
+          <div className="bg-neutral-50 border-l-4 border-neutral-900 p-6 my-8 rounded">
+            <p className="m-0 text-neutral-900"><strong>As creation itself becomes easier, prototypes can be any form of experiments used to test "what to create."</strong></p>
+          </div>
 
           <p>
-            But prototyping = research. It is essentially a mindset to test what to design. Prototypes can be anything that serves those goals:
+            Prototyping = research. It's essentially a mindset to test what to design. Prototypes can be anything that serves these goals:
           </p>
 
-          <ul>
-            <li>explore more directions</li>
-            <li>test more interactions</li>
-            <li>simulate more edge cases</li>
-            <li>communicate ideas that used to be too expensive to build</li>
-            <li>much more</li>
-          </ul>
+          <div className="bg-neutral-50 rounded-lg border border-neutral-200 p-6 my-8">
+            <ul className="space-y-2 mb-0">
+              <li className="flex items-start gap-3">
+                <span className="text-neutral-400 mt-1">•</span>
+                <span>Explore more directions</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-neutral-400 mt-1">•</span>
+                <span>Test more interactions</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-neutral-400 mt-1">•</span>
+                <span>Simulate more edge cases</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-neutral-400 mt-1">•</span>
+                <span>Communicate ideas that used to be too expensive to build</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-neutral-400 mt-1">•</span>
+                <span>Much more</span>
+              </li>
+            </ul>
+          </div>
 
           <p>
             A lot of workflows exist simply because we inherited them. Let's use design thinking to pull ourselves out of the box.
@@ -74,11 +95,23 @@ function ArticleComponent() {
             Don't forget "paper prototyping" and "role play"! I remember I was testing a new human-AI interaction concept. It was more of a service design rather than product design, and product was only part of the experience. I was paired with a PM and an engineer, and during brainstorming I just drew some screen mockups on paper and invited them to role play:
           </p>
 
-          <ul>
-            <li><strong>Engineer</strong> → LLM</li>
-            <li><strong>Me</strong> → Product</li>
-            <li><strong>PM</strong> → User</li>
-          </ul>
+          <div className="bg-neutral-50 rounded-lg border border-neutral-200 p-6 my-8 space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="font-semibold text-neutral-900">Engineer</span>
+              <span className="text-neutral-400">→</span>
+              <span className="text-neutral-600">LLM</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-semibold text-neutral-900">Me</span>
+              <span className="text-neutral-400">→</span>
+              <span className="text-neutral-600">Product</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-semibold text-neutral-900">PM</span>
+              <span className="text-neutral-400">→</span>
+              <span className="text-neutral-600">User</span>
+            </div>
+          </div>
 
           <p>
             When we pitched it to the manager, we invited him to be the user. It quickly helped us navigate the intersection between UX and technology by putting ourselves in users' shoes and immersively analyzing the tech capability. And most importantly... it was so MUCH FUN!!
@@ -86,17 +119,17 @@ function ArticleComponent() {
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Built to elicit errors</h2>
 
-          <p>AI is never perfect (yet). Please.</p>
+          <p>
+            AI is never perfect (yet). Maybe that's because it was trained on human data, and humans are not that perfect either.
+          </p>
 
-          <p>Maybe part of the reason is that AI was trained on human data, and humans are not that perfect either.</p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+          <div className="bg-neutral-50 border-l-4 border-neutral-900 p-6 my-8 rounded">
             <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-4">Welcome to the adult world</div>
-            <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', lineHeight: 1.7 }}>
-              <li style={{ marginBottom: 8 }}>
+            <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', lineHeight: 1.8 }}>
+              <li style={{ marginBottom: 10 }}>
                 what one thinks <strong>≠</strong> what one says
               </li>
-              <li style={{ marginBottom: 8 }}>
+              <li style={{ marginBottom: 10 }}>
                 what one says <strong>≠</strong> what one does
               </li>
               <li style={{ marginBottom: 0 }}>
@@ -106,12 +139,12 @@ function ArticleComponent() {
           </div>
 
           <p>
-            Therefore, an important part in designing AI products/experiences should be designing around errors:
+            Therefore, an important part of designing AI products should be <strong>designing around errors, not hiding them</strong>:
           </p>
 
-          <p>
-            <strong>Where will it fail? Which failures are okay? How do we handle them?</strong>
-          </p>
+          <div className="bg-neutral-100 rounded p-4 my-6 text-center border border-neutral-200">
+            <p className="m-0 text-neutral-900"><strong>Where will it fail? Which failures are okay? How do we handle them?</strong></p>
+          </div>
 
           <p>
             I was exploring this solution for a non-profit to address their "too many repetitive questions but not enough staff" pain point. It is an easy-inference case as there is already a pre-existing script to follow (closer to be rule-based).

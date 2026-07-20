@@ -18,7 +18,6 @@ import { Route as DesigningForConversationsThatEarnTrustRouteImport } from './ro
 import { Route as DesigningNextGenAiProductsRouteImport } from './routes/designing-next-gen-ai-products'
 import { Route as GoogleCloudRouteImport } from './routes/google-cloud'
 import { Route as HowIPrototypeRouteImport } from './routes/how-i-prototype'
-import { Route as HowIUseAiToCreateRouteImport } from './routes/how-i-use-ai-to-create'
 import { Route as HumanAiResearchRouteImport } from './routes/human-ai-research'
 import { Route as ListenRouteImport } from './routes/listen'
 import { Route as MakingDesignFunRouteImport } from './routes/making-design-fun'
@@ -76,11 +75,6 @@ const GoogleCloudRoute = GoogleCloudRouteImport.update({
 const HowIPrototypeRoute = HowIPrototypeRouteImport.update({
   id: '/how-i-prototype',
   path: '/how-i-prototype',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HowIUseAiToCreateRoute = HowIUseAiToCreateRouteImport.update({
-  id: '/how-i-use-ai-to-create',
-  path: '/how-i-use-ai-to-create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HumanAiResearchRoute = HumanAiResearchRouteImport.update({
@@ -150,7 +144,6 @@ export interface FileRoutesByFullPath {
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-prototype': typeof HowIPrototypeRoute
-  '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
@@ -173,7 +166,6 @@ export interface FileRoutesByTo {
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-prototype': typeof HowIPrototypeRoute
-  '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
@@ -197,7 +189,6 @@ export interface FileRoutesById {
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
   '/how-i-prototype': typeof HowIPrototypeRoute
-  '/how-i-use-ai-to-create': typeof HowIUseAiToCreateRoute
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
@@ -222,7 +213,6 @@ export interface FileRouteTypes {
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-prototype'
-    | '/how-i-use-ai-to-create'
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
@@ -245,7 +235,6 @@ export interface FileRouteTypes {
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-prototype'
-    | '/how-i-use-ai-to-create'
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
@@ -268,7 +257,6 @@ export interface FileRouteTypes {
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
     | '/how-i-prototype'
-    | '/how-i-use-ai-to-create'
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
@@ -292,7 +280,6 @@ export interface RootRouteChildren {
   DesigningNextGenAiProductsRoute: typeof DesigningNextGenAiProductsRoute
   GoogleCloudRoute: typeof GoogleCloudRoute
   HowIPrototypeRoute: typeof HowIPrototypeRoute
-  HowIUseAiToCreateRoute: typeof HowIUseAiToCreateRoute
   HumanAiResearchRoute: typeof HumanAiResearchRoute
   ListenRoute: typeof ListenRoute
   MakingDesignFunRoute: typeof MakingDesignFunRoute
@@ -369,13 +356,6 @@ declare module '@tanstack/react-router' {
       path: '/how-i-prototype'
       fullPath: '/how-i-prototype'
       preLoaderRoute: typeof HowIPrototypeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/how-i-use-ai-to-create': {
-      id: '/how-i-use-ai-to-create'
-      path: '/how-i-use-ai-to-create'
-      fullPath: '/how-i-use-ai-to-create'
-      preLoaderRoute: typeof HowIUseAiToCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/human-ai-research': {
@@ -469,7 +449,6 @@ const rootRouteChildren: RootRouteChildren = {
   DesigningNextGenAiProductsRoute: DesigningNextGenAiProductsRoute,
   GoogleCloudRoute: GoogleCloudRoute,
   HowIPrototypeRoute: HowIPrototypeRoute,
-  HowIUseAiToCreateRoute: HowIUseAiToCreateRoute,
   HumanAiResearchRoute: HumanAiResearchRoute,
   ListenRoute: ListenRoute,
   MakingDesignFunRoute: MakingDesignFunRoute,
