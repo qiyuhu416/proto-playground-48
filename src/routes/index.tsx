@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpRight, LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -125,6 +125,9 @@ const KINDS = [
 function Index() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]["label"]>("All");
   const [kind, setKind] = useState<(typeof KINDS)[number]["label"]>("All");
+  // About panel: "closed" | "peek" (diagram only) | "open" (4 quadrants)
+  const [about, setAbout] = useState<"closed" | "peek" | "open">("closed");
+  const aboutRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(
     () =>
@@ -136,8 +139,36 @@ function Index() {
     [category, kind],
   );
 
+  // Reveal on scroll-up at top of page
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (window.scrollY <= 2 && e.deltaY < -8 && about === "closed") {
+        setAbout("peek");
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: true });
+    return () => window.removeEventListener("wheel", onWheel);
+  }, [about]);
+
+  useEffect(() => {
+    if (about !== "closed") {
+      aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [about]);
+
   return (
     <div className="min-h-screen bg-[#f4f3ef] text-neutral-900">
+      {/* About panel (above the fold) */}
+      <div
+        ref={aboutRef}
+        className={
+          "overflow-hidden transition-all duration-700 ease-out " +
+          (about === "closed" ? "max-h-0 opacity-0" : about === "peek" ? "max-h-[80vh] opacity-100" : "max-h-[140vh] opacity-100")
+        }
+      >
+        <AboutPanel state={about} onToggle={() => setAbout(about === "open" ? "peek" : "open")} onClose={() => setAbout("closed")} />
+      </div>
+
       {/* Nav */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
         <a href="/" className="flex h-9 w-9 items-center justify-center text-neutral-900">
@@ -146,20 +177,26 @@ function Index() {
           </svg>
         </a>
         <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {["Work", "Writing", "About"].map((l, idx) => (
-            <a
-              key={l}
-              href="#"
-              className={
-                "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                (idx === 0
-                  ? "bg-neutral-900 text-white"
-                  : "text-neutral-600 hover:text-neutral-900")
-              }
-            >
-              {l}
-            </a>
-          ))}
+          {(["Work", "Writing", "About"] as const).map((l) => {
+            const isAbout = l === "About";
+            const active = (l === "Work" && about === "closed") || (isAbout && about !== "closed");
+            return (
+              <button
+                key={l}
+                onClick={() => {
+                  if (isAbout) setAbout(about === "closed" ? "peek" : "closed");
+                }}
+                className={
+                  "rounded-full px-4 py-1.5 text-sm transition-colors " +
+                  (active
+                    ? "bg-neutral-900 text-white"
+                    : "text-neutral-600 hover:text-neutral-900")
+                }
+              >
+                {l}
+              </button>
+            );
+          })}
         </nav>
         <div className="h-9 w-9" />
       </header>
@@ -179,7 +216,14 @@ function Index() {
           A personal archive of prototypes and short writing — sorted by what they're
           actually testing: implementation, look & feel, or role.
         </p>
+        <button
+          onClick={() => setAbout("peek")}
+          className="mt-6 text-xs text-neutral-400 transition-colors hover:text-neutral-700"
+        >
+          ↑ scroll up for about
+        </button>
       </section>
+
 
       {/* Filters */}
       <section className="mx-auto max-w-6xl px-6">
@@ -282,3 +326,169 @@ function Index() {
     </div>
   );
 }
+
+type AboutState = "closed" | "peek" | "open";
+
+const QUADRANTS = [
+  {
+    key: "qiyu-think",
+    x: "left",
+    y: "top",
+    axis: "Qiyu × Think",
+    title: "What I'm chewing on",
+    body: "Private notes, half-baked theories, and the questions I keep circling.",
+  },
+  {
+    key: "qiyu-do",
+    x: "right",
+    y: "top",
+    axis: "Qiyu × Do",
+    title: "What I'm making",
+    body: "Prototypes, side projects, and small tools shipped under my own name.",
+  },
+  {
+    key: "others-think",
+    x: "left",
+    y: "bottom",
+    axis: "Others × Think",
+    title: "What I'm reading",
+    body: "Ideas from people I trust — annotated, argued with, occasionally stolen from.",
+  },
+  {
+    key: "others-do",
+    x: "right",
+    y: "bottom",
+    axis: "Others × Do",
+    title: "What I'm admiring",
+    body: "Work by others that raises the bar for what I try next.",
+  },
+] as const;
+
+function AboutPanel({
+  state,
+  onToggle,
+  onClose,
+}: {
+  state: AboutState;
+  onToggle: () => void;
+  onClose: () => void;
+}) {
+  const expanded = state === "open";
+
+  return (
+    <div className="relative mx-auto max-w-6xl px-6 pt-10 pb-6">
+      <div className="mb-6 flex items-center justify-between">
+        <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">About</span>
+        <button
+          onClick={onClose}
+          className="rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-600 hover:text-neutral-900"
+        >
+          Close ↓
+        </button>
+      </div>
+
+      <div
+        className={
+          "relative mx-auto grid place-items-center transition-all duration-700 ease-out " +
+          (expanded ? "aspect-[16/10] max-w-5xl" : "aspect-square max-w-md")
+        }
+      >
+        {/* Axes */}
+        <div
+          className={
+            "pointer-events-none absolute inset-0 transition-opacity duration-500 " +
+            (expanded ? "opacity-100" : "opacity-0")
+          }
+        >
+          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-neutral-300" />
+          <div className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-neutral-300" />
+        </div>
+
+        {/* Axis labels */}
+        <div
+          className={
+            "pointer-events-none absolute inset-0 text-[11px] uppercase tracking-[0.25em] text-neutral-500 transition-opacity duration-500 " +
+            (expanded ? "opacity-100" : "opacity-0")
+          }
+        >
+          <span className="absolute left-1/2 top-2 -translate-x-1/2">Qiyu</span>
+          <span className="absolute bottom-2 left-1/2 -translate-x-1/2">Others</span>
+          <span className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 origin-left">Think</span>
+          <span className="absolute right-2 top-1/2 -translate-y-1/2 rotate-90 origin-right">Do</span>
+        </div>
+
+        {/* Compact 4-dot diagram (click to expand) */}
+        <button
+          onClick={onToggle}
+          aria-label={expanded ? "Collapse diagram" : "Expand diagram"}
+          className="absolute inset-0 grid place-items-center focus:outline-none"
+        >
+          <div
+            className={
+              "relative transition-all duration-700 ease-out " +
+              (expanded ? "h-full w-full" : "h-24 w-24")
+            }
+          >
+            {/* Four nodes */}
+            {[
+              { top: "0%", left: "50%", label: "Qiyu" },
+              { top: "50%", left: "100%", label: "Do" },
+              { top: "100%", left: "50%", label: "Others" },
+              { top: "50%", left: "0%", label: "Think" },
+            ].map((n) => (
+              <div
+                key={n.label}
+                style={{ top: n.top, left: n.left }}
+                className="absolute -translate-x-1/2 -translate-y-1/2"
+              >
+                <div className="h-3 w-3 rounded-full bg-neutral-900" />
+                <span
+                  className={
+                    "absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-neutral-500 transition-opacity " +
+                    (expanded ? "opacity-0" : "opacity-100")
+                  }
+                >
+                  {n.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </button>
+
+        {/* Quadrant cards */}
+        {expanded &&
+          QUADRANTS.map((q) => (
+            <div
+              key={q.key}
+              className={
+                "absolute w-[42%] max-w-[280px] p-4 text-left " +
+                (q.x === "left" ? "left-[4%] " : "right-[4%] ") +
+                (q.y === "top" ? "top-[10%]" : "bottom-[10%]")
+              }
+            >
+              <div className="text-[10px] uppercase tracking-[0.25em] text-neutral-400">
+                {q.axis}
+              </div>
+              <div className="mt-1 text-lg font-medium text-neutral-900">{q.title}</div>
+              <p className="mt-1 text-sm text-neutral-600">{q.body}</p>
+            </div>
+          ))}
+      </div>
+
+      {!expanded && (
+        <p className="mt-6 text-center text-sm text-neutral-500">
+          I'm <span className="text-neutral-900">Qiyu</span> — a prototyper working between
+          design and code.{" "}
+          <button
+            onClick={onToggle}
+            className="underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900"
+          >
+            Tap the diagram to expand
+          </button>
+          .
+        </p>
+      )}
+    </div>
+  );
+}
+
