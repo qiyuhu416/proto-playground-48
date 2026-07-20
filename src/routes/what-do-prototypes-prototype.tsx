@@ -89,7 +89,14 @@ function ArticleComponent() {
             A lot of workflows exist simply because we inherited them. Let's use design thinking to pull ourselves out of the box.
           </p>
 
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Not all prototypes need to be coded</h3>
+          <p className="text-sm text-neutral-600 italic">
+            Inspired by the Stanford HCI paper{" "}
+            <a href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">
+              "What Do Prototypes Prototype?"
+            </a>
+          </p>
+
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Not all prototypes need to be coded</h2>
 
           <p>
             Don't forget "paper prototyping" and "role play"! I remember I was testing a new human-AI interaction concept. It was more of a service design rather than product design, and product was only part of the experience. I was paired with a PM and an engineer, and during brainstorming I just drew some screen mockups on paper and invited them to role play:
@@ -116,13 +123,6 @@ function ArticleComponent() {
           <p>
             When we pitched it to the manager, we invited him to be the user. It quickly helped us navigate the intersection between UX and technology by putting ourselves in users' shoes and immersively analyzing the tech capability. And most importantly... it was so MUCH FUN!!
           </p>
-
-          <img
-            src="/articles/how-i-prototype.png"
-            alt="Three types of prototypes: explore what-ifs, explain the prototype, for others to prototype"
-            className="w-full rounded-2xl my-8 border-4 border-neutral-900"
-          />
-          <p className="text-sm text-neutral-500 italic">Prototypes serve different purposes at different stages of the process.</p>
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Built to elicit errors</h2>
 
