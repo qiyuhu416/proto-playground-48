@@ -125,8 +125,7 @@ const KINDS = [
 function Index() {
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]["label"]>("All");
   const [kind, setKind] = useState<(typeof KINDS)[number]["label"]>("All");
-  // About panel: "closed" | "peek" (diagram only) | "open" (4 quadrants)
-  const [about, setAbout] = useState<"closed" | "peek" | "open">("closed");
+  const [aboutOpen, setAboutOpen] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(
@@ -139,22 +138,11 @@ function Index() {
     [category, kind],
   );
 
-  // Reveal on scroll-up at top of page
   useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      if (window.scrollY <= 2 && e.deltaY < -8 && about === "closed") {
-        setAbout("peek");
-      }
-    };
-    window.addEventListener("wheel", onWheel, { passive: true });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [about]);
-
-  useEffect(() => {
-    if (about !== "closed") {
+    if (aboutOpen) {
       aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [about]);
+  }, [aboutOpen]);
 
   return (
     <div className="min-h-screen bg-background text-neutral-900">
