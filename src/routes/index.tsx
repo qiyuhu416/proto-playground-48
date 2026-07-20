@@ -325,14 +325,15 @@ function Index() {
                 <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "Organization" ? "text-neutral-900" : "text-neutral-600"}`}>Organization</span>
               </button>
 
-              {/* Human? */}
-              <div
-                className="absolute flex flex-col items-center gap-2 -translate-x-1/2"
-                style={{ left: "100%" }}
+              {/* Human */}
+              <button
+                onClick={() => setSelectedStage("human")}
+                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
+                style={{ left: "83.2%" }}
               >
-                <div className="h-5 w-5 rounded-full bg-white border-2 border-neutral-400 relative z-20" />
-                <span className="text-sm font-medium text-neutral-400 whitespace-nowrap">Human?</span>
-              </div>
+                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "human" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "human" ? "text-neutral-900" : "text-neutral-600"}`}>human</span>
+              </button>
             </div>
           </div>
 
