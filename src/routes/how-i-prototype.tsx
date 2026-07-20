@@ -41,12 +41,6 @@ function ArticleComponent() {
           </div>
         </div>
 
-        <img
-          src="/articles/how-i-prototype.png"
-          alt="Three types of prototypes as collaboration tools"
-          className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
-        />
-
         <div className="prose prose-neutral max-w-4xl">
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <p className="m-0"><strong>Note:</strong> The specific projects and context are under NDA. This article focuses on the mindset and framework that guides how I approach prototyping across different scenarios.</p>
@@ -63,6 +57,13 @@ function ArticleComponent() {
           </p>
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Explore "what-if"s</h2>
+
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 my-8 border-4 border-purple-200">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-3">🌱</div>
+              <h3 className="font-semibold text-neutral-900 mb-2">Wonder. Play. Expand.</h3>
+            </div>
+          </div>
 
           <p>
             <strong>Purpose:</strong> To wonder. To play. To expand the solution space before narrowing it.
@@ -90,6 +91,13 @@ function ArticleComponent() {
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Explain the prototype</h2>
 
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 my-8 border-4 border-blue-200">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-3">🔍</div>
+              <h3 className="font-semibold text-neutral-900 mb-2">Observe. Understand. Learn.</h3>
+            </div>
+          </div>
+
           <p>
             <strong>Purpose:</strong> To understand. To get feedback. To see how others interpret what you've built.
           </p>
@@ -116,6 +124,13 @@ function ArticleComponent() {
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · For others to prototype</h2>
 
+          <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 my-8 border-4 border-yellow-200">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-3">🚀</div>
+              <h3 className="font-semibold text-neutral-900 mb-2">Enable. Hand over. Collaborate.</h3>
+            </div>
+          </div>
+
           <p>
             <strong>Purpose:</strong> To enable. To hand over control. To let others build on your foundation.
           </p>
@@ -139,6 +154,12 @@ function ArticleComponent() {
           <p>
             These prototypes work best when they're flexible, well-documented, and handed over with permission to break them.
           </p>
+
+          <img
+            src="/articles/how-i-prototype.png"
+            alt="Three types of prototypes as collaboration tools: Explore what-ifs, Explain the prototype, For others to prototype"
+            className="w-full rounded-2xl my-12 border-4 border-neutral-900"
+          />
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The shared mindset</h2>
 
