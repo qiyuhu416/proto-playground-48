@@ -70,7 +70,7 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "reimagining-the-chatbot",
-    title: "A collection of reimagining the chatbot: Select & fill with prompts",
+    title: "A collection of reimagining the chatbot",
     blurb: "Exploring how prompts reshape design workflows—generative design meets human intent.",
     category: "Implementation",
     kind: "Prototype",
@@ -142,6 +142,7 @@ const ITEMS: ItemWithSlug[] = [
     kind: "Article",
     meta: "Case study",
     accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
+    thumbnail: "/articles/design-as-research-tool-thumb.png",
   },
   {
     slug: "physical-ai",
