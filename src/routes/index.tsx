@@ -151,10 +151,10 @@ function Index() {
         ref={aboutRef}
         className={
           "overflow-hidden transition-all duration-700 ease-out " +
-          (about === "closed" ? "max-h-0 opacity-0" : about === "peek" ? "max-h-[80vh] opacity-100" : "max-h-[140vh] opacity-100")
+          (aboutOpen ? "max-h-[140vh] opacity-100" : "max-h-0 opacity-0")
         }
       >
-        <AboutPanel state={about} onToggle={() => setAbout(about === "open" ? "peek" : "open")} onClose={() => setAbout("closed")} />
+        <AboutPanel onClose={() => setAboutOpen(false)} />
       </div>
 
       {/* Nav */}
@@ -167,12 +167,12 @@ function Index() {
         <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
           {(["Work", "Writing", "About"] as const).map((l) => {
             const isAbout = l === "About";
-            const active = (l === "Work" && about === "closed") || (isAbout && about !== "closed");
+            const active = (l === "Work" && !aboutOpen) || (isAbout && aboutOpen);
             return (
               <button
                 key={l}
                 onClick={() => {
-                  if (isAbout) setAbout(about === "closed" ? "peek" : "closed");
+                  if (isAbout) setAboutOpen(!aboutOpen);
                 }}
                 className={
                   "rounded-full px-4 py-1.5 text-sm transition-colors " +
@@ -204,12 +204,6 @@ function Index() {
           A personal archive of prototypes and short writing — sorted by what they're
           actually testing: implementation, look & feel, or role.
         </p>
-        <button
-          onClick={() => setAbout("peek")}
-          className="mt-6 text-xs text-neutral-400 transition-colors hover:text-neutral-700"
-        >
-          ↑ scroll up for about
-        </button>
       </section>
 
 
