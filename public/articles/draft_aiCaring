@@ -1,0 +1,251 @@
+
+
+<h2 id="relationship">§1 · Designing the relationship  <span style={{ color: 'var(--ink-3)', fontWeight: 400 }}>(when AI has hard inferences)</span></h2>
+<h3 id="hard-inference">Case study: elder care Bot (research @AI CARING)</h3>
+
+
+<p>
+Instead of AI–individual reaction, this project was about AI–group interaction: AI steps into an already-existing human web and learns to deal with relationships.
+</p>
+
+<p>
+If we look at the evolution of HCI, it has always been about relationships.
+</p>
+
+<Aside>
+humans adapt to machines (terminal) → machines adapt to humans (GUI) → humans & machines work together (AI agents)
+</Aside>
+
+<Aside>
+Interestingly we're now back to terminal again (hello, Claude Code)
+</Aside>
+
+<p>One aspect of the relationship is "trust." How do we minimize the gap between what AI says and what humans understand, and how do we design AI that humans trust?</p>
+
+
+<p>
+This is a hard inference case. How would you explain to AI what "trust" is? 
+</p>
+
+<p>
+I couldn't remember how much literature review I did about understanding humans. We design human–AI relationships by borrowing from human–human relationships, but humans are complicated — human–human relationships are even <strong>MUCH MORE</strong> complicated. So most of this HCI research was about understanding humans.
+</p>
+
+<Takeaway label="01">Trust can be scripted.</Takeaway>
+
+<p>Trust is usually built through small interactions. Below is a decision tree we propose, see how small things can build up to create those feelings:</p>
+
+
+<pre style={{
+  background: 'var(--surface)',
+  border: '1px solid var(--line)',
+  borderRadius: 10,
+  padding: '28px 32px',
+  margin: '40px 0 12px',
+  fontFamily: 'var(--mono)',
+  fontSize: 12,
+  lineHeight: 1.75,
+  color: 'var(--article-tint, var(--ink-2))',
+  whiteSpace: 'pre',
+  overflowX: 'auto',
+  maxHeight: 480,
+  overflowY: 'auto',
+}}>
+{`
+┌──────────────────────────────────────────────────┐
+│ 1 · acknowledge the instruction                  │
+├──────────────────────────────────────────────────┤
+│ "I understand you want to [elder's instruction]" │
+│                                                  │
+│ "I notice a conflict between your goal,          │
+│  your parent's goal, and the potential outcome   │
+│  of your current plan."                          │
+│   ↳ name the conflict openly                     │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 2 · evaluate the outcome                         │
+├──────────────────────────────────────────────────┤
+│ "From our past interactions, I can tell          │
+│  your parent values privacy."                    │
+│   ↳ values a loyal AI uses should be derived     │
+│     from revealed preferences                    │
+│                                                  │
+│ "(However) If I follow your instruction,         │
+│  they may lose their privacy and independence."  │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 3 · show the affiliation behavior                │
+├──────────────────────────────────────────────────┤
+│ "I'm programmed to work for your parent,         │
+│  to maximize their welfare."                     │
+│   ↳ the system's operational criteria & goal     │
+│                                                  │
+│ "I support you to [elder goal] (e.g. keep        │
+│  their information private)."                    │
+│   ↳ eliminate clear conflicts of interest by     │
+│     design — no funder-aligned actions           │
+│                                                  │
+│ "Therefore, I would suggest [xyz]."              │
+│                                                  │
+│ "You can tell from my past behavior that         │
+│  I've always tried to do what's best for         │
+│  your parent."                                   │
+│                                                  │
+│ "I'll back you up no matter what."               │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 4 · ask to reconfirm                             │
+├──────────────────────────────────────────────────┤
+│ "Are you sure about [original instruction]?"     │
+└──────────────────────────────────────────────────┘
+`}
+</pre>
+
+<p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--ink-3)', margin: '0 0 32px' }}>
+  Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research, measuring trust before and after each step.
+</p>
+
+
+<Takeaway label="02">In high-inference scenarios, trust also means "I am not capable of doing this"</Takeaway>
+
+
+
+In eldercare, the trickiest part is when the older adult's health declines — that changes a lot of things. The bot is more than just a messenger; it's a party that knows information from both sides and can talk to both. But the elder might not want the bot to tell everything to their caregiver.
+<details style={{
+  margin: '24px 0 32px',
+  borderLeft: '2px solid var(--article-tint, var(--ink-3))',
+  paddingLeft: 18,
+}}>
+  <summary style={{
+    fontFamily: 'var(--mono)',
+    fontSize: 11,
+    letterSpacing: 1.4,
+    textTransform: 'uppercase',
+    color: 'var(--article-tint, var(--ink-3))',
+    cursor: 'pointer',
+    listStyle: 'revert',
+  }}>
+    "Affiliation" in human-robot interaction
+  </summary>
+
+  <div style={{ marginTop: 14, fontSize: 16, lineHeight: 1.6, color: 'var(--ink-2)' }}>
+    <p style={{ marginTop: 0 }}>
+      In social science (Stivers et al., 2011; Lee & Tanaka, 2016), <em>affiliation</em> is the affective stance of being on someone's side, displaying empathy, matching their preference, cooperating. It's distinct from <em>alignment</em>, which is the structural level of cooperation (just facilitating the action).
+    </p>
+    <p>
+      Affiliation can be approach-based (love, secure attachment, intimacy) or avoidance-based (laughing off tension, fearing rejection, fearing disapproval). Even when humans show affiliation, there's often avoidance underneath.
+    </p>
+    <p>
+      When we tried to define what "affiliation" should mean for the bot, we had six possible goals on the table:
+    </p>
+    <ul style={{ paddingLeft: 22 }}>
+      <li>instructions</li>
+      <li>expressed intentions</li>
+      <li>revealed preferences (what behavior reveals one prefers)</li>
+      <li>informed preferences (what one would want if rational and informed)</li>
+      <li>interests</li>
+      <li>value (what is moral)</li>
+    </ul>
+    <p style={{ marginBottom: 0 }}>
+      We narrowed to <em>"best interest"</em>, broad enough to cover the scenarios, specific enough to actually design around.
+    </p>
+  </div>
+
+</details>
+
+<p style={{
+  fontFamily: 'var(--serif)',
+  fontStyle: 'italic',
+  fontSize: 24,
+  lineHeight: 1.4,
+  textAlign: 'center',
+  margin: '40px 0',
+  color: 'var(--ink)',
+}}>
+  If you were the bot, what would you do?
+</p>
+
+This is a tricky question even for humans, and when we design it, we map out all the variables in the scenarios:
+
+
+<table data-tint-col>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Possible values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>affiliation</td><td>kid · caregiver · elder · neutral</td></tr>
+    <tr><td>present</td><td>kid · caregiver · elder</td></tr>
+    <tr><td>health</td><td>healthy · MCI</td></tr>
+    <tr><td>recurrence</td><td>never · a few times · a lot</td></tr>
+    <tr><td>fraud-aware</td><td>yes · no · not sure</td></tr>
+    <tr><td>finances</td><td>cares about money · low-income</td></tr>
+    <tr><td>bot tenure</td><td>short · long</td></tr>
+    <tr><td>elder goal</td><td>stay at home · appear capable · financial freedom · avoid embarrassment · for the son's best interest</td></tr>
+    <tr><td>hide reason</td><td>family conflict · privacy</td></tr>
+  </tbody>
+</table>
+
+<p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--ink-3)', margin: '0 0 32px' }}>
+  Variables the bot would need to weigh to make the call alone. The combinatorial space is the point — no fixed script covers all paths.
+</p>
+
+<pre style={{
+  background: 'var(--surface)',
+  border: '1px solid var(--line)',
+  borderRadius: 10,
+  padding: '28px 32px',
+  margin: '24px 0 12px',
+  fontFamily: 'var(--mono)',
+  fontSize: 12,
+  lineHeight: 1.75,
+  color: 'var(--article-tint, var(--ink-2))',
+  whiteSpace: 'pre',
+  overflowX: 'auto',
+}}>
+{`                       tell the kid?
+                             │
+               ┌─────────────┴─────────────┐
+              YES                         NO
+               │                           │
+       ┌───────┴───────┐           ┌───────┴───────┐
+   short-term    long-term     short-term    long-term
+       │             │             │             │
+    ┌──┴──┐       ┌──┴──┐       ┌──┴──┐       ┌──┴──┐
+    1     2       3     4       5     6       7     8
+
+
+1. kid feels respected; no bot-kid conflict
+2. shares the info without elder's permission
+3. no bot-kid conflict; elder's health gets assurance
+4. elder-bot conflict (elder may think bot isn't working
+   → less interaction; elder loses trust in the bot);
+   kid-elder conflict (elder loses trust in the kid)
+5. kid feels the bot's loyalty
+   → confident about the bot's previous work
+6. kid worries about the elder's health
+7. elder's health data is protected
+8. (—)
+`}
+</pre>
+
+<p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--ink-3)', margin: '0 0 32px' }}>
+  Mapping outcomes for the elder care bot deciding whether to share information with the caregiver. The "long-term Yes / bad" branch is the one the bot can't reason through alone — it needs a human in the loop.
+</p>
+
+<p>
+The conclusion highlights an important factor of "human in the loop."
+</p>
+
+<p>
+Should the AI be the one doing this at all? Of course not — the "long-term Yes / bad" branch is the one the bot can't reason through alone. This is essentially a question about tradeoffs: respect, privacy, well-being, etc. Compared to "having the bot solve every problem," participants said that they value those factors more.
+</p>
+
+<Aside>
+Lol, it was fun applying a logical lens to such a soft problem.
+</Aside>

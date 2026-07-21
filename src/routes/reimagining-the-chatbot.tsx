@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
@@ -29,7 +31,7 @@ function CollectionComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Collection</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            A collection of reimagining the chatbot: Select & fill with prompts
+            {ARTICLE_META["reimagining-the-chatbot"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
             Exploring how prompts reshape design workflows—generative design meets human intent.
@@ -48,6 +50,8 @@ function CollectionComponent() {
             a conversation with a generative system.
           </p>
 
+          <TableOfContents />
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Promise</h2>
           <p>
             Imagine selecting a region on your canvas, describing what you want, and watching it fill
@@ -61,21 +65,25 @@ function CollectionComponent() {
           </p>
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Task Analysis: What "Asking a Question" Takes</h2>
-          <img
-            src="/articles/task-analysis-flow.png"
-            alt="Six-step task analysis flow"
-            className="w-full rounded-xl my-6 border border-neutral-200"
-          />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border border-neutral-200 bg-white my-6">
+            <img
+              src="/articles/task-analysis-flow.png"
+              alt="Six-step task analysis flow"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <p className="text-sm text-neutral-600 italic mb-8">
             A user's interaction with a chatbot involves six distinct steps—each with its own friction points and assumptions.
           </p>
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Assumptions at Each Step</h2>
-          <img
-            src="/articles/task-assumptions.png"
-            alt="Assumptions made at each step"
-            className="w-full rounded-xl my-6 border border-neutral-200"
-          />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border border-neutral-200 bg-white my-6">
+            <img
+              src="/articles/task-assumptions.png"
+              alt="Assumptions made at each step"
+              className="w-full h-full object-contain"
+            />
+          </div>
           <p className="text-sm text-neutral-600 italic mb-8">
             Every step carries hidden assumptions about what users know, what the system can do, and how they work together.
           </p>
@@ -84,59 +92,56 @@ function CollectionComponent() {
 
           <div className="space-y-8 my-8">
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">AI–AI Interaction</h3>
-              <p className="text-neutral-600 mb-4">
-                When two AI agents communicate, what happens? This prototype visualizes real-time conversation between systems, exploring how they resolve misunderstandings and align intent.
-              </p>
-              <video
-                controls
-                className="w-full rounded-xl border-4 border-neutral-900"
-              >
-                <source src="/articles/chatbot-ai-ai.mov" type="video/quicktime" />
-                Your browser doesn't support video playback.
-              </video>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">I Am Always Here—Just Let Me Know</h3>
-              <p className="text-neutral-600 mb-4">
-                What if the AI didn't wait to be asked? This prototype reimagines the assistant as proactive and present, reducing the cognitive load of "knowing what to ask." It explores the assumption that users must always initiate.
-              </p>
-              <video
-                controls
-                className="w-full rounded-xl border-4 border-neutral-900"
-              >
-                <source src="/articles/chatbot-always-here.mov" type="video/quicktime" />
-                Your browser doesn't support video playback.
-              </video>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">Knowledge Graph Visualization</h3>
-              <p className="text-neutral-600 mb-4">
-                When AI generates an answer, where does it come from? This prototype visualizes the reasoning process—showing connections between concepts, sources, and inferences. Making the invisible thinking visible.
-              </p>
-              <video
-                controls
-                className="w-full rounded-xl border-4 border-neutral-900"
-              >
-                <source src="/articles/chatbot-knowledge-graph.mov" type="video/quicktime" />
-                Your browser doesn't support video playback.
-              </video>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">Select & Fill with Prompts</h3>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                Select & Fill with Prompts <span className="font-normal text-neutral-400">awareness</span>
+              </h3>
               <p className="text-neutral-600 mb-4">
                 The core interaction model: select a region, describe what you want, and let the AI fill it in. This prototype tests whether prompting can become a natural design tool, bridging intent and execution.
               </p>
-              <video
-                controls
-                className="w-full rounded-xl border-4 border-neutral-900"
-              >
-                <source src="/articles/chatbot-select-fill.mov" type="video/quicktime" />
+              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                <source src="/articles/chatbot-select-fill.mp4" type="video/mp4" />
+                Your browser doesn't support video playback.
+              </video></div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                I Am Always Here—Just Let Me Know <span className="font-normal text-neutral-400">browsing & awareness combined</span>
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                What if the AI didn't wait to be asked? This prototype reimagines the assistant as proactive and present, reducing the cognitive load of "knowing what to ask." It explores the assumption that users must always initiate.
+              </p>
+              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                <source src="/articles/chatbot-always-here.mp4" type="video/mp4" />
+                Your browser doesn't support video playback.
+              </video></div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                AI–AI Interaction <span className="font-normal text-neutral-400">comprehend</span>
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                When two AI agents communicate, what happens? This prototype visualizes real-time conversation between systems, exploring how they resolve misunderstandings and align intent.
+              </p>
+              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                <source src="/articles/ai-ai-interaction.mp4" type="video/mp4" />
                 Your browser doesn't support video playback.
               </video>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
+                Knowledge Graph Visualization <span className="font-normal text-neutral-400">comprehend & followup</span>
+              </h3>
+              <p className="text-neutral-600 mb-4">
+                When AI generates an answer, where does it come from? This prototype visualizes the reasoning process—showing connections between concepts, sources, and inferences. Making the invisible thinking visible.
+              </p>
+              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                <source src="/articles/chatbot-knowledge-graph.mp4" type="video/mp4" />
+                Your browser doesn't support video playback.
+              </video></div>
             </div>
           </div>
 

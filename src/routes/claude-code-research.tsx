@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/claude-code-research")({
   head: () => ({
@@ -29,7 +31,7 @@ function ResearchComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Research</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            My Claude Code research
+            {ARTICLE_META["claude-code-research"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
             Building and evolving development tools powered by AI assistance.
@@ -48,6 +50,8 @@ function ResearchComponent() {
             from building them.
           </p>
 
+          <TableOfContents />
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Mission</h2>
           <p>
             To explore how AI can be a true thinking partner for developers, not just a code
@@ -62,6 +66,42 @@ function ResearchComponent() {
             <li>Iteration cycles are critical—first-pass AI output is rarely production-ready</li>
             <li>Different developers need different interaction styles and levels of autonomy</li>
           </ul>
+
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · What AI can't do</h2>
+
+          <p>
+            After collaborating intensely with Claude Code, the limits became very specific. There are three things that stand out:
+          </p>
+
+          <h3 className="mt-8 mb-4 text-lg font-semibold">1. It doesn't stop</h3>
+
+          <p>
+            Prompt it to <em>"act as a world-class designer, critique the work, and then give suggestions based on the critique"</em> and it will keep going. It will critique, suggest, critique the suggestion, suggest again. Infinitely helpful, infinitely exhausting.
+          </p>
+
+          <p>
+            Someone still has to decide: <strong>enough.</strong> That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
+          </p>
+
+          <h3 className="mt-8 mb-4 text-lg font-semibold">2. It generates options, not judgments</h3>
+
+          <p>
+            A navbar can be designed a hundred good ways. Which one is right depends on whether the tabs have dependencies, whether users navigate by keyboard, whether one client hits a particular button six times a day out of habit. I have a client who lives on the keyboard—Claude would never have thought of that because it's never watched them work.
+          </p>
+
+          <p>
+            AI fills the distribution. It generates the options that a competent designer would consider. But it doesn't <em>judge</em> which one matters most. That judgment lives in context: the person, their situation, the hidden patterns in how they work.
+          </p>
+
+          <h3 className="mt-8 mb-4 text-lg font-semibold">3. It doesn't feel the consequences</h3>
+
+          <p>
+            It generates; it doesn't live inside the system afterwards. It doesn't notice a week later that the pattern it suggested is quietly producing support tickets. It doesn't pick up the subtle signals from a person—the hesitation, the habit, the context behind a decision.
+          </p>
+
+          <p>
+            Experience over time is something only humans can have. Being in the system, noticing the effects of your decisions on real people, learning from those effects—that's lived knowledge. AI can simulate that knowledge, but it doesn't have it.
+          </p>
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Don't let AI bypass your thinking</h2>
 

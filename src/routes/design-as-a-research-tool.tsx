@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/design-as-a-research-tool")({
   head: () => ({
     meta: [
-      { title: "Design as a research tool" },
+      { title: "Service Design & Physical prototypes" },
       {
         name: "description",
-        content: "How design prototyping revealed hidden user behaviors that surveys couldn't—and changed parking policy in Pittsburgh.",
+        content: "How design prototyping and physical systems revealed hidden user behaviors that surveys couldn't—and changed parking policy in Pittsburgh.",
       },
     ],
   }),
@@ -29,10 +31,10 @@ function CaseStudyComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Case Study</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Design as a research tool
+            {ARTICLE_META["design-as-a-research-tool"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
-            How design prototyping revealed hidden user behaviors that surveys never could—and why Pittsburgh changed their parking policy based on what drivers actually do, not what they say.
+            How design prototyping and physical systems revealed hidden user behaviors that surveys never could—and why Pittsburgh changed their parking policy based on what drivers actually do, not what they say.
           </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
             <span>Research · Design</span>
@@ -48,6 +50,8 @@ function CaseStudyComponent() {
         />
 
         <div className="prose prose-neutral max-w-4xl">
+          <TableOfContents />
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge</h2>
           <p>
             Pittsburgh's Smart Loading Zones (SLZ) were designed to improve parking efficiency and reduce delivery times. But adoption was stuck. Most drivers either didn't know about them or actively avoided them. The Parking Authority had questions that surveys couldn't answer:
@@ -65,6 +69,37 @@ function CaseStudyComponent() {
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Methodology: Design as Discovery</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 1: Understanding the Context</h3>
+
+          <div className="not-prose grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+            <div>
+              <img
+                src="/articles/slz-survey-poster.png"
+                alt="Survey poster recruiting Pittsburgh SLZ study participants"
+                className="w-full rounded-xl border border-neutral-200 object-cover"
+                style={{ height: "260px" }}
+              />
+              <p className="text-xs text-neutral-500 mt-2 text-center">Survey Posters</p>
+            </div>
+            <div>
+              <img
+                src="/articles/slz-onsite-observation.png"
+                alt="Researchers conducting on-site observation at a Pittsburgh loading zone"
+                className="w-full rounded-xl border border-neutral-200 object-cover"
+                style={{ height: "260px" }}
+              />
+              <p className="text-xs text-neutral-500 mt-2 text-center">On-site Observation</p>
+            </div>
+            <div>
+              <img
+                src="/articles/slz-intercept-interviews.png"
+                alt="Researchers conducting intercept interviews with drivers"
+                className="w-full rounded-xl border border-neutral-200 object-cover"
+                style={{ height: "260px" }}
+              />
+              <p className="text-xs text-neutral-500 mt-2 text-center">Intercept Interviews</p>
+            </div>
+          </div>
+
           <ul>
             <li><strong>Desktop research</strong> — Analyzing existing SLZ systems and competitive services</li>
             <li><strong>On-site observation</strong> — 10+ hours watching how drivers actually use loading zones (not how we think they should)</li>
@@ -86,8 +121,30 @@ function CaseStudyComponent() {
           </ul>
 
           <p>
-            Then we ran "speed dating" sessions—a rapid prototyping method where drivers engaged with multiple concepts in quick succession. This revealed genuine reactions to concepts, not hypothetical preferences.
+            Then we ran <strong>speed dating sessions</strong>—a rapid UX research method where drivers tested multiple concepts in quick succession. The approach tested intentionally unconventional, multimodal concepts without considering business constraints first. This technique enabled quick feedback gathering on multiple prototypes, revealing genuine reactions rather than hypothetical preferences.
           </p>
+
+          <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+            <img src="/articles/slz-speeddating-1.png" alt="Speed dating concept storyboard 1" className="w-full rounded-xl border border-neutral-200" />
+            <img src="/articles/slz-speeddating-2.png" alt="Speed dating concept storyboard 2" className="w-full rounded-xl border border-neutral-200" />
+          </div>
+
+          <p className="not-prose text-sm font-semibold text-neutral-900 mt-10 mb-4">Physical artifacts from speed dating</p>
+
+          <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+            <div>
+              <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-neutral-200" />
+              <p className="text-xs text-neutral-500 mt-2"><strong>Physical Kiosk</strong> — get ticket → go on their errands → scan ticket upon return</p>
+            </div>
+            <div>
+              <img src="/articles/slz-digital-artifact.png" alt="Digital Automated System — SMS onboarding and reminders during parking" className="w-full rounded-xl border border-neutral-200" />
+              <p className="text-xs text-neutral-500 mt-2"><strong>Digital Automated System</strong> — receive onboarding instructions and reminders during parking</p>
+            </div>
+          </div>
+
+          <p className="not-prose text-sm font-semibold text-neutral-900 mt-10 mb-4">Testing with physical artifacts</p>
+
+          <img src="/articles/slz-testing.png" alt="Testing physical kiosk prototype with drivers on the street" className="w-full rounded-xl border border-neutral-200 my-4" />
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 3: Validation</h3>
           <ul>
@@ -97,9 +154,9 @@ function CaseStudyComponent() {
           </ul>
 
           <img
-            src="/articles/design-research-1.png"
-            alt="Research methodology and driver interaction maps"
-            className="w-full rounded-2xl my-8"
+            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae57451_Frame%2093%20(1).png"
+            alt="Research methodology diagram"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
           />
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What Design Revealed</h2>
@@ -172,6 +229,24 @@ function CaseStudyComponent() {
             <li><strong>Connection charts</strong> — Showing how pain points linked to actual adoption barriers</li>
             <li><strong>Success metrics framework</strong> — Defining what "adoption" actually means behaviorally</li>
           </ul>
+
+          <img
+            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae5741f_empathy%20map.png"
+            alt="Empathy map visualization for driver types"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <img
+            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae574b8_Frame%20194.png"
+            alt="Synthesis wall - organizing research insights"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <img
+            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae574cc_Frame%20195.png"
+            alt="Logical insight connections - linking findings to adoption barriers"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
 
           <img
             src="/articles/design-research-3.png"

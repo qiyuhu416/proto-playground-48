@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
+import { WhereNotToUseAI } from "./sharedContent";
 
 export const Route = createFileRoute("/personalization")({
   head: () => ({
@@ -29,7 +32,7 @@ function PersonalizationComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Research</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Personalization
+            {ARTICLE_META["personalization"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
             Understanding what makes humans human—exploring the future of AI through the lens of personalization.
@@ -42,6 +45,8 @@ function PersonalizationComponent() {
         </div>
 
         <div className="prose prose-neutral max-w-2xl">
+          <TableOfContents />
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Starting Question</h2>
           <p>
             This project is under NDA, but the core theme I want to share is this: <strong>the future of AI should stem from how we understand human beings.</strong>
@@ -79,6 +84,8 @@ function PersonalizationComponent() {
           <p>
             AI should recognize and respect who I am—my values, my boundaries, my inconsistencies. It doesn't try to optimize me or push me toward what it thinks is best. It accepts that being human means being complicated.
           </p>
+
+          <WhereNotToUseAI />
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Why This Matters</h2>
           <p>

@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/making-design-fun")({
   head: () => ({
@@ -29,7 +31,7 @@ function ArticleComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Collection</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Making design fun
+            {ARTICLE_META["making-design-fun"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
             Caltrain, After Effects, and a stubborn suspicion that everything could be easier. A collection of vibe-coded experiments exploring playful interactions, gesture, and the joy of creation.
@@ -45,6 +47,8 @@ function ArticleComponent() {
           <p>
             I work best when I'm making things I genuinely enjoy, things I'd make even without payment. That's when the best work happens.
           </p>
+
+          <TableOfContents />
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · The philosophy: friction-free creation</h2>
 
@@ -76,61 +80,46 @@ function ArticleComponent() {
           <p>
             A small moment of delight. A reminder that design doesn't need to be grand—sometimes the joy is in the details, the unexpected animation, the gesture that makes you smile.
           </p>
-          <video
-            controls
-            className="w-full rounded-xl border-4 border-neutral-900 my-6"
-          >
-            <source src="/articles/birthday-card.mov" type="video/quicktime" />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+            <source src="/articles/birthday-card.mp4" type="video/mp4" />
             Your browser doesn't support video playback.
-          </video>
+          </video></div>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Hand gesture interactions</h3>
           <p>
             Exploring how gestures can make technology feel natural and embodied. When interaction becomes intuitive, the tool disappears. Only the delight remains.
           </p>
-          <video
-            controls
-            className="w-full rounded-xl border-4 border-neutral-900 my-6"
-          >
-            <source src="/articles/hand-gesture.mov" type="video/quicktime" />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+            <source src="/articles/hand-gesture.mp4" type="video/mp4" />
             Your browser doesn't support video playback.
-          </video>
+          </video></div>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Hand interaction exploration</h3>
           <p>
             Deep dive into physical gesture. How does the hand move? What makes a gesture feel right? This is vibe-coding in motion—refining until it feels natural.
           </p>
-          <video
-            controls
-            className="w-full rounded-xl border-4 border-neutral-900 my-6"
-          >
-            <source src="/articles/hand-interaction.mov" type="video/quicktime" />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+            <source src="/articles/hand-gesture.mp4" type="video/mp4" />
             Your browser doesn't support video playback.
-          </video>
+          </video></div>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Palo Alto moment</h3>
           <p>
             A location-based concept. What happens when design meets place? Exploring how context shapes interaction.
           </p>
-          <video
-            controls
-            className="w-full rounded-xl border-4 border-neutral-900 my-6"
-          >
-            <source src="/articles/palo-alto.mov" type="video/quicktime" />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+            <source src="/articles/palo-alto.mp4" type="video/mp4" />
             Your browser doesn't support video playback.
-          </video>
+          </video></div>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Voice interaction</h3>
           <p>
             Beyond screens. Exploring how voice can become an interface—natural, conversational, human. What does it feel like to talk to a tool that listens?
           </p>
-          <video
-            controls
-            className="w-full rounded-xl border-4 border-neutral-900 my-6"
-          >
-            <source src="/articles/voice.mov" type="video/quicktime" />
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+            <source src="/articles/voice.mp4" type="video/mp4" />
             Your browser doesn't support video playback.
-          </video>
+          </video></div>
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§4 · One block of prompts</h2>
 

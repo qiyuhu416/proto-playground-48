@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/google-cloud")({
   head: () => ({
@@ -32,7 +34,7 @@ function ProjectComponent() {
         <div className="mb-20">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Project</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Google Cloud for startup
+            {ARTICLE_META["google-cloud"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
             Embedding AI into the Product Discovery Experience for Startup Customers
@@ -51,15 +53,15 @@ function ProjectComponent() {
             </div>
             <div>
               <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Deliverable</h3>
-              <p className="text-neutral-900 font-medium">3 hi-fi prototypes<br/>Research report</p>
+              <p className="text-neutral-900 font-medium">Figma hi-fi prototypes<br/>Research report</p>
             </div>
             <div>
               <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Role</h3>
-              <p className="text-neutral-900 font-medium">Lead UX Researcher &<br/>UX Designer</p>
+              <p className="text-neutral-900 font-medium">UX Designer</p>
             </div>
             <div>
               <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Team</h3>
-              <p className="text-neutral-900 font-medium">1 Senior Designer @Google<br/>4 Student Researchers</p>
+              <p className="text-neutral-900 font-medium">1 senior designer@Google<br/>1 researcher, 1 designer</p>
             </div>
           </div>
         </div>
@@ -75,6 +77,8 @@ function ProjectComponent() {
           <p>
             Google Cloud offers 100+ products with different pricing, integrations, and capabilities. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
           </p>
+
+          <TableOfContents />
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Problem Statement</h2>
           <p>

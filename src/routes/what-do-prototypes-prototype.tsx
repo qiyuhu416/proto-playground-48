@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/what-do-prototypes-prototype")({
   head: () => ({
@@ -29,7 +31,7 @@ function ArticleComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Implementation</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            What do prototypes prototype?
+            {ARTICLE_META["what-do-prototypes-prototype"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
             Prototyping as a research mindset, and why designing for errors matters more than hiding them.
@@ -41,175 +43,198 @@ function ArticleComponent() {
           </div>
         </div>
 
+        <TableOfContents />
+
         <div className="prose prose-neutral max-w-2xl">
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Prototype = Research mindset</h2>
 
-          <blockquote>
-            Sometimes we keep using a solution not because it is the best one, but because we've used it for a long time.
-          </blockquote>
+          {/* ── SECTION 1 ── */}
+          <h2 id="research-mindset" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Prototype = Research mindset</h2>
 
           <p>
-            The word "prototype" might have been automatically associated with a digital phone frame where people can click around. But we could actually expand the scope here:
+            The word "prototype" might have been automatically associated with a digital phone frame where people can click around. But we could actually expand the scope here: as creation itself becomes easier, prototypes can be any form of experiments used to test "what to create."
           </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-900 p-6 my-8 rounded">
-            <p className="m-0 text-neutral-900"><strong>As creation itself becomes easier, prototypes can be any form of experiments used to test "what to create."</strong></p>
-          </div>
 
           <p>
-            Prototyping = research. It's essentially a mindset to test what to design. Prototypes can be anything that serves these goals:
+            But prototyping = research. It is essentially a mindset to test what to design. Prototypes can be anything that serves those goals:
           </p>
 
-          <div className="bg-neutral-50 rounded-lg border border-neutral-200 p-6 my-8">
-            <ul className="space-y-2 mb-0">
-              <li className="flex items-start gap-3">
-                <span className="text-neutral-400 mt-1">•</span>
-                <span>Explore more directions</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-neutral-400 mt-1">•</span>
-                <span>Test more interactions</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-neutral-400 mt-1">•</span>
-                <span>Simulate more edge cases</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-neutral-400 mt-1">•</span>
-                <span>Communicate ideas that used to be too expensive to build</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-neutral-400 mt-1">•</span>
-                <span>Much more</span>
-              </li>
-            </ul>
-          </div>
+          <ul>
+            <li>explore more directions</li>
+            <li>test more interactions</li>
+            <li>simulate more edge cases</li>
+            <li>communicate ideas that used to be too expensive to build</li>
+            <li>much more</li>
+          </ul>
 
-          <p>
-            A lot of workflows exist simply because we inherited them. Let's use design thinking to pull ourselves out of the box.
-          </p>
-
-          <p className="text-sm text-neutral-600 italic">
+          <p className="text-sm text-neutral-500 italic">
             Inspired by the Stanford HCI paper{" "}
             <a href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">
               "What Do Prototypes Prototype?"
             </a>
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Not all prototypes need to be coded</h2>
+          {/* Category sections — image then text */}
+          <div className="not-prose space-y-16 my-10">
+
+            {/* Look & Feel */}
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-6">Look & Feel</h3>
+              <a href="/reimagining-the-chatbot" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
+                <img src="/articles/task-analysis-flow.png" alt="Look & Feel prototype" className="w-full object-contain p-6" />
+              </a>
+              <p className="text-sm text-neutral-600">Prototypes that test how something <em>feels</em> to interact with—motion, tone, visual language. Does it feel right? Does it feel trustworthy? You can't answer this with a spec doc.</p>
+              <a href="/reimagining-the-chatbot" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Reimagining the chatbot →</a>
+
+              <div className="space-y-3 mt-6">
+                <a href="/ai-ai-interaction" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
+                  <div>
+                    <p className="font-semibold text-neutral-900 text-sm">AI–AI Interaction</p>
+                    <p className="text-xs text-neutral-500 mt-0.5">When two AI agents communicate, what happens? Invisible communication made visible.</p>
+                  </div>
+                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors text-sm ml-4">→</span>
+                </a>
+                <a href="/always-here" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
+                  <div>
+                    <p className="font-semibold text-neutral-900 text-sm">I Am Always Here—Just Let Me Know</p>
+                    <p className="text-xs text-neutral-500 mt-0.5">What if the AI didn't wait to be asked? Exploring proactive presence.</p>
+                  </div>
+                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors text-sm ml-4">→</span>
+                </a>
+                <a href="/knowledge-graph-visualization" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
+                  <div>
+                    <p className="font-semibold text-neutral-900 text-sm">Knowledge Graph Visualization</p>
+                    <p className="text-xs text-neutral-500 mt-0.5">Making AI reasoning visible, tangible, and navigable.</p>
+                  </div>
+                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors text-sm ml-4">→</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Implementation */}
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-6">Implementation</h3>
+              <a href="/a2ui-generative" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
+                <img src="/articles/task-analysis-flow.png" alt="Implementation prototype" className="w-full object-contain p-6" />
+              </a>
+              <p className="text-sm text-neutral-600">Prototypes that test whether it actually <em>works</em>—the underlying logic, the data flow, the edge cases. These expose what can't be assumed and what the tech genuinely can and can't do.</p>
+              <a href="/a2ui-generative" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: A2UI & Generative UI →</a>
+            </div>
+
+            {/* Role */}
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-6">Role</h3>
+              <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
+                <img src="/articles/testing-session.png" alt="Role prototype" className="w-full object-contain p-6" />
+              </a>
+              <p className="text-sm text-neutral-600">Prototypes that test what role the AI <em>plays</em>—is it a tool, a collaborator, or a caregiver? When AI supports elder care, it can't just be accurate. It has to be present, patient, and human in the ways that matter most.</p>
+              <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
+
+              <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-900 hover:shadow-md transition-shadow mt-6 mb-4">
+                <img src="/articles/testing-session.png" alt="Audio AI — built to elicit errors" className="w-full object-contain p-6 opacity-70" />
+              </a>
+              <p className="text-sm font-semibold text-neutral-900 mb-1">Built to elicit errors</p>
+              <p className="text-sm text-neutral-600">The goal wasn't to prove AI works. It was to surface what could go wrong before it actually goes wrong—designing around errors, not hiding them.</p>
+              <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
+            </div>
+
+          </div>
+
+          {/* ── SECTION 2 ── */}
+          <h2 id="three-types" className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">3 types of prototypes I've created</h2>
 
           <p>
-            Don't forget "paper prototyping" and "role play"! I remember I was testing a new human-AI interaction concept. It was more of a service design rather than product design, and product was only part of the experience. I was paired with a PM and an engineer, and during brainstorming I just drew some screen mockups on paper and invited them to role play:
+            Over time, I've noticed I build three distinct types. Each serves a different purpose, with different audiences, for different questions.
           </p>
 
-          <div className="bg-neutral-50 rounded-lg border border-neutral-200 p-6 my-8 space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-neutral-900">Engineer</span>
-              <span className="text-neutral-400">→</span>
-              <span className="text-neutral-600">LLM</span>
+          <div className="not-prose space-y-10 my-8">
+            {/* Explore what-ifs */}
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-2">Type 1 · Explore "what-if"s</h3>
+              <p className="text-sm text-neutral-600 mb-4"><strong>Purpose:</strong> To wonder. To play. To expand the solution space before narrowing it.</p>
+              <div className="w-full rounded-2xl overflow-hidden bg-[#fdf4ff] flex items-center justify-center" style={{ height: "200px" }}>
+                <svg viewBox="0 0 600 260" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <circle cx="120" cy="100" r="48" fill="#e9d5ff" />
+                  <circle cx="230" cy="160" r="36" fill="#f0abfc" opacity="0.7" />
+                  <circle cx="310" cy="90" r="28" fill="#c084fc" opacity="0.5" />
+                  <circle cx="400" cy="150" r="56" fill="#e9d5ff" opacity="0.8" />
+                  <circle cx="500" cy="90" r="32" fill="#f0abfc" opacity="0.6" />
+                  <circle cx="170" cy="190" r="20" fill="#c084fc" opacity="0.4" />
+                  <circle cx="460" cy="200" r="22" fill="#e9d5ff" opacity="0.6" />
+                </svg>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-neutral-900">Me</span>
-              <span className="text-neutral-400">→</span>
-              <span className="text-neutral-600">Product</span>
+
+            {/* Explain the prototype */}
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-2">Type 2 · Explain the prototype</h3>
+              <p className="text-sm text-neutral-600 mb-4"><strong>Purpose:</strong> To understand. To get feedback. To see how others interpret what you've built.</p>
+              <div className="w-full rounded-2xl overflow-hidden bg-[#eef0f3] flex items-center justify-center" style={{ height: "200px" }}>
+                <svg viewBox="0 0 600 260" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <rect x="60" y="90" width="200" height="28" rx="14" fill="#d1d5db" />
+                  <rect x="60" y="132" width="200" height="28" rx="14" fill="#d1d5db" />
+                  <rect x="60" y="174" width="200" height="28" rx="14" fill="#d1d5db" />
+                  <rect x="330" y="40" width="200" height="180" rx="28" fill="#2d527c" />
+                </svg>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-neutral-900">PM</span>
-              <span className="text-neutral-400">→</span>
-              <span className="text-neutral-600">User</span>
+
+            {/* For others to prototype */}
+            <div>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-2">Type 3 · For others to prototype</h3>
+              <p className="text-sm text-neutral-600 mb-4"><strong>Purpose:</strong> To enable. To hand over control. To let others build on your foundation.</p>
+              <div className="w-full rounded-2xl overflow-hidden bg-white border border-neutral-100 flex items-center justify-center" style={{ height: "200px" }}>
+                <svg viewBox="0 0 600 260" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <rect x="60" y="96" width="80" height="36" rx="18" fill="#d1d5db" />
+                  <circle cx="82" cy="114" r="15" fill="#4b5563" />
+                  <rect x="60" y="148" width="80" height="36" rx="18" fill="#d1d5db" />
+                  <circle cx="82" cy="166" r="15" fill="#4b5563" />
+                  <rect x="200" y="36" width="320" height="188" rx="28" fill="#fbbf24" />
+                </svg>
+              </div>
             </div>
           </div>
 
-          <p>
-            When we pitched it to the manager, we invited him to be the user. It quickly helped us navigate the intersection between UX and technology by putting ourselves in users' shoes and immersively analyzing the tech capability. And most importantly... it was so MUCH FUN!!
-          </p>
-
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Built to elicit errors</h2>
+          {/* ── SECTION 3 ── */}
+          <h2 id="not-software" className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">Not all prototypes need to be software</h2>
 
           <p>
-            AI is never perfect (yet). Maybe that's because it was trained on human data, and humans are not that perfect either.
+            The best prototypes often aren't software at all. They're spaces, conversations, sketches, and stories.
           </p>
 
-          <div className="bg-neutral-50 border-l-4 border-neutral-900 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-4">Welcome to the adult world</div>
-            <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none', lineHeight: 1.8 }}>
-              <li style={{ marginBottom: 10 }}>
-                what one thinks <strong>≠</strong> what one says
-              </li>
-              <li style={{ marginBottom: 10 }}>
-                what one says <strong>≠</strong> what one does
-              </li>
-              <li style={{ marginBottom: 0 }}>
-                what one wants to express <strong>≠</strong> what others perceive
-              </li>
-            </ul>
-          </div>
+          <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
+            <a href="/play" className="group block rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 p-6 border border-blue-200 hover:shadow-lg transition-shadow">
+              <div className="text-3xl mb-3">🏢</div>
+              <h3 className="font-semibold text-neutral-900 mb-1">Office Space</h3>
+              <p className="text-xs text-neutral-600 mb-3">Collect real data from similar concept</p>
+              <span className="text-xs text-blue-600 font-medium group-hover:text-blue-700">See: Hello Humans—async notebook →</span>
+            </a>
 
-          <p>
-            Therefore, an important part of designing AI products should be <strong>designing around errors, not hiding them</strong>:
-          </p>
-
-          <div className="bg-neutral-100 rounded p-4 my-6 text-center border border-neutral-200">
-            <p className="m-0 text-neutral-900"><strong>Where will it fail? Which failures are okay? How do we handle them?</strong></p>
-          </div>
-
-          <p>
-            I was exploring this solution for a non-profit to address their "too many repetitive questions but not enough staff" pain point. It is an easy-inference case as there is already a pre-existing script to follow (closer to be rule-based).
-          </p>
-
-          <p>
-            The special part was that the error intolerance was very low. The client was in a typically no-AI field, and the trust bonding between them and their customers is very important. Therefore, the design goal was not really to prove "AI works." It was to surface what could go wrong before it actually goes wrong.
-          </p>
-
-          <img
-            src="/articles/testing-session.png"
-            alt="Testing session — surfacing what could go wrong."
-            className="w-full rounded-lg my-8 border border-neutral-200"
-          />
-          <p className="text-sm text-neutral-500 italic">Testing session — surfacing what could go wrong.</p>
-
-          <div className="space-y-6 my-8">
-            <div className="p-4 bg-neutral-50 rounded border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Error: Voice recognition breaks in noisy environments</h4>
-              <p className="text-sm text-neutral-600 mb-2"><strong>How Might We:</strong> Help the user recover gracefully when the agent mishears?</p>
-              <ul className="text-sm text-neutral-600 space-y-1">
-                <li>• Confirm-and-rephrase ("did you mean X?")</li>
-                <li>• Retry on low confidence with simpler prompts</li>
-                <li>• Fall back to keypad or text input</li>
-              </ul>
+            <div className="rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 border border-yellow-200">
+              <div className="text-3xl mb-3">🎭</div>
+              <h3 className="font-semibold text-neutral-900 mb-1">Role Play</h3>
+              <p className="text-xs text-neutral-600">Engineer = the LLM, Manager = the User. Assign roles, simulate the system, reveal assumptions instantly.</p>
             </div>
 
-            <div className="p-4 bg-neutral-50 rounded border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Error: Users change their mind mid-flow</h4>
-              <p className="text-sm text-neutral-600 mb-2"><strong>How Might We:</strong> Let users change direction without losing context?</p>
-              <ul className="text-sm text-neutral-600 space-y-1">
-                <li>• Persistent "go back" or "update my answer"</li>
-                <li>• Preserve state so a redirect doesn't restart the flow</li>
-                <li>• Offer a "want to revise?" prompt at natural pauses</li>
-              </ul>
+            <div className="rounded-2xl bg-gradient-to-br from-green-50 to-green-100 p-6 border border-green-200">
+              <div className="text-3xl mb-3">📝</div>
+              <h3 className="font-semibold text-neutral-900 mb-1">Paper Prototyping</h3>
+              <p className="text-xs text-neutral-600">When testing the interaction. Cheap, fast, disposable. Perfect for testing flow without commitment.</p>
             </div>
 
-            <div className="p-4 bg-neutral-50 rounded border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Error: Some users reject AI entirely</h4>
-              <p className="text-sm text-neutral-600 mb-2"><strong>How Might We:</strong> Make the handoff to a human feel like a feature, not a failure?</p>
-              <ul className="text-sm text-neutral-600 space-y-1">
-                <li>• Set the agent's scope upfront ("I can help with X, Y, Z")</li>
-                <li>• Always-visible path to a human</li>
-                <li>• Pass context to the human agent so users don't repeat themselves</li>
-              </ul>
+            <div className="rounded-2xl bg-gradient-to-br from-red-50 to-red-100 p-6 border border-red-200">
+              <div className="text-3xl mb-3">❤️</div>
+              <h3 className="font-semibold text-neutral-900 mb-1">Storyboarding</h3>
+              <p className="text-xs text-neutral-600">When testing the concept. Show the emotion and context, not the interface.</p>
             </div>
           </div>
 
-          <blockquote>
-            Sometimes the experience of recovering from an error matters more than preventing it.
-          </blockquote>
+
         </div>
 
         <div className="mt-20 border-t border-neutral-200 pt-10">
           <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related reading</div>
           <ul className="space-y-3 text-sm text-neutral-600">
-            <li><a href="/my-claude-code-research" className="font-medium hover:underline">My Claude Code research</a> — How AI can amplify thinking</li>
-            <li><a href="/how-i-prototype" className="font-medium hover:underline">How I prototype</a> — Three types of prototypes</li>
+<li><a href="/claude-code-research" className="font-medium hover:underline">My story with Claude Code</a> — How AI can amplify thinking</li>
           </ul>
         </div>
       </article>

@@ -20,35 +20,42 @@ const PROTOTYPES: Record<string, { title: string; category: string; description:
     category: "Look & Feel",
     description: "Exploring how gesture recognition can make AI feel more natural and human.",
     mediaType: "video",
-    media: "/articles/hand-gesture.mov",
+    media: "/articles/hand-gesture.mp4",
   },
   "ai-ai-interaction": {
     title: "AI–AI interaction",
     category: "Look & Feel",
     description: "Visualizing how two AI agents communicate and resolve differences in real-time.",
     mediaType: "video",
-    media: "/articles/ai-ai-inetraction.mov",
+    media: "/articles/ai-ai-interaction.mp4",
   },
   "select-fill-with-prompts": {
     title: "Select & fill with prompts",
     category: "Implementation",
     description: "Generative design workflow—select a region, describe intent, watch it fill intelligently.",
     mediaType: "video",
-    media: "/articles/select-n-fill-prompt.mov",
+    media: "/articles/chatbot-select-fill.mp4",
   },
   "contextual-ai-assistance": {
     title: "Contextual AI assistance",
     category: "Implementation",
     description: "How context shapes what an AI suggests—the difference between generic and genius.",
+    mediaType: "image",
+    media: "",
+  },
+  "always-here": {
+    title: "I Am Always Here—Just Let Me Know",
+    category: "Look & Feel",
+    description: "What if the AI didn't wait to be asked? Exploring proactive presence and reducing the cognitive load of knowing what to ask.",
     mediaType: "video",
-    media: "/articles/contextual-ask.mov",
+    media: "/articles/chatbot-always-here.mp4",
   },
   "knowledge-graph-visualization": {
     title: "Knowledge graph visualization",
     category: "Look & Feel",
     description: "Turning abstract AI reasoning into tangible, navigable visual structures.",
     mediaType: "video",
-    media: "/articles/visualize-knowledge-graph.mov",
+    media: "/articles/chatbot-knowledge-graph.mp4",
   },
   "ai-push-back-affordances": {
     title: "AI push-back affordances",
@@ -100,13 +107,14 @@ function PrototypeComponent() {
           <p className="mt-4 text-base text-neutral-600">{proto.description}</p>
         </div>
 
-        <div className="rounded-2xl overflow-hidden bg-neutral-100 aspect-video flex items-center justify-center border border-neutral-200">
+        <div className="rounded-2xl overflow-hidden bg-white border-4 border-neutral-900" style={{ height: "60vh" }}>
           {proto.mediaType === "video" ? (
             <video
-              src={proto.media}
+              src={`${proto.media}#t=0.001`}
               controls
-              className="w-full h-full"
-              poster="/articles/hand-gesture-thumb.jpg"
+              preload="metadata"
+              className="w-full h-full object-contain"
+              style={{ backgroundColor: "#fff" }}
             />
           ) : (
             <img src={proto.media} alt={proto.title} className="w-full h-full object-cover" />

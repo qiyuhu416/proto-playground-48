@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
+import { ForOthersToPrototype } from "./sharedContent";
 
 export const Route = createFileRoute("/proactive")({
   head: () => ({
@@ -29,7 +32,7 @@ function ProactiveComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Prototype</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Proactive
+            {ARTICLE_META["proactive"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
             Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.
@@ -42,6 +45,8 @@ function ProactiveComponent() {
         </div>
 
         <div className="prose prose-neutral max-w-2xl">
+          <TableOfContents />
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Concept</h2>
           <p>
             Prototypes aren't just final deliverables—they're testing instruments. This project explores how to use interactive prototypes with built-in variable controls to explore solution spaces and validate assumptions in real-time, during meetings with stakeholders.
@@ -71,6 +76,8 @@ function ProactiveComponent() {
           <p>
             <em>This project is under NDA, so I can only share my feelings and approach rather than specific deliverables.</em> What I valued most was the realization that prototypes are better as <strong>collaborative testing tools</strong> than polished presentations. The moment a stakeholder reaches for a control to "try something," the conversation shifts from critique to co-creation.
           </p>
+
+          <ForOthersToPrototype />
 
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Takeaway</h2>
           <p>

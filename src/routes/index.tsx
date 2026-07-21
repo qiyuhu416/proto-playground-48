@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowUpRight, LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,6 +36,8 @@ type Item = {
   highlightWord?: string;
   externalLink?: string;
   thumbnail?: string;
+  thumbnailSize?: "small";
+  videoPreview?: string;
 };
 
 type ItemWithSlug = Item & { slug: string };
@@ -42,7 +45,8 @@ type ItemWithSlug = Item & { slug: string };
 const ITEMS: ItemWithSlug[] = [
   {
     slug: "what-do-prototypes-prototype",
-    title: "What do prototypes prototype?",
+    title: ARTICLE_META["what-do-prototypes-prototype"].title,
+    thumbnail: ARTICLE_META["what-do-prototypes-prototype"].thumbnail,
     blurb: "Prototyping as a research mindset, and designing to elicit errors rather than hide them.",
     category: "Implementation",
     kind: "Article",
@@ -50,26 +54,19 @@ const ITEMS: ItemWithSlug[] = [
     accent: "bg-gradient-to-br from-amber-100 to-orange-200",
   },
   {
-    slug: "how-i-prototype",
-    title: "How I prototype",
-    blurb: "Three types of prototypes as a collaboration tool. Explore what-ifs, explain thinking, enable others.",
-    category: "Implementation",
-    kind: "Article",
-    meta: "6 min read · Under NDA",
-    accent: "bg-gradient-to-br from-emerald-100 to-teal-200",
-  },
-  {
     slug: "ai-ai-interaction",
-    title: "AI–AI interaction",
+    title: ARTICLE_META["ai-ai-interaction"].title,
     blurb: "Visualizing how two AI agents communicate and resolve differences in real-time.",
     category: "Look & Feel",
     kind: "Prototype",
     meta: "Concept · Motion",
     accent: "bg-gradient-to-br from-sky-100 to-indigo-200",
+    videoPreview: "/articles/ai-ai-interaction.mp4",
   },
   {
     slug: "designing-next-gen-ai-products",
-    title: "Designing Next-Gen AI Products",
+    title: ARTICLE_META["designing-next-gen-ai-products"].title,
+    thumbnail: ARTICLE_META["designing-next-gen-ai-products"].thumbnail,
     blurb: "Mapping UX to tech capability. Insights from conversational AI, elder care, and human–AI co-writing.",
     category: "Role",
     kind: "Article",
@@ -78,7 +75,8 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "reimagining-the-chatbot",
-    title: "A collection of reimagining the chatbot",
+    title: ARTICLE_META["reimagining-the-chatbot"].title,
+    thumbnail: ARTICLE_META["reimagining-the-chatbot"].thumbnail,
     blurb: "Exploring how prompts reshape design workflows—generative design meets human intent.",
     category: "Implementation",
     kind: "Prototype",
@@ -87,55 +85,38 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "product-launch-from-0-1",
-    title: "Product launch from 0–1",
+    title: ARTICLE_META["product-launch-from-0-1"].title,
+    thumbnail: ARTICLE_META["product-launch-from-0-1"].thumbnail,
     blurb: "Building Meetfood from concept to launch—a food discovery app connecting people to local cuisine.",
     category: "Role",
     kind: "Article",
     meta: "Case study",
     accent: "bg-gradient-to-br from-pink-100 to-red-200",
     externalLink: "https://www.key-you-who.com/projects/app-launch",
-    thumbnail: "/articles/product-launch-thumb.png",
-  },
-  {
-    slug: "contextual-ai-assistance",
-    title: "Contextual AI assistance",
-    blurb: "How context shapes what an AI suggests—the difference between generic and genius.",
-    category: "Implementation",
-    kind: "Prototype",
-    meta: "UX pattern",
-    accent: "bg-gradient-to-br from-yellow-100 to-amber-200",
   },
   {
     slug: "knowledge-graph-visualization",
-    title: "Knowledge graph visualization",
+    title: ARTICLE_META["knowledge-graph-visualization"].title,
     blurb: "Turning abstract AI reasoning into tangible, navigable visual structures.",
     category: "Look & Feel",
     kind: "Prototype",
     meta: "Data viz · Interaction",
     accent: "bg-gradient-to-br from-neutral-200 to-neutral-300",
-  },
-  {
-    slug: "ai-push-back-affordances",
-    title: "AI push-back affordances",
-    blurb: "Designing moments where AI respectfully disagrees, explains why, and invites collaboration.",
-    category: "Look & Feel",
-    kind: "Prototype",
-    meta: "Tone · Interaction",
-    accent: "bg-gradient-to-br from-rose-100 to-pink-200",
+    videoPreview: "/articles/chatbot-knowledge-graph.mp4",
   },
   {
     slug: "google-cloud",
-    title: "Google Cloud - Conversational AI",
+    title: ARTICLE_META["google-cloud"].title,
+    thumbnail: ARTICLE_META["google-cloud"].thumbnail,
     blurb: "Embedding AI into the product discovery experience for startup customers.",
     category: "Implementation",
     kind: "Prototype",
     meta: "Research · 0→1",
     accent: "bg-gradient-to-br from-blue-100 to-cyan-200",
-    thumbnail: "/articles/google-cloud-thumb.png",
   },
   {
     slug: "a2ui-generative",
-    title: "A2UI & Generative UI",
+    title: ARTICLE_META["a2ui-generative"].title,
     blurb: "AI-driven user interfaces that generate and adapt components based on intent.",
     category: "Look & Feel",
     kind: "Prototype",
@@ -144,27 +125,29 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "design-as-a-research-tool",
-    title: "Design as a research tool",
+    title: ARTICLE_META["design-as-a-research-tool"].title,
+    thumbnail: ARTICLE_META["design-as-a-research-tool"].thumbnail,
     blurb: "Using design methods to uncover hidden user behaviors and inform transportation policy.",
     category: "Role",
     kind: "Article",
     meta: "Case study",
     accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
-    thumbnail: "/articles/design-as-research-tool-thumb.png",
   },
   {
     slug: "physical-ai",
-    title: "Physical AI",
+    title: ARTICLE_META["physical-ai"].title,
+    thumbnail: ARTICLE_META["physical-ai"].thumbnail,
     blurb: "Exploring AI beyond screens—how intelligent systems interact with and shape the physical world.",
     category: "Role",
     kind: "Prototype",
     meta: "Research · Physical",
     accent: "bg-gradient-to-br from-slate-100 to-gray-200",
-    thumbnail: "/articles/physical-ai-thumb.png",
   },
   {
     slug: "claude-code-research",
-    title: "My Claude Code research",
+    title: ARTICLE_META["claude-code-research"].title,
+    thumbnail: ARTICLE_META["claude-code-research"].thumbnail,
+    thumbnailSize: ARTICLE_META["claude-code-research"].thumbnailSize,
     blurb: "Building and evolving development tools powered by AI assistance.",
     category: "Implementation",
     kind: "Prototype",
@@ -173,7 +156,7 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "designing-for-conversations-that-earn-trust",
-    title: "Designing for conversations that earn trust",
+    title: ARTICLE_META["designing-for-conversations-that-earn-trust"].title,
     blurb: "How to build AI systems that users can depend on—insights from caring AI research.",
     category: "Role",
     kind: "Article",
@@ -182,7 +165,7 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "proactive",
-    title: "Proactive",
+    title: ARTICLE_META["proactive"].title,
     blurb: "Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.",
     category: "Implementation",
     kind: "Prototype",
@@ -191,12 +174,22 @@ const ITEMS: ItemWithSlug[] = [
   },
   {
     slug: "personalization",
-    title: "Personalization",
+    title: ARTICLE_META["personalization"].title,
     blurb: "Understanding what makes humans human—exploring the future of AI through the lens of personal connection.",
     category: "Role",
     kind: "Article",
     meta: "Research · AI Philosophy",
     accent: "bg-gradient-to-br from-violet-100 to-purple-200",
+  },
+  {
+    slug: "always-here",
+    title: ARTICLE_META["always-here"].title,
+    blurb: "What if the AI didn't wait to be asked? Exploring proactive presence and reducing cognitive load.",
+    category: "Look & Feel",
+    kind: "Prototype",
+    meta: "Interaction · AI",
+    accent: "bg-gradient-to-br from-rose-100 to-orange-200",
+    videoPreview: "/articles/chatbot-always-here.mp4",
   },
 ];
 
@@ -219,7 +212,7 @@ function Index() {
 
   const stageMap: Record<string, string[]> = {
     All: [],
-    chatbot: ["select-fill-with-prompts", "contextual-ai-assistance", "google-cloud", "reimagining-the-chatbot", "designing-for-conversations-that-earn-trust"],
+    chatbot: ["select-fill-with-prompts", "google-cloud", "reimagining-the-chatbot", "designing-for-conversations-that-earn-trust"],
     reasoner: ["knowledge-graph-visualization"],
     agent: ["proactive"],
     innovator: ["making-design-fun", "a2ui-generative"],
@@ -251,18 +244,18 @@ function Index() {
   };
 
   const tableOfContents: Record<string, string[]> = {
-    "how-i-use-ai-to-create": ["§1 · Prototype = Research mindset", "§2 · Built to elicit errors"],
-    "what-do-prototypes-prototype": ["§1 · Prototype = Research mindset", "Not all prototypes need to be coded", "§2 · Built to elicit errors"],
+    "what-do-prototypes-prototype": ["§1 · Prototype = Research mindset", "§2 · Not all prototypes need to be coded", "Prototypes Exploring These Dimensions", "§3 · Built to elicit errors"],
     "designing-next-gen-ai-products": ["§1 · Designing the relationship", "§2 · Designing the feeling", "§3 · Where to NOT use AI", "Three core lessons"],
-    "designing-for-conversations-that-earn-trust": ["§1 · The seat AI leaves open", "§2 · What AI can't do", "§3 · The gap between doing and meaning", "What this means"],
+    "designing-for-conversations-that-earn-trust": ["§1 · Designing the relationship", "What this means for designers"],
+    "claude-code-research": ["Mission", "Key Learnings", "§2 · What AI can't do", "§3 · Don't let AI bypass your thinking", "Evolution"],
     "design-as-a-research-tool": ["The Challenge", "Approach", "Key Insight", "Outcome", "Research Frameworks Used"],
-    "physical-ai": ["The Challenge", "Why AI?", "Mapping AI to Error", "The System", "The User Flow", "Final Design", "Team & Collaboration"],
+    "physical-ai": ["The Challenge", "Why AI?", "Mapping AI to Error", "The System", "The User Flow", "Final Design"],
     "google-cloud": ["The Challenge", "Research Methodology", "The Deliverables", "Key Insights", "Impact & Outcomes"],
-    "how-i-prototype": ["Prototypes aren't just outputs", "§1 · Explore what-ifs", "§2 · Explain the prototype", "§3 · For others to prototype", "The shared mindset"],
     "reimagining-the-chatbot": ["Task Analysis", "Assumptions at Each Step", "Prototypes Exploring These Dimensions", "What Gets Tested"],
-    "making-design-fun": ["The philosophy", "Curiosity, not FOMO", "The experiments", "One block of prompts"],
-    "proactive": ["About", "Control Panel", "Prototype Testing"],
-    "personalization": ["The Starting Question", "Beyond Features", "For Me, With Me, As Me"],
+    "making-design-fun": ["The philosophy", "Curiosity, not FOMO", "The experiments", "One block of prompts", "What makes design playful"],
+    "proactive": ["The Concept", "How It Works", "Variables as Questions", "A Note on Sharing", "For others to prototype"],
+    "personalization": ["The Starting Question", "Beyond Features", "For Me, With Me, As Me", "Where to NOT use AI", "Why This Matters"],
+    "a2ui-generative": ["What is A2UI?", "Exploring from Use Cases", "Interaction Patterns", "Research References", "The Big Question"],
   };
 
   const filtered = useMemo(
@@ -286,37 +279,40 @@ function Index() {
         target={target}
         rel={rel}
         className={
-          "group relative overflow-hidden rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-0 border-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] block " +
-          (item.kind === "Article"
-            ? "bg-neutral-900 border-neutral-900"
-            : "bg-white border-neutral-900")
+          "group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-0 bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block"
         }
       >
-        {/* TOC Tooltip - only for articles and items with TOC */}
-        {(item.kind === "Article" || toc.length > 0) && (
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none group-hover:pointer-events-auto">
-            <div className="bg-neutral-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg border border-neutral-700">
-              <div className="font-semibold mb-1.5 text-neutral-300">Contents</div>
+        <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">
+          {/* TOC overlay on hover */}
+          {toc.length > 0 && (
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex flex-col justify-end p-4"
+              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)" }}
+            >
+              <div className="text-[10px] uppercase tracking-[0.15em] text-white/50 font-semibold mb-2">Contents</div>
               <ul className="space-y-1">
-                {toc.slice(0, 4).map((section, idx) => (
-                  <li key={idx} className="text-neutral-400 text-[11px]">
-                    • {section}
+                {toc.map((section, idx) => (
+                  <li key={idx} className="text-white/80 text-[11px] leading-snug">
+                    {section}
                   </li>
                 ))}
-                {toc.length > 4 && <li className="text-neutral-500 text-[11px] mt-2">+{toc.length - 4} more</li>}
               </ul>
             </div>
-          </div>
-        )}
-        <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-neutral-300">
+          )}
           {item.thumbnail ? (
-            <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
+            <img
+              src={item.thumbnail}
+              alt={item.title}
+              className={item.thumbnailSize === "small" ? "w-16 h-16 object-contain" : "h-full w-full object-contain p-2"}
+            />
+          ) : item.videoPreview ? (
+            <video
+              src={`${item.videoPreview}#t=0.001`}
+              preload="metadata"
+              muted
+              className="h-full w-full object-cover"
+            />
           ) : (
-            <span
-              className={
-                "text-xs uppercase tracking-[0.2em] " +
-                (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500/80")
-              }
+            <span className="text-xs uppercase tracking-[0.2em] text-neutral-400"
             >
               {item.kind}
             </span>
@@ -327,34 +323,13 @@ function Index() {
         </div>
         <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
           <div className="min-w-0">
-            <div
-              className={
-                "flex items-center gap-1.5 text-xs " +
-                (item.kind === "Article" ? "text-neutral-400" : "text-neutral-500")
-              }
-            >
+            <div className="flex items-center gap-1.5 text-xs text-neutral-500">
               <span>{item.category}</span>
               <span>·</span>
               <span>{item.meta}</span>
             </div>
-            <h3
-              className={
-                "mt-1 text-[15px] font-medium " +
-                (item.kind === "Article" ? "text-white" : "text-neutral-900")
-              }
-            >
-              {item.highlightWord && item.title.includes(item.highlightWord)
-                ? item.title.split(item.highlightWord).map((part, i, arr) => (
-                    <span key={i}>
-                      {part}
-                      {i < arr.length - 1 && (
-                        <span className={item.kind === "Article" ? "bg-white text-neutral-900 px-1 rounded" : "bg-neutral-900 text-white px-1 rounded"}>
-                          {item.highlightWord}
-                        </span>
-                      )}
-                    </span>
-                  ))
-                : item.title}
+            <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
+              {item.title}
             </h3>
           </div>
         </div>

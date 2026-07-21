@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/physical-ai")({
   head: () => ({
@@ -29,7 +31,7 @@ function PhysicalAIComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Research</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Physical AI
+            {ARTICLE_META["physical-ai"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
             Designing AI beyond screens. How embedding intelligence in physical systems can prevent human error in diagnostic healthcare.
@@ -48,6 +50,8 @@ function PhysicalAIComponent() {
         />
 
         <div className="prose prose-neutral max-w-4xl">
+          <TableOfContents />
+
           <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge: Human Error in Phlebotomy</h2>
 
           <p>

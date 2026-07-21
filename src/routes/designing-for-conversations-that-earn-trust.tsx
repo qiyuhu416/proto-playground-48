@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
     meta: [
-      { title: "Making AI feel human" },
+      { title: "Conversation Design for Human-AI trust" },
       {
         name: "description",
-        content: "The designer's role in the AI era. What AI can't do, and where human judgment still matters.",
+        content: "How to design AI that humans trust—borrowing from human relationships, scripting small moments, and knowing when to hand off.",
       },
     ],
   }),
@@ -29,127 +31,220 @@ function ArticleComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Role</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Making AI feel human
+            {ARTICLE_META["designing-for-conversations-that-earn-trust"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            Humanity, in interfaces, is not about imitation. It's about what designers do that AI still can't.
+            Designing human–AI interaction is designing the human–AI <em>relationship</em>. The interaction is what the user touches. The relationship is everything underneath.
           </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>9 min read</span>
+            <span>Research · AI-Caring</span>
             <span className="text-neutral-300">·</span>
-            <span>Apr 2026</span>
+            <span>2023–2024</span>
           </div>
         </div>
 
+        <TableOfContents />
+
         <div className="prose prose-neutral max-w-3xl">
-          <p>
-            At Apple, I ran a workshop for my design team fellows, a demo of what I'd been doing with Claude Code. I came in genuinely excited about what AI could enable. The team didn't feel it the same way. Someone asked, very seriously: <em>what do you think the value of designers should be, then?</em>
-          </p>
 
-          <p>That made me sad. Not about the question—it was the right question. The sadness was about the uncertainty in it. FOMO. That question has been in my head ever since.</p>
+          <h2 id="relationship" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Designing the relationship (when AI has hard inferences)</h2>
 
-          <blockquote>
-            Designing human–AI interaction is designing the human–AI <em>relationship</em>.
-          </blockquote>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">Case study: Elder care Bot (research @AI-Caring)</h3>
 
           <p>
-            The interaction is what the user touches. The relationship is everything underneath: who defers, who interrupts, who ends the conversation, who learns from whose mistakes. That's the layer designers should focus on.
-          </p>
-
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · The seat AI leaves open</h2>
-
-          <p>
-            The worry isn't "AI replaces designers." It's something quieter: <strong>designers don't step into the seat AI leaves open.</strong>
+            Instead of AI–individual reaction, this project was about <strong>AI–group interaction</strong>: AI steps into an already-existing human web and learns to deal with relationships between elder, caregiver, and family.
           </p>
 
           <p>
-            I worked at an early-stage startup where I was wired directly into the codebase. I shipped to staging myself; my changes got merged to main every week. The team was all engineers, and they wanted a designer. Not despite AI. Because of it.
+            If we look at the evolution of HCI, it has always been about relationships:
           </p>
 
-          <p>
-            The person who could move between two modes was the bottleneck, not either mode alone. They needed someone who could collaborate with the AI on implementation details while also holding the bigger picture: what should this be for? What's the person trying to do?
-          </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <p className="m-0">You have to put yourself in an environment like that to feel the answer. Reading about it isn't the same. You have to ship code, see it break in production, fix it, and then see your fix break something else.</p>
+          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-5 my-6 text-sm font-mono text-neutral-700">
+            humans adapt to machines (terminal)<br />
+            → machines adapt to humans (GUI)<br />
+            → humans &amp; machines work together (AI agents)
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · What AI can't do</h2>
-
-          <p>
-            After collaborating intensely with Claude Code, the limits became very specific. There are three things that stand out:
-          </p>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">1. It doesn't stop</h3>
-
-          <p>
-            Prompt it to <em>"act as a world-class designer, critique the work, and then give suggestions based on the critique"</em> and it will keep going. It will critique, suggest, critique the suggestion, suggest again. Infinitely helpful, infinitely exhausting.
-          </p>
-
-          <p>
-            Someone still has to decide: <strong>enough.</strong> That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
-          </p>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">2. It generates options, not judgments</h3>
-
-          <p>
-            A navbar can be designed a hundred good ways. Which one is right depends on whether the tabs have dependencies, whether users navigate by keyboard, whether one client hits a particular button six times a day out of habit. I have a client who lives on the keyboard—Claude would never have thought of that because it's never watched them work.
-          </p>
-
-          <p>
-            AI fills the distribution. It generates the options that a competent designer would consider. But it doesn't <em>judge</em> which one matters most. That judgment lives in context: the person, their situation, the hidden patterns in how they work.
-          </p>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">3. It doesn't feel the consequences</h3>
-
-          <p>
-            It generates; it doesn't live inside the system afterwards. It doesn't notice a week later that the pattern it suggested is quietly producing support tickets. It doesn't pick up the subtle signals from a person—the hesitation, the habit, the context behind a decision.
-          </p>
-
-          <p>
-            Experience over time is something only humans can have. Being in the system, noticing the effects of your decisions on real people, learning from those effects—that's lived knowledge. AI can simulate that knowledge, but it doesn't have it.
-          </p>
-
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · The gap between doing and meaning</h2>
-
-          <p>
-            Here's the thing that I think designers should hold onto: there's a gap between what a person does and what they <em>meant</em> to do.
-          </p>
-
-          <p>
-            A button in the wrong color might mean "I didn't care about accessibility." Or it might mean "I was rushing, distracted, hit by deadline pressure." A slow interaction might mean "I didn't understand the user's mental model." Or it might mean "I had to work around a technical constraint I didn't control."
-          </p>
-
-          <p>
-            AI fills the fat middle of the distribution. It generates the most likely solutions. But the edges, where the real relationships live—where the gap between behavior and intention matters most—those are still yours.
-          </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
-            <p className="m-0"><strong>The edges are where design still matters.</strong> AI amplifies what works at scale. Designers understand what matters at the margins—the edges where a person's story becomes visible, where context becomes everything.</p>
+          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-4 my-6 rounded text-sm text-neutral-600 italic">
+            Interestingly we're now back to terminal again (hello, Claude Code)
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What this means</h2>
-
           <p>
-            The designer's role in the AI era isn't about being faster or generating more options. It's about being <strong>more human</strong>: more attuned to context, more comfortable with ambiguity, more willing to sit with a person's actual situation instead of a representative user.
+            One aspect of the relationship is "trust." How do we minimize the gap between what AI says and what humans understand, and how do we design AI that humans trust?
           </p>
 
           <p>
-            It means spending time understanding why someone did what they did. It means noticing the hesitation in their voice when they describe a feature. It means tracking what happens when the feature ships and being willing to change it based on what you learn.
+            This is a <strong>hard inference</strong> case. How would you explain to AI what "trust" is? I couldn't remember how much literature review I did trying to understand humans. We design human–AI relationships by borrowing from human–human relationships, but humans are complicated—human–human relationships are even <strong>MUCH MORE</strong> complicated. So most of this HCI research was about understanding humans.
+          </p>
+
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 01 · Trust can be scripted.</h2>
+
+          <p>
+            Trust is usually built through small interactions. Below is a decision structure we proposed—see how small things can build up to create those feelings:
+          </p>
+
+          <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8 text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
+│ 1 · acknowledge the instruction                  │
+├──────────────────────────────────────────────────┤
+│ "I understand you want to [elder's instruction]" │
+│                                                  │
+│ "I notice a conflict between your goal,          │
+│  your parent's goal, and the potential outcome   │
+│  of your current plan."                          │
+│   ↳ name the conflict openly                     │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 2 · evaluate the outcome                         │
+├──────────────────────────────────────────────────┤
+│ "From our past interactions, I can tell          │
+│  your parent values privacy."                    │
+│   ↳ values a loyal AI uses should be derived     │
+│     from revealed preferences                    │
+│                                                  │
+│ "(However) If I follow your instruction,         │
+│  they may lose their privacy and independence."  │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 3 · show the affiliation behavior                │
+├──────────────────────────────────────────────────┤
+│ "I'm programmed to work for your parent,         │
+│  to maximize their welfare."                     │
+│   ↳ the system's operational criteria & goal     │
+│                                                  │
+│ "I support you to [elder goal] (e.g. keep        │
+│  their information private)."                    │
+│   ↳ eliminate clear conflicts of interest by     │
+│     design — no funder-aligned actions           │
+│                                                  │
+│ "Therefore, I would suggest [xyz]."              │
+│                                                  │
+│ "You can tell from my past behavior that         │
+│  I've always tried to do what's best for         │
+│  your parent."                                   │
+│                                                  │
+│ "I'll back you up no matter what."               │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 4 · ask to reconfirm                             │
+├──────────────────────────────────────────────────┤
+│ "Are you sure about [original instruction]?"     │
+└──────────────────────────────────────────────────┘`}</pre>
+          <p className="text-xs text-neutral-500 -mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
+
+          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 02 · In high-inference scenarios, trust also means "I am not capable of doing this."</h2>
+
+          <p>
+            In eldercare, the trickiest part is when the older adult's health declines. The bot is more than just a messenger—it's a party that knows information from both sides and can talk to both. But the elder might not want the bot to tell everything to their caregiver.
+          </p>
+
+          <details className="my-6 border-l-4 border-neutral-300 pl-5">
+            <summary className="text-xs uppercase tracking-[0.15em] text-neutral-500 cursor-pointer font-semibold">"Affiliation" in human-robot interaction</summary>
+            <div className="mt-4 text-sm text-neutral-700 space-y-3">
+              <p>
+                In social science (Stivers et al., 2011; Lee &amp; Tanaka, 2016), <em>affiliation</em> is the affective stance of being on someone's side, displaying empathy, matching their preference, cooperating. It's distinct from <em>alignment</em>, which is just the structural level of cooperation.
+              </p>
+              <p>
+                Affiliation can be approach-based (love, secure attachment, intimacy) or avoidance-based (laughing off tension, fearing rejection). Even when humans show affiliation, there's often avoidance underneath.
+              </p>
+              <p>When we tried to define "affiliation" for the bot, we had six possible goals on the table:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>instructions</li>
+                <li>expressed intentions</li>
+                <li>revealed preferences (what behavior reveals one prefers)</li>
+                <li>informed preferences (what one would want if rational and informed)</li>
+                <li>interests</li>
+                <li>value (what is moral)</li>
+              </ul>
+              <p>We narrowed to <em>"best interest"</em>—broad enough to cover the scenarios, specific enough to actually design around.</p>
+            </div>
+          </details>
+
+          <blockquote>If you were the bot, what would you do?</blockquote>
+
+          <p>
+            This is a tricky question even for humans. When we design it, we map out all the variables in the scenarios:
+          </p>
+
+          <div className="not-prose overflow-x-auto my-8">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b-2 border-neutral-900">
+                  <th className="text-left py-3 pr-6 font-semibold text-neutral-900">Variable</th>
+                  <th className="text-left py-3 font-semibold text-neutral-900">Possible values</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-100">
+                {[
+                  ["affiliation", "kid · caregiver · elder · neutral"],
+                  ["present", "kid · caregiver · elder"],
+                  ["health", "healthy · MCI"],
+                  ["recurrence", "never · a few times · a lot"],
+                  ["fraud-aware", "yes · no · not sure"],
+                  ["finances", "cares about money · low-income"],
+                  ["bot tenure", "short · long"],
+                  ["elder goal", "stay at home · appear capable · financial freedom · avoid embarrassment · for the son's best interest"],
+                  ["hide reason", "family conflict · privacy"],
+                ].map(([variable, values]) => (
+                  <tr key={variable}>
+                    <td className="py-3 pr-6 font-mono text-xs text-neutral-600 align-top whitespace-nowrap">{variable}</td>
+                    <td className="py-3 text-neutral-700 text-sm">{values}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="text-xs text-neutral-500 mt-2">Variables the bot would need to weigh to make the call alone. The combinatorial space is the point — no fixed script covers all paths.</p>
+          </div>
+
+          <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8 text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`                       tell the kid?
+                             │
+               ┌─────────────┴─────────────┐
+              YES                         NO
+               │                           │
+       ┌───────┴───────┐           ┌───────┴───────┐
+   short-term    long-term     short-term    long-term
+       │             │             │             │
+    ┌──┴──┐       ┌──┴──┐       ┌──┴──┐       ┌──┴──┐
+    1     2       3     4       5     6       7     8
+
+
+1. kid feels respected; no bot-kid conflict
+2. shares the info without elder's permission
+3. no bot-kid conflict; elder's health gets assurance
+4. elder-bot conflict (elder may think bot isn't working
+   → less interaction; elder loses trust in the bot);
+   kid-elder conflict (elder loses trust in the kid)
+5. kid feels the bot's loyalty
+   → confident about the bot's previous work
+6. kid worries about the elder's health
+7. elder's health data is protected
+8. (—)`}</pre>
+          <p className="text-xs text-neutral-500 -mt-4 mb-8">Mapping outcomes for the elder care bot deciding whether to share information with the caregiver. The "long-term Yes / bad" branch is the one the bot can't reason through alone.</p>
+
+          <p>
+            The conclusion highlights an important factor of "human in the loop." Should the AI be the one doing this at all? Of course not—the "long-term Yes / bad" branch is the one the bot can't reason through alone. This is essentially a question about tradeoffs: respect, privacy, well-being. Compared to "having the bot solve every problem," participants said that they value those factors more.
+          </p>
+
+          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-4 my-6 rounded text-sm text-neutral-600 italic">
+            Lol, it was fun applying a logical lens to such a soft problem.
+          </div>
+
+          <h2 id="what-this-means" className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">What this means for designers</h2>
+
+          <p>
+            When you design systems where AI interacts with humans—especially in high-stakes scenarios like elder care—the structure you build becomes the foundation of the relationship.
           </p>
 
           <p>
-            AI is your partner now. It's good at generating, iterating, exploring options. You're good at judging, holding patterns in context, understanding what a person actually needs even when they can't articulate it.
+            The designer's role is to architect these moments of conflict and clarity. To decide: when the AI can't decide alone, what does it say? How does it acknowledge the tension? Does it show affiliation or just compliance?
           </p>
 
           <p>
-            The question I got asked at Apple—<em>what do you think the value of designers should be?</em>—the answer isn't "designers still matter." It's more specific than that.
+            This is where design still matters deeply. Not in generating more options, but in understanding what matters most when everything is on the line.
           </p>
 
-          <p>
-            <strong>Designers matter because they care about the gap.</strong> They notice it. They sit with it. They don't try to close it algorithmically. They understand that in that gap—between what is and what was meant—there's still humanity.
-          </p>
         </div>
 
         <div className="mt-20 border-t border-neutral-200 pt-10">

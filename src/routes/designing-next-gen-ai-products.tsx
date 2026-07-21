@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
+import { ARTICLE_META } from "./articleMeta";
 
 export const Route = createFileRoute("/designing-next-gen-ai-products")({
   head: () => ({
@@ -30,7 +32,7 @@ function ArticleComponent() {
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Role</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Designing Next-Gen AI Products
+            {ARTICLE_META["designing-next-gen-ai-products"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
             Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.
@@ -51,7 +53,9 @@ function ArticleComponent() {
             Designing AI is not always about making the AI smarter—it's always about <strong>mapping the UX to the current tech capability</strong>. Here are reflections from my work in conversational AI, elder care, and co-writing tools.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Designing the relationship (when AI has hard inferences)</h2>
+          <TableOfContents />
+
+          <h2 id="designing-relationship" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Designing the relationship (when AI has hard inferences)</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
@@ -103,7 +107,7 @@ function ArticleComponent() {
             The conclusion: <strong>In high-stakes scenarios, "I am not capable of doing this alone" is the most honest and trustworthy thing an AI can say.</strong>
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Designing the feeling (when AI has easy inferences)</h2>
+          <h2 id="designing-feeling" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Designing the feeling (when AI has easy inferences)</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Human–AI co-writing tool</h3>
 
@@ -170,7 +174,7 @@ function ArticleComponent() {
             We prototyped each option and tested with users. The result: writers don't want to think about the AI. They just want to feel supported and write better. The "blur event" trigger won because it respected the human's agency.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Where to NOT use AI</h2>
+          <h2 id="where-not-ai" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Where to NOT use AI</h2>
 
           <p>
             This is the most important design question: <strong>When should we not use AI?</strong>
@@ -210,7 +214,7 @@ function ArticleComponent() {
             <p className="m-0">Great AI product design knows its boundaries. It's not about pushing the edges of what's possible—it's about <strong>honoring what matters most.</strong></p>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Three core lessons</h2>
+          <h2 id="core-lessons" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Three core lessons</h2>
 
           <ol className="space-y-6 my-8">
             <li>

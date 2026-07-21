@@ -1,0 +1,116 @@
+Card Title: What do prototypes prototype?
+  Type: Article
+  Table of Contents: • 
+  §1 · Prototype = Research mindset
+  §2 · Not all prototypes need to be coded• 
+  §3 · Built to elicit errors
+  Assets: —
+  Stage Node(s): human
+  ────────────────────────────────────────
+  Card Title: How I prototype
+  Type: Article
+  Table of Contents: • Prototypes aren't just outputs 
+  §1 · Explore what-ifs• 
+  §2 · Explain the prototype• 
+  §3 · For others to prototype• The shared mindset
+  Assets: how-i-prototype.png (thumb)
+  Stage Node(s): human
+  ────────────────────────────────────────
+  Card Title: AI–AI interaction
+  Type: Prototype
+  Table of Contents: • (no TOC)
+  Assets: /Users/kelly/Desktop/playground/all\ random\ ideas/ai-ai.mov  
+  Stage Node(s): Organization
+  ────────────────────────────────────────
+  Card Title: Designing Next-Gen AI Products
+  Type: Article
+  Table of Contents: 
+  • §1 · Designing the relationship• 
+  §2 · Designing the feeling • 
+  §3 Where to NOT use AI• Three core lessons
+  Assets: ai-fatigue.png, testing-session.png
+  Stage Node(s): human
+  ────────────────────────────────────────
+  Card Title: A collection of reimagining the chatbot
+  Type: Prototype
+  Table of Contents: • Task Analysis• Assumptions at Each Step• Prototypes Exploring
+    These Dimensions• What Gets Tested
+  Assets: task-analysis-flow.png, task-assumptions.png, 4x video files
+  Stage Node(s): chatbot
+  ────────────────────────────────────────
+  Card Title: Product launch from 0–1
+  Type: Article
+  Table of Contents: • (no TOC)
+  Assets: product-launch-thumb.png
+  Stage Node(s): —
+  ────────────────────────────────────────
+  Card Title: Contextual AI assistance
+  Type: Prototype
+  Table of Contents: • (no TOC)
+  Assets: 
+  Stage Node(s): chatbot
+  ────────────────────────────────────────
+  Card Title: Knowledge graph visualization
+  Type: Prototype
+  Table of Contents: • (no TOC)
+  Assets: /Users/kelly/Desktop/playground/all\ random\ ideas/knowledge-graph.mov 
+  Stage Node(s): reasoner
+  ────────────────────────────────────────
+  Card Title: AI push-back affordances
+  remove it
+  ────────────────────────────────────────
+  Card Title: Google Cloud - Conversational AI
+  Type: Prototype
+  Table of Contents: • The Challenge• Research Methodology• The Deliverables• Key
+    Insights• Impact & Outcomes
+  Assets: google-cloud-hero.png, google-cloud-chatbot.png, google-cloud-dynamic.png,
+    google-cloud-comparison.png, google-cloud-thumb.png
+  Stage Node(s): chatbot
+  ────────────────────────────────────────
+  Card Title: A2UI & Generative UI
+  Type: Prototype
+  Table of Contents: • here mentioned that i can't directly show the prototypes itself, but i can share the refrences i've used during research. mentioned using claude code to explore A2UI while understanding that it is not for production level. so defining what to explore is important. and I proposed to explore from the perspective of "use cases" (connect to the "role" in that "what do protoypes protoyoe" research); then create interactions for each. you can help me fill the structure here.
+  Assets: https://a2ui.org/composer/ ; 
+  Stage Node(s): innovator
+  ────────────────────────────────────────
+  Card Title: Design as a research tool -> rename it to "Service Design & Physical prototypes"
+  Type: Article
+  Table of Contents: • The Challenge• Approach• Key Insight• Outcome• Research
+    Frameworks Used
+  Assets: design-research-hero.jpg, design-research-1.png, design-research-2.png,
+    design-research-3.png, design-as-research-tool-thumb.png
+  Stage Node(s): human
+  ────────────────────────────────────────
+  Card Title: Physical AI
+  Type: Prototype
+  Table of Contents: • The Challenge• Why AI?• Mapping AI to Error• The System• The
+    User Flow• Final Design• Team & Collaboration
+  Type: Prototype
+  Table of Contents: • The Challenge• Why AI?• Mapping AI to Error• The System• The User Flow• Final Design• Team &
+  Collaboration
+  Assets: 8x physical-ai images (16-24), physical-ai-thumb.png
+  Stage Node(s): human
+  ────────────────────────────────────────
+  Card Title: My story with Claude Code
+  Type: Prototype
+  Table of Contents: • (no TOC)
+  Assets: —
+  Stage Node(s): Organization
+  ────────────────────────────────────────
+  Card Title: Designing for conversations that earn trust
+  Type: Article 
+  Table of Contents: • use the exact same content and images from "Designing the relationship" section of "Designing Next-Gen AI Products" article
+  Assets: ai-fatigue.png (don't use this ai-fatigue.png)
+  Stage Node(s): chatbot
+  ────────────────────────────────────────
+  Card Title: Proactive
+  Type: Prototype
+  Table of Contents: • use the exact content and images from "For others to prototype" from "How I prototype" 
+  Assets: —
+  Stage Node(s): agent
+  ────────────────────────────────────────
+  Card Title: Personalization
+  Type: Article
+  Table of Contents: • The Starting Question• Beyond Features• For Me, With Me, As Me • Where to NOT use AI (add this, use the exact same content and images from Designing Next-Gen AI Products)
+  Assets: —
+  Stage Node(s): human
