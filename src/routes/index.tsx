@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { ArrowUpRight, LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
 import { ARTICLE_META } from "./articleMeta";
 
@@ -36,7 +36,7 @@ type Item = {
   highlightWord?: string;
   externalLink?: string;
   thumbnail?: string;
-  thumbnailSize?: "small";
+  thumbnailSize?: "small" | "medium";
   videoPreview?: string;
 };
 
@@ -117,6 +117,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "a2ui-generative",
     title: ARTICLE_META["a2ui-generative"].title,
+    thumbnail: "/articles/a2ui-thumb.svg",
+    thumbnailSize: "small",
     blurb: "AI-driven user interfaces that generate and adapt components based on intent.",
     category: "Look & Feel",
     kind: "Prototype",
@@ -157,6 +159,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "designing-for-conversations-that-earn-trust",
     title: ARTICLE_META["designing-for-conversations-that-earn-trust"].title,
+    thumbnail: ARTICLE_META["designing-for-conversations-that-earn-trust"].thumbnail,
+    thumbnailSize: ARTICLE_META["designing-for-conversations-that-earn-trust"].thumbnailSize,
     blurb: "How to build AI systems that users can depend on—insights from caring AI research.",
     category: "Role",
     kind: "Article",
@@ -166,6 +170,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "proactive",
     title: ARTICLE_META["proactive"].title,
+    thumbnail: "/articles/proactive-thumb.svg",
+    thumbnailSize: "small",
     blurb: "Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.",
     category: "Implementation",
     kind: "Prototype",
@@ -175,6 +181,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "personalization",
     title: ARTICLE_META["personalization"].title,
+    thumbnail: "/articles/personalization-thumb.svg",
+    thumbnailSize: "small",
     blurb: "Understanding what makes humans human—exploring the future of AI through the lens of personal connection.",
     category: "Role",
     kind: "Article",
@@ -209,6 +217,52 @@ const KINDS = [
 function Index() {
   const [selectedStage, setSelectedStage] = useState<string>("All");
   const [showPrototypeModal, setShowPrototypeModal] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const [scrolledDown, setScrolledDown] = useState(false);
+  const [timelineCollapsed, setTimelineCollapsed] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0); // 0 = fully expanded, 1 = fully collapsed
+  const lockedOpen = useRef(false);
+  const rafId = useRef(0);
+
+  useEffect(() => {
+    const SCROLL_START = 80;   // px at which dots begin converging
+    const SCROLL_END   = 300;  // px at which dots are fully collapsed → becomes sticky
+
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const p = Math.max(0, Math.min(1, (y - SCROLL_START) / (SCROLL_END - SCROLL_START)));
+        setScrollProgress(p);
+        const down = y >= SCROLL_END;
+        setScrolledDown(down);
+        if (y < SCROLL_START) {
+          lockedOpen.current = false;
+          setTimelineCollapsed(false);
+        } else if (down) {
+          lockedOpen.current = false;
+          setTimelineCollapsed(true);
+        }
+      });
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
+  const handleHeaderMouseLeave = () => {
+    if (scrolledDown && !lockedOpen.current) setTimelineCollapsed(true);
+  };
+  const handleDotHover = () => {
+    if (scrolledDown) setTimelineCollapsed(false);
+  };
+  const handleDotClick = () => {
+    lockedOpen.current = true;
+    setTimelineCollapsed(false);
+  };
 
   const stageMap: Record<string, string[]> = {
     All: [],
@@ -243,20 +297,11 @@ function Index() {
     ],
   };
 
-  const tableOfContents: Record<string, string[]> = {
-    "what-do-prototypes-prototype": ["§1 · Prototype = Research mindset", "§2 · Not all prototypes need to be coded", "Prototypes Exploring These Dimensions", "§3 · Built to elicit errors"],
-    "designing-next-gen-ai-products": ["§1 · Designing the relationship", "§2 · Designing the feeling", "§3 · Where to NOT use AI", "Three core lessons"],
-    "designing-for-conversations-that-earn-trust": ["§1 · Designing the relationship", "What this means for designers"],
-    "claude-code-research": ["Mission", "Key Learnings", "§2 · What AI can't do", "§3 · Don't let AI bypass your thinking", "Evolution"],
-    "design-as-a-research-tool": ["The Challenge", "Approach", "Key Insight", "Outcome", "Research Frameworks Used"],
-    "physical-ai": ["The Challenge", "Why AI?", "Mapping AI to Error", "The System", "The User Flow", "Final Design"],
-    "google-cloud": ["The Challenge", "Research Methodology", "The Deliverables", "Key Insights", "Impact & Outcomes"],
-    "reimagining-the-chatbot": ["Task Analysis", "Assumptions at Each Step", "Prototypes Exploring These Dimensions", "What Gets Tested"],
-    "making-design-fun": ["The philosophy", "Curiosity, not FOMO", "The experiments", "One block of prompts", "What makes design playful"],
-    "proactive": ["The Concept", "How It Works", "Variables as Questions", "A Note on Sharing", "For others to prototype"],
-    "personalization": ["The Starting Question", "Beyond Features", "For Me, With Me, As Me", "Where to NOT use AI", "Why This Matters"],
-    "a2ui-generative": ["What is A2UI?", "Exploring from Use Cases", "Interaction Patterns", "Research References", "The Big Question"],
-  };
+  const tableOfContents: Record<string, string[]> = Object.fromEntries(
+    Object.entries(ARTICLE_META)
+      .filter(([, meta]) => meta.sections)
+      .map(([slug, meta]) => [slug, meta.sections!])
+  );
 
   const filtered = useMemo(
     () =>
@@ -281,34 +326,23 @@ function Index() {
         className={
           "group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-0 bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block"
         }
+        onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; v.play(); } }}
+        onMouseMove={(e) => { setCursorPos({ x: e.clientX, y: e.clientY }); setHoveredSlug(item.slug); }}
+        onMouseLeave={(e) => { setHoveredSlug(null); const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
       >
         <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">
-          {/* TOC overlay on hover */}
-          {toc.length > 0 && (
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex flex-col justify-end p-4"
-              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)" }}
-            >
-              <div className="text-[10px] uppercase tracking-[0.15em] text-white/50 font-semibold mb-2">Contents</div>
-              <ul className="space-y-1">
-                {toc.map((section, idx) => (
-                  <li key={idx} className="text-white/80 text-[11px] leading-snug">
-                    {section}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
           {item.thumbnail ? (
             <img
               src={item.thumbnail}
               alt={item.title}
-              className={item.thumbnailSize === "small" ? "w-16 h-16 object-contain" : "h-full w-full object-contain p-2"}
+              className={item.thumbnailSize === "small" ? "w-16 h-16 object-contain" : item.thumbnailSize === "medium" ? "w-32 h-32 object-contain" : "h-full w-full object-contain p-2"}
             />
           ) : item.videoPreview ? (
             <video
               src={`${item.videoPreview}#t=0.001`}
               preload="metadata"
               muted
+              loop
               className="h-full w-full object-cover"
             />
           ) : (
@@ -337,143 +371,189 @@ function Index() {
     );
   };
 
+  const hoveredToc = hoveredSlug ? (tableOfContents[hoveredSlug] || []) : [];
+
   return (
     <div className="min-h-screen bg-background text-neutral-900">
+      {/* Cursor TOC tooltip */}
+      {hoveredSlug && hoveredToc.length > 0 && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
+        >
+          <div className="bg-neutral-900 text-white rounded-2xl px-5 py-4 shadow-xl max-w-[220px]">
+            <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">Article</p>
+            <ul className="space-y-2">
+              {hoveredToc.map((section, idx) => (
+                <li key={idx} className="text-[12px] font-semibold text-white leading-snug">{section}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
       {/* Nav */}
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
-        <a href="/" className="flex h-9 w-9 items-center justify-center text-neutral-900">
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1" />
-          </svg>
-        </a>
-        <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {(["Work", "Play", "Think", "Listen"] as const).map((l) => {
-            return (
-              <a
-                key={l}
-                href={l === "Work" ? "/" : `/${l.toLowerCase()}`}
-                className={
-                  "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                  (l === "Work"
-                    ? "bg-neutral-900 text-white"
-                    : "text-neutral-600 hover:text-neutral-900")
-                }
-              >
-                {l}
+      <header
+        className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50"
+        onMouseLeave={handleHeaderMouseLeave}
+      >
+        {!scrolledDown ? (
+          /* ── At top: badge + nav + Qiyu ── */
+          <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
+            <div className="flex-1 flex items-center">
+              <a href="/what-do-prototypes-prototype" className="group relative inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
+                <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
               </a>
-            );
-          })}
-        </nav>
-        <div className="h-9 w-9" />
+            </div>
+            <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+              {(["work", "play", "reflect", "listen"] as const).map((l) => (
+                <a key={l} href={l === "work" ? "/" : l === "reflect" ? "/think" : `/${l}`} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
+              ))}
+            </nav>
+            <div className="flex-1 flex justify-end">
+              <div className="group relative flex h-9 items-center">
+                <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
+                <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
+                <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
+                  Qiyu<span className="translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-200 delay-100">'s LinkedIn</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* ── Scrolled: two panels, fixed height ── */
+          <div className="relative h-[72px]">
+
+            {/* Panel A: dot + nav + Qiyu — fades out when expanded */}
+            <div className={`absolute inset-0 flex items-center transition-opacity duration-200 ${timelineCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+              <div className="mx-auto flex w-full max-w-6xl items-center px-6">
+                <div className="flex-1 flex items-center">
+                  <button onMouseEnter={handleDotHover} onClick={handleDotClick} className="flex items-center gap-2 group">
+                    <div className="h-5 w-5 rounded-full bg-neutral-900 transition-transform group-hover:scale-125 shrink-0" />
+                    <span className="text-xs text-neutral-500 group-hover:text-neutral-900 transition-colors">{selectedStage}</span>
+                  </button>
+                </div>
+                <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                  {(["Work", "Play", "Think", "Listen"] as const).map((l) => (
+                    <a key={l} href={l === "Work" ? "/" : `/${l.toLowerCase()}`} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "Work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
+                  ))}
+                </nav>
+                <div className="flex-1 flex justify-end">
+                  <div className="group relative flex h-9 items-center">
+                    <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
+                    <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
+                    <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
+                      Qiyu<span className="translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-200 delay-100">'s LinkedIn</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Panel B: animated timeline — always mounted, dots transition from origin */}
+            <div className={`absolute inset-0 transition-opacity duration-200 ${!timelineCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+              <div className="mx-auto max-w-6xl px-6 h-full flex items-center">
+                <div className="relative w-full h-12">
+                  {/* connecting lines */}
+                  <svg className="absolute inset-0 w-full" style={{ overflow: "visible", height: "20px", top: "2px" }}>
+                    <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2"
+                      style={{ opacity: timelineCollapsed ? 0 : 1, transition: "opacity 200ms ease 300ms" }} />
+                    <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4"
+                      style={{ opacity: timelineCollapsed ? 0 : 1, transition: "opacity 200ms ease 300ms" }} />
+                  </svg>
+                  {/* dots — CSS left+transform transitions for the fly-out effect */}
+                  {[
+                    { key: "All",          toLeft: "0%",    toTx: "translateX(0)",      delay: 0   },
+                    { key: "chatbot",      toLeft: "22%",   toTx: "translateX(-50%)",   delay: 35  },
+                    { key: "reasoner",     toLeft: "36%",   toTx: "translateX(-50%)",   delay: 70  },
+                    { key: "agent",        toLeft: "50%",   toTx: "translateX(-50%)",   delay: 105 },
+                    { key: "innovator",    toLeft: "63%",   toTx: "translateX(-50%)",   delay: 140 },
+                    { key: "Organization", toLeft: "76%",   toTx: "translateX(-50%)",   delay: 175 },
+                    { key: "human",        toLeft: "100%",  toTx: "translateX(-100%)",  delay: 210 },
+                  ].map(({ key, toLeft, toTx, delay }) => {
+                    const exp = !timelineCollapsed;
+                    const expandEase = "cubic-bezier(0.34,1.56,0.64,1)";
+                    const collapseEase = "cubic-bezier(0.55,0,1,0.45)";
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedStage(key)}
+                        className="absolute flex flex-col items-center gap-2 group"
+                        style={{
+                          left: exp ? toLeft : "0%",
+                          transform: exp ? toTx : "translateX(0)",
+                          opacity: exp ? 1 : 0,
+                          transition: exp
+                            ? `left 380ms ${expandEase} ${delay}ms, transform 380ms ${expandEase} ${delay}ms, opacity 180ms ease ${delay}ms`
+                            : `left 260ms ${collapseEase}, transform 260ms ${collapseEase}, opacity 120ms ease`,
+                          pointerEvents: exp ? "auto" : "none",
+                        }}
+                      >
+                        <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === key ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                        <span className={`text-sm font-medium whitespace-nowrap ${selectedStage === key ? "text-neutral-900" : "text-neutral-600"}`}>{key}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-3xl px-6 pt-24 pb-16 text-center">
+      <section className="mx-auto max-w-3xl px-6 pt-16 pb-28 text-center">
         <h1 className="text-5xl font-medium tracking-tight text-neutral-900 md:text-6xl">
-          Prototyping the What-if
+          Prototyping "What-if"
           <br />
-          in Human–AI Interactions
+          in Human–AI Interactionm
         </h1>
-        <div className="flex justify-center mt-6">
-          <a
-            href="/what-do-prototypes-prototype"
-            className="group relative inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-            <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
-            <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
-          </a>
-        </div>
       </section>
 
-      {/* Timeline Filter */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="space-y-12">
-          {/* Timeline */}
-          <div className="relative">
-            <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "8px" }}>
-              {/* Solid line from start to Organization (66%) */}
-              <line x1="0%" y1="12" x2="66%" y2="12" stroke="#d1d5db" strokeWidth="2" />
-              {/* Dashed line from Organization to Human? (34%) */}
-              <line x1="66%" y1="12" x2="100%" y2="12" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
-            </svg>
-
-            {/* Timeline nodes container with positioning */}
-            <div className="relative z-10 mb-8 h-12" style={{ position: "relative" }}>
-              {/* All */}
-              <button
-                onClick={() => setSelectedStage("All")}
-                className="absolute flex flex-col items-center gap-2 group"
-                style={{ left: "0%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`}>All</span>
-              </button>
-
-              {/* Chatbot */}
-              <button
-                onClick={() => setSelectedStage("chatbot")}
-                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
-                style={{ left: "13.2%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "chatbot" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "chatbot" ? "text-neutral-900" : "text-neutral-600"}`}>chatbot</span>
-              </button>
-
-              {/* Reasoner */}
-              <button
-                onClick={() => setSelectedStage("reasoner")}
-                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
-                style={{ left: "26.4%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "reasoner" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "reasoner" ? "text-neutral-900" : "text-neutral-600"}`}>reasoner</span>
-              </button>
-
-              {/* Agent */}
-              <button
-                onClick={() => setSelectedStage("agent")}
-                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
-                style={{ left: "39.6%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "agent" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "agent" ? "text-neutral-900" : "text-neutral-600"}`}>agent</span>
-              </button>
-
-              {/* Innovator */}
-              <button
-                onClick={() => setSelectedStage("innovator")}
-                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
-                style={{ left: "52.8%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "innovator" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "innovator" ? "text-neutral-900" : "text-neutral-600"}`}>innovator</span>
-              </button>
-
-              {/* Organization */}
-              <button
-                onClick={() => setSelectedStage("Organization")}
-                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
-                style={{ left: "66%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "Organization" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "Organization" ? "text-neutral-900" : "text-neutral-600"}`}>Organization</span>
-              </button>
-
-              {/* Human */}
-              <button
-                onClick={() => setSelectedStage("human")}
-                className="absolute flex flex-col items-center gap-2 group -translate-x-1/2"
-                style={{ left: "83.2%" }}
-              >
-                <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "human" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "human" ? "text-neutral-900" : "text-neutral-600"}`}>human</span>
-              </button>
+      {/* Timeline — separate sticky row, only when at top of page */}
+      {!scrolledDown && (
+        <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
+          <section className="mx-auto max-w-6xl px-6 py-6">
+            <div className="relative">
+              <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0" }}>
+                <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2" />
+                <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
+              </svg>
+              <div className="relative z-10 h-12">
+                <button onClick={() => setSelectedStage("All")} className="absolute flex flex-col items-center gap-2 group" style={{ left: "0%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`}>All</span>
+                </button>
+                <button onClick={() => setSelectedStage("chatbot")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "22%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "chatbot" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "chatbot" ? "text-neutral-900" : "text-neutral-600"}`}>chatbot</span>
+                </button>
+                <button onClick={() => setSelectedStage("reasoner")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "36%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "reasoner" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "reasoner" ? "text-neutral-900" : "text-neutral-600"}`}>reasoner</span>
+                </button>
+                <button onClick={() => setSelectedStage("agent")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "50%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "agent" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "agent" ? "text-neutral-900" : "text-neutral-600"}`}>agent</span>
+                </button>
+                <button onClick={() => setSelectedStage("innovator")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "63%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "innovator" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "innovator" ? "text-neutral-900" : "text-neutral-600"}`}>innovator</span>
+                </button>
+                <button onClick={() => setSelectedStage("Organization")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "76%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "Organization" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "Organization" ? "text-neutral-900" : "text-neutral-600"}`}>Organization</span>
+                </button>
+                <button onClick={() => setSelectedStage("human")} className="absolute flex flex-col items-end gap-2 group" style={{ right: "0%" }}>
+                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "human" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "human" ? "text-neutral-900" : "text-neutral-600"}`}>human</span>
+                </button>
+              </div>
             </div>
-          </div>
-
+          </section>
         </div>
-      </section>
+      )}
 
       {/* Grid */}
       <section className="mx-auto max-w-6xl px-6 py-8 pb-24">
@@ -542,7 +622,7 @@ function Index() {
       </section>
 
       <footer className="mx-auto max-w-6xl px-6 pb-10 text-center text-xs text-neutral-500">
-        © 2026 — a small studio of one.
+        © 2026 — sketched with fountain pen & paper
       </footer>
 
       {/* Prototype Modal */}
@@ -614,6 +694,7 @@ function Index() {
           </div>
         </div>
       )}
+
     </div>
   );
 }

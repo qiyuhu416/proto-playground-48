@@ -210,31 +210,47 @@ function ArticleComponent() {
             The best prototypes often aren't software at all. They're spaces, conversations, sketches, and stories.
           </p>
 
-          <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
-            <a href="/play" className="group block rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 p-6 border border-blue-200 hover:shadow-lg transition-shadow">
-              <div className="text-3xl mb-3">🏢</div>
-              <h3 className="font-semibold text-neutral-900 mb-1">Office Space</h3>
-              <p className="text-xs text-neutral-600 mb-3">Collect real data from similar concept</p>
-              <span className="text-xs text-blue-600 font-medium group-hover:text-blue-700">See: Hello Humans—async notebook →</span>
-            </a>
-
-            <div className="rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 border border-yellow-200">
-              <div className="text-3xl mb-3">🎭</div>
-              <h3 className="font-semibold text-neutral-900 mb-1">Role Play</h3>
-              <p className="text-xs text-neutral-600">Engineer = the LLM, Manager = the User. Assign roles, simulate the system, reveal assumptions instantly.</p>
-            </div>
-
-            <div className="rounded-2xl bg-gradient-to-br from-green-50 to-green-100 p-6 border border-green-200">
-              <div className="text-3xl mb-3">📝</div>
-              <h3 className="font-semibold text-neutral-900 mb-1">Paper Prototyping</h3>
-              <p className="text-xs text-neutral-600">When testing the interaction. Cheap, fast, disposable. Perfect for testing flow without commitment.</p>
-            </div>
-
-            <div className="rounded-2xl bg-gradient-to-br from-red-50 to-red-100 p-6 border border-red-200">
-              <div className="text-3xl mb-3">🎬</div>
-              <h3 className="font-semibold text-neutral-900 mb-1">Storyboarding</h3>
-              <p className="text-xs text-neutral-600">When testing the concept. Show the emotion and context, not the interface.</p>
-            </div>
+          <div className="not-prose space-y-3 my-8">
+            {[
+              {
+                title: "Office space",
+                description: "A notebook on a stand, a paper exchange — using the physical workplace as a lab for async human interaction.",
+                href: "/hello-humans",
+              },
+              {
+                title: "Role play",
+                description: "Engineer = the LLM, Manager = the User. Assign roles, simulate the system, reveal assumptions instantly.",
+                href: null,
+              },
+              {
+                title: "Paper prototyping",
+                description: "When testing the interaction. Cheap, fast, disposable. Perfect for testing flow without commitment.",
+                href: null,
+              },
+              {
+                title: "Storyboarding",
+                description: "When testing the concept. Show the emotion and context, not the interface.",
+                href: "/physical-ai",
+              },
+            ].map((item) => {
+              const Tag = item.href ? "a" : "div";
+              const props = item.href ? { href: item.href } : {};
+              return (
+                <Tag
+                  key={item.title}
+                  {...(props as any)}
+                  className={`flex items-center justify-between gap-4 rounded-2xl border border-neutral-200 bg-white px-6 py-5 ${item.href ? "group hover:border-neutral-300 hover:shadow-sm transition-all" : ""}`}
+                >
+                  <div>
+                    <p className="font-semibold text-neutral-900 text-[15px]">{item.title}</p>
+                    <p className="text-sm text-neutral-500 mt-0.5">{item.description}</p>
+                  </div>
+                  {item.href && (
+                    <span className="text-neutral-400 group-hover:text-neutral-700 transition-colors shrink-0 text-lg">→</span>
+                  )}
+                </Tag>
+              );
+            })}
           </div>
 
 

@@ -1,5 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState, useRef, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
+
+interface PlacedImage { id: number; src: string; x: number; y: number; }
+interface DragState { id: number; offsetX: number; offsetY: number; }
+
+const PLAY_IMAGES = [
+  "/articles/play-1.png",
+  "/articles/play-2.png",
+  "/articles/play-3.png",
+  "/articles/play-5.png",
+];
 
 export const Route = createFileRoute("/play")({
   head: () => ({
@@ -14,20 +25,121 @@ export const Route = createFileRoute("/play")({
   component: PlayComponent,
 });
 
+const EVENT_IMAGES = [
+  "/articles/event-19.png",
+  "/articles/event-20.png",
+  "/articles/event-21.png",
+  "/articles/event-22.png",
+  "/articles/event-23.png",
+];
+
+function EventModal({ onClose }: { onClose: () => void }) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ cursor: "auto" }} onClick={onClose}>
+      <div className="absolute inset-0 bg-neutral-900/70 backdrop-blur-sm" />
+      <div
+        className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button onClick={onClose} className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 transition-colors">✕</button>
+        <div className="p-6 pb-4">
+          <h2 className="text-xl font-semibold text-neutral-900 mb-1">Hosting events @Apple</h2>
+          <p className="text-sm text-neutral-500 mb-4">5 events · Oct 2025 – May 2026</p>
+          <p className="text-sm text-neutral-700 leading-relaxed mb-6">
+            You can kind of tell how my mindset shifted over a year. It started when the AI hype was still peaking—I was one of the first few people on my team using Claude Code, so I hosted a vibe coding meetup to share it. Then came a more sceptical phase: where should we actually <em>not</em> use AI? And by the end I just wanted to have fun—show and tell, lunch chats, no agenda. The whole arc in five events.
+          </p>
+        </div>
+
+        {/* Image viewer */}
+        <div className="px-6 pb-4">
+          <img
+            src={EVENT_IMAGES[activeIdx]}
+            alt={`Event ${activeIdx + 1}`}
+            className="w-full rounded-xl border border-neutral-200 object-contain"
+          />
+        </div>
+
+        {/* Thumbnails */}
+        <div className="px-6 pb-6 flex gap-2 overflow-x-auto">
+          {EVENT_IMAGES.map((src, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveIdx(i)}
+              className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${activeIdx === i ? "border-neutral-900" : "border-transparent"}`}
+            >
+              <img src={src} alt={`Event ${i + 1}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const WAND_CURSOR = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"56\" height=\"56\" viewBox=\"0 0 56 56\"><text y=\"48\" font-size=\"46\">🪄</text></svg>') 0 56, auto";
+
 function PlayComponent() {
-  const renderCard = (project: any) => (
-    <a
-      key={project.slug}
-      href={project.external ? project.external : `/${project.slug}`}
-      target={project.external ? "_blank" : undefined}
-      rel={project.external ? "noopener noreferrer" : undefined}
-      className="group relative overflow-hidden rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-neutral-200/60 transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] block"
+  const [placed, setPlaced] = useState<PlacedImage[]>([]);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [nextIdx, setNextIdx] = useState(1);
+  const [drag, setDrag] = useState<DragState | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setPlaced([{ id: 0, src: PLAY_IMAGES[0], x: window.innerWidth / 2 - 120, y: 120 }]);
+  }, []);
+
+  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (nextIdx >= PLAY_IMAGES.length) return;
+    setPlaced(prev => [...prev, {
+      id: Date.now(),
+      src: PLAY_IMAGES[nextIdx],
+      x: e.pageX - 80,
+      y: e.pageY - 80,
+    }]);
+    setNextIdx(i => i + 1);
+  };
+
+  const startDrag = (e: React.PointerEvent<HTMLImageElement>, id: number) => {
+    e.stopPropagation();
+    const img = e.currentTarget;
+    const rect = img.getBoundingClientRect();
+    setDrag({ id, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top });
+    img.setPointerCapture(e.pointerId);
+  };
+
+  const onDragMove = (e: React.PointerEvent<HTMLImageElement>, id: number) => {
+    if (!drag || drag.id !== id) return;
+    setPlaced(prev => prev.map(p =>
+      p.id === id ? { ...p, x: e.pageX - drag.offsetX, y: e.pageY - drag.offsetY } : p
+    ));
+  };
+
+  const renderCard = (project: any) => {
+    const Wrapper = project.onCardClick ? "button" : "a";
+    const wrapperProps = project.onCardClick
+      ? { onClick: project.onCardClick, type: "button" as const }
+      : { href: project.external ? project.external : `/${project.slug}`, target: project.external ? "_blank" : undefined, rel: project.external ? "noopener noreferrer" : undefined };
+    return (
+    <Wrapper
+      key={project.slug || project.title}
+      {...(wrapperProps as any)}
+      className="group relative rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block text-left w-full"
+      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; v.play(); } }}
+      onMouseLeave={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
     >
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-slate-100 to-slate-200">
+      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">
         {project.image ? (
-          <img src={project.image} alt={project.title} className="h-full w-full object-cover" />
+          <img
+            src={project.image}
+            alt={project.title}
+            className={project.thumbnailSize === "small" ? "w-16 h-16 object-contain" : project.thumbnailSize === "medium" ? "w-80 h-80 object-contain" : "h-full w-full object-cover"}
+          />
+        ) : project.videoPreview ? (
+          <video src={`${project.videoPreview}#t=${project.videoStartTime ?? 0.001}`} preload="metadata" muted loop className="h-full w-full object-cover" />
         ) : (
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500/80">
+          <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">
             {project.category}
           </span>
         )}
@@ -35,37 +147,64 @@ function PlayComponent() {
           <ArrowUpRight className="h-4 w-4" />
         </span>
       </div>
-      <div className="px-2 pb-2 pt-4">
-        <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-          <span>{project.category}</span>
-          <span>·</span>
-          <span>{project.meta}</span>
+      <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 text-xs text-neutral-500">
+            <span>{project.category}</span>
+            <span>·</span>
+            <span>{project.meta}</span>
+          </div>
+          <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
+            {project.title}
+          </h3>
         </div>
-        <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
-          {project.title}
-        </h3>
-        <p className="mt-1 line-clamp-2 text-sm text-neutral-600">{project.description}</p>
       </div>
-    </a>
-  );
+    </Wrapper>
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
-        <a href="/" className="flex h-9 w-9 items-center justify-center text-neutral-900">
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1" />
-          </svg>
-        </a>
+    <div
+      className="relative min-h-screen bg-background text-neutral-900"
+      onClick={handlePageClick}
+      style={{ cursor: nextIdx < PLAY_IMAGES.length ? WAND_CURSOR : "default" }}
+    >
+      {showEventModal && <EventModal onClose={() => setShowEventModal(false)} />}
+      {/* Fixed floating images */}
+      {placed.map((img) => (
+        <img
+          key={img.id}
+          src={img.src}
+          alt=""
+          draggable={false}
+          onPointerDown={(e) => startDrag(e, img.id)}
+          onPointerMove={(e) => onDragMove(e, img.id)}
+          onPointerUp={() => setDrag(null)}
+          onClick={(e) => e.stopPropagation()}
+              className="absolute select-none"
+          style={{
+            left: img.x,
+            top: img.y,
+            maxHeight: "40vh",
+            width: "auto",
+            zIndex: 0,
+            cursor: drag?.id === img.id ? "grabbing" : "grab",
+            userSelect: "none",
+            touchAction: "none",
+          }}
+        />
+      ))}
+      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 pt-8" onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }}>
+        <div className="h-9 w-9" />
         <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {(["Work", "Play", "Think", "Listen"] as const).map((l) => {
+          {(["work", "play", "reflect", "listen"] as const).map((l) => {
             return (
               <a
                 key={l}
-                href={l === "Work" ? "/" : `/${l.toLowerCase()}`}
+                href={l === "work" ? "/" : l === "reflect" ? "/think" : `/${l}`}
                 className={
                   "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                  (l === "Play"
+                  (l === "play"
                     ? "bg-neutral-900 text-white"
                     : "text-neutral-600 hover:text-neutral-900")
                 }
@@ -75,57 +214,50 @@ function PlayComponent() {
             );
           })}
         </nav>
-        <div className="h-9 w-9" />
+        <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
       </header>
 
-      {/* Hero section with scattered photos */}
-      <section className="mx-auto max-w-6xl px-6 pt-16 pb-24">
-        <div className="relative aspect-video rounded-2xl bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 overflow-hidden">
-          {/* Placeholder for scattered photos */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-4">🎨</div>
-              <p className="text-neutral-600">Scattered moments & playful explorations</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero space */}
+      <div ref={boardRef} className="w-full" style={{ minHeight: "50vh" }} />
 
       {/* Human-Human Interaction Prototypes */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
+      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24" onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }}>
         <div className="mb-12">
           <h2 className="text-2xl font-medium text-neutral-900 mb-2">Human-human interaction prototypes</h2>
-          <p className="text-neutral-600 text-sm">Exploring how people connect, share, and collaborate in unexpected ways</p>
+          <p className="text-neutral-600 text-sm">Actually, humans are more interesting</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
             {
-              title: "Hello Humans—async notebook",
-              description: "A stand with a notebook where colleagues write messages. Sometimes I start with a prompt, sometimes I let people surprise me. A low-pressure experiment in human-human async interaction.",
+              title: "Hello Humans",
+              description: "A notebook on a stand where colleagues leave messages—sometimes prompted, sometimes a surprise. Then evolved: swap your favorite research paper with someone else's. Low-pressure, high-delight human-human interaction.",
               category: "Interaction",
               meta: "Social · Analog",
               image: "/articles/hello-humans-notebook.jpg",
-            },
-            {
-              title: "Paper exchange—social proof",
-              description: "I shared my favorite research papers and invited colleagues to take one and leave one. A playful way to discover what people are reading and thinking about.",
-              category: "Experiment",
-              meta: "Research · Social",
-              image: "/articles/paper-exchange.jpg",
             },
             {
               title: "Meet the stranger challenge",
               description: "A simple post with a Calendly link: 'Hi all, I'm running a small experiment.' No agenda, just conversation. A real-time experiment in how people connect.",
               category: "Experiment",
               meta: "Connection · Open-ended",
-              image: "/articles/meet-stranger.png",
+              image: "/articles/meet-stranger-calendly.png",
+              thumbnailSize: "medium",
+            },
+            {
+              title: "Hosting events @Apple",
+              description: "A year of gatherings—from vibe coding to questioning AI to just having fun. 5 events, 1 mental shift.",
+              category: "Event",
+              meta: "Community · IRL",
+              image: "/articles/events-thumb.svg",
+              thumbnailSize: "small",
+              onCardClick: () => setShowEventModal(true),
             },
           ].map((project) => renderCard(project))}
         </div>
       </section>
 
       {/* Qiyu-Technology Interaction */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
+      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24" onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }}>
         <div className="mb-12">
           <h2 className="text-2xl font-medium text-neutral-900 mb-2">Qiyu–technology interaction</h2>
           <p className="text-neutral-600 text-sm">Vibe-coding projects and creative explorations with code and tools</p>
@@ -133,47 +265,37 @@ function PlayComponent() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
             {
+              title: "Birthday card",
+              description: "A small moment of delight. The joy is in the details, the unexpected animation, the gesture that makes you smile.",
+              slug: "birthday-card",
+              category: "Vibe-coding",
+              meta: "Motion · Delight",
+              videoPreview: "/articles/birthday-card.mp4",
+              videoStartTime: 1,
+            },
+            {
               title: "Hand gesture interactions",
-              description: "Exploring how gesture recognition can make AI feel more natural and human.",
+              description: "Exploring how gestures can make technology feel natural and embodied.",
               slug: "hand-gesture-interactions",
-              category: "Look & Feel",
-              meta: "Motion · Video",
-              image: "/articles/hand-gesture-thumb.jpg",
+              category: "Vibe-coding",
+              meta: "Gesture · Motion",
+              videoPreview: "/articles/hand-gesture.mp4",
             },
             {
-              title: "Making design fun",
-              description: "Caltrain, After Effects, and why vibe-coding is the future of creation.",
-              slug: "making-design-fun",
-              category: "Look & Feel",
-              meta: "Collection · 5 sections",
+              title: "Palo Alto moment",
+              description: "A location-based concept. What happens when design meets place?",
+              slug: "palo-alto-moment",
+              category: "Vibe-coding",
+              meta: "Context · Place",
+              videoPreview: "/articles/palo-alto.mp4",
             },
             {
-              title: "Motion experiments",
-              description: "Playful animations exploring physics and timing.",
-              slug: "motion-experiments",
-              category: "Look & Feel",
-              meta: "Animation",
-            },
-            {
-              title: "Generative visuals",
-              description: "Code-driven art pieces that evolve over time.",
-              slug: "generative-visuals",
-              category: "Look & Feel",
-              meta: "Creative coding",
-            },
-            {
-              title: "Interactive sketches",
-              description: "Experiments with gesture and real-time input.",
-              slug: "interactive-sketches",
-              category: "Look & Feel",
-              meta: "Interaction",
-            },
-            {
-              title: "Type play",
-              description: "Text transformations and typographic experiments.",
-              slug: "type-play",
-              category: "Look & Feel",
-              meta: "Typography",
+              title: "Voice interaction",
+              description: "Beyond screens. Exploring how voice can become an interface—natural, conversational, human.",
+              slug: "voice-interaction",
+              category: "Vibe-coding",
+              meta: "Voice · AI",
+              videoPreview: "/articles/voice.mp4",
             },
           ].map((project) => renderCard(project))}
         </div>

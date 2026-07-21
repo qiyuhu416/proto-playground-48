@@ -53,34 +53,35 @@ function PersonalizationComponent() {
           </p>
 
           <p className="mt-4">
-            When I was asked to work on "personalization," I didn't start by designing features. I started by asking people around me a deceptively simple question: <strong>"What makes human a human?"</strong>
+            When I was asked to work on "personalization," I didn't start by designing features. I started by asking people around me this question: <strong>"What make you you?"</strong>
           </p>
 
-          <h2 id="beyond-features" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Beyond Features</h2>
+          <h2 id="beyond-features" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">So, what makes person a person?</h2>
+          <p className="mt-4">
+            My fav movie "Little Prince" says "what's important is the unseen." I spent time in conversations, asking what people value about their closest relationships, their creative work, their growth—the places where they feel most like themselves. The answers weren't about algorithms or efficiency. They were about presence, consistency, genuine interest, and the freedom to be imperfect.
+          </p>
+          
           <p>
             Most personalization work focuses on data—learning preferences, predicting behavior, optimizing for engagement. But that's not what makes something feel personal. What makes something personal is being seen, understood, and respected as a unique individual.
           </p>
 
-          <p className="mt-4">
-            I spent time in conversations, asking what people value about their closest relationships, their creative work, their growth—the places where they feel most like themselves. The answers weren't about algorithms or efficiency. They were about presence, consistency, genuine interest, and the freedom to be imperfect.
-          </p>
 
-          <h2 id="for-me-with-me-as-me" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">For Me, With Me, As Me</h2>
+          <h2 id="for-me-with-me-as-me" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Person & personalization</h2>
           <p>
-            Out of those conversations, I helped plan the roadmap for the future of AI by proposing a framework for personalization: <strong>For Me, With Me, As Me.</strong>
+            Out of those conversations, I've also formed my own simplified version of roadmap for the future of personalization: <strong>For Me, With Me, As Me.</strong>
           </p>
 
-          <h3 className="text-lg font-semibold mt-8 mb-3">For Me</h3>
+          <h3 className="text-lg font-semibold mt-8 mb-3">1. Learn For Me </h3>
           <p>
             AI should serve my specific goals and context, not generic templates. It understands what I'm trying to accomplish and adapts to my situation, not the reverse.
           </p>
 
-          <h3 className="text-lg font-semibold mt-8 mb-3">With Me</h3>
+          <h3 className="text-lg font-semibold mt-8 mb-3">2. Stay With Me</h3>
           <p>
             AI should be a collaborator, not a replacement. I should feel like we're thinking together. The system asks me questions, validates my thinking, and invites my perspective. I have agency and a voice.
           </p>
 
-          <h3 className="text-lg font-semibold mt-8 mb-3">As Me</h3>
+          <h3 className="text-lg font-semibold mt-8 mb-3">3. Act As Me</h3>
           <p>
             AI should recognize and respect who I am—my values, my boundaries, my inconsistencies. It doesn't try to optimize me or push me toward what it thinks is best. It accepts that being human means being complicated.
           </p>

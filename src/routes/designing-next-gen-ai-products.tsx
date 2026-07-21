@@ -107,6 +107,14 @@ function ArticleComponent() {
             The conclusion: <strong>In high-stakes scenarios, "I am not capable of doing this alone" is the most honest and trustworthy thing an AI can say.</strong>
           </p>
 
+          <div className="not-prose mt-8 mb-12">
+            <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
+              <img src="/articles/trust-thumb.png" alt="Conversation Design for Human-AI trust" className="w-full object-contain p-6" />
+            </a>
+            <p className="text-sm text-neutral-600 mb-2">This elder care case study opened a deeper question: how do you actually script trust into a conversation? In a follow-up piece, I explore the principles behind affiliation behaviors, transparent conflict resolution, and the specific moments when an AI should defer—not because it can't answer, but because the relationship requires it.</p>
+            <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors block">Read: Conversation Design for Human-AI trust →</a>
+          </div>
+
           <h2 id="designing-feeling" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Designing the feeling (when AI has easy inferences)</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Human–AI co-writing tool</h3>
@@ -126,13 +134,13 @@ function ArticleComponent() {
           <div className="bg-neutral-100 rounded-lg p-6 my-8">
             <div className="space-y-3 text-sm">
               <div>1. you think about what to write</div>
-              <div className="text-center text-neutral-400">↓</div>
+              <div className="text-left text-neutral-400">↓</div>
               <div>2. you get ready to write</div>
-              <div className="text-center text-neutral-400">↓</div>
+              <div className="text-left text-neutral-400">↓</div>
               <div>3. you type while watching your sentence form</div>
-              <div className="text-center text-neutral-400">↓</div>
+              <div className="text-left text-neutral-400">↓</div>
               <div>4. you pause and think about the next sentence</div>
-              <div className="text-center text-neutral-400">↓</div>
+              <div className="text-left text-neutral-400">↓</div>
               <div>5. you decide whether to edit, continue, or move on</div>
             </div>
           </div>
@@ -143,27 +151,121 @@ function ArticleComponent() {
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Three trigger mechanisms</h3>
 
-          <div className="space-y-8 my-8">
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Tick (every 1 second)</h4>
-              <p className="text-sm text-neutral-600 mb-2">AI judges every keystroke. There's always an eye on you.</p>
-              <p className="text-xs text-neutral-500"><strong>Economics:</strong> ~60 calls/min, $0.08/min, ~$53/month per user</p>
-              <p className="text-xs text-neutral-500 mt-1"><strong>Feeling:</strong> Constant correction feels like surveillance. Users report: "I was just about to fix that."</p>
+          <div className="not-prose space-y-6 my-8">
+
+            {/* Tick */}
+            <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
+              <div className="bg-neutral-50 px-6 pt-6 pb-4">
+                <svg viewBox="0 0 400 90" fill="none" className="w-full h-auto">
+                  {/* Timeline baseline */}
+                  <line x1="20" y1="55" x2="380" y2="55" stroke="#e5e5e5" strokeWidth="2"/>
+                  {/* User typing label */}
+                  <text x="20" y="72" fontSize="9" fill="#a3a3a3" fontFamily="monospace">user types...</text>
+                  {/* Frequent AI responses — every ~45px */}
+                  {[60,105,150,195,240,285,330,375].map((x, i) => (
+                    <g key={i}>
+                      <line x1={x} y1="48" x2={x} y2="62" stroke="#ef4444" strokeWidth="1.5"/>
+                      {/* AI speech bubble above */}
+                      <rect x={x-14} y="16" width="28" height="16" rx="4" fill="#fef2f2" stroke="#fca5a5" strokeWidth="1"/>
+                      <text x={x} y="27" fontSize="7" fill="#ef4444" textAnchor="middle" fontFamily="monospace">AI</text>
+                      <line x1={x} y1="32" x2={x} y2="48" stroke="#fca5a5" strokeWidth="1" strokeDasharray="2 2"/>
+                    </g>
+                  ))}
+                  {/* 1s labels */}
+                  {[60,105,150].map((x, i) => (
+                    <text key={i} x={x} y="85" fontSize="7.5" fill="#d4d4d4" textAnchor="middle">1s</text>
+                  ))}
+                </svg>
+              </div>
+              <div className="px-6 py-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h4 className="font-semibold text-neutral-900 mb-1">Tick <span className="font-normal text-neutral-400 text-sm">every 1 second</span></h4>
+                    <p className="text-sm text-neutral-600">AI judges every keystroke. There's always an eye on you.</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="text-xs text-neutral-400">~60 calls/min</p>
+                    <p className="text-xs text-neutral-400">~$53/mo per user</p>
+                  </div>
+                </div>
+                <p className="text-xs text-neutral-500 mt-2 italic">"I was just about to fix that."</p>
+              </div>
             </div>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Pause (after 2 seconds of pause)</h4>
-              <p className="text-sm text-neutral-600 mb-2">AI mistakes your pause for a finished thought.</p>
-              <p className="text-xs text-neutral-500"><strong>Economics:</strong> ~4-8 calls/min, $0.015/min, ~$10/month per user</p>
-              <p className="text-xs text-neutral-500 mt-1"><strong>Feeling:</strong> Interrupts thinking mid-flow. Users report: "I'm thinking, don't interrupt me."</p>
+            {/* Pause */}
+            <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
+              <div className="bg-neutral-50 px-6 pt-6 pb-4">
+                <svg viewBox="0 0 400 90" fill="none" className="w-full h-auto">
+                  <line x1="20" y1="55" x2="380" y2="55" stroke="#e5e5e5" strokeWidth="2"/>
+                  <text x="20" y="72" fontSize="9" fill="#a3a3a3" fontFamily="monospace">user types...</text>
+                  {/* Typing phase */}
+                  {[50,80,110,140].map((x, i) => (
+                    <rect key={i} x={x} y="46" width="5" height="9" rx="1" fill="#d4d4d4"/>
+                  ))}
+                  {/* Pause zone */}
+                  <rect x="165" y="40" width="80" height="22" rx="6" fill="#fefce8" stroke="#fde68a" strokeWidth="1"/>
+                  <text x="205" y="50" fontSize="8" fill="#92400e" textAnchor="middle">thinking...</text>
+                  <text x="205" y="60" fontSize="9" fill="#d97706" textAnchor="middle">· · ·</text>
+                  {/* AI interrupts during pause */}
+                  <line x1="205" y1="36" x2="205" y2="40" stroke="#f97316" strokeWidth="1.5" strokeDasharray="2 2"/>
+                  <rect x="178" y="10" width="54" height="22" rx="5" fill="#fff7ed" stroke="#fb923c" strokeWidth="1"/>
+                  <text x="205" y="23" fontSize="8" fill="#ea580c" textAnchor="middle" fontFamily="monospace">AI speaks ↓</text>
+                  {/* After pause, user continues */}
+                  {[260,285,310,335,360].map((x, i) => (
+                    <rect key={i} x={x} y="46" width="5" height="9" rx="1" fill="#d4d4d4" opacity="0.5"/>
+                  ))}
+                </svg>
+              </div>
+              <div className="px-6 py-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h4 className="font-semibold text-neutral-900 mb-1">Pause <span className="font-normal text-neutral-400 text-sm">after 2s of inactivity</span></h4>
+                    <p className="text-sm text-neutral-600">AI mistakes your pause for a finished thought.</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="text-xs text-neutral-400">~4–8 calls/min</p>
+                    <p className="text-xs text-neutral-400">~$10/mo per user</p>
+                  </div>
+                </div>
+                <p className="text-xs text-neutral-500 mt-2 italic">"I'm thinking, don't interrupt me."</p>
+              </div>
             </div>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Blur event (when you leave the field)</h4>
-              <p className="text-sm text-neutral-600 mb-2">AI stays quiet while you write, then speaks when you move to the next field.</p>
-              <p className="text-xs text-neutral-500"><strong>Economics:</strong> ~1-3 calls/min, $0.018/min, ~$12/month per user</p>
-              <p className="text-xs text-neutral-500 mt-1"><strong>Feeling:</strong> Respectful partnership. Users report: "The tool felt like it was supporting me, not watching me."</p>
+            {/* Blur */}
+            <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
+              <div className="bg-neutral-50 px-6 pt-6 pb-4">
+                <svg viewBox="0 0 400 90" fill="none" className="w-full h-auto">
+                  <line x1="20" y1="55" x2="380" y2="55" stroke="#e5e5e5" strokeWidth="2"/>
+                  <text x="20" y="72" fontSize="9" fill="#a3a3a3" fontFamily="monospace">user types...</text>
+                  {/* Typing freely */}
+                  {[50,70,90,110,130,150,170,190,210,230].map((x, i) => (
+                    <rect key={i} x={x} y="46" width="5" height="9" rx="1" fill="#d4d4d4"/>
+                  ))}
+                  {/* Blur moment — user leaves field */}
+                  <line x1="255" y1="36" x2="255" y2="62" stroke="#22c55e" strokeWidth="2" strokeDasharray="4 2"/>
+                  <text x="255" y="80" fontSize="8" fill="#86efac" textAnchor="middle">blur</text>
+                  {/* AI responds once, after */}
+                  <rect x="272" y="16" width="90" height="26" rx="6" fill="#f0fdf4" stroke="#86efac" strokeWidth="1.5"/>
+                  <text x="317" y="28" fontSize="8" fill="#16a34a" textAnchor="middle" fontFamily="monospace">AI feedback</text>
+                  <text x="317" y="38" fontSize="7.5" fill="#4ade80" textAnchor="middle">one response ✓</text>
+                  <line x1="272" y1="42" x2="272" y2="55" stroke="#86efac" strokeWidth="1.5"/>
+                </svg>
+              </div>
+              <div className="px-6 py-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h4 className="font-semibold text-neutral-900 mb-1">Blur event <span className="font-normal text-neutral-400 text-sm">when you leave the field</span></h4>
+                    <p className="text-sm text-neutral-600">AI stays quiet while you write, then speaks when you move on.</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="text-xs text-neutral-400">~1–3 calls/min</p>
+                    <p className="text-xs text-neutral-400">~$12/mo per user</p>
+                  </div>
+                </div>
+                <p className="text-xs text-neutral-500 mt-2 italic">"The tool felt like it was supporting me, not watching me."</p>
+              </div>
             </div>
+
           </div>
 
           <p>

@@ -133,31 +133,8 @@ export const WhereNotToUseAI = () => (
     <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Where to NOT use AI</h2>
 
     <p>
-      This is the most important design question: <strong>When should we not use AI?</strong>
+      AI should never be a default solution. The "double diamond model" for design thinking is there for a reason.
     </p>
-
-    <p>
-      When the cost of failure is high. When human judgment is irreplaceable. When the relationship itself is the product. When the user feels:
-    </p>
-
-    <div className="space-y-3 my-8">
-      <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-        <p className="text-sm font-semibold text-neutral-900 mb-1">Bypassed</p>
-        <p className="text-xs text-neutral-600">When AI makes the call instead of supporting the human's decision</p>
-      </div>
-      <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-        <p className="text-sm font-semibold text-neutral-900 mb-1">Reluctant to decide</p>
-        <p className="text-xs text-neutral-600">When AI options paralyze rather than enable choice</p>
-      </div>
-      <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-        <p className="text-sm font-semibold text-neutral-900 mb-1">Distanced</p>
-        <p className="text-xs text-neutral-600">When AI creates a wall between the human and the real task</p>
-      </div>
-      <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-        <p className="text-sm font-semibold text-neutral-900 mb-1">Drained</p>
-        <p className="text-xs text-neutral-600">When managing the AI becomes the actual work</p>
-      </div>
-    </div>
 
     <img
       src="/articles/ai-fatigue.png"

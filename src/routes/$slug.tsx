@@ -65,6 +65,27 @@ const PROTOTYPES: Record<string, { title: string; category: string; description:
     mediaType: "image",
     media: "/articles/ai-push-back.png",
   },
+  "birthday-card": {
+    title: "Birthday card",
+    category: "Vibe-coding",
+    description: "A small moment of delight. The joy is in the details, the unexpected animation, the gesture that makes you smile.",
+    mediaType: "video",
+    media: "/articles/birthday-card.mp4",
+  },
+  "palo-alto-moment": {
+    title: "Palo Alto moment",
+    category: "Vibe-coding",
+    description: "A location-based concept. What happens when design meets place? Exploring how context shapes interaction.",
+    mediaType: "video",
+    media: "/articles/palo-alto.mp4",
+  },
+  "voice-interaction": {
+    title: "Voice interaction",
+    category: "Vibe-coding",
+    description: "Beyond screens. Exploring how voice can become an interface—natural, conversational, human.",
+    mediaType: "video",
+    media: "/articles/voice.mp4",
+  },
 };
 
 function formatTitle(slug: string): string {

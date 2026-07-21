@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/think")({
   head: () => ({
@@ -14,23 +15,20 @@ export const Route = createFileRoute("/think")({
 });
 
 function ThinkComponent() {
+  const [quadrantOpen, setQuadrantOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
-        <a href="/" className="flex h-9 w-9 items-center justify-center text-neutral-900">
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1" />
-          </svg>
-        </a>
+        <div className="h-9 w-9" />
         <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {(["Work", "Play", "Think", "Listen"] as const).map((l) => {
+          {(["work", "play", "reflect", "listen"] as const).map((l) => {
             return (
               <a
                 key={l}
-                href={l === "Work" ? "/" : `/${l.toLowerCase()}`}
+                href={l === "work" ? "/" : l === "reflect" ? "/think" : `/${l}`}
                 className={
                   "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                  (l === "Think"
+                  (l === "reflect"
                     ? "bg-neutral-900 text-white"
                     : "text-neutral-600 hover:text-neutral-900")
                 }
@@ -40,50 +38,105 @@ function ThinkComponent() {
             );
           })}
         </nav>
-        <div className="h-9 w-9" />
+        <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
       </header>
 
-      {/* Mental models section */}
+      {/* Frameworks section */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-12">
-        <h2 className="text-2xl font-medium mb-8 text-neutral-900">Mental models</h2>
+        <h2 className="text-2xl font-medium mb-8 text-neutral-900">Frameworks</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[
-            {
-              title: "The what-if space",
-              description: "Prototyping as exploration of possibility",
-              diagram: "◇",
-            },
-            {
-              title: "Capability vs. UX",
-              description: "Mapping technology to human experience",
-              diagram: "⟷",
-            },
-            {
-              title: "Friction & delight",
-              description: "Where design actually lives",
-              diagram: "≈",
-            },
-            {
-              title: "Context over features",
-              description: "Why what matters depends on when",
-              diagram: "◉",
-            },
-          ].map((model) => (
-            <div
-              key={model.title}
-              className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow"
-            >
-              <div className="text-5xl mb-4 opacity-30">{model.diagram}</div>
-              <h3 className="font-medium text-lg text-neutral-900 mb-2">{model.title}</h3>
-              <p className="text-neutral-600">{model.description}</p>
+
+          {/* Analysis-synthesis bridge */}
+          <a
+            href="https://www.dubberly.com/articles/interactions-the-analysis-synthesis-bridge-model.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow block group"
+          >
+            <div className="mb-6">
+              <svg viewBox="0 0 120 80" fill="none" className="w-28 h-auto opacity-80">
+                <circle cx="35" cy="22" r="9" fill="#1a1a1a"/>
+                <circle cx="85" cy="22" r="9" fill="#1a1a1a"/>
+                <circle cx="35" cy="58" r="9" fill="#1a1a1a"/>
+                <circle cx="85" cy="58" r="9" fill="#1a1a1a"/>
+                <line x1="44" y1="22" x2="76" y2="22" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
+                <line x1="44" y1="58" x2="76" y2="58" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
+                <line x1="35" y1="31" x2="35" y2="49" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
+                <line x1="85" y1="31" x2="85" y2="49" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
+              </svg>
             </div>
-          ))}
+            <h3 className="font-medium text-lg text-neutral-900 mb-2 group-hover:underline">Analysis-synthesis bridge</h3>
+            <p className="text-neutral-600 text-sm">A model by Hugh Dubberly that frames design as moving between analysis (understanding the current state) and synthesis (creating the future state)—with a bridge of abstraction between them.</p>
+          </a>
+
+          {/* Double diamond */}
+          <div className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow">
+            <div className="mb-6">
+              <svg viewBox="0 0 140 80" fill="none" className="w-28 h-auto opacity-80">
+                <polygon points="15,40 47,12 79,40 47,68" stroke="#1a1a1a" strokeWidth="1.5" fill="none"/>
+                <polygon points="61,40 93,12 125,40 93,68" stroke="#1a1a1a" strokeWidth="1.5" fill="none"/>
+                <circle cx="15" cy="40" r="3" fill="#1a1a1a"/>
+                <circle cx="79" cy="40" r="3" fill="#1a1a1a"/>
+                <circle cx="125" cy="40" r="3" fill="#1a1a1a"/>
+              </svg>
+            </div>
+            <h3 className="font-medium text-lg text-neutral-900 mb-2">Double diamond</h3>
+            <p className="text-neutral-600 text-sm">Discover → Define → Develop → Deliver. Two phases of divergent and convergent thinking—first understanding the right problem, then finding the right solution.</p>
+          </div>
+
+          {/* Me × Others × Think × Do */}
+          <button
+            onClick={() => setQuadrantOpen(true)}
+            className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow text-left group"
+          >
+            <div className="mb-6">
+              <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20 opacity-80">
+                <circle cx="40" cy="10" r="9" fill="#1a1a1a"/>
+                <circle cx="10" cy="40" r="9" fill="#1a1a1a"/>
+                <circle cx="70" cy="40" r="9" fill="#1a1a1a"/>
+                <circle cx="40" cy="70" r="9" fill="#1a1a1a"/>
+              </svg>
+            </div>
+            <h3 className="font-medium text-lg text-neutral-900 mb-2 group-hover:underline">Me · Others · Think · Do</h3>
+            <p className="text-neutral-600 text-sm">A 2×2 that maps any situation across who's involved (me vs. others) and how they engage (thinking vs. doing). Reveals blind spots in perspective and action.</p>
+          </button>
+
+          {/* Service blueprint */}
+          <div className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow">
+            <div className="mb-6">
+              <svg viewBox="0 0 120 80" fill="none" className="w-28 h-auto opacity-80">
+                <line x1="8" y1="18" x2="112" y2="18" stroke="#d4d4d4" strokeWidth="1"/>
+                <line x1="8" y1="40" x2="112" y2="40" stroke="#d4d4d4" strokeWidth="1"/>
+                <line x1="8" y1="62" x2="112" y2="62" stroke="#d4d4d4" strokeWidth="1"/>
+                <circle cx="22" cy="18" r="4" fill="#1a1a1a"/>
+                <circle cx="55" cy="18" r="4" fill="#1a1a1a"/>
+                <circle cx="88" cy="18" r="4" fill="#1a1a1a"/>
+                <circle cx="35" cy="40" r="4" fill="#1a1a1a"/>
+                <circle cx="70" cy="40" r="4" fill="#1a1a1a"/>
+                <circle cx="100" cy="40" r="4" fill="#1a1a1a"/>
+                <circle cx="22" cy="62" r="4" fill="#1a1a1a"/>
+                <circle cx="55" cy="62" r="4" fill="#1a1a1a"/>
+                <circle cx="88" cy="62" r="4" fill="#1a1a1a"/>
+                <line x1="55" y1="22" x2="35" y2="36" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="2 2"/>
+                <line x1="70" y1="44" x2="55" y2="58" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="2 2"/>
+                <line x1="22" y1="18" x2="55" y2="18" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="55" y1="18" x2="88" y2="18" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="35" y1="40" x2="70" y2="40" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="70" y1="40" x2="100" y2="40" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="22" y1="62" x2="55" y2="62" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="55" y1="62" x2="88" y2="62" stroke="#1a1a1a" strokeWidth="1"/>
+              </svg>
+            </div>
+            <h3 className="font-medium text-lg text-neutral-900 mb-2">Service blueprint</h3>
+            <p className="text-neutral-600 text-sm">Maps the full service experience across multiple stakeholder layers—user actions, frontstage interactions, backstage processes, and supporting systems—on a shared timeline.</p>
+          </div>
+
         </div>
       </section>
 
       {/* Blog/Writing section */}
       <section className="mx-auto max-w-6xl px-6 pb-24">
-        <h2 className="text-2xl font-medium mb-8 text-neutral-900">Writings</h2>
+        <h2 className="text-2xl font-medium mb-8 text-neutral-900">Reflections</h2>
         <div className="space-y-4">
           {[
             {
@@ -138,6 +191,65 @@ function ThinkComponent() {
           ))}
         </div>
       </section>
+
+      {/* Me × Others × Think × Do modal */}
+      {quadrantOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm"
+          onClick={() => setQuadrantOpen(false)}
+        >
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setQuadrantOpen(false)}
+              className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-900 transition-colors text-lg leading-none"
+            >
+              ✕
+            </button>
+            <h2 className="text-xl font-semibold text-neutral-900 mb-1">Me · Others · Think · Do</h2>
+            <p className="text-sm text-neutral-500 mb-8">A lens for mapping perspective and agency in any situation.</p>
+
+            <div className="grid grid-cols-2 gap-px bg-neutral-200 rounded-xl overflow-hidden">
+              {/* Think / Me */}
+              <div className="bg-white p-5">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
+                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Me · Think</span>
+                </div>
+                <p className="text-sm text-neutral-700">My beliefs, assumptions, mental models, and internal narratives about the situation.</p>
+              </div>
+              {/* Think / Others */}
+              <div className="bg-white p-5">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
+                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Others · Think</span>
+                </div>
+                <p className="text-sm text-neutral-700">What others believe, perceive, or assume — often invisible until you look for it.</p>
+              </div>
+              {/* Do / Me */}
+              <div className="bg-white p-5">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
+                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Me · Do</span>
+                </div>
+                <p className="text-sm text-neutral-700">My actions, behaviors, and choices — what I actually control in the situation.</p>
+              </div>
+              {/* Do / Others */}
+              <div className="bg-white p-5">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
+                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Others · Do</span>
+                </div>
+                <p className="text-sm text-neutral-700">Others' observable behaviors — what they actually do versus what they say they think.</p>
+              </div>
+            </div>
+
+            <p className="mt-6 text-xs text-neutral-400">Use this to spot where your assumptions about others' thinking diverge from their actual behavior — that gap is often where design problems hide.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
