@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useEffect, useRef } from "react";
 import { ArrowUpRight, LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
 import { ARTICLE_META } from "./articleMeta";
+import { NAV_ITEMS, navHref } from "./navItems";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "What do prototypes prototype — a personal showcase" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content:
@@ -224,12 +225,15 @@ function Index() {
   const [scrollProgress, setScrollProgress] = useState(0); // 0 = fully expanded, 1 = fully collapsed
   const lockedOpen = useRef(false);
   const rafId = useRef(0);
+  // collapse only when there's more than one row of cards (lg = 3 cols)
+  const canCollapse = useRef(true);
 
   useEffect(() => {
-    const SCROLL_START = 80;   // px at which dots begin converging
-    const SCROLL_END   = 300;  // px at which dots are fully collapsed → becomes sticky
+    const SCROLL_START = 80;
+    const SCROLL_END   = 300;
 
     const handleScroll = () => {
+      if (!canCollapse.current) return;
       cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(() => {
         const y = window.scrollY;
@@ -310,6 +314,18 @@ function Index() {
         : ITEMS.filter((i) => stageMap[selectedStage]?.includes(i.slug)),
     [selectedStage],
   );
+
+  // Keep canCollapse in sync with filtered count; reset if falling to 1 row
+  useEffect(() => {
+    const moreThanOneRow = filtered.length > 3;
+    canCollapse.current = moreThanOneRow;
+    if (!moreThanOneRow) {
+      lockedOpen.current = false;
+      setScrolledDown(false);
+      setTimelineCollapsed(false);
+      setScrollProgress(0);
+    }
+  }, [filtered.length]);
 
   const renderCard = (item: ItemWithSlug) => {
     const href = item.externalLink || `/${item.slug}`;
@@ -407,8 +423,8 @@ function Index() {
               </a>
             </div>
             <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-              {(["work", "play", "reflect", "listen"] as const).map((l) => (
-                <a key={l} href={l === "work" ? "/" : l === "reflect" ? "/think" : `/${l}`} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
+              {NAV_ITEMS.map((l) => (
+                <a key={l} href={navHref(l)} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
               ))}
             </nav>
             <div className="flex-1 flex justify-end">
@@ -511,44 +527,49 @@ function Index() {
         </h1>
       </section>
 
-      {/* Timeline — separate sticky row, only when at top of page */}
+      {/* Timeline — separate sticky row, visible while scrolling (scroll-progress collapse) */}
       {!scrolledDown && (
         <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
           <section className="mx-auto max-w-6xl px-6 py-6">
             <div className="relative">
-              <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0" }}>
+              {/* Lines fade as dots converge */}
+              <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0", opacity: 1 - scrollProgress }}>
                 <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2" />
                 <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
               </svg>
               <div className="relative z-10 h-12">
+                {/* All — anchor at left:0, stays put */}
                 <button onClick={() => setSelectedStage("All")} className="absolute flex flex-col items-center gap-2 group" style={{ left: "0%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`}>All</span>
+                  <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                  <span className={`text-sm font-medium whitespace-nowrap ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`} style={{ opacity: Math.max(0, 1 - scrollProgress * 2) }}>All</span>
                 </button>
-                <button onClick={() => setSelectedStage("chatbot")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "22%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "chatbot" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "chatbot" ? "text-neutral-900" : "text-neutral-600"}`}>chatbot</span>
-                </button>
-                <button onClick={() => setSelectedStage("reasoner")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "36%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "reasoner" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "reasoner" ? "text-neutral-900" : "text-neutral-600"}`}>reasoner</span>
-                </button>
-                <button onClick={() => setSelectedStage("agent")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "50%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "agent" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "agent" ? "text-neutral-900" : "text-neutral-600"}`}>agent</span>
-                </button>
-                <button onClick={() => setSelectedStage("innovator")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "63%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "innovator" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "innovator" ? "text-neutral-900" : "text-neutral-600"}`}>innovator</span>
-                </button>
-                <button onClick={() => setSelectedStage("Organization")} className="absolute flex flex-col items-center gap-2 group -translate-x-1/2" style={{ left: "76%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "Organization" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "Organization" ? "text-neutral-900" : "text-neutral-600"}`}>Organization</span>
-                </button>
-                <button onClick={() => setSelectedStage("human")} className="absolute flex flex-col items-end gap-2 group" style={{ right: "0%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-all relative z-20 ${selectedStage === "human" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium transition-colors whitespace-nowrap ${selectedStage === "human" ? "text-neutral-900" : "text-neutral-600"}`}>human</span>
-                </button>
+                {/* All other dots converge toward left:0 proportionally */}
+                {([
+                  { key: "chatbot",      nat: 22,  txFull: -50  },
+                  { key: "reasoner",     nat: 36,  txFull: -50  },
+                  { key: "agent",        nat: 50,  txFull: -50  },
+                  { key: "innovator",    nat: 63,  txFull: -50  },
+                  { key: "Organization", nat: 76,  txFull: -50  },
+                  { key: "human",        nat: 100, txFull: -100 },
+                ] as { key: string; nat: number; txFull: number }[]).map(({ key, nat, txFull }) => {
+                  const p = scrollProgress;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setSelectedStage(key)}
+                      className="absolute flex flex-col items-center gap-2 group"
+                      style={{
+                        left: `${nat * (1 - p)}%`,
+                        transform: `translateX(${txFull * (1 - p)}%)`,
+                        opacity: 1 - p,
+                        pointerEvents: p > 0.85 ? "none" : "auto",
+                      }}
+                    >
+                      <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === key ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                      <span className={`text-sm font-medium whitespace-nowrap ${selectedStage === key ? "text-neutral-900" : "text-neutral-600"}`} style={{ opacity: Math.max(0, 1 - p * 2.5) }}>{key}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </section>

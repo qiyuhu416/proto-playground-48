@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./TableOfContents";
 import { ARTICLE_META } from "./articleMeta";
+import { ArticleRefCard } from "./ArticleRefCard";
 
 export const Route = createFileRoute("/designing-next-gen-ai-products")({
   head: () => ({
     meta: [
-      { title: "Designing Next-Gen AI Products" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content:
@@ -59,61 +60,25 @@ function ArticleComponent() {
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
-          <p>
-            Instead of AI–individual reaction, this project at AI-Caring was about <strong>AI–group interaction</strong>: AI steps into an already-existing human web and learns to deal with relationships between elder, caregiver, and family.
-          </p>
-
-          <p>
-            The core challenge: How do we design trust when AI must handle conflicting interests? A bot caring for an elder knows sensitive information from both the elder and their caregiver. But the elder might not want the bot to tell everything to the caregiver.
-          </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-4">Key insight</div>
-            <p className="m-0"><strong>Trust is scripted.</strong> Trust is usually built through small interactions. Each step a bot takes is a design decision that either builds or breaks trust.</p>
-          </div>
-
-          <p>
-            When facing a conflict (e.g., elder wants privacy but caregiver needs health updates), a well-designed bot doesn't decide alone. It follows this structure:
-          </p>
-
-          <div className="bg-neutral-100 rounded-lg p-6 my-8 text-sm font-mono text-neutral-700 overflow-x-auto">
-            <div className="mb-4"><strong>1 · Acknowledge the instruction</strong></div>
-            <div className="ml-4 mb-4 text-neutral-600">"I understand you want to [elder's instruction]"<br/>"I notice a conflict between your goal, your caregiver's goal, and the potential outcome."<br/>→ name the conflict openly</div>
-
-            <div className="mb-4"><strong>2 · Evaluate the outcome</strong></div>
-            <div className="ml-4 mb-4 text-neutral-600">"From our past interactions, I know you value privacy."<br/>→ derive what the system should optimize for<br/>"If I follow your instruction, your caregiver may make decisions that impact your independence."</div>
-
-            <div className="mb-4"><strong>3 · Show affiliation behavior</strong></div>
-            <div className="ml-4 mb-4 text-neutral-600">"I'm programmed to work for you, to maximize your welfare."<br/>"I support you to [your goal], and I've always tried to do what's best for you."<br/>→ eliminate conflicts of interest by design</div>
-
-            <div><strong>4 · Ask to reconfirm</strong></div>
-            <div className="ml-4 text-neutral-600">"Are you sure about [your original instruction]?"<br/>→ get explicit consent for the edge case</div>
-          </div>
-
-          <p className="text-sm text-neutral-500 italic">
-            Each line is a design hypothesis to test in user research. The structure builds transparency before the moment of conflict.
-          </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Understanding affiliation</div>
-            <p className="m-0">In social science, <em>affiliation</em> means being on someone's side—displaying empathy and matching their preference. It's distinct from <em>alignment</em>, which is just structural cooperation. When designing for trust, affiliation is the emotional bridge.</p>
-          </div>
-
-          <p>
-            The design challenge: map out all the variables the bot must weigh. With 9 key variables (affiliation, health status, finances, elder goals, etc.), there are 8+ decision paths. Some have clear answers; some don't. Those are where the bot must hand off to a human.
-          </p>
-
-          <p>
-            The conclusion: <strong>In high-stakes scenarios, "I am not capable of doing this alone" is the most honest and trustworthy thing an AI can say.</strong>
-          </p>
 
           <div className="not-prose mt-8 mb-12">
-            <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
-              <img src="/articles/trust-thumb.png" alt="Conversation Design for Human-AI trust" className="w-full object-contain p-6" />
-            </a>
-            <p className="text-sm text-neutral-600 mb-2">This elder care case study opened a deeper question: how do you actually script trust into a conversation? In a follow-up piece, I explore the principles behind affiliation behaviors, transparent conflict resolution, and the specific moments when an AI should defer—not because it can't answer, but because the relationship requires it.</p>
-            <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors block">Read: Conversation Design for Human-AI trust →</a>
+            <ArticleRefCard
+              slug="designing-for-conversations-that-earn-trust"
+              category="Role"
+              meta="Research · Design"
+            />
           </div>
+          <p>
+            In social science, <em>affiliation</em> means being on someone's side—displaying empathy and matching their preference. It's distinct from <em>alignment</em>, which is just structural cooperation. When designing for trust, affiliation is the emotional bridge.
+          </p>
+
+          <p>
+          Instead of AI–individual reaction, this was an HCI research at AI-Caring Institute about <strong>AI–group interaction</strong> in eldercare and learns to deal with relationships between elder, caregiver, and family.             
+          </p>
+
+          <p>
+          </p>
+
 
           <h2 id="designing-feeling" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Designing the feeling (when AI has easy inferences)</h2>
 
@@ -273,37 +238,11 @@ function ArticleComponent() {
           </p>
 
           <p>
-            We prototyped each option and tested with users. The result: writers don't want to think about the AI. They just want to feel supported and write better. The "blur event" trigger won because it respected the human's agency.
+            We prototyped each option and tested with users. Writers don't want to think about the AI. They just want to feel supported and write better. The "blur event" trigger won because it respected the human's agency.
           </p>
 
           <h2 id="where-not-ai" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Where to NOT use AI</h2>
 
-          <p>
-            This is the most important design question: <strong>When should we not use AI?</strong>
-          </p>
-
-          <p>
-            When the cost of failure is high. When human judgment is irreplaceable. When the relationship itself is the product. When the user feels:
-          </p>
-
-          <div className="space-y-3 my-8">
-            <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-              <p className="text-sm font-semibold text-neutral-900 mb-1">Bypassed</p>
-              <p className="text-xs text-neutral-600">When AI makes the call instead of supporting the human's decision</p>
-            </div>
-            <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-              <p className="text-sm font-semibold text-neutral-900 mb-1">Reluctant to decide</p>
-              <p className="text-xs text-neutral-600">When AI options paralyze rather than enable choice</p>
-            </div>
-            <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-              <p className="text-sm font-semibold text-neutral-900 mb-1">Distanced</p>
-              <p className="text-xs text-neutral-600">When AI creates a wall between the human and the real task</p>
-            </div>
-            <div className="p-3 bg-neutral-50 rounded border border-neutral-200">
-              <p className="text-sm font-semibold text-neutral-900 mb-1">Drained</p>
-              <p className="text-xs text-neutral-600">When managing the AI becomes the actual work</p>
-            </div>
-          </div>
 
           <img
             src="/articles/ai-fatigue.png"
@@ -311,24 +250,19 @@ function ArticleComponent() {
             className="w-full rounded-lg my-8 border border-neutral-200"
           />
 
+          <p>
+            This is the most important design question: <strong>When should we not use AI?</strong>
+          </p>
+
+          <p>
+            When the cost of failure is high. When human judgment is irreplaceable. When the relationship itself is the product. When the user feels: <strong> Great AI product design knows its boundaries. </strong>
+          </p>
+
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
-            <p className="m-0">Great AI product design knows its boundaries. It's not about pushing the edges of what's possible—it's about <strong>honoring what matters most.</strong></p>
+            <p className="m-0">Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.</p>
           </div>
-
-          <h2 id="core-lessons" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Three core lessons</h2>
-
-          <ol className="space-y-6 my-8">
-            <li>
-              <strong>Map UX to capability.</strong> Not all problems are AI problems. Some require hard reasoning (elder care—needs human judgment). Some are easy (co-writing rules—can be automated). Design for what the AI is actually good at.
-            </li>
-            <li>
-              <strong>Timing is everything.</strong> In human–AI interaction design, when you intervene matters more than how. The trigger mechanism shapes the entire relationship between human and AI.
-            </li>
-            <li>
-              <strong>Relationships over features.</strong> Users don't remember AI capabilities—they remember how the AI made them feel. Did it respect their agency? Did it support them? Or did it get in the way?
-            </li>
-          </ol>
+ 
         </div>
 
         <div className="mt-20 border-t border-neutral-200 pt-10">

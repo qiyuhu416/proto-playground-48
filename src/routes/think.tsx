@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { NAV_ITEMS, navHref } from "./navItems";
 
 export const Route = createFileRoute("/think")({
   head: () => ({
     meta: [
-      { title: "Think — Models & reflections" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Mental models, thinking frameworks, and written reflections on design and prototyping.",
@@ -21,22 +22,20 @@ function ThinkComponent() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
         <div className="h-9 w-9" />
         <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {(["work", "play", "reflect", "listen"] as const).map((l) => {
-            return (
-              <a
-                key={l}
-                href={l === "work" ? "/" : l === "reflect" ? "/think" : `/${l}`}
-                className={
-                  "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                  (l === "reflect"
-                    ? "bg-neutral-900 text-white"
-                    : "text-neutral-600 hover:text-neutral-900")
-                }
-              >
-                {l}
-              </a>
-            );
-          })}
+          {NAV_ITEMS.map((l) => (
+            <a
+              key={l}
+              href={navHref(l)}
+              className={
+                "rounded-full px-4 py-1.5 text-sm transition-colors " +
+                (l === "reflect"
+                  ? "bg-neutral-900 text-white"
+                  : "text-neutral-600 hover:text-neutral-900")
+              }
+            >
+              {l}
+            </a>
+          ))}
         </nav>
         <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
       </header>
@@ -66,7 +65,7 @@ function ThinkComponent() {
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2 group-hover:underline">Analysis-synthesis bridge</h3>
-            <p className="text-neutral-600 text-sm">A model by Hugh Dubberly that frames design as moving between analysis (understanding the current state) and synthesis (creating the future state)—with a bridge of abstraction between them.</p>
+            <p className="text-neutral-600 text-sm">The best model by Hugh Dubberly! It has been helping me intentionally practice "thinking outside the box" the mindset</p>
           </a>
 
           {/* Double diamond */}
@@ -81,7 +80,7 @@ function ThinkComponent() {
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2">Double diamond</h3>
-            <p className="text-neutral-600 text-sm">Discover → Define → Develop → Deliver. Two phases of divergent and convergent thinking—first understanding the right problem, then finding the right solution.</p>
+            <p className="text-neutral-600 text-sm">The designer thinking day 1 model. Ya I hear sometimes it could be "too theoretical", but at least it let us know where we are making a leap of faith while we have to.</p>
           </div>
 
           {/* Me × Others × Think × Do */}
@@ -98,7 +97,7 @@ function ThinkComponent() {
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2 group-hover:underline">Me · Others · Think · Do</h3>
-            <p className="text-neutral-600 text-sm">A 2×2 that maps any situation across who's involved (me vs. others) and how they engage (thinking vs. doing). Reveals blind spots in perspective and action.</p>
+            <p className="text-neutral-600 text-sm">2×2 is just a cool way to map out the situations and help me see my own "unknown-unkonwn"s</p>
           </button>
 
           {/* Service blueprint */}
@@ -128,7 +127,7 @@ function ThinkComponent() {
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2">Service blueprint</h3>
-            <p className="text-neutral-600 text-sm">Maps the full service experience across multiple stakeholder layers—user actions, frontstage interactions, backstage processes, and supporting systems—on a shared timeline.</p>
+            <p className="text-neutral-600 text-sm">What are all the stakeholders, what do they do, and how are their actions related to each other. Layer by layer, step by step. Great for service design.</p>
           </div>
 
         </div>

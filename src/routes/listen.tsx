@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { NAV_ITEMS, navHref } from "./navItems";
 
 export const Route = createFileRoute("/listen")({
   head: () => ({
     meta: [
-      { title: "Listen — A network of people" },
+      { title: "Qiyu x AI interaction" },
       { name: "description", content: "Voices and values that have shaped my thinking." },
     ],
   }),
@@ -295,10 +296,10 @@ function ListenComponent() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
         <div className="h-9 w-9" />
         <nav className="flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-800 p-1 shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
-          {(["work", "play", "reflect", "listen"] as const).map((l) => (
+          {NAV_ITEMS.map((l) => (
             <a
               key={l}
-              href={l === "work" ? "/" : l === "reflect" ? "/think" : `/${l}`}
+              href={navHref(l)}
               className={
                 "rounded-full px-4 py-1.5 text-sm transition-colors " +
                 (l === "listen" ? "bg-white text-neutral-900" : "text-neutral-400 hover:text-white")

@@ -6,7 +6,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/physical-ai")({
   head: () => ({
     meta: [
-      { title: "Physical AI" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Designing AI beyond screens: embedding intelligence in physical systems to reduce human error in healthcare.",

@@ -7,7 +7,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/proactive")({
   head: () => ({
     meta: [
-      { title: "Proactive" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Using prototypes as testing tools to validate assumptions and iterate with stakeholders.",

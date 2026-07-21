@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 export const Route = createFileRoute("/human-ai-research")({
   head: () => ({
     meta: [
-      { title: "Human-AI relationship research" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Exploring the evolving nature of human-AI collaboration and partnership.",

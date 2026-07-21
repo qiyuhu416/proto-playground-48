@@ -6,7 +6,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/claude-code-research")({
   head: () => ({
     meta: [
-      { title: "My Claude Code research" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Building and evolving development tools powered by AI assistance.",

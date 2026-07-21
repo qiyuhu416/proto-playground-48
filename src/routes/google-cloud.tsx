@@ -7,7 +7,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/google-cloud")({
   head: () => ({
     meta: [
-      { title: "Google Cloud - Conversational AI" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Embedding AI into the product discovery experience for startup customers.",

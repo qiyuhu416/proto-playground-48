@@ -49,7 +49,7 @@ export const ARTICLE_META: Record<string, { title: string; thumbnail?: string; t
   "claude-code-research": {
     title: "My story with Claude Code",
     thumbnail: "/articles/claude-code-thumb.png",
-    thumbnailSize: "medium" as const,
+    thumbnailSize: "small" as const,
     sections: ["Mission", "Key Learnings", "What AI can't do", "Don't let AI bypass your thinking", "Evolution"],
   },
   "designing-for-conversations-that-earn-trust": {

@@ -6,7 +6,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
     meta: [
-      { title: "Conversation Design for Human-AI trust" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "How to design AI that humans trust—borrowing from human relationships, scripting small moments, and knowing when to hand off.",

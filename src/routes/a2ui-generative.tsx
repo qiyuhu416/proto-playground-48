@@ -6,7 +6,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/a2ui-generative")({
   head: () => ({
     meta: [
-      { title: "A2UI & Generative UI" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "AI-driven user interfaces that generate and adapt components based on intent.",

@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./TableOfContents";
 import { ARTICLE_META } from "./articleMeta";
+import { ArticleRefCard } from "./ArticleRefCard";
 
 export const Route = createFileRoute("/what-do-prototypes-prototype")({
   head: () => ({
     meta: [
-      { title: "What do prototypes prototype" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Prototyping as a research mindset, and designing to elicit errors rather than hide them.",
@@ -89,11 +90,8 @@ function ArticleComponent() {
             {/* Look & Feel */}
             <div>
               <h3 id="look-and-feel" className="text-lg font-semibold text-neutral-900 mb-6">Look & Feel</h3>
-              <a href="/reimagining-the-chatbot" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
-                <img src="/articles/task-analysis-flow.png" alt="Look & Feel prototype" className="w-full object-contain p-6" />
-              </a>
-              <p className="text-sm text-neutral-600">Prototypes that test how something <em>feels</em> to interact with—motion, tone, visual language. Does it feel right? Does it feel trustworthy? You can't answer this with a spec doc.</p>
-              <a href="/reimagining-the-chatbot" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Reimagining the chatbot →</a>
+              <ArticleRefCard slug="reimagining-the-chatbot" category="Implementation" meta="Collection · Design system" />
+              <p className="text-sm text-neutral-600 mt-4">Prototypes that test how something <em>feels</em> to interact with—motion, tone, visual language. Does it feel right? Does it feel trustworthy? You can't answer this with a spec doc.</p>
 
               <div className="space-y-3 mt-6">
                 <a href="/ai-ai-interaction" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
@@ -123,21 +121,15 @@ function ArticleComponent() {
             {/* Implementation */}
             <div>
               <h3 id="implementation" className="text-lg font-semibold text-neutral-900 mb-6">Implementation</h3>
-              <a href="/a2ui-generative" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
-                <img src="/articles/task-analysis-flow.png" alt="Implementation prototype" className="w-full object-contain p-6" />
-              </a>
-              <p className="text-sm text-neutral-600">Prototypes that test whether it actually <em>works</em>—the underlying logic, the data flow, the edge cases. These expose what can't be assumed and what the tech genuinely can and can't do.</p>
-              <a href="/a2ui-generative" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: A2UI & Generative UI →</a>
+              <ArticleRefCard slug="a2ui-generative" category="Look & Feel" meta="Research · AI" />
+              <p className="text-sm text-neutral-600 mt-4">Prototypes that test whether it actually <em>works</em>—the underlying logic, the data flow, the edge cases. These expose what can't be assumed and what the tech genuinely can and can't do.</p>
             </div>
 
             {/* Role */}
             <div>
               <h3 id="role" className="text-lg font-semibold text-neutral-900 mb-6">Role</h3>
-              <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
-                <img src="/articles/testing-session.png" alt="Role prototype" className="w-full object-contain p-6" />
-              </a>
-              <p className="text-sm text-neutral-600">Prototypes that test what role the AI <em>plays</em>—is it a tool, a collaborator, or a caregiver? When AI supports elder care, it can't just be accurate. It has to be present, patient, and human in the ways that matter most.</p>
-              <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
+              <ArticleRefCard slug="designing-for-conversations-that-earn-trust" category="Role" meta="Research · Design" />
+              <p className="text-sm text-neutral-600 mt-4">Prototypes that test what role the AI <em>plays</em>—is it a tool, a collaborator, or a caregiver? When AI supports elder care, it can't just be accurate. It has to be present, patient, and human in the ways that matter most.</p>
 
               <div className="mt-6 p-5 rounded-xl border border-neutral-200 bg-neutral-50">
                 <p className="text-sm font-semibold text-neutral-900 mb-1">A specific case: Audio AI — built to elicit errors</p>

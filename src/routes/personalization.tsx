@@ -7,7 +7,7 @@ import { WhereNotToUseAI } from "./sharedContent";
 export const Route = createFileRoute("/personalization")({
   head: () => ({
     meta: [
-      { title: "Personalization" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Understanding what makes humans human—exploring the future of AI through personalization.",

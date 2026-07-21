@@ -6,7 +6,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/design-as-a-research-tool")({
   head: () => ({
     meta: [
-      { title: "Service Design & Physical prototypes" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "How design prototyping and physical systems revealed hidden user behaviors that surveys couldn't—and changed parking policy in Pittsburgh.",

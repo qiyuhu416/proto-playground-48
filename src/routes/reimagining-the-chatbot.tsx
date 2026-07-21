@@ -7,7 +7,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
     meta: [
-      { title: "A collection of reimagining the chatbot: Select & fill with prompts" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Exploring how prompts reshape design workflows—generative design meets human intent.",

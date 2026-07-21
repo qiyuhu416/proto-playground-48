@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 export const Route = createFileRoute("/product-launch-from-0-1")({
   head: () => ({
     meta: [
-      { title: "Product launch from 0–1" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "A case study on building and shipping a product from zero to one.",

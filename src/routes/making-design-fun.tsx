@@ -6,7 +6,7 @@ import { ARTICLE_META } from "./articleMeta";
 export const Route = createFileRoute("/making-design-fun")({
   head: () => ({
     meta: [
-      { title: "Making design fun" },
+      { title: "Qiyu x AI interaction" },
       {
         name: "description",
         content: "Caltrain, After Effects, and why vibe-coding is the future of creation. A collection of playful experiments.",
