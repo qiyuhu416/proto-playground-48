@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { NAV_ITEMS, navHref } from "./navItems";
+import { SiteNav } from "./SiteNav";
 
 export const Route = createFileRoute("/think")({
   head: () => ({
@@ -19,26 +19,7 @@ function ThinkComponent() {
   const [quadrantOpen, setQuadrantOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background text-neutral-900">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
-        <div className="h-9 w-9" />
-        <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {NAV_ITEMS.map((l) => (
-            <a
-              key={l}
-              href={navHref(l)}
-              className={
-                "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                (l === "reflect"
-                  ? "bg-neutral-900 text-white"
-                  : "text-neutral-600 hover:text-neutral-900")
-              }
-            >
-              {l}
-            </a>
-          ))}
-        </nav>
-        <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
-      </header>
+      <SiteNav active="reflect" />
 
       {/* Frameworks section */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-12">

@@ -451,8 +451,8 @@ function Index() {
                   </button>
                 </div>
                 <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-                  {(["Work", "Play", "Think", "Listen"] as const).map((l) => (
-                    <a key={l} href={l === "Work" ? "/" : `/${l.toLowerCase()}`} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "Work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
+                  {(["work", "play", "reflect", "listen"] as const).map((l) => (
+                    <a key={l} href={l === "work" ? "/" : `/${l.toLowerCase()}`} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
                   ))}
                 </nav>
                 <div className="flex-1 flex justify-end">

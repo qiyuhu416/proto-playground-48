@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { NAV_ITEMS, navHref } from "./navItems";
+import { SiteNav } from "./SiteNav";
 
 interface PlacedImage { id: number; src: string; x: number; y: number; }
 interface DragState { id: number; offsetX: number; offsetY: number; }
@@ -195,26 +195,10 @@ function PlayComponent() {
           }}
         />
       ))}
-      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 pt-8" onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }}>
-        <div className="h-9 w-9" />
-        <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          {NAV_ITEMS.map((l) => (
-            <a
-              key={l}
-              href={navHref(l)}
-              className={
-                "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                (l === "play"
-                  ? "bg-neutral-900 text-white"
-                  : "text-neutral-600 hover:text-neutral-900")
-              }
-            >
-              {l}
-            </a>
-          ))}
-        </nav>
-        <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
-      </header>
+      <SiteNav
+        active="play"
+        headerProps={{ onClick: (e) => e.stopPropagation(), style: { cursor: "auto" } }}
+      />
 
       {/* Hero space */}
       <div ref={boardRef} className="w-full" style={{ minHeight: "50vh" }} />

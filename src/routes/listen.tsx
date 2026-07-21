@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { NAV_ITEMS, navHref } from "./navItems";
+import { SiteNav } from "./SiteNav";
 
 export const Route = createFileRoute("/listen")({
   head: () => ({
@@ -293,38 +293,11 @@ function ListenComponent() {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-white">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 pt-8">
-        <div className="h-9 w-9" />
-        <nav className="flex items-center gap-1 rounded-full border border-neutral-700 bg-neutral-800 p-1 shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
-          {NAV_ITEMS.map((l) => (
-            <a
-              key={l}
-              href={navHref(l)}
-              className={
-                "rounded-full px-4 py-1.5 text-sm transition-colors " +
-                (l === "listen" ? "bg-white text-neutral-900" : "text-neutral-400 hover:text-white")
-              }
-            >
-              {l}
-            </a>
-          ))}
-        </nav>
-        <a href="/" className="text-sm font-medium text-white">Qiyu</a>
-      </header>
+      <SiteNav active="listen" theme="dark" />
 
       <section className="mx-auto max-w-6xl px-6 pt-12">
         <div className="mb-6">
           <h1 className="text-4xl font-medium mb-3">Listen</h1>
-          <div className="flex items-center gap-5 text-sm text-neutral-500">
-            <span className="flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
-              synthesized value
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-neutral-500" />
-              person · quote
-            </span>
-          </div>
         </div>
 
         <div className="rounded-2xl overflow-hidden border border-neutral-800">
