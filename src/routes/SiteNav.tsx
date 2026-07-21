@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { NAV_ITEMS, navHref, type NavItem } from "./navItems";
 
 interface SiteNavProps {
@@ -22,8 +23,8 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
     >
       <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
         <div className="flex-1 flex items-center">
-          <a
-            href="/what-do-prototypes-prototype"
+          <Link
+            to="/what-do-prototypes-prototype"
             className={[
               "group relative inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs overflow-hidden transition-all",
               dark
@@ -34,7 +35,7 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
             <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
             <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
-          </a>
+          </Link>
         </div>
         <nav
           className={[
@@ -45,9 +46,9 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
           ].join(" ")}
         >
           {NAV_ITEMS.map((l) => (
-            <a
+            <Link
               key={l}
-              href={navHref(l)}
+              to={navHref(l)}
               className={[
                 "rounded-full px-4 py-1.5 text-sm transition-colors",
                 l === active
@@ -60,16 +61,16 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
               ].join(" ")}
             >
               {l}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex-1 flex justify-end">
-          <a
-            href="/"
+          <Link
+            to="/"
             className={`text-sm font-medium ${dark ? "text-white" : "text-neutral-900"}`}
           >
             Qiyu
-          </a>
+          </Link>
         </div>
       </div>
     </header>

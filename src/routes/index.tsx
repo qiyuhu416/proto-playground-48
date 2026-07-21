@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState, useEffect, useRef } from "react";
 import { ArrowUpRight, LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
 import { ARTICLE_META } from "./articleMeta";
@@ -424,7 +424,7 @@ function Index() {
             </div>
             <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
               {NAV_ITEMS.map((l) => (
-                <a key={l} href={navHref(l)} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
+                <Link key={l} to={navHref(l)} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</Link>
               ))}
             </nav>
             <div className="flex-1 flex justify-end">
@@ -451,8 +451,8 @@ function Index() {
                   </button>
                 </div>
                 <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-                  {(["work", "play", "reflect", "listen"] as const).map((l) => (
-                    <a key={l} href={l === "work" ? "/" : `/${l.toLowerCase()}`} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</a>
+                  {NAV_ITEMS.map((l) => (
+                    <Link key={l} to={navHref(l)} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</Link>
                   ))}
                 </nav>
                 <div className="flex-1 flex justify-end">
