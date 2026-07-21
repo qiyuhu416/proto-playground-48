@@ -26,7 +26,7 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
           <Link
             to="/what-do-prototypes-prototype"
             className={[
-              "group relative inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs overflow-hidden transition-all",
+              "hidden md:inline-flex group relative items-center gap-2 rounded-full px-3 py-1 text-xs overflow-hidden transition-all",
               dark
                 ? "bg-neutral-800 text-neutral-300 hover:bg-white hover:text-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
                 : "bg-white text-neutral-600 hover:bg-neutral-900 hover:text-white shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
@@ -67,7 +67,7 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
         <div className="flex-1 flex justify-end">
           <Link
             to="/"
-            className={`text-sm font-medium ${dark ? "text-white" : "text-neutral-900"}`}
+            className={`hidden md:block text-sm font-medium ${dark ? "text-white" : "text-neutral-900"}`}
           >
             Qiyu
           </Link>

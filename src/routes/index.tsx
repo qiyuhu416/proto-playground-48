@@ -416,7 +416,7 @@ function Index() {
           /* ── At top: badge + nav + Qiyu ── */
           <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
             <div className="flex-1 flex items-center">
-              <a href="/what-do-prototypes-prototype" className="group relative inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
+              <a href="/what-do-prototypes-prototype" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
                 <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
                 <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
@@ -428,7 +428,7 @@ function Index() {
               ))}
             </nav>
             <div className="flex-1 flex justify-end">
-              <div className="group relative flex h-9 items-center">
+              <div className="hidden md:flex group relative h-9 items-center">
                 <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
                 <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
                 <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
@@ -456,7 +456,7 @@ function Index() {
                   ))}
                 </nav>
                 <div className="flex-1 flex justify-end">
-                  <div className="group relative flex h-9 items-center">
+                  <div className="hidden md:flex group relative h-9 items-center">
                     <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
                     <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
                     <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
@@ -507,7 +507,7 @@ function Index() {
                         }}
                       >
                         <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === key ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                        <span className={`text-sm font-medium whitespace-nowrap ${selectedStage === key ? "text-neutral-900" : "text-neutral-600"}`}>{key}</span>
+                        <span className={`text-sm font-medium whitespace-nowrap transition-opacity duration-150 ${selectedStage === key ? "text-neutral-900 opacity-100" : "opacity-0"}`}>{key}</span>
                       </button>
                     );
                   })}
@@ -523,7 +523,7 @@ function Index() {
         <h1 className="text-5xl font-medium tracking-tight text-neutral-900 md:text-6xl">
           Prototyping "What-if"
           <br />
-          in Human–AI Interactionm
+          in Human–AI Interactions
         </h1>
       </section>
 
@@ -541,7 +541,7 @@ function Index() {
                 {/* All — anchor at left:0, stays put */}
                 <button onClick={() => setSelectedStage("All")} className="absolute flex flex-col items-center gap-2 group" style={{ left: "0%" }}>
                   <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className={`text-sm font-medium whitespace-nowrap ${selectedStage === "All" ? "text-neutral-900" : "text-neutral-600"}`} style={{ opacity: Math.max(0, 1 - scrollProgress * 2) }}>All</span>
+                  <span className="text-sm font-medium whitespace-nowrap text-neutral-900 transition-opacity duration-150" style={{ opacity: selectedStage === "All" ? Math.max(0, 1 - scrollProgress * 2) : 0 }}>All</span>
                 </button>
                 {/* All other dots converge toward left:0 proportionally */}
                 {([
@@ -566,7 +566,7 @@ function Index() {
                       }}
                     >
                       <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === key ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                      <span className={`text-sm font-medium whitespace-nowrap ${selectedStage === key ? "text-neutral-900" : "text-neutral-600"}`} style={{ opacity: Math.max(0, 1 - p * 2.5) }}>{key}</span>
+                      <span className="text-sm font-medium whitespace-nowrap text-neutral-900 transition-opacity duration-150" style={{ opacity: selectedStage === key ? Math.max(0, 1 - p * 2.5) : 0 }}>{key}</span>
                     </button>
                   );
                 })}
