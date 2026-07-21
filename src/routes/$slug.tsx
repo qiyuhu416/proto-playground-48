@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft, Play } from "lucide-react";
+import { TableOfContents } from "./TableOfContents";
 
 export const Route = createFileRoute("/$slug")({
   head: ({ params }) => ({
@@ -93,9 +94,11 @@ function PrototypeComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <div className="mx-auto max-w-4xl px-6 py-12">
+        <TableOfContents />
+
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -122,7 +125,7 @@ function PrototypeComponent() {
         </div>
 
         <div className="mt-12 max-w-2xl">
-          <h2 className="text-2xl font-medium text-neutral-900 mb-4">About this prototype</h2>
+          <h2 id="about" className="text-2xl font-medium text-neutral-900 mb-4">About this prototype</h2>
           <p className="text-neutral-600 mb-4">
             This is an interactive exploration of a design concept. The prototype above demonstrates the
             interaction, animation, and user experience of the idea in motion.
@@ -132,7 +135,7 @@ function PrototypeComponent() {
             makes interactions feel natural, and how to communicate system capabilities clearly.
           </p>
 
-          <h2 className="text-lg font-medium text-neutral-900 mt-8 mb-3">Key design insights</h2>
+          <h2 id="insights" className="text-lg font-medium text-neutral-900 mt-8 mb-3">Key design insights</h2>
           <ul className="space-y-2 text-sm text-neutral-600">
             <li>• Gesture recognition makes AI interactions feel more intuitive</li>
             <li>• Clear feedback loops reduce uncertainty in human-AI collaboration</li>

@@ -22,7 +22,7 @@ function ArticleComponent() {
       <article className="mx-auto max-w-3xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -77,7 +77,7 @@ function ArticleComponent() {
             This is a <strong>hard inference</strong> case. How would you explain to AI what "trust" is? I couldn't remember how much literature review I did trying to understand humans. We design human–AI relationships by borrowing from human–human relationships, but humans are complicated—human–human relationships are even <strong>MUCH MORE</strong> complicated. So most of this HCI research was about understanding humans.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 01 · Trust can be scripted.</h2>
+          <h2 id="takeaway-01" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 01 · Trust can be scripted.</h2>
 
           <p>
             Trust is usually built through small interactions. Below is a decision structure we proposed—see how small things can build up to create those feelings:
@@ -134,7 +134,7 @@ function ArticleComponent() {
 └──────────────────────────────────────────────────┘`}</pre>
           <p className="text-xs text-neutral-500 -mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 02 · In high-inference scenarios, trust also means "I am not capable of doing this."</h2>
+          <h2 id="takeaway-02" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 02 · Trust can mean "I am not capable of doing this."</h2>
 
           <p>
             In eldercare, the trickiest part is when the older adult's health declines. The bot is more than just a messenger—it's a party that knows information from both sides and can talk to both. But the elder might not want the bot to tell everything to their caregiver.

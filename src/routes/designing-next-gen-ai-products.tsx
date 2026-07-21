@@ -23,7 +23,7 @@ function ArticleComponent() {
       <article className="mx-auto max-w-3xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back

@@ -22,7 +22,7 @@ function PhysicalAIComponent() {
       <article className="mx-auto max-w-4xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -44,7 +44,7 @@ function PhysicalAIComponent() {
         </div>
 
         <img
-          src="/articles/physical-ai-thumb.png"
+          src="/articles/physical-ai-hero.png"
           alt="Physical AI healthcare interaction design"
           className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
         />
@@ -52,7 +52,7 @@ function PhysicalAIComponent() {
         <div className="prose prose-neutral max-w-4xl">
           <TableOfContents />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge: Human Error in Phlebotomy</h2>
+          <h2 id="the-challenge-human-error-in-phlebotomy" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge: Human Error in Phlebotomy</h2>
 
           <p>
             In diagnostic testing, sample collection is critical. A single error in this phase cascades through the entire lab process—false results, wasted samples, delayed diagnoses. Yet the current workflow relies entirely on human attention and memory.
@@ -86,16 +86,10 @@ function PhysicalAIComponent() {
             <p className="m-0"><strong>The insight:</strong> These aren't rare mistakes—they're endemic to the process. The phlebotomist is managing too much cognitive load while performing a precision task.</p>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Why AI?</h2>
-
-          <img
-            src="/articles/physical-ai-20.png"
-            alt="Why AI"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
+          <h2 id="why-ai" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Why AI?</h2>
 
           <p>
-            <strong>We leverage AI's capacity to store, process, and communicate massive information.</strong>
+            Do we really need AI? <strong>Yes. We leverage AI's capacity to store, process, and communicate massive information.</strong>
           </p>
 
           <p>
@@ -106,7 +100,7 @@ function PhysicalAIComponent() {
             In phlebotomy, that means: AI can confirm patient identity against records, validate that the selected vial matches the test order, verify that labels are correct before they're applied, and monitor the collection process to detect deviations.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Mapping AI to Error: Short-term vs. Long-term</h2>
+          <h2 id="mapping-ai-to-error-short-term-vs-long-term" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Mapping AI to Error: Short-term vs. Long-term</h2>
 
           <img
             src="/articles/physical-ai-21.png"
@@ -133,7 +127,7 @@ function PhysicalAIComponent() {
             <li><strong>Reliability:</strong> Reduce human error to near-zero through consistent, tireless execution</li>
           </ul>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The System: Hardware & Design</h2>
+          <h2 id="the-system-hardware-design" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The System: Hardware & Design</h2>
 
           <img
             src="/articles/physical-ai-23.png"
@@ -149,7 +143,7 @@ function PhysicalAIComponent() {
             The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The User Flow: 8-Step Collection Journey</h2>
+          <h2 id="the-user-flow-8-step-collection-journey" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The User Flow: 8-Step Collection Journey</h2>
 
           <img
             src="/articles/physical-ai-24.png"
@@ -183,7 +177,7 @@ function PhysicalAIComponent() {
             </div>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Final Design: The Patient Journey</h2>
+          <h2 id="final-design-the-patient-journey" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Final Design: The Patient Journey</h2>
 
           <img
             src="/articles/physical-ai-22.png"
@@ -195,7 +189,7 @@ function PhysicalAIComponent() {
             The redesigned interaction: Patient confirms identity using multimodal AI. Base station guides phlebotomist through collection. Labels and vials are verified in real-time. The entire journey is monitored, checked, and logged.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Team & Collaboration</h2>
+          <h2 id="team-collaboration" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Team & Collaboration</h2>
 
           <img
             src="/articles/physical-ai-16.png"
@@ -207,7 +201,7 @@ function PhysicalAIComponent() {
             This project was a collaboration between HCI research, industrial & UX design, and technology specialists—bringing together human-centered design with hardware and software engineering.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Key Takeaway</h2>
+          <h2 id="key-takeaway" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Key Takeaway</h2>
 
           <p>
             Physical AI isn't about replacing humans. It's about <strong>removing cognitive overload from moments that require precision.</strong> The phlebotomist's skill—understanding tissue, sensing pressure, making judgment calls—remains irreplaceable. But the burden of remembering 10 variables while drawing blood? That's where AI excels.

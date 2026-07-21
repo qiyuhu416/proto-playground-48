@@ -22,7 +22,7 @@ function ResearchComponent() {
       <article className="mx-auto max-w-2xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -50,7 +50,7 @@ function ResearchComponent() {
 
           <TableOfContents />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What is A2UI?</h2>
+          <h2 id="what-is-a2ui" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What is A2UI?</h2>
           <p>
             A2UI (Agent-to-UI) and Generative UI represent a paradigm shift in how interfaces are designed and built. Instead of pre-designing every screen, we specify intent and let AI generate appropriate interfaces. The key insight: <strong>defining what to explore is more important than building the prototype.</strong>
           </p>
@@ -59,7 +59,7 @@ function ResearchComponent() {
             I used Claude Code to explore these concepts while understanding the boundary: this is research-grade exploration, not a production framework.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Exploring from Use Cases</h2>
+          <h2 id="exploring-from-use-cases" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Exploring from Use Cases</h2>
           <p>
             Rather than building one "generative UI," I mapped the space by exploring different <strong>user roles</strong> and what they need (connecting to the "role" concept from prototype research). For each role, I designed interactions that would emerge:
           </p>
@@ -86,7 +86,7 @@ function ResearchComponent() {
             </div>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Interaction Patterns</h2>
+          <h2 id="interaction-patterns" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Interaction Patterns</h2>
           <p>
             For each role, I explored how interactions might differ when they're AI-generated:
           </p>
@@ -98,14 +98,14 @@ function ResearchComponent() {
             <li><strong>Consistency</strong> — If every interaction generates a new UI, how does the user build mental models?</li>
           </ul>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Research References</h2>
+          <h2 id="research-references" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Research References</h2>
           <ul>
             <li><a href="https://a2ui.org/composer/" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">A2UI Composer</a> — Framework for thinking about agent-driven interfaces</li>
             <li>Generative UI research from Vercel and Anthropic on how to design for AI-generated components</li>
             <li>"What do prototypes prototype?" — Mapping this to the question: <em>What does a generative UI prototype?</em></li>
           </ul>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Big Question</h2>
+          <h2 id="the-big-question" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Big Question</h2>
           <p>
             If interfaces can be generated, what's the role of design? The answer: <strong>design moves upstream</strong>. Instead of designing screens, you design the principles that guide generation. You decide: for this role, what matters most? Speed? Exploration? Control? Learning? The AI generates in service of that intention.
           </p>

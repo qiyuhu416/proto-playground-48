@@ -22,7 +22,7 @@ function CaseStudyComponent() {
       <article className="mx-auto max-w-4xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -52,7 +52,7 @@ function CaseStudyComponent() {
         <div className="prose prose-neutral max-w-4xl">
           <TableOfContents />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge</h2>
+          <h2 id="the-challenge" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge</h2>
           <p>
             Pittsburgh's Smart Loading Zones (SLZ) were designed to improve parking efficiency and reduce delivery times. But adoption was stuck. Most drivers either didn't know about them or actively avoided them. The Parking Authority had questions that surveys couldn't answer:
           </p>
@@ -66,7 +66,7 @@ function CaseStudyComponent() {
             <p className="m-0">Traditional research would ask drivers: "Would you use SLZ?" They'd say yes. But observed behavior told a different story entirely.</p>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Methodology: Design as Discovery</h2>
+          <h2 id="methodology-design-as-discovery" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Methodology: Design as Discovery</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 1: Understanding the Context</h3>
 
@@ -159,7 +159,7 @@ function CaseStudyComponent() {
             className="w-full rounded-2xl my-8 border border-neutral-200"
           />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What Design Revealed</h2>
+          <h2 id="what-design-revealed" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What Design Revealed</h2>
 
           <p>
             <strong>Survey answer:</strong> "Would you use Smart Loading Zones?" 78% said yes.
@@ -193,7 +193,7 @@ function CaseStudyComponent() {
             What surveys said drivers wanted ≠ what driver behavior actually required. Design prototypes bridged that gap.
           </blockquote>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Outcome: From Research to Policy</h2>
+          <h2 id="outcome-from-research-to-policy" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Outcome: From Research to Policy</h2>
 
           <p>
             The design research led to concrete changes in how Pittsburgh's SLZ operates:
@@ -219,7 +219,7 @@ function CaseStudyComponent() {
             className="w-full rounded-2xl my-8"
           />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Research Frameworks Used</h2>
+          <h2 id="research-frameworks-used" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Research Frameworks Used</h2>
 
           <p>Throughout the project, we built:</p>
 
@@ -254,7 +254,7 @@ function CaseStudyComponent() {
             className="w-full rounded-2xl my-8"
           />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Why Design Was Essential</h2>
+          <h2 id="why-design-was-essential" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Why Design Was Essential</h2>
 
           <p>
             Traditional research methods would have confirmed the obvious: drivers want efficient parking. But design as research revealed the non-obvious: <strong>drivers will default to hazard lights rather than learn a new system if the system seems confusing.</strong>

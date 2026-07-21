@@ -22,7 +22,7 @@ function ArticleComponent() {
       <article className="mx-auto max-w-4xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -50,7 +50,7 @@ function ArticleComponent() {
 
           <TableOfContents />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · The philosophy: friction-free creation</h2>
+          <h2 id="the-philosophy-friction-free-creation" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · The philosophy: friction-free creation</h2>
 
           <p>
             I had this idea stuck in my head and wanted to make it—a small playful thing just for fun. So I did it, with After Effects. But it took me almost the whole day, learning After Effects from zero just to create that moment.
@@ -64,7 +64,7 @@ function ArticleComponent() {
             <p className="m-0"><strong>The question that drives it all:</strong> Why should making things be hard? Why should there be so much friction between an idea and its realization?</p>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Curiosity, not FOMO</h2>
+          <h2 id="curiosity-not-fomo" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Curiosity, not FOMO</h2>
 
           <p>
             The difference between learning something because it's trendy vs. learning something because you're genuinely curious is everything. FOMO-driven learning feels like obligation. Curiosity feels like play.
@@ -74,7 +74,7 @@ function ArticleComponent() {
             Every experiment here came from pure curiosity. Not "should I learn this?" but "I have an idea and I want to see it come to life, whatever it takes." The tools are just the means to the end.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · The experiments</h2>
+          <h2 id="the-experiments" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · The experiments</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Birthday card</h3>
           <p>
@@ -121,7 +121,7 @@ function ArticleComponent() {
             Your browser doesn't support video playback.
           </video></div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§4 · One block of prompts</h2>
+          <h2 id="one-block-of-prompts" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§4 · One block of prompts</h2>
 
           <p>
             The best creation tools don't drown you in options. They give you one powerful, focused intention. You think in blocks: your idea → your prompt → your output.
@@ -131,7 +131,7 @@ function ArticleComponent() {
             No fussy settings. No analysis paralysis. No endless tweaking. Just flow. The tool becomes invisible and only the delight remains.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§5 · What makes design playful</h2>
+          <h2 id="what-makes-design-playful" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§5 · What makes design playful</h2>
 
           <p>
             Playful design is when you stumble on surprising interactions. A gesture that feels right. An animation that makes you smile. A workflow that feels effortless.
@@ -145,7 +145,7 @@ function ArticleComponent() {
             <p className="m-0"><strong>The core belief:</strong> If I can remove friction, amplify joy, and make creation feel less like work and more like play, then I've done my job.</p>
           </div>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§6 · Why this matters</h2>
+          <h2 id="why-this-matters" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§6 · Why this matters</h2>
 
           <p>
             In an era where creation tools are becoming more powerful, the question isn't "can I make it?" but "can I make it joyfully?"

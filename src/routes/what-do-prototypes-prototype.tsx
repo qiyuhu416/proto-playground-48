@@ -22,7 +22,7 @@ function ArticleComponent() {
       <article className="mx-auto max-w-3xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -58,7 +58,7 @@ function ArticleComponent() {
             But prototyping = research. It is essentially a mindset to test what to design. Prototypes can be anything that serves those goals:
           </p>
 
-          <ul>
+          <ul className="list-disc pl-5 space-y-1">
             <li>explore more directions</li>
             <li>test more interactions</li>
             <li>simulate more edge cases</li>
@@ -66,19 +66,29 @@ function ArticleComponent() {
             <li>much more</li>
           </ul>
 
-          <p className="text-sm text-neutral-500 italic">
-            Inspired by the Stanford HCI paper{" "}
-            <a href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">
-              "What Do Prototypes Prototype?"
-            </a>
-          </p>
+          <div className="not-prose my-10">
+            <div className="rounded-2xl bg-neutral-50 border border-neutral-200 p-8 flex flex-col items-center gap-4">
+              <img
+                src="/articles/prototype-triangle.png"
+                alt="Figure 1. A model of what prototypes prototype — Role, Implementation, Look and feel"
+                className="w-full max-w-md mx-auto"
+              />
+              <p className="text-xs text-neutral-400 text-center">
+                Fig. 1 — Houde & Hill,{" "}
+                <a href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-700">
+                  "What Do Prototypes Prototype?"
+                </a>
+                {" "}(1997). Stanford HCI.
+              </p>
+            </div>
+          </div>
 
           {/* Category sections — image then text */}
           <div className="not-prose space-y-16 my-10">
 
             {/* Look & Feel */}
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-6">Look & Feel</h3>
+              <h3 id="look-and-feel" className="text-lg font-semibold text-neutral-900 mb-6">Look & Feel</h3>
               <a href="/reimagining-the-chatbot" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
                 <img src="/articles/task-analysis-flow.png" alt="Look & Feel prototype" className="w-full object-contain p-6" />
               </a>
@@ -112,7 +122,7 @@ function ArticleComponent() {
 
             {/* Implementation */}
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-6">Implementation</h3>
+              <h3 id="implementation" className="text-lg font-semibold text-neutral-900 mb-6">Implementation</h3>
               <a href="/a2ui-generative" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
                 <img src="/articles/task-analysis-flow.png" alt="Implementation prototype" className="w-full object-contain p-6" />
               </a>
@@ -122,19 +132,18 @@ function ArticleComponent() {
 
             {/* Role */}
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-6">Role</h3>
+              <h3 id="role" className="text-lg font-semibold text-neutral-900 mb-6">Role</h3>
               <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-50 border border-neutral-200 hover:shadow-md transition-shadow mb-4">
                 <img src="/articles/testing-session.png" alt="Role prototype" className="w-full object-contain p-6" />
               </a>
               <p className="text-sm text-neutral-600">Prototypes that test what role the AI <em>plays</em>—is it a tool, a collaborator, or a caregiver? When AI supports elder care, it can't just be accurate. It has to be present, patient, and human in the ways that matter most.</p>
               <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
 
-              <a href="/designing-for-conversations-that-earn-trust" className="group block rounded-2xl overflow-hidden bg-neutral-900 hover:shadow-md transition-shadow mt-6 mb-4">
-                <img src="/articles/testing-session.png" alt="Audio AI — built to elicit errors" className="w-full object-contain p-6 opacity-70" />
-              </a>
-              <p className="text-sm font-semibold text-neutral-900 mb-1">Built to elicit errors</p>
-              <p className="text-sm text-neutral-600">The goal wasn't to prove AI works. It was to surface what could go wrong before it actually goes wrong—designing around errors, not hiding them.</p>
-              <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
+              <div className="mt-6 p-5 rounded-xl border border-neutral-200 bg-neutral-50">
+                <p className="text-sm font-semibold text-neutral-900 mb-1">A specific case: Audio AI — built to elicit errors</p>
+                <p className="text-sm text-neutral-600">The goal wasn't to prove AI works. It was to surface what could go wrong before it actually goes wrong—designing around errors, not hiding them.</p>
+                <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
+              </div>
             </div>
 
           </div>
@@ -222,7 +231,7 @@ function ArticleComponent() {
             </div>
 
             <div className="rounded-2xl bg-gradient-to-br from-red-50 to-red-100 p-6 border border-red-200">
-              <div className="text-3xl mb-3">❤️</div>
+              <div className="text-3xl mb-3">🎬</div>
               <h3 className="font-semibold text-neutral-900 mb-1">Storyboarding</h3>
               <p className="text-xs text-neutral-600">When testing the concept. Show the emotion and context, not the interface.</p>
             </div>

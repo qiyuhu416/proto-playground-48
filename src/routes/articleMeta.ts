@@ -12,7 +12,7 @@ export const ARTICLE_META: Record<string, { title: string; thumbnail?: string; t
   },
   "reimagining-the-chatbot": {
     title: "A collection of reimagining the chatbot",
-    thumbnail: "/articles/task-analysis-flow.png",
+    thumbnail: "/articles/chatbot-thumb.png",
   },
   "product-launch-from-0-1": {
     title: "Product launch from 0–1",

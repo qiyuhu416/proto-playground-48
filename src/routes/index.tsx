@@ -369,21 +369,21 @@ function Index() {
 
       {/* Hero */}
       <section className="mx-auto max-w-3xl px-6 pt-24 pb-16 text-center">
-        <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          currently AI prototyper @Apple
-        </span>
-        <h1 className="mt-6 text-5xl font-medium tracking-tight text-neutral-900 md:text-6xl">
+        <h1 className="text-5xl font-medium tracking-tight text-neutral-900 md:text-6xl">
           Prototyping the What-if
           <br />
           in Human–AI Interactions
         </h1>
-        <button
-          onClick={() => setShowPrototypeModal(true)}
-          className="mx-auto mt-5 max-w-lg text-base text-neutral-600 hover:text-neutral-900 transition-colors cursor-pointer"
-        >
-          What do prototypes prototype?
-        </button>
+        <div className="flex justify-center mt-6">
+          <a
+            href="/what-do-prototypes-prototype"
+            className="group relative inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+            <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
+            <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
+          </a>
+        </div>
       </section>
 
       {/* Timeline Filter */}
@@ -502,17 +502,29 @@ function Index() {
         ) : selectedStage !== "All" && stageSections[selectedStage] ? (
           <div className="mb-12">
             <div className="space-y-12">
-              {stageSections[selectedStage].map((section, idx) => (
-                <div key={idx}>
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-semibold text-neutral-900">{section.main}</h3>
-                    <p className="text-sm text-neutral-600 mt-1">{section.sub}</p>
+              {stageSections[selectedStage].map((section, idx) => {
+                const sectionSlugs: Record<string, string[][]> = {
+                  chatbot: [
+                    ["reimagining-the-chatbot", "google-cloud", "select-fill-with-prompts"],
+                    ["designing-for-conversations-that-earn-trust"],
+                  ],
+                };
+                const slugsForSection = sectionSlugs[selectedStage]?.[idx];
+                const cards = slugsForSection
+                  ? filtered.filter((item) => slugsForSection.includes(item.slug))
+                  : filtered;
+                return (
+                  <div key={idx}>
+                    <div className="mb-6">
+                      <h3 className="text-2xl font-semibold text-neutral-900">{section.main}</h3>
+                      <p className="text-sm text-neutral-600 mt-1">{section.sub}</p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                      {cards.map((item) => renderCard(item))}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {filtered.map((item) => renderCard(item))}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ) : (

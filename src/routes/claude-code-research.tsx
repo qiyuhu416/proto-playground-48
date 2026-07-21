@@ -22,7 +22,7 @@ function ResearchComponent() {
       <article className="mx-auto max-w-2xl px-6 py-12">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
+          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -52,14 +52,14 @@ function ResearchComponent() {
 
           <TableOfContents />
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Mission</h2>
+          <h2 id="mission" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Mission</h2>
           <p>
             To explore how AI can be a true thinking partner for developers, not just a code
             completion tool. The goal is to make development faster, more enjoyable, and focused
             on higher-level problem solving.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Key Learnings</h2>
+          <h2 id="key-learnings" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Key Learnings</h2>
           <ul>
             <li>Context is everything—the better the AI understands the codebase, the better it helps</li>
             <li>Developers value explainability—understanding why AI made a choice matters</li>
@@ -67,7 +67,7 @@ function ResearchComponent() {
             <li>Different developers need different interaction styles and levels of autonomy</li>
           </ul>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · What AI can't do</h2>
+          <h2 id="what-ai-can-t-do" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · What AI can't do</h2>
 
           <p>
             After collaborating intensely with Claude Code, the limits became very specific. There are three things that stand out:
@@ -103,7 +103,7 @@ function ResearchComponent() {
             Experience over time is something only humans can have. Being in the system, noticing the effects of your decisions on real people, learning from those effects—that's lived knowledge. AI can simulate that knowledge, but it doesn't have it.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Don't let AI bypass your thinking</h2>
+          <h2 id="don-t-let-ai-bypass-your-thinking" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Don't let AI bypass your thinking</h2>
 
           <p>
             A lot of things about AI are unteachable lessons — just go and try it out. And you may find it addictive.
@@ -156,7 +156,7 @@ function ResearchComponent() {
             You see, this whole process is a prototype. We are all in the prototyping phase of human–AI interaction.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Evolution</h2>
+          <h2 id="evolution" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Evolution</h2>
           <p>
             The tools continue to evolve based on real developer feedback and usage patterns. Each
             iteration pushes the boundaries of what's possible when humans and AI work together on
