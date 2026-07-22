@@ -1,6 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./TableOfContents";
+
+function BackButton() {
+  return (
+    <a href="/" className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8">
+      <ArrowLeft className="h-4 w-4" />
+      Back
+    </a>
+  );
+}
 
 export const Route = createFileRoute("/$slug")({
   head: ({ params }) => ({
@@ -117,13 +126,6 @@ function PrototypeComponent() {
       <div className="mx-auto max-w-4xl px-6 py-12">
         <TableOfContents />
 
-        <a
-          href="/"
-          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </a>
 
         <div className="mb-8">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">{proto.category}</span>
