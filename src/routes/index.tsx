@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState, useEffect, useRef } from "react";
-import { ArrowUpRight, LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
-import { ARTICLE_META } from "./articleMeta";
-import { NAV_ITEMS, navHref } from "./navItems";
+import { LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
+import { ARTICLE_META } from "./-articleMeta";
+import { NAV_ITEMS, navHref } from "./-navItems";
+import { CardIcon } from "./-CardIcon";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,9 +38,11 @@ type Item = {
   highlightWord?: string;
   externalLink?: string;
   thumbnail?: string;
-  thumbnailSize?: "small" | "medium";
+  thumbnailSize?: "xs" | "small" | "medium";
   videoPreview?: string;
   videoStartTime?: number;
+  videoZoom?: number; // scale factor, e.g. 1.5 = 50% zoom in
+  videoTransform?: string; // full CSS transform override, e.g. "scale(2) translateX(-15%)"
 };
 
 type ItemWithSlug = Item & { slug: string };
@@ -49,6 +52,7 @@ const ITEMS: ItemWithSlug[] = [
     slug: "what-do-prototypes-prototype",
     title: ARTICLE_META["what-do-prototypes-prototype"].title,
     thumbnail: ARTICLE_META["what-do-prototypes-prototype"].thumbnail,
+    thumbnailSize: ARTICLE_META["what-do-prototypes-prototype"].thumbnailSize,
     blurb: "Prototyping as a research mindset, and designing to elicit errors rather than hide them.",
     category: "Implementation",
     kind: "Article",
@@ -70,6 +74,7 @@ const ITEMS: ItemWithSlug[] = [
     slug: "designing-next-gen-ai-products",
     title: ARTICLE_META["designing-next-gen-ai-products"].title,
     thumbnail: ARTICLE_META["designing-next-gen-ai-products"].thumbnail,
+    thumbnailSize: ARTICLE_META["designing-next-gen-ai-products"].thumbnailSize,
     blurb: "Mapping UX to tech capability. Insights from conversational AI, elder care, and human–AI co-writing.",
     category: "Role",
     kind: "Article",
@@ -95,7 +100,7 @@ const ITEMS: ItemWithSlug[] = [
     kind: "Article",
     meta: "Case study",
     accent: "bg-gradient-to-br from-pink-100 to-red-200",
-    externalLink: "https://www.key-you-who.com/projects/app-launch",
+    externalLink: "https://meetfood.us/",
   },
   {
     slug: "knowledge-graph-visualization",
@@ -106,6 +111,7 @@ const ITEMS: ItemWithSlug[] = [
     meta: "Data viz · Interaction",
     accent: "bg-gradient-to-br from-neutral-200 to-neutral-300",
     videoPreview: "/articles/chatbot-knowledge-graph.mp4",
+    videoTransform: "scale(2) translateY(20%)",
   },
   {
     slug: "google-cloud",
@@ -201,8 +207,99 @@ const ITEMS: ItemWithSlug[] = [
     meta: "Interaction · AI",
     accent: "bg-gradient-to-br from-rose-100 to-orange-200",
     videoPreview: "/articles/chatbot-always-here.mp4",
+    videoTransform: "scale(2.2) translateX(-12%)",
   },
 ];
+
+// ── Shared timeline node data ──────────────────────────────────────────────
+const TIMELINE_NODES = [
+  { key: "All",          nat: 0,   txFull: 0,    toLeft: "0%",   toTx: "translateX(0)",     delay: 0   },
+  { key: "chatbot",      nat: 22,  txFull: -50,  toLeft: "22%",  toTx: "translateX(-50%)",  delay: 35  },
+  { key: "reasoner",     nat: 36,  txFull: -50,  toLeft: "36%",  toTx: "translateX(-50%)",  delay: 70  },
+  { key: "agent",        nat: 50,  txFull: -50,  toLeft: "50%",  toTx: "translateX(-50%)",  delay: 105 },
+  { key: "innovator",    nat: 63,  txFull: -50,  toLeft: "63%",  toTx: "translateX(-50%)",  delay: 140 },
+  { key: "Organization", nat: 76,  txFull: -50,  toLeft: "76%",  toTx: "translateX(-50%)",  delay: 175 },
+  { key: "human",        nat: 100, txFull: -100, toLeft: "100%", toTx: "translateX(-100%)", delay: 210 },
+] as const;
+
+/**
+ * Renders timeline dots in two modes:
+ *  - "scroll"  : dots converge as scrollProgress → 1, label opacity fades
+ *  - "expand"  : dots fly out via CSS transitions when isExpanded flips
+ *
+ * Label visibility: active label always shows; inactive labels use `hidden lg:block` (CSS only, no JS measurement).
+ */
+function TimelineNodes({
+  selectedStage, setSelectedStage,
+  mode, scrollProgress = 0, isExpanded = true,
+}: {
+  selectedStage: string;
+  setSelectedStage: (s: string) => void;
+  mode: "scroll" | "expand";
+  scrollProgress?: number;
+  isExpanded?: boolean;
+}) {
+  const expandEase   = "cubic-bezier(0.34,1.56,0.64,1)";
+  const collapseEase = "cubic-bezier(0.55,0,1,0.45)";
+
+  return (
+    <>
+      {/* Connecting lines */}
+      <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0" }}>
+        <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2"
+          style={{ opacity: mode === "scroll" ? 1 - scrollProgress : isExpanded ? 1 : 0,
+                   transition: mode === "expand" ? "opacity 200ms ease 300ms" : undefined }} />
+        <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4"
+          style={{ opacity: mode === "scroll" ? 1 - scrollProgress : isExpanded ? 1 : 0,
+                   transition: mode === "expand" ? "opacity 200ms ease 300ms" : undefined }} />
+      </svg>
+
+      {/* Dots */}
+      <div className="relative z-10 h-12">
+        {TIMELINE_NODES.map(({ key, nat, txFull, toLeft, toTx, delay }) => {
+          const isActive = selectedStage === key;
+          // label fade: active always shows, inactive shows on lg+ screens
+          const labelProgress = mode === "scroll" ? scrollProgress : 0;
+          const labelOpacity  = Math.max(0, 1 - labelProgress * 2);
+
+          const dotStyle = mode === "scroll"
+            ? {
+                left: `${nat * (1 - scrollProgress)}%`,
+                transform: `translateX(${txFull * (1 - scrollProgress)}%)`,
+                opacity: 1 - scrollProgress,
+                pointerEvents: scrollProgress > 0.85 ? "none" as const : "auto" as const,
+              }
+            : {
+                left: isExpanded ? toLeft : "0%",
+                transform: isExpanded ? toTx : "translateX(0)",
+                opacity: isExpanded ? 1 : 0,
+                transition: isExpanded
+                  ? `left 380ms ${expandEase} ${delay}ms, transform 380ms ${expandEase} ${delay}ms, opacity 180ms ease ${delay}ms`
+                  : `left 260ms ${collapseEase}, transform 260ms ${collapseEase}, opacity 120ms ease`,
+                pointerEvents: isExpanded ? "auto" as const : "none" as const,
+              };
+
+          return (
+            <button
+              key={key}
+              onClick={() => setSelectedStage(key)}
+              className="absolute flex flex-col items-center gap-2 group"
+              style={dotStyle}
+            >
+              <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${isActive ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+              <span
+                className={`text-sm font-medium whitespace-nowrap transition-opacity duration-150 ${isActive ? "block" : "hidden lg:block"}`}
+                style={{ opacity: labelOpacity, color: isActive ? "#171717" : "#737373" }}
+              >
+                {key}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+}
 
 const CATEGORIES = [
   { label: "All", icon: LayoutGrid },
@@ -225,22 +322,10 @@ function Index() {
   const [scrolledDown, setScrolledDown] = useState(false);
   const [timelineCollapsed, setTimelineCollapsed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0); // 0 = fully expanded, 1 = fully collapsed
-  const [timelineWidth, setTimelineWidth] = useState(1000);
-  const timelineRef = useRef<HTMLDivElement>(null);
   const lockedOpen = useRef(false);
   const rafId = useRef(0);
   // collapse only when there's more than one row of cards (lg = 3 cols)
   const canCollapse = useRef(true);
-
-  // track timeline container width for responsive label behaviour
-  useEffect(() => {
-    const el = timelineRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([entry]) => setTimelineWidth(entry.contentRect.width));
-    ro.observe(el);
-    setTimelineWidth(el.getBoundingClientRect().width);
-    return () => ro.disconnect();
-  }, []);
 
   useEffect(() => {
     const SCROLL_START = 80;
@@ -356,16 +441,16 @@ function Index() {
         className={
           "group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-0 bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block"
         }
-        onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; v.play(); } }}
+        onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = item.videoStartTime ?? 0; v.play(); } }}
         onMouseMove={(e) => { setCursorPos({ x: e.clientX, y: e.clientY }); setHoveredSlug(item.slug); }}
-        onMouseLeave={(e) => { setHoveredSlug(null); const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
+        onMouseLeave={(e) => { setHoveredSlug(null); const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = item.videoStartTime ?? 0; } }}
       >
         <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">
           {item.thumbnail ? (
             <img
               src={item.thumbnail}
               alt={item.title}
-              className={item.thumbnailSize === "small" ? "w-16 h-16 object-contain" : item.thumbnailSize === "medium" ? "w-32 h-32 object-contain" : "h-full w-full object-contain p-2"}
+              className={item.thumbnailSize === "xs" ? "w-8 h-8 object-contain" : item.thumbnailSize === "small" ? "w-16 h-16 object-contain" : item.thumbnailSize === "medium" ? "w-32 h-32 object-contain" : "h-full w-full object-contain p-2"}
             />
           ) : item.videoPreview ? (
             <video
@@ -374,6 +459,7 @@ function Index() {
               muted
               loop
               className="h-full w-full object-cover"
+              style={{ transform: item.videoTransform ?? (item.videoZoom ? `scale(${item.videoZoom})` : undefined) }}
             />
           ) : (
             <span className="text-xs uppercase tracking-[0.2em] text-neutral-400"
@@ -381,9 +467,7 @@ function Index() {
               {item.kind}
             </span>
           )}
-          <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
-            <ArrowUpRight className="h-4 w-4" />
-          </span>
+          <CardIcon hasVideo={!!item.videoPreview} />
         </div>
         <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
           <div className="min-w-0">
@@ -485,46 +569,12 @@ function Index() {
             <div className={`absolute inset-0 transition-opacity duration-200 ${!timelineCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
               <div className="mx-auto max-w-6xl px-6 h-full flex items-center">
                 <div className="relative w-full h-12">
-                  {/* connecting lines */}
-                  <svg className="absolute inset-0 w-full" style={{ overflow: "visible", height: "20px", top: "2px" }}>
-                    <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2"
-                      style={{ opacity: timelineCollapsed ? 0 : 1, transition: "opacity 200ms ease 300ms" }} />
-                    <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4"
-                      style={{ opacity: timelineCollapsed ? 0 : 1, transition: "opacity 200ms ease 300ms" }} />
-                  </svg>
-                  {/* dots — CSS left+transform transitions for the fly-out effect */}
-                  {[
-                    { key: "All",          toLeft: "0%",    toTx: "translateX(0)",      delay: 0   },
-                    { key: "chatbot",      toLeft: "22%",   toTx: "translateX(-50%)",   delay: 35  },
-                    { key: "reasoner",     toLeft: "36%",   toTx: "translateX(-50%)",   delay: 70  },
-                    { key: "agent",        toLeft: "50%",   toTx: "translateX(-50%)",   delay: 105 },
-                    { key: "innovator",    toLeft: "63%",   toTx: "translateX(-50%)",   delay: 140 },
-                    { key: "Organization", toLeft: "76%",   toTx: "translateX(-50%)",   delay: 175 },
-                    { key: "human",        toLeft: "100%",  toTx: "translateX(-100%)",  delay: 210 },
-                  ].map(({ key, toLeft, toTx, delay }) => {
-                    const exp = !timelineCollapsed;
-                    const expandEase = "cubic-bezier(0.34,1.56,0.64,1)";
-                    const collapseEase = "cubic-bezier(0.55,0,1,0.45)";
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => setSelectedStage(key)}
-                        className="absolute flex flex-col items-center gap-2 group"
-                        style={{
-                          left: exp ? toLeft : "0%",
-                          transform: exp ? toTx : "translateX(0)",
-                          opacity: exp ? 1 : 0,
-                          transition: exp
-                            ? `left 380ms ${expandEase} ${delay}ms, transform 380ms ${expandEase} ${delay}ms, opacity 180ms ease ${delay}ms`
-                            : `left 260ms ${collapseEase}, transform 260ms ${collapseEase}, opacity 120ms ease`,
-                          pointerEvents: exp ? "auto" : "none",
-                        }}
-                      >
-                        <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === key ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                        <span className={`text-sm font-medium whitespace-nowrap transition-opacity duration-150 ${selectedStage === key ? "text-neutral-900 opacity-100" : "opacity-0"}`}>{key}</span>
-                      </button>
-                    );
-                  })}
+                  <TimelineNodes
+                    selectedStage={selectedStage}
+                    setSelectedStage={setSelectedStage}
+                    mode="expand"
+                    isExpanded={!timelineCollapsed}
+                  />
                 </div>
               </div>
             </div>
@@ -545,56 +595,13 @@ function Index() {
       {!scrolledDown && (
         <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
           <section className="mx-auto max-w-6xl px-6 py-6">
-            <div className="relative" ref={timelineRef}>
-              {(() => {
-                const showAll = timelineWidth > 620;
-                const labelSize = Math.max(10, Math.min(14, timelineWidth / 72));
-                const p = scrollProgress;
-                const nodes = [
-                  { key: "All",          nat: 0,   txFull: 0    },
-                  { key: "chatbot",      nat: 22,  txFull: -50  },
-                  { key: "reasoner",     nat: 36,  txFull: -50  },
-                  { key: "agent",        nat: 50,  txFull: -50  },
-                  { key: "innovator",    nat: 63,  txFull: -50  },
-                  { key: "Organization", nat: 76,  txFull: -50  },
-                  { key: "human",        nat: 100, txFull: -100 },
-                ];
-                return (
-                  <>
-                    <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0", opacity: 1 - p }}>
-                      <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2" />
-                      <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
-                    </svg>
-                    <div className="relative z-10 h-12">
-                      {nodes.map(({ key, nat, txFull }) => {
-                        const isActive = selectedStage === key;
-                        const labelOpacity = showAll
-                          ? Math.max(0, 1 - p * 2)
-                          : isActive ? Math.max(0, 1 - p * 2) : 0;
-                        return (
-                          <button
-                            key={key}
-                            onClick={() => setSelectedStage(key)}
-                            className="absolute flex flex-col items-center gap-1 group"
-                            style={{
-                              left: `${nat * (1 - p)}%`,
-                              transform: `translateX(${txFull * (1 - p)}%)`,
-                              opacity: 1 - p,
-                              pointerEvents: p > 0.85 ? "none" : "auto",
-                            }}
-                          >
-                            <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${isActive ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                            <span
-                              className="whitespace-nowrap font-medium transition-all duration-150"
-                              style={{ fontSize: labelSize, opacity: labelOpacity, color: isActive ? "#171717" : "#737373" }}
-                            >{key}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </>
-                );
-              })()}
+            <div className="relative">
+              <TimelineNodes
+                selectedStage={selectedStage}
+                setSelectedStage={setSelectedStage}
+                mode="scroll"
+                scrollProgress={scrollProgress}
+              />
             </div>
           </section>
         </div>

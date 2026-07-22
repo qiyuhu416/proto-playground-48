@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { TableOfContents } from "./TableOfContents";
-import { ARTICLE_META } from "./articleMeta";
+import { TableOfContents } from "./-TableOfContents";
+import { ARTICLE_META, sectionId } from "./-articleMeta";
 
 export const Route = createFileRoute("/proactive")({
   head: () => ({
@@ -239,13 +239,6 @@ function ProactiveComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
-        <a
-          href="/"
-          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </a>
 
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Prototype</span>
@@ -265,12 +258,12 @@ function ProactiveComponent() {
         <div className="prose prose-neutral max-w-2xl">
           <TableOfContents />
 
-          <h2 id="a-note" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">A note</h2>
-          <p>
-            <em>This project is under NDA—I can only share the approach and thinking, not the specific deliverables.</em> What I can say is that the most valuable moment wasn't a polished deck. It was when a stakeholder reached for the controls mid-meeting and said "wait, what if we changed this?" That shift—from critique to co-creation—is what this prototype was built for.
-          </p>
+          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+            <p className="m-0"><strong>Note:</strong> This project is under NDA. What I can say is that the most valuable moment was when a stakeholder said mid-meeting "wait, what if we changed this?" That shift from critique to co-creation is what this prototype was built for.
+            </p>
+          </div>
 
-          <h2 id="prototype-for-prototyping" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">A prototype for prototyping</h2>
+          <h2 id={sectionId("A prototype for prototyping")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"A prototype for prototyping"}</h2>
           <p>
             This is a prototype that prototypes. The thing being designed was a proactive chatbot—an AI that surfaces on a page without being asked. But rather than committing to one version of that behavior, the prototype was built to <strong>expose the design variables live</strong>, so the team could debate and tune them with stakeholders in real time.
           </p>
@@ -278,14 +271,11 @@ function ProactiveComponent() {
             The core question: <strong>what defines the right moment for an AI to speak up?</strong> That question has no single answer—it depends on timing, context, and how much the product trusts its read of the user. The prototype makes those dependencies visible and adjustable.
           </p>
 
-          <h2 id="the-demo" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The demo</h2>
-          <p>
-            Choose a trigger type, set its parameter, then step through the three states: page loads, trigger fires, chat opens. The right panel shows exactly how the chatbot would appear on the page.
-          </p>
+      
 
           <ProactiveDemo />
 
-          <h2 id="variables-as-questions" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Variables as questions</h2>
+          <h2 id={sectionId("Variables as questions")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Variables as questions"}</h2>
           <p>
             Each trigger type encodes a different belief about when AI should interrupt:
           </p>
@@ -295,7 +285,7 @@ function ProactiveComponent() {
             <li><strong>Contextual</strong> — How confident does the system need to be? Low confidence risks noise; high confidence risks silence. The threshold shapes the AI's personality.</li>
           </ul>
 
-          <h2 id="the-takeaway" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The takeaway</h2>
+          <h2 id={sectionId("The takeaway")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The takeaway"}</h2>
           <p>
             Prototypes that invite tweaking surface what people actually care about. The real design work happened not in building the chatbot, but in the conversations this prototype made possible—about timing, tone, and when an AI earns the right to speak first.
           </p>

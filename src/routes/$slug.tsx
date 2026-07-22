@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { TableOfContents } from "./TableOfContents";
+import { TableOfContents } from "./-TableOfContents";
 
 function BackButton() {
   return (
@@ -61,7 +61,7 @@ const PROTOTYPES: Record<string, { title: string; category: string; description:
     media: "/articles/chatbot-always-here.mp4",
   },
   "knowledge-graph-visualization": {
-    title: "Knowledge graph visualization",
+    title: "What if knowledge graph is user-facing?",
     category: "Look & Feel",
     description: "Turning abstract AI reasoning into tangible, navigable visual structures.",
     mediaType: "video",

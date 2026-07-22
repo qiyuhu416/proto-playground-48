@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { BackButton } from "./-BackButton";
 
 export const Route = createFileRoute("/human-ai-research")({
   head: () => ({
@@ -18,13 +19,7 @@ function ArticleComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
-        <a
-          href="/"
-          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </a>
+        <BackButton />
 
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Research</span>
@@ -47,7 +42,7 @@ function ArticleComponent() {
             changes. This research explores what makes for healthy, productive human-AI partnerships.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Key Questions</h2>
+          <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Key Questions</h2>
           <ul>
             <li>How do humans develop trust in AI systems?</li>
             <li>What does successful collaboration look like across different domains?</li>
@@ -55,7 +50,7 @@ function ArticleComponent() {
             <li>What organizational structures support effective human-AI teams?</li>
           </ul>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Observations</h2>
+          <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Observations</h2>
           <p>
             The best human-AI relationships aren't about AI replacing humans or humans blindly
             trusting AI. They're about clear complementarity: humans excel at judgment, strategy,
@@ -68,7 +63,7 @@ function ArticleComponent() {
             leverage AI's pattern recognition abilities, they handicap themselves.
           </p>
 
-          <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Design Implications</h2>
+          <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Design Implications</h2>
           <p>
             Interface design should reinforce healthy collaboration patterns. Show reasoning, not
             just conclusions. Make it easy to verify and disagree. Surface uncertainty. Give humans

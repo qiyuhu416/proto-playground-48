@@ -1,20 +1,23 @@
 import { ArrowUpRight } from "lucide-react";
-import { ARTICLE_META } from "./articleMeta";
+import { ARTICLE_META } from "./-articleMeta";
 
 type Props = {
   slug: string;
   category: string;
   meta: string;
+  /** Slug of the article this card is embedded in — appended as ?from= so the back button knows where to return */
+  fromSlug?: string;
 };
 
-export function ArticleRefCard({ slug, category, meta }: Props) {
+export function ArticleRefCard({ slug, category, meta, fromSlug }: Props) {
   const article = ARTICLE_META[slug];
   if (!article) return null;
   const { title, thumbnail, thumbnailSize } = article;
+  const href = fromSlug ? `/${slug}?from=${fromSlug}` : `/${slug}`;
 
   return (
     <a
-      href={`/${slug}`}
+      href={href}
       className="group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block"
     >
       <div className="relative flex h-[50vh] items-center justify-center overflow-hidden rounded-xl bg-white">
@@ -23,7 +26,9 @@ export function ArticleRefCard({ slug, category, meta }: Props) {
             src={thumbnail}
             alt={title}
             className={
-              thumbnailSize === "small"
+              thumbnailSize === "xs"
+                ? "w-8 h-8 object-contain"
+                : thumbnailSize === "small"
                 ? "w-16 h-16 object-contain"
                 : thumbnailSize === "medium"
                 ? "w-48 h-48 object-contain"

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { NAV_ITEMS, navHref, type NavItem } from "./navItems";
+import { NAV_ITEMS, navHref, type NavItem } from "./-navItems";
 
 interface SiteNavProps {
   active: NavItem;

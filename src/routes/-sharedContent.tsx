@@ -3,7 +3,7 @@
 
 export const DesigningTheRelationship = () => (
   <>
-    <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Designing the relationship (when AI has hard inferences)</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Designing the relationship (when AI has hard inferences)</h2>
 
     <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
@@ -59,7 +59,7 @@ export const DesigningTheRelationship = () => (
 
 export const DesigningTheFeel = () => (
   <>
-    <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Designing the feeling (when AI has easy inferences)</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Designing the feeling (when AI has easy inferences)</h2>
 
     <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Human–AI co-writing tool</h3>
 
@@ -75,7 +75,7 @@ export const DesigningTheFeel = () => (
       So how do you design a feeling? First, break down what "writing" actually is through task analysis:
     </p>
 
-    <div className="bg-neutral-100 rounded-lg p-6 my-8">
+    <div className="bg-white rounded-lg p-6 my-8">
       <div className="space-y-3 text-sm">
         <div>1. you think about what to write</div>
         <div className="text-center text-neutral-400">↓</div>
@@ -130,7 +130,7 @@ export const DesigningTheFeel = () => (
 
 export const WhereNotToUseAI = () => (
   <>
-    <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Where to NOT use AI</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Where to NOT use AI</h2>
 
     <p>
       AI should never be a default solution. The "double diamond model" for design thinking is there for a reason.
@@ -151,7 +151,7 @@ export const WhereNotToUseAI = () => (
 
 export const ForOthersToPrototype = () => (
   <>
-    <h2 className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · For others to prototype</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">For others to prototype</h2>
 
     <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 my-8 border-4 border-yellow-200">
       <div className="text-center mb-4">

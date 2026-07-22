@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { SiteNav } from "./SiteNav";
+import { SiteNav } from "./-SiteNav";
+import { CardIcon } from "./-CardIcon";
+import { HELLO_HUMANS } from "./helloHumansData";
 
 interface PlacedImage { id: number; src: string; x: number; y: number; }
 interface DragState { id: number; offsetX: number; offsetY: number; }
@@ -92,10 +93,9 @@ function PlayComponent() {
   }, []);
 
   const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (nextIdx >= PLAY_IMAGES.length) return;
     setPlaced(prev => [...prev, {
       id: Date.now(),
-      src: PLAY_IMAGES[nextIdx],
+      src: PLAY_IMAGES[nextIdx % PLAY_IMAGES.length],
       x: e.pageX - 80,
       y: e.pageY - 80,
     }]);
@@ -144,9 +144,7 @@ function PlayComponent() {
             {project.category}
           </span>
         )}
-        <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
-          <ArrowUpRight className="h-4 w-4" />
-        </span>
+        <CardIcon hasVideo={!!project.videoPreview} />
       </div>
       <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
         <div className="min-w-0">
@@ -168,7 +166,7 @@ function PlayComponent() {
     <div
       className="relative min-h-screen bg-background text-neutral-900"
       onClick={handlePageClick}
-      style={{ cursor: nextIdx < PLAY_IMAGES.length ? WAND_CURSOR : "default" }}
+      style={{ cursor: WAND_CURSOR }}
     >
       {showEventModal && <EventModal onClose={() => setShowEventModal(false)} />}
       {/* Fixed floating images */}
@@ -212,11 +210,11 @@ function PlayComponent() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
             {
-              title: "Hello Humans",
-              description: "A notebook on a stand where colleagues leave messages—sometimes prompted, sometimes a surprise. Then evolved: swap your favorite research paper with someone else's. Low-pressure, high-delight human-human interaction.",
-              category: "Interaction",
-              meta: "Social · Analog",
-              image: "/articles/hello-humans-notebook.jpg",
+              title: HELLO_HUMANS.title,
+              description: HELLO_HUMANS.description,
+              category: HELLO_HUMANS.category,
+              meta: HELLO_HUMANS.meta,
+              image: HELLO_HUMANS.image,
             },
             {
               title: "Meet the stranger challenge",
@@ -225,6 +223,7 @@ function PlayComponent() {
               meta: "Connection · Open-ended",
               image: "/articles/meet-stranger-calendly.png",
               thumbnailSize: "medium",
+              external: "https://www.linkedin.com/feed/update/urn:li:activity:7404207024164683776/",
             },
             {
               title: "Hosting events @Apple",

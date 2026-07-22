@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { SiteNav } from "./SiteNav";
+import { SiteNav } from "./-SiteNav";
 
 export const Route = createFileRoute("/think")({
   head: () => ({
@@ -34,35 +34,20 @@ function ThinkComponent() {
             className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow block group"
           >
             <div className="mb-6">
-              <svg viewBox="0 0 120 80" fill="none" className="w-28 h-auto opacity-80">
-                <circle cx="35" cy="22" r="9" fill="#1a1a1a"/>
-                <circle cx="85" cy="22" r="9" fill="#1a1a1a"/>
-                <circle cx="35" cy="58" r="9" fill="#1a1a1a"/>
-                <circle cx="85" cy="58" r="9" fill="#1a1a1a"/>
-                <line x1="44" y1="22" x2="76" y2="22" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
-                <line x1="44" y1="58" x2="76" y2="58" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
-                <line x1="35" y1="31" x2="35" y2="49" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
-                <line x1="85" y1="31" x2="85" y2="49" stroke="#1a1a1a" strokeWidth="1.5" strokeDasharray="3 2"/>
+              <svg viewBox="0 0 80 50" fill="none" className="w-24 h-auto opacity-75">
+                <circle cx="16" cy="12" r="3" fill="#1a1a1a"/>
+                <circle cx="64" cy="12" r="3" fill="#1a1a1a"/>
+                <circle cx="16" cy="38" r="3" fill="#1a1a1a"/>
+                <circle cx="64" cy="38" r="3" fill="#1a1a1a"/>
+                <line x1="19" y1="12" x2="61" y2="12" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="3 2"/>
+                <line x1="19" y1="38" x2="61" y2="38" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="3 2"/>
+                <line x1="16" y1="15" x2="16" y2="35" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="3 2"/>
+                <line x1="64" y1="15" x2="64" y2="35" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="3 2"/>
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2 group-hover:underline">Analysis-synthesis bridge</h3>
             <p className="text-neutral-600 text-sm">The best model by Hugh Dubberly! It has been helping me intentionally practice "thinking outside the box" the mindset</p>
           </a>
-
-          {/* Double diamond */}
-          <div className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow">
-            <div className="mb-6">
-              <svg viewBox="0 0 140 80" fill="none" className="w-28 h-auto opacity-80">
-                <polygon points="15,40 47,12 79,40 47,68" stroke="#1a1a1a" strokeWidth="1.5" fill="none"/>
-                <polygon points="61,40 93,12 125,40 93,68" stroke="#1a1a1a" strokeWidth="1.5" fill="none"/>
-                <circle cx="15" cy="40" r="3" fill="#1a1a1a"/>
-                <circle cx="79" cy="40" r="3" fill="#1a1a1a"/>
-                <circle cx="125" cy="40" r="3" fill="#1a1a1a"/>
-              </svg>
-            </div>
-            <h3 className="font-medium text-lg text-neutral-900 mb-2">Double diamond</h3>
-            <p className="text-neutral-600 text-sm">The designer thinking day 1 model. Ya I hear sometimes it could be "too theoretical", but at least it let us know where we are making a leap of faith while we have to.</p>
-          </div>
 
           {/* Me × Others × Think × Do */}
           <button
@@ -70,41 +55,56 @@ function ThinkComponent() {
             className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow text-left group"
           >
             <div className="mb-6">
-              <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20 opacity-80">
-                <circle cx="40" cy="10" r="9" fill="#1a1a1a"/>
-                <circle cx="10" cy="40" r="9" fill="#1a1a1a"/>
-                <circle cx="70" cy="40" r="9" fill="#1a1a1a"/>
-                <circle cx="40" cy="70" r="9" fill="#1a1a1a"/>
+              <svg viewBox="0 0 80 50" fill="none" className="w-24 h-auto opacity-75">
+                <line x1="40" y1="0" x2="40" y2="50" stroke="#e5e5e5" strokeWidth="1"/>
+                <line x1="0" y1="25" x2="80" y2="25" stroke="#e5e5e5" strokeWidth="1"/>
+                <circle cx="40" cy="8" r="3" fill="#1a1a1a"/>
+                <circle cx="8" cy="25" r="3" fill="#1a1a1a"/>
+                <circle cx="72" cy="25" r="3" fill="#1a1a1a"/>
+                <circle cx="40" cy="42" r="3" fill="#1a1a1a"/>
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2 group-hover:underline">Me · Others · Think · Do</h3>
             <p className="text-neutral-600 text-sm">2×2 is just a cool way to map out the situations and help me see my own "unknown-unkonwn"s</p>
           </button>
 
+          {/* Double diamond */}
+          <div className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow">
+            <div className="mb-6">
+              <svg viewBox="0 0 80 50" fill="none" className="w-24 h-auto opacity-75">
+                <polygon points="4,25 22,8 40,25 22,42" stroke="#1a1a1a" strokeWidth="1" fill="none"/>
+                <polygon points="40,25 58,8 76,25 58,42" stroke="#1a1a1a" strokeWidth="1" fill="none"/>
+                <circle cx="4" cy="25" r="3" fill="#1a1a1a"/>
+                <circle cx="40" cy="25" r="3" fill="#1a1a1a"/>
+                <circle cx="76" cy="25" r="3" fill="#1a1a1a"/>
+              </svg>
+            </div>
+            <h3 className="font-medium text-lg text-neutral-900 mb-2">Double diamond</h3>
+            <p className="text-neutral-600 text-sm">The designer thinking day 1 model. Ya I hear sometimes it could be "too theoretical", but at least it let us know where we are making a leap of faith while we have to.</p>
+          </div>
+
           {/* Service blueprint */}
           <div className="rounded-2xl border border-neutral-200 p-6 bg-white hover:shadow-lg transition-shadow">
             <div className="mb-6">
-              <svg viewBox="0 0 120 80" fill="none" className="w-28 h-auto opacity-80">
-                <line x1="8" y1="18" x2="112" y2="18" stroke="#d4d4d4" strokeWidth="1"/>
-                <line x1="8" y1="40" x2="112" y2="40" stroke="#d4d4d4" strokeWidth="1"/>
-                <line x1="8" y1="62" x2="112" y2="62" stroke="#d4d4d4" strokeWidth="1"/>
-                <circle cx="22" cy="18" r="4" fill="#1a1a1a"/>
-                <circle cx="55" cy="18" r="4" fill="#1a1a1a"/>
-                <circle cx="88" cy="18" r="4" fill="#1a1a1a"/>
-                <circle cx="35" cy="40" r="4" fill="#1a1a1a"/>
-                <circle cx="70" cy="40" r="4" fill="#1a1a1a"/>
-                <circle cx="100" cy="40" r="4" fill="#1a1a1a"/>
-                <circle cx="22" cy="62" r="4" fill="#1a1a1a"/>
-                <circle cx="55" cy="62" r="4" fill="#1a1a1a"/>
-                <circle cx="88" cy="62" r="4" fill="#1a1a1a"/>
-                <line x1="55" y1="22" x2="35" y2="36" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="2 2"/>
-                <line x1="70" y1="44" x2="55" y2="58" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="2 2"/>
-                <line x1="22" y1="18" x2="55" y2="18" stroke="#1a1a1a" strokeWidth="1"/>
-                <line x1="55" y1="18" x2="88" y2="18" stroke="#1a1a1a" strokeWidth="1"/>
-                <line x1="35" y1="40" x2="70" y2="40" stroke="#1a1a1a" strokeWidth="1"/>
-                <line x1="70" y1="40" x2="100" y2="40" stroke="#1a1a1a" strokeWidth="1"/>
-                <line x1="22" y1="62" x2="55" y2="62" stroke="#1a1a1a" strokeWidth="1"/>
-                <line x1="55" y1="62" x2="88" y2="62" stroke="#1a1a1a" strokeWidth="1"/>
+              <svg viewBox="0 0 80 50" fill="none" className="w-24 h-auto opacity-75">
+                <line x1="4" y1="10" x2="76" y2="10" stroke="#e5e5e5" strokeWidth="1"/>
+                <line x1="4" y1="25" x2="76" y2="25" stroke="#e5e5e5" strokeWidth="1"/>
+                <line x1="4" y1="40" x2="76" y2="40" stroke="#e5e5e5" strokeWidth="1"/>
+                <line x1="14" y1="10" x2="40" y2="10" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="40" y1="10" x2="64" y2="10" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="22" y1="25" x2="54" y2="25" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="14" y1="40" x2="40" y2="40" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="40" y1="40" x2="64" y2="40" stroke="#1a1a1a" strokeWidth="1"/>
+                <line x1="40" y1="13" x2="22" y2="22" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="2 2"/>
+                <line x1="54" y1="28" x2="40" y2="37" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="2 2"/>
+                <circle cx="14" cy="10" r="3" fill="#1a1a1a"/>
+                <circle cx="40" cy="10" r="3" fill="#1a1a1a"/>
+                <circle cx="64" cy="10" r="3" fill="#1a1a1a"/>
+                <circle cx="22" cy="25" r="3" fill="#1a1a1a"/>
+                <circle cx="54" cy="25" r="3" fill="#1a1a1a"/>
+                <circle cx="14" cy="40" r="3" fill="#1a1a1a"/>
+                <circle cx="40" cy="40" r="3" fill="#1a1a1a"/>
+                <circle cx="64" cy="40" r="3" fill="#1a1a1a"/>
               </svg>
             </div>
             <h3 className="font-medium text-lg text-neutral-900 mb-2">Service blueprint</h3>
@@ -189,7 +189,8 @@ function ThinkComponent() {
               ✕
             </button>
             <h2 className="text-xl font-semibold text-neutral-900 mb-1">Me · Others · Think · Do</h2>
-            <p className="text-sm text-neutral-500 mb-8">A lens for mapping perspective and agency in any situation.</p>
+            <p className="text-sm text-neutral-500 mb-2">A lens for mapping perspective and agency in any situation.</p>
+            <p className="text-xs text-neutral-400 mb-8">This is also how I created the 4 tabs for this site: <span className="font-medium text-neutral-600">Work · Play · Think · Listen</span> — me doing, others doing, me reflecting, others reflecting.</p>
 
             <div className="grid grid-cols-2 gap-px bg-neutral-200 rounded-xl overflow-hidden">
               {/* Think / Me */}

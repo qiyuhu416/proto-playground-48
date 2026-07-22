@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { TableOfContents } from "./TableOfContents";
-import { ARTICLE_META } from "./articleMeta";
+import { TableOfContents } from "./-TableOfContents";
+import { ARTICLE_META, sectionId } from "./-articleMeta";
+
 
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
@@ -23,13 +24,6 @@ function CollectionComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
-        <a
-          href="/"
-          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </a>
 
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Collection</span>
@@ -37,7 +31,7 @@ function CollectionComponent() {
             {ARTICLE_META["reimagining-the-chatbot"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            Exploring how prompts reshape design workflows—generative design meets human intent.
+            If not the current way, then what could it be?
           </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
             <span>Collection</span>
@@ -47,27 +41,13 @@ function CollectionComponent() {
         </div>
 
         <div className="prose prose-neutral max-w-2xl">
-          <p>
-            The interaction between humans and AI is fundamentally changing how we design. When a prompt
-            becomes the interface, the designer's role shifts from specifying every detail to orchestrating
-            a conversation with a generative system.
-          </p>
 
           <TableOfContents />
 
-          <h2 id="the-promise" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Promise</h2>
-          <p>
-            Imagine selecting a region on your canvas, describing what you want, and watching it fill
-            intelligently. No need to manually create every element. No need to spend hours on execution.
-            Just intent, articulated clearly.
-          </p>
+          <h2 id={sectionId("The Promise")} className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">{"The Promise"}</h2>
 
-          <p>
-            This is the dream of generative design workflows. But getting there requires rethinking
-            fundamentals:
-          </p>
-
-          <h2 id="task-analysis-what-asking-a-question-takes" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Task Analysis: What "Asking a Question" Takes</h2>
+          <h2 id={sectionId("Task Analysis: What \"Asking a Question\" Takes")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Task Analysis: What \"Asking a Question\" Takes"}</h2>
+            <p>Current chatbots are stuck in an ask-and-answer loop. But if we dive deeper, we can uncover the details that are often overlooked in what "ask and answer" really means.</p>          
           <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border border-neutral-200 bg-white my-6">
             <img
               src={showAssumptions ? "/articles/task-assumptions.png" : "/articles/task-analysis-flow.png"}
@@ -89,7 +69,7 @@ function CollectionComponent() {
             </button>
           </div>
 
-          <h2 id="prototypes-exploring-these-dimensions" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Prototypes Exploring These Dimensions</h2>
+          <h2 id={sectionId("Prototypes Exploring These Dimensions")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Prototypes Exploring These Dimensions"}</h2>
 
           <div className="space-y-8 my-8">
             <div>
@@ -146,7 +126,7 @@ function CollectionComponent() {
             </div>
           </div>
 
-          <h2 id="what-gets-tested" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">What Gets Tested</h2>
+          <h2 id={sectionId("What Gets Tested")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What Gets Tested"}</h2>
           <p>
             This collection explores prototypes across three dimensions of prototyping:
           </p>
@@ -177,7 +157,7 @@ function CollectionComponent() {
             </div>
           </div>
 
-          <h2 id="the-challenge" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">The Challenge</h2>
+          <h2 id={sectionId("The Challenge")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Challenge"}</h2>
           <p>
             The hardest part isn't building the system. It's understanding what designers actually want
             to communicate. The gap between intent and articulation is where most prototype attempts fail.
@@ -188,7 +168,7 @@ function CollectionComponent() {
             Testing what the system misunderstands. Testing the moments where human and AI intent diverge.
           </p>
 
-          <h2 id="next-steps" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Next Steps</h2>
+          <h2 id={sectionId("Next Steps")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Next Steps"}</h2>
           <p>
             This collection documents the journey. From first-pass concepts to polished interactions.
             From "does it work?" to "does it feel right?" to "does it matter?"

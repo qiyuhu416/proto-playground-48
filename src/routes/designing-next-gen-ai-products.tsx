@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { TableOfContents } from "./TableOfContents";
-import { ARTICLE_META } from "./articleMeta";
-import { ArticleRefCard } from "./ArticleRefCard";
+import { useState, useEffect, useRef } from "react";
+import { TableOfContents } from "./-TableOfContents";
+import { ARTICLE_META, sectionId } from "./-articleMeta";
+import { ArticleRefCard } from "./-ArticleRefCard";
+
 
 export const Route = createFileRoute("/designing-next-gen-ai-products")({
   head: () => ({
@@ -18,17 +20,222 @@ export const Route = createFileRoute("/designing-next-gen-ai-products")({
   component: ArticleComponent,
 });
 
+/* ── Types ── */
+type DialogueStep =
+  | { kind: 'type'; text: string; cps: number }
+  | { kind: 'pause'; ms: number }
+  | { kind: 'highlight'; pattern: string; ms: number }
+  | { kind: 'chip'; text: string; ms: number }
+  | { kind: 'focus'; toField: string; ms: number }
+  | { kind: 'clear'; ms: number };
+
+type TriggerMechanism =
+  | { kind: 'tick'; intervalMs: number }
+  | { kind: 'countdown'; thresholdMs: number }
+  | { kind: 'focus' };
+
+type Economics = {
+  callsPerMin: string; tokensPerCall: string; costPerCall: string;
+  costPerMin: string; costPerUserMonth: string; costPerUserMonthNote: string;
+};
+
+/* ── Highlighted text renderer ── */
+function HighlightedText({ text, pattern }: { text: string; pattern: string | null }) {
+  if (!pattern || !text.includes(pattern)) return <>{text}</>;
+  const idx = text.indexOf(pattern);
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className="bg-amber-200 text-amber-900 rounded-sm not-italic">{pattern}</mark>
+      {text.slice(idx + pattern.length)}
+    </>
+  );
+}
+
+/* ── Self-animating trigger demo ── */
+function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics }: {
+  mode: 'tick' | 'pause' | 'leave';
+  kicker: string; description: string;
+  dialogue: DialogueStep[];
+  mechanism: TriggerMechanism;
+  economics: Economics;
+}) {
+  const [text, setText] = useState('');
+  const [highlight, setHighlight] = useState<string | null>(null);
+  const [chip, setChip] = useState<string | null>(null);
+  const [activeField, setActiveField] = useState('A');
+  const [tickCount, setTickCount] = useState(0);
+  const [sinceLastType, setSinceLastType] = useState(0);
+  const lastTypeRef = useRef(Date.now());
+
+  // Tick pulse for tick mechanism
+  useEffect(() => {
+    if (mechanism.kind !== 'tick') return;
+    const id = setInterval(() => setTickCount(c => c + 1), mechanism.intervalMs);
+    return () => clearInterval(id);
+  }, [mechanism]);
+
+  // Countdown for pause mechanism
+  useEffect(() => {
+    if (mechanism.kind !== 'countdown') return;
+    const id = setInterval(() => setSinceLastType(Date.now() - lastTypeRef.current), 80);
+    return () => clearInterval(id);
+  }, [mechanism]);
+
+  // Main dialogue loop
+  useEffect(() => {
+    let stopped = false;
+    const wait = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+    const run = async () => {
+      for (const step of dialogue) {
+        if (stopped) return;
+        if (step.kind === 'type') {
+          for (const char of step.text) {
+            if (stopped) return;
+            setText(t => t + char);
+            lastTypeRef.current = Date.now();
+            setSinceLastType(0);
+            await wait(1000 / step.cps);
+          }
+        } else if (step.kind === 'pause') {
+          await wait(step.ms);
+        } else if (step.kind === 'highlight') {
+          setHighlight(step.pattern);
+          await wait(step.ms);
+        } else if (step.kind === 'chip') {
+          setChip(step.text);
+          await wait(step.ms);
+        } else if (step.kind === 'focus') {
+          setActiveField(step.toField);
+          await wait(step.ms);
+        } else if (step.kind === 'clear') {
+          setText(''); setHighlight(null); setChip(null); setActiveField('A');
+          lastTypeRef.current = Date.now(); setSinceLastType(0);
+          await wait(step.ms);
+        }
+      }
+      if (!stopped) run();
+    };
+    run();
+    return () => { stopped = true; };
+  }, []);
+
+  const threshold = mechanism.kind === 'countdown' ? mechanism.thresholdMs : 1;
+  const countdownPct = Math.min(sinceLastType / threshold, 1);
+
+  return (
+    <div>
+      {/* Kicker + description */}
+      <div className="mb-4">
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400">{kicker}</span>
+        <p className="text-sm text-neutral-500 mt-0.5">{description}</p>
+      </div>
+
+      {/* Fields */}
+      <div className="space-y-2 mb-5">
+        <div className={`rounded-xl border px-4 py-3 bg-white transition-all duration-300 ${
+          activeField === 'A'
+            ? 'border-neutral-300 shadow-[0_0_0_3px_rgba(0,0,0,0.05)]'
+            : 'border-neutral-200 opacity-55'
+        }`}>
+          {mode === 'leave' && <div className="text-[10px] text-neutral-400 mb-1 uppercase tracking-wider">Field A</div>}
+          <p className="text-sm font-mono text-neutral-800 min-h-[20px] leading-relaxed">
+            <HighlightedText text={text} pattern={highlight} />
+            {activeField === 'A' && <span className="border-r-2 border-neutral-700 animate-pulse ml-px"> </span>}
+          </p>
+        </div>
+        {mode === 'leave' && (
+          <div className={`rounded-xl border px-4 py-3 bg-white transition-all duration-300 ${
+            activeField === 'B'
+              ? 'border-neutral-300 shadow-[0_0_0_3px_rgba(0,0,0,0.05)]'
+              : 'border-neutral-200 opacity-55'
+          }`}>
+            <div className="text-[10px] text-neutral-400 mb-1 uppercase tracking-wider">Field B</div>
+            <p className="text-sm font-mono text-neutral-400 min-h-[20px]">
+              {activeField === 'B' && <span className="border-r-2 border-neutral-700 animate-pulse"> </span>}
+            </p>
+          </div>
+        )}
+
+        {/* AI chip */}
+        <div className={`transition-all duration-200 ${chip ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1 pointer-events-none'}`}>
+          <span className="inline-flex items-center gap-1.5 bg-neutral-900 text-white text-xs rounded-full px-3 py-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+            {chip}
+          </span>
+        </div>
+      </div>
+
+      {/* Mechanism indicator */}
+      <div className="border-t border-neutral-100 pt-3 mb-4">
+        <div className="text-[10px] uppercase tracking-widest text-neutral-300 mb-2">Trigger mechanism</div>
+        {mechanism.kind === 'tick' && (
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1">
+              {[0,1,2,3].map(i => (
+                <span key={i} className={`w-2 h-2 rounded-full transition-colors duration-200 ${i === tickCount % 4 ? 'bg-red-400' : 'bg-neutral-200'}`} />
+              ))}
+            </div>
+            <span className="text-xs text-neutral-400">fires every 1s</span>
+          </div>
+        )}
+        {mechanism.kind === 'countdown' && (
+          <div>
+            <div className="flex justify-between mb-1.5">
+              <span className="text-xs text-neutral-400">silence timer</span>
+              <span className="text-xs font-mono text-amber-500">{(sinceLastType / 1000).toFixed(1)}s / {(threshold / 1000).toFixed(0)}s</span>
+            </div>
+            <div className="h-1 bg-neutral-100 rounded-full overflow-hidden">
+              <div className="h-full bg-amber-400 rounded-full transition-all duration-75" style={{ width: `${countdownPct * 100}%` }} />
+            </div>
+          </div>
+        )}
+        {mechanism.kind === 'focus' && (
+          <div className="flex items-center gap-2 text-xs">
+            <span className={`px-2 py-0.5 rounded-full transition-colors ${activeField === 'A' ? 'bg-neutral-900 text-white' : 'text-neutral-400'}`}>Field A</span>
+            <span className="text-neutral-300">→</span>
+            <span className={`px-2 py-0.5 rounded-full transition-colors ${activeField === 'B' ? 'bg-neutral-900 text-white' : 'text-neutral-400'}`}>Field B</span>
+            <span className="text-neutral-300 ml-1">fires on leave</span>
+          </div>
+        )}
+      </div>
+
+      {/* Economics */}
+      <div className="border-t border-neutral-100 pt-3">
+        <div className="text-[10px] uppercase tracking-widest text-neutral-300 mb-2">Cost estimate</div>
+        <div className="grid grid-cols-3 gap-3 text-xs">
+          <div><div className="text-neutral-400 mb-0.5">Calls / min</div><div className="font-mono text-neutral-700">{economics.callsPerMin}</div></div>
+          <div><div className="text-neutral-400 mb-0.5">Cost / call</div><div className="font-mono text-neutral-700">{economics.costPerCall}</div></div>
+          <div><div className="text-neutral-400 mb-0.5">$ / user / mo</div><div className="font-mono font-semibold text-neutral-900">{economics.costPerUserMonth}</div></div>
+        </div>
+        <div className="text-[10px] text-neutral-300 mt-2">{economics.costPerUserMonthNote}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Tab group wrapper ── */
+function TriggerTabGroup({ tabs }: { tabs: { label: string; content: React.ReactNode }[] }) {
+  const [active, setActive] = useState(0);
+  return (
+    <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
+      <div className="flex items-center gap-1 px-4 pt-4 pb-3 border-b border-neutral-100">
+        {tabs.map((tab, i) => (
+          <button key={i} onClick={() => setActive(i)}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${active === i ? 'bg-neutral-900 text-white' : 'text-neutral-400 hover:text-neutral-700'}`}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div className="px-6 py-5">{tabs[active].content}</div>
+    </div>
+  );
+}
+
 function ArticleComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-3xl px-6 py-12">
-        <a
-          href="/"
-          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </a>
 
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Role</span>
@@ -36,7 +243,7 @@ function ArticleComponent() {
             {ARTICLE_META["designing-next-gen-ai-products"].title}
           </h1>
           <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.
+            Since when did "humans" become a frequent word? 
           </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
             <span>12 min read</span>
@@ -47,16 +254,22 @@ function ArticleComponent() {
 
         <div className="prose prose-neutral max-w-3xl">
           <p>
-            Since when did "humans" become a frequent word? Pre-AI, we didn't say "humans" this much, we were just... in it. But once AI entered the room, we started seeing ourselves from the outside.
+            Pre-AI, we didn't say "humans" this much, we were just... in it. But once AI entered the room, we started seeing ourselves from the outside.
           </p>
 
           <p>
-            Designing AI is not always about making the AI smarter—it's always about <strong>mapping the UX to the current tech capability</strong>. Here are reflections from my work in conversational AI, elder care, and co-writing tools.
+            Designing AI is not always about making the AI smarter—it's always about <strong>mapping the UX to the current tech capability</strong>. Here are reflections from my work in academia and industry.
           </p>
+
+
+          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
+            <p className="m-0">Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.</p>
+          </div>
 
           <TableOfContents />
 
-          <h2 id="designing-relationship" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Designing the relationship (when AI has hard inferences)</h2>
+          <h2 id={sectionId("Designing the relationship")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the relationship"}</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
@@ -66,6 +279,7 @@ function ArticleComponent() {
               slug="designing-for-conversations-that-earn-trust"
               category="Role"
               meta="Research · Design"
+              fromSlug="designing-next-gen-ai-products"
             />
           </div>
           <p>
@@ -80,7 +294,7 @@ function ArticleComponent() {
           </p>
 
 
-          <h2 id="designing-feeling" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§2 · Designing the feeling (when AI has easy inferences)</h2>
+          <h2 id={sectionId("Designing the feeling")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the feeling"}</h2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Human–AI co-writing tool</h3>
 
@@ -96,7 +310,7 @@ function ArticleComponent() {
             So how do you design a feeling? First, break down what "writing" actually is through task analysis:
           </p>
 
-          <div className="bg-neutral-100 rounded-lg p-6 my-8">
+          <div className="bg-white rounded-lg p-6 my-8">
             <div className="space-y-3 text-sm">
               <div>1. you think about what to write</div>
               <div className="text-left text-neutral-400">↓</div>
@@ -116,121 +330,94 @@ function ArticleComponent() {
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Three trigger mechanisms</h3>
 
-          <div className="not-prose space-y-6 my-8">
-
-            {/* Tick */}
-            <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
-              <div className="bg-neutral-50 px-6 pt-6 pb-4">
-                <svg viewBox="0 0 400 90" fill="none" className="w-full h-auto">
-                  {/* Timeline baseline */}
-                  <line x1="20" y1="55" x2="380" y2="55" stroke="#e5e5e5" strokeWidth="2"/>
-                  {/* User typing label */}
-                  <text x="20" y="72" fontSize="9" fill="#a3a3a3" fontFamily="monospace">user types...</text>
-                  {/* Frequent AI responses — every ~45px */}
-                  {[60,105,150,195,240,285,330,375].map((x, i) => (
-                    <g key={i}>
-                      <line x1={x} y1="48" x2={x} y2="62" stroke="#ef4444" strokeWidth="1.5"/>
-                      {/* AI speech bubble above */}
-                      <rect x={x-14} y="16" width="28" height="16" rx="4" fill="#fef2f2" stroke="#fca5a5" strokeWidth="1"/>
-                      <text x={x} y="27" fontSize="7" fill="#ef4444" textAnchor="middle" fontFamily="monospace">AI</text>
-                      <line x1={x} y1="32" x2={x} y2="48" stroke="#fca5a5" strokeWidth="1" strokeDasharray="2 2"/>
-                    </g>
-                  ))}
-                  {/* 1s labels */}
-                  {[60,105,150].map((x, i) => (
-                    <text key={i} x={x} y="85" fontSize="7.5" fill="#d4d4d4" textAnchor="middle">1s</text>
-                  ))}
-                </svg>
-              </div>
-              <div className="px-6 py-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h4 className="font-semibold text-neutral-900 mb-1">Tick <span className="font-normal text-neutral-400 text-sm">every 1 second</span></h4>
-                    <p className="text-sm text-neutral-600">AI judges every keystroke. There's always an eye on you.</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-xs text-neutral-400">~60 calls/min</p>
-                    <p className="text-xs text-neutral-400">~$53/mo per user</p>
-                  </div>
-                </div>
-                <p className="text-xs text-neutral-500 mt-2 italic">"I was just about to fix that."</p>
-              </div>
-            </div>
-
-            {/* Pause */}
-            <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
-              <div className="bg-neutral-50 px-6 pt-6 pb-4">
-                <svg viewBox="0 0 400 90" fill="none" className="w-full h-auto">
-                  <line x1="20" y1="55" x2="380" y2="55" stroke="#e5e5e5" strokeWidth="2"/>
-                  <text x="20" y="72" fontSize="9" fill="#a3a3a3" fontFamily="monospace">user types...</text>
-                  {/* Typing phase */}
-                  {[50,80,110,140].map((x, i) => (
-                    <rect key={i} x={x} y="46" width="5" height="9" rx="1" fill="#d4d4d4"/>
-                  ))}
-                  {/* Pause zone */}
-                  <rect x="165" y="40" width="80" height="22" rx="6" fill="#fefce8" stroke="#fde68a" strokeWidth="1"/>
-                  <text x="205" y="50" fontSize="8" fill="#92400e" textAnchor="middle">thinking...</text>
-                  <text x="205" y="60" fontSize="9" fill="#d97706" textAnchor="middle">· · ·</text>
-                  {/* AI interrupts during pause */}
-                  <line x1="205" y1="36" x2="205" y2="40" stroke="#f97316" strokeWidth="1.5" strokeDasharray="2 2"/>
-                  <rect x="178" y="10" width="54" height="22" rx="5" fill="#fff7ed" stroke="#fb923c" strokeWidth="1"/>
-                  <text x="205" y="23" fontSize="8" fill="#ea580c" textAnchor="middle" fontFamily="monospace">AI speaks ↓</text>
-                  {/* After pause, user continues */}
-                  {[260,285,310,335,360].map((x, i) => (
-                    <rect key={i} x={x} y="46" width="5" height="9" rx="1" fill="#d4d4d4" opacity="0.5"/>
-                  ))}
-                </svg>
-              </div>
-              <div className="px-6 py-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h4 className="font-semibold text-neutral-900 mb-1">Pause <span className="font-normal text-neutral-400 text-sm">after 2s of inactivity</span></h4>
-                    <p className="text-sm text-neutral-600">AI mistakes your pause for a finished thought.</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-xs text-neutral-400">~4–8 calls/min</p>
-                    <p className="text-xs text-neutral-400">~$10/mo per user</p>
-                  </div>
-                </div>
-                <p className="text-xs text-neutral-500 mt-2 italic">"I'm thinking, don't interrupt me."</p>
-              </div>
-            </div>
-
-            {/* Blur */}
-            <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
-              <div className="bg-neutral-50 px-6 pt-6 pb-4">
-                <svg viewBox="0 0 400 90" fill="none" className="w-full h-auto">
-                  <line x1="20" y1="55" x2="380" y2="55" stroke="#e5e5e5" strokeWidth="2"/>
-                  <text x="20" y="72" fontSize="9" fill="#a3a3a3" fontFamily="monospace">user types...</text>
-                  {/* Typing freely */}
-                  {[50,70,90,110,130,150,170,190,210,230].map((x, i) => (
-                    <rect key={i} x={x} y="46" width="5" height="9" rx="1" fill="#d4d4d4"/>
-                  ))}
-                  {/* Blur moment — user leaves field */}
-                  <line x1="255" y1="36" x2="255" y2="62" stroke="#22c55e" strokeWidth="2" strokeDasharray="4 2"/>
-                  <text x="255" y="80" fontSize="8" fill="#86efac" textAnchor="middle">blur</text>
-                  {/* AI responds once, after */}
-                  <rect x="272" y="16" width="90" height="26" rx="6" fill="#f0fdf4" stroke="#86efac" strokeWidth="1.5"/>
-                  <text x="317" y="28" fontSize="8" fill="#16a34a" textAnchor="middle" fontFamily="monospace">AI feedback</text>
-                  <text x="317" y="38" fontSize="7.5" fill="#4ade80" textAnchor="middle">one response ✓</text>
-                  <line x1="272" y1="42" x2="272" y2="55" stroke="#86efac" strokeWidth="1.5"/>
-                </svg>
-              </div>
-              <div className="px-6 py-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h4 className="font-semibold text-neutral-900 mb-1">Blur event <span className="font-normal text-neutral-400 text-sm">when you leave the field</span></h4>
-                    <p className="text-sm text-neutral-600">AI stays quiet while you write, then speaks when you move on.</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="text-xs text-neutral-400">~1–3 calls/min</p>
-                    <p className="text-xs text-neutral-400">~$12/mo per user</p>
-                  </div>
-                </div>
-                <p className="text-xs text-neutral-500 mt-2 italic">"The tool felt like it was supporting me, not watching me."</p>
-              </div>
-            </div>
-
+          <div className="not-prose my-8">
+            <TriggerTabGroup tabs={[
+              {
+                label: 'Every 1 sec',
+                content: (
+                  <TriggerDemo
+                    mode="tick"
+                    kicker="Tick · 1s"
+                    description="AI judges every keystroke — there's always an eye on you."
+                    dialogue={[
+                      { kind: 'type', text: "I'm jotting down whatever's on my mind. There's always an eyes on me", cps: 32 },
+                      { kind: 'pause', ms: 300 },
+                      { kind: 'highlight', pattern: 'eyes', ms: 1 },
+                      { kind: 'chip', text: 'did you mean "an eye"?', ms: 1 },
+                      { kind: 'pause', ms: 1800 },
+                      { kind: 'type', text: '. see i was just about to fix that typo that!!!!', cps: 32 },
+                      { kind: 'pause', ms: 300 },
+                      { kind: 'highlight', pattern: '!!!!', ms: 1 },
+                      { kind: 'chip', text: 'reduce to one "!"', ms: 1 },
+                      { kind: 'pause', ms: 2200 },
+                      { kind: 'clear', ms: 1 },
+                    ]}
+                    mechanism={{ kind: 'tick', intervalMs: 1000 }}
+                    economics={{
+                      callsPerMin: '60', tokensPerCall: '~200 in · ~50 out',
+                      costPerCall: '$0.0014', costPerMin: '~$0.08/min',
+                      costPerUserMonth: '~$53',
+                      costPerUserMonthNote: 'Sonnet 4.5 · 30 min/day × 22 days',
+                    }}
+                  />
+                ),
+              },
+              {
+                label: 'After pause',
+                content: (
+                  <TriggerDemo
+                    mode="pause"
+                    kicker="Pause · 2s"
+                    description="AI mistakes your pause for a finished thought."
+                    dialogue={[
+                      { kind: 'type', text: 'i am typing something.', cps: 28 },
+                      { kind: 'pause', ms: 2200 },
+                      { kind: 'chip', text: "your sentence isn't complete. add more?", ms: 1 },
+                      { kind: 'pause', ms: 1500 },
+                      { kind: 'type', text: " I know — I'm thinking. Don't interrupt me.", cps: 32 },
+                      { kind: 'pause', ms: 1500 },
+                      { kind: 'clear', ms: 1 },
+                    ]}
+                    mechanism={{ kind: 'countdown', thresholdMs: 2000 }}
+                    economics={{
+                      callsPerMin: '4–8', tokensPerCall: '~350 in · ~100 out',
+                      costPerCall: '$0.0026', costPerMin: '~$0.015/min',
+                      costPerUserMonth: '~$10',
+                      costPerUserMonthNote: 'Sonnet 4.5 · 30 min/day × 22 days',
+                    }}
+                  />
+                ),
+              },
+              {
+                label: 'On leave',
+                content: (
+                  <TriggerDemo
+                    mode="leave"
+                    kicker="Blur event"
+                    description="AI stays quiet while you write — then critiques the moment you leave."
+                    dialogue={[
+                      { kind: 'type', text: 'this is sentence 1, this is sentence 2, this is sentence 3. okay done.', cps: 35 },
+                      { kind: 'pause', ms: 700 },
+                      { kind: 'focus', toField: 'B', ms: 900 },
+                      { kind: 'highlight', pattern: 'this is sentence 2,', ms: 1 },
+                      { kind: 'chip', text: 'this should be removed.', ms: 1 },
+                      { kind: 'pause', ms: 2000 },
+                      { kind: 'focus', toField: 'A', ms: 800 },
+                      { kind: 'type', text: " why didn't you tell me earlier?", cps: 32 },
+                      { kind: 'pause', ms: 1600 },
+                      { kind: 'clear', ms: 1 },
+                    ]}
+                    mechanism={{ kind: 'focus' }}
+                    economics={{
+                      callsPerMin: '1–3', tokensPerCall: '~1500 in · ~300 out',
+                      costPerCall: '$0.009', costPerMin: '~$0.018/min',
+                      costPerUserMonth: '~$12',
+                      costPerUserMonthNote: 'Sonnet 4.5 · 30 min/day × 22 days',
+                    }}
+                  />
+                ),
+              },
+            ]} />
           </div>
 
           <p>
@@ -241,8 +428,11 @@ function ArticleComponent() {
             We prototyped each option and tested with users. Writers don't want to think about the AI. They just want to feel supported and write better. The "blur event" trigger won because it respected the human's agency.
           </p>
 
-          <h2 id="where-not-ai" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§3 · Where to NOT use AI</h2>
+          <h2 id={sectionId("Where to NOT use AI")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Where to NOT use AI"}</h2>
 
+          <p>
+            Some people like to analyze it from a business perspective (when the cost of failure is high, when human judgment is irreplaceable, etc) but one day I really feel the AI fatigue and just created this table to summarize feeling from my personal experience and what I've heard from others.
+          </p>
 
           <img
             src="/articles/ai-fatigue.png"
@@ -250,19 +440,27 @@ function ArticleComponent() {
             className="w-full rounded-lg my-8 border border-neutral-200"
           />
 
+
           <p>
-            This is the most important design question: <strong>When should we not use AI?</strong>
+            Sometimes, the process itself is the product, and that process generates feelings. When the user feels: <strong> Great AI product design knows its boundaries. </strong>
           </p>
 
           <p>
-            When the cost of failure is high. When human judgment is irreplaceable. When the relationship itself is the product. When the user feels: <strong> Great AI product design knows its boundaries. </strong>
+            I'd want AI that respects human autonomy. What that means in design could be: suggest but not decide, guide but not tell.
           </p>
 
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
-            <p className="m-0">Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.</p>
-          </div>
- 
+          <h2 id={sectionId("Three core lessons")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Three core lessons"}</h2>
+
+          <p>
+            After years of designing AI products across eldercare, co-writing, and enterprise tooling, three things hold true regardless of context:
+          </p>
+
+          <ol className="list-decimal pl-5 space-y-4 mt-4">
+            <li><strong>The trigger is the relationship.</strong> When AI speaks matters more than what it says. The blur event, not the tick, won the writing tool study—because it respected the human's flow.</li>
+            <li><strong>Hard inferences require human handoff.</strong> The eldercare bot couldn't reason through the "long-term Yes / bad" branch alone. Knowing that limit is a design decision, not a failure.</li>
+            <li><strong>Trust is built in small moments.</strong> Acknowledge, evaluate, show affiliation, reconfirm. The script looks mechanical written down. Experienced in a product, it feels like being understood.</li>
+          </ol>
+
         </div>
 
         <div className="mt-20 border-t border-neutral-200 pt-10">

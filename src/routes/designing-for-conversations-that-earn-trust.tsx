@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { TableOfContents } from "./TableOfContents";
-import { ARTICLE_META } from "./articleMeta";
+import { TableOfContents } from "./-TableOfContents";
+import { ARTICLE_META, sectionId } from "./-articleMeta";
+
 
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
@@ -20,13 +21,6 @@ function ArticleComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-3xl px-6 py-12">
-        <a
-          href="/"
-          className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back
-        </a>
 
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Role</span>
@@ -47,7 +41,7 @@ function ArticleComponent() {
 
         <div className="prose prose-neutral max-w-3xl">
 
-          <h2 id="relationship" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">§1 · Designing the relationship (when AI has hard inferences)</h2>
+          <h2 id={sectionId("Designing the relationship")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the relationship"}</h2>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">Case study: Elder care Bot (research @AI-Caring)</h3>
 
@@ -77,7 +71,7 @@ function ArticleComponent() {
             This is a <strong>hard inference</strong> case. How would you explain to AI what "trust" is? I couldn't remember how much literature review I did trying to understand humans. We design human–AI relationships by borrowing from human–human relationships, but humans are complicated—human–human relationships are even <strong>MUCH MORE</strong> complicated. So most of this HCI research was about understanding humans.
           </p>
 
-          <h2 id="takeaway-01" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 01 · Trust can be scripted.</h2>
+          <h2 id={sectionId("Trust can be scripted")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Trust can be scripted"}</h2>
 
           <p>
             Trust is usually built through small interactions. Below is a decision structure we proposed—see how small things can build up to create those feelings:
@@ -134,15 +128,17 @@ function ArticleComponent() {
 └──────────────────────────────────────────────────┘`}</pre>
           <p className="text-xs text-neutral-500 -mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
 
-          <h2 id="takeaway-02" className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">Takeaway 02 · Trust can mean "I am not capable of doing this."</h2>
+          <h2 id={sectionId("Trust means knowing your limits")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Trust means knowing your limits"}</h2>
 
           <p>
             In eldercare, the trickiest part is when the older adult's health declines. The bot is more than just a messenger—it's a party that knows information from both sides and can talk to both. But the elder might not want the bot to tell everything to their caregiver.
           </p>
 
+          <p> <strong>If you were the bot, what would you do? </strong></p>
+
           <details className="my-6 border-l-4 border-neutral-300 pl-5">
             <summary className="text-xs uppercase tracking-[0.15em] text-neutral-500 cursor-pointer font-semibold">"Affiliation" in human-robot interaction</summary>
-            <div className="mt-4 text-sm text-neutral-700 space-y-3">
+            <div className="mt-4 text-sm text-neutral-700 space-y-5">
               <p>
                 In social science (Stivers et al., 2011; Lee &amp; Tanaka, 2016), <em>affiliation</em> is the affective stance of being on someone's side, displaying empathy, matching their preference, cooperating. It's distinct from <em>alignment</em>, which is just the structural level of cooperation.
               </p>
@@ -162,7 +158,6 @@ function ArticleComponent() {
             </div>
           </details>
 
-          <blockquote>If you were the bot, what would you do?</blockquote>
 
           <p>
             This is a tricky question even for humans. When we design it, we map out all the variables in the scenarios:
@@ -231,7 +226,7 @@ function ArticleComponent() {
             Lol, it was fun applying a logical lens to such a soft problem.
           </div>
 
-          <h2 id="what-this-means" className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">What this means for designers</h2>
+          <h2 id={sectionId("What this means for designers")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"What this means for designers"}</h2>
 
           <p>
             When you design systems where AI interacts with humans—especially in high-stakes scenarios like elder care—the structure you build becomes the foundation of the relationship.

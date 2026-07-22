@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { SiteNav } from "./SiteNav";
+import { SiteNav } from "./-SiteNav";
 
 export const Route = createFileRoute("/listen")({
   head: () => ({
@@ -251,7 +251,7 @@ function ListenComponent() {
       const rect = canvas.getBoundingClientRect();
       const mx = (e.clientX - rect.left) * (W / rect.width);
       const my = (e.clientY - rect.top) * (H / rect.height);
-      let best: NodeData | null = null, minD = 28;
+      let best: NodeData | null = null as NodeData | null, minD = 28;
       nodesRef.current.forEach(n => {
         const d = Math.hypot(n.x - mx, n.y - my);
         if (d < minD) { minD = d; best = n; }

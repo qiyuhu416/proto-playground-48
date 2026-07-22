@@ -1,0 +1,14 @@
+<svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Triangle edges -->
+  <line x1="285" y1="52" x2="92" y2="290" stroke="#111" stroke-width="1.5"/>
+  <line x1="285" y1="52" x2="408" y2="338" stroke="#111" stroke-width="1.5"/>
+  <line x1="92" y1="290" x2="408" y2="338" stroke="#111" stroke-width="1.5"/>
+  <!-- Vertex dots -->
+  <circle cx="285" cy="52" r="5" fill="#111"/>
+  <circle cx="92" cy="290" r="5" fill="#111"/>
+  <circle cx="408" cy="338" r="5" fill="#111"/>
+  <!-- Labels -->
+  <text x="300" y="56" font-size="17" font-weight="700" font-family="system-ui, -apple-system, sans-serif" fill="#111" dominant-baseline="middle">Role</text>
+  <text x="4" y="290" font-size="17" font-weight="700" font-family="system-ui, -apple-system, sans-serif" fill="#111" dominant-baseline="middle">Implementation</text>
+  <text x="418" y="338" font-size="17" font-weight="700" font-family="system-ui, -apple-system, sans-serif" fill="#111" dominant-baseline="middle">Look and feel</text>
+</svg>
