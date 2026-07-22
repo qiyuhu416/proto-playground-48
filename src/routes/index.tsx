@@ -39,6 +39,7 @@ type Item = {
   thumbnail?: string;
   thumbnailSize?: "small" | "medium";
   videoPreview?: string;
+  videoStartTime?: number;
 };
 
 type ItemWithSlug = Item & { slug: string };
@@ -63,6 +64,7 @@ const ITEMS: ItemWithSlug[] = [
     meta: "Concept · Motion",
     accent: "bg-gradient-to-br from-sky-100 to-indigo-200",
     videoPreview: "/articles/ai-ai-interaction.mp4",
+    videoStartTime: 5,
   },
   {
     slug: "designing-next-gen-ai-products",
@@ -118,8 +120,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "a2ui-generative",
     title: ARTICLE_META["a2ui-generative"].title,
-    thumbnail: "/articles/a2ui-thumb.svg",
-    thumbnailSize: "small",
+    thumbnail: ARTICLE_META["a2ui-generative"].thumbnail,
+    thumbnailSize: ARTICLE_META["a2ui-generative"].thumbnailSize,
     blurb: "AI-driven user interfaces that generate and adapt components based on intent.",
     category: "Look & Feel",
     kind: "Prototype",
@@ -171,8 +173,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "proactive",
     title: ARTICLE_META["proactive"].title,
-    thumbnail: "/articles/proactive-thumb.svg",
-    thumbnailSize: "small",
+    thumbnail: ARTICLE_META["proactive"].thumbnail,
+    thumbnailSize: ARTICLE_META["proactive"].thumbnailSize,
     blurb: "Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.",
     category: "Implementation",
     kind: "Prototype",
@@ -182,8 +184,8 @@ const ITEMS: ItemWithSlug[] = [
   {
     slug: "personalization",
     title: ARTICLE_META["personalization"].title,
-    thumbnail: "/articles/personalization-thumb.svg",
-    thumbnailSize: "small",
+    thumbnail: ARTICLE_META["personalization"].thumbnail,
+    thumbnailSize: ARTICLE_META["personalization"].thumbnailSize,
     blurb: "Understanding what makes humans human—exploring the future of AI through the lens of personal connection.",
     category: "Role",
     kind: "Article",
@@ -223,10 +225,22 @@ function Index() {
   const [scrolledDown, setScrolledDown] = useState(false);
   const [timelineCollapsed, setTimelineCollapsed] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0); // 0 = fully expanded, 1 = fully collapsed
+  const [timelineWidth, setTimelineWidth] = useState(1000);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const lockedOpen = useRef(false);
   const rafId = useRef(0);
   // collapse only when there's more than one row of cards (lg = 3 cols)
   const canCollapse = useRef(true);
+
+  // track timeline container width for responsive label behaviour
+  useEffect(() => {
+    const el = timelineRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => setTimelineWidth(entry.contentRect.width));
+    ro.observe(el);
+    setTimelineWidth(el.getBoundingClientRect().width);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const SCROLL_START = 80;
@@ -355,7 +369,7 @@ function Index() {
             />
           ) : item.videoPreview ? (
             <video
-              src={`${item.videoPreview}#t=0.001`}
+              src={`${item.videoPreview}#t=${item.videoStartTime ?? 0.001}`}
               preload="metadata"
               muted
               loop
@@ -531,46 +545,56 @@ function Index() {
       {!scrolledDown && (
         <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
           <section className="mx-auto max-w-6xl px-6 py-6">
-            <div className="relative">
-              {/* Lines fade as dots converge */}
-              <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0", opacity: 1 - scrollProgress }}>
-                <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2" />
-                <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
-              </svg>
-              <div className="relative z-10 h-12">
-                {/* All — anchor at left:0, stays put */}
-                <button onClick={() => setSelectedStage("All")} className="absolute flex flex-col items-center gap-2 group" style={{ left: "0%" }}>
-                  <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === "All" ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                  <span className="text-sm font-medium whitespace-nowrap text-neutral-900 transition-opacity duration-150" style={{ opacity: selectedStage === "All" ? Math.max(0, 1 - scrollProgress * 2) : 0 }}>All</span>
-                </button>
-                {/* All other dots converge toward left:0 proportionally */}
-                {([
+            <div className="relative" ref={timelineRef}>
+              {(() => {
+                const showAll = timelineWidth > 620;
+                const labelSize = Math.max(10, Math.min(14, timelineWidth / 72));
+                const p = scrollProgress;
+                const nodes = [
+                  { key: "All",          nat: 0,   txFull: 0    },
                   { key: "chatbot",      nat: 22,  txFull: -50  },
                   { key: "reasoner",     nat: 36,  txFull: -50  },
                   { key: "agent",        nat: 50,  txFull: -50  },
                   { key: "innovator",    nat: 63,  txFull: -50  },
                   { key: "Organization", nat: 76,  txFull: -50  },
                   { key: "human",        nat: 100, txFull: -100 },
-                ] as { key: string; nat: number; txFull: number }[]).map(({ key, nat, txFull }) => {
-                  const p = scrollProgress;
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => setSelectedStage(key)}
-                      className="absolute flex flex-col items-center gap-2 group"
-                      style={{
-                        left: `${nat * (1 - p)}%`,
-                        transform: `translateX(${txFull * (1 - p)}%)`,
-                        opacity: 1 - p,
-                        pointerEvents: p > 0.85 ? "none" : "auto",
-                      }}
-                    >
-                      <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${selectedStage === key ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
-                      <span className="text-sm font-medium whitespace-nowrap text-neutral-900 transition-opacity duration-150" style={{ opacity: selectedStage === key ? Math.max(0, 1 - p * 2.5) : 0 }}>{key}</span>
-                    </button>
-                  );
-                })}
-              </div>
+                ];
+                return (
+                  <>
+                    <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0", opacity: 1 - p }}>
+                      <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2" />
+                      <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4" />
+                    </svg>
+                    <div className="relative z-10 h-12">
+                      {nodes.map(({ key, nat, txFull }) => {
+                        const isActive = selectedStage === key;
+                        const labelOpacity = showAll
+                          ? Math.max(0, 1 - p * 2)
+                          : isActive ? Math.max(0, 1 - p * 2) : 0;
+                        return (
+                          <button
+                            key={key}
+                            onClick={() => setSelectedStage(key)}
+                            className="absolute flex flex-col items-center gap-1 group"
+                            style={{
+                              left: `${nat * (1 - p)}%`,
+                              transform: `translateX(${txFull * (1 - p)}%)`,
+                              opacity: 1 - p,
+                              pointerEvents: p > 0.85 ? "none" : "auto",
+                            }}
+                          >
+                            <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${isActive ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+                            <span
+                              className="whitespace-nowrap font-medium transition-all duration-150"
+                              style={{ fontSize: labelSize, opacity: labelOpacity, color: isActive ? "#171717" : "#737373" }}
+                            >{key}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </section>
         </div>
