@@ -8,18 +8,19 @@ import { CardIcon } from "./-CardIcon";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Qiyu x AI interaction" },
+      { title: "Qiyu Hu — AI Interaction Designer" },
       {
         name: "description",
         content:
-          "A curated collection of prototypes and articles exploring implementation, look & feel, and role.",
+          "Qiyu Hu's portfolio — prototypes and articles exploring human–AI interaction, design research, and the future of AI products.",
       },
-      { property: "og:title", content: "What do prototypes prototype" },
+      { property: "og:title", content: "Qiyu Hu — AI Interaction Designer" },
       {
         property: "og:description",
         content:
-          "A curated collection of prototypes and articles across implementation, look & feel, and role.",
+          "Prototypes and articles exploring human–AI interaction, design research, and the future of AI products.",
       },
+      { property: "og:url", content: "https://key-you.com/" },
     ],
   }),
   component: Index,
@@ -231,45 +232,52 @@ const TIMELINE_NODES = [
  */
 function TimelineNodes({
   selectedStage, setSelectedStage,
-  mode, scrollProgress = 0, isExpanded = true,
+  mode, scrollProgress = 0, isExpanded = true, compact = false,
 }: {
   selectedStage: string;
   setSelectedStage: (s: string) => void;
   mode: "scroll" | "expand";
   scrollProgress?: number;
   isExpanded?: boolean;
+  compact?: boolean;
 }) {
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const expandEase   = "cubic-bezier(0.34,1.56,0.64,1)";
   const collapseEase = "cubic-bezier(0.55,0,1,0.45)";
 
   return (
     <>
       {/* Connecting lines */}
-      <svg className="absolute inset-0 w-full h-12" style={{ overflow: "visible", top: "0" }}>
-        <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="2"
+      {/* Line pinned at y=10 from container top — matches full dot center (h-5 w-5 / 2 = 10px) */}
+      <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 1, overflow: "visible", pointerEvents: "none", zIndex: 1 }}>
+        <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="1.5"
           style={{ opacity: mode === "scroll" ? 1 - scrollProgress : isExpanded ? 1 : 0,
                    transition: mode === "expand" ? "opacity 200ms ease 300ms" : undefined }} />
-        <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="2" strokeDasharray="4,4"
+        <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="1.5" strokeDasharray="4,4"
           style={{ opacity: mode === "scroll" ? 1 - scrollProgress : isExpanded ? 1 : 0,
                    transition: mode === "expand" ? "opacity 200ms ease 300ms" : undefined }} />
       </svg>
 
-      {/* Dots */}
+      {/* Dots — top=0 for full (20px dot center = 10px); top=5 for compact (10px dot center = 5+5=10px) */}
       <div className="relative z-10 h-12">
         {TIMELINE_NODES.map(({ key, nat, txFull, toLeft, toTx, delay }) => {
           const isActive = selectedStage === key;
-          // label fade: active always shows, inactive shows on lg+ screens
-          const labelProgress = mode === "scroll" ? scrollProgress : 0;
-          const labelOpacity  = Math.max(0, 1 - labelProgress * 2);
+          const isHovered = hoveredKey === key;
+
+          // compact dots (10px) need top=5 so their center lands at y=10 (line position)
+          // full dots (20px) need top=0 so their center lands at y=10
+          const dotTop = compact ? 5 : 0;
 
           const dotStyle = mode === "scroll"
             ? {
-                left: `${nat * (1 - scrollProgress)}%`,
-                transform: `translateX(${txFull * (1 - scrollProgress)}%)`,
-                opacity: 1 - scrollProgress,
-                pointerEvents: scrollProgress > 0.85 ? "none" as const : "auto" as const,
+                top: dotTop,
+                left: `${nat}%`,
+                transform: `translateX(${txFull}%)`,
+                opacity: 1,
+                pointerEvents: "auto" as const,
               }
             : {
+                top: dotTop,
                 left: isExpanded ? toLeft : "0%",
                 transform: isExpanded ? toTx : "translateX(0)",
                 opacity: isExpanded ? 1 : 0,
@@ -279,19 +287,40 @@ function TimelineNodes({
                 pointerEvents: isExpanded ? "auto" as const : "none" as const,
               };
 
+          // compact (scrolled down): hover or active only
+          // full modes: always visible (with scrollProgress fade)
+          const showLabel = compact ? (isActive || isHovered) : true;
+
+          const dotSize = compact ? (isActive ? "h-3 w-3" : "h-2.5 w-2.5") : "h-5 w-5";
+          const dotColor = isActive
+            ? "bg-neutral-900"
+            : "bg-white border-2 border-neutral-400 hover:border-neutral-900";
+          const displayLabel = key === "All" ? null : key;
+
           return (
             <button
               key={key}
               onClick={() => setSelectedStage(key)}
-              className="absolute flex flex-col items-center gap-2 group"
+              onMouseEnter={() => setHoveredKey(key)}
+              onMouseLeave={() => setHoveredKey(null)}
+              className="absolute flex flex-col items-center"
               style={dotStyle}
             >
-              <div className={`h-5 w-5 rounded-full transition-colors relative z-20 ${isActive ? "bg-neutral-900" : "bg-white border-2 border-neutral-400 hover:border-neutral-900"}`} />
+              {/* Dot — this element's vertical center is at the line (y=10 from container) */}
+              <div className={`rounded-full transition-all relative z-20 ${dotSize} ${dotColor}`} />
+              {/* Label — absolutely below the dot, not in flex flow */}
               <span
-                className={`text-sm font-medium whitespace-nowrap transition-opacity duration-150 ${isActive ? "block" : "hidden lg:block"}`}
-                style={{ opacity: labelOpacity, color: isActive ? "#171717" : "#737373" }}
+                className="absolute whitespace-nowrap font-medium transition-all duration-150"
+                style={{
+                  top: compact ? 14 : 22,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  opacity: (displayLabel && showLabel) ? 1 : 0,
+                  color: isActive ? "#171717" : "#737373",
+                  fontSize: compact ? 10 : 12,
+                }}
               >
-                {key}
+                {displayLabel ?? ""}
               </span>
             </button>
           );
@@ -314,9 +343,9 @@ const KINDS = [
   { label: "Article", icon: FileText },
 ] as const;
 
+
 function Index() {
   const [selectedStage, setSelectedStage] = useState<string>("All");
-  const [showPrototypeModal, setShowPrototypeModal] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [scrolledDown, setScrolledDown] = useState(false);
@@ -428,19 +457,15 @@ function Index() {
 
   const renderCard = (item: ItemWithSlug) => {
     const href = item.externalLink || `/${item.slug}`;
-    const target = item.externalLink ? "_blank" : undefined;
-    const rel = item.externalLink ? "noopener noreferrer" : undefined;
-    const toc = tableOfContents[item.slug] || [];
+    const isExternal = !!item.externalLink;
 
     return (
       <a
         key={item.slug}
         href={href}
-        target={target}
-        rel={rel}
-        className={
-          "group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-0 bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block"
-        }
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        className="group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-0 bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block w-full text-left"
         onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = item.videoStartTime ?? 0; v.play(); } }}
         onMouseMove={(e) => { setCursorPos({ x: e.clientX, y: e.clientY }); setHoveredSlug(item.slug); }}
         onMouseLeave={(e) => { setHoveredSlug(null); const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = item.videoStartTime ?? 0; } }}
@@ -510,8 +535,7 @@ function Index() {
         className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50"
         onMouseLeave={handleHeaderMouseLeave}
       >
-        {!scrolledDown ? (
-          /* ── At top: badge + nav + Qiyu ── */
+          {/* ── Always: badge + nav + Qiyu ── */}
           <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
             <div className="flex-1 flex items-center">
               <a href="/what-do-prototypes-prototype" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
@@ -535,51 +559,6 @@ function Index() {
               </div>
             </div>
           </div>
-        ) : (
-          /* ── Scrolled: two panels, fixed height ── */
-          <div className="relative h-[72px]">
-
-            {/* Panel A: dot + nav + Qiyu — fades out when expanded */}
-            <div className={`absolute inset-0 flex items-center transition-opacity duration-200 ${timelineCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-              <div className="mx-auto flex w-full max-w-6xl items-center px-6">
-                <div className="flex-1 flex items-center">
-                  <button onMouseEnter={handleDotHover} onClick={handleDotClick} className="flex items-center gap-2 group">
-                    <div className="h-5 w-5 rounded-full bg-neutral-900 transition-transform group-hover:scale-125 shrink-0" />
-                    <span className="text-xs text-neutral-500 group-hover:text-neutral-900 transition-colors">{selectedStage}</span>
-                  </button>
-                </div>
-                <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-                  {NAV_ITEMS.map((l) => (
-                    <Link key={l} to={navHref(l)} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</Link>
-                  ))}
-                </nav>
-                <div className="flex-1 flex justify-end">
-                  <div className="hidden md:flex group relative h-9 items-center">
-                    <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
-                    <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
-                    <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
-                      Qiyu<span className="translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-200 delay-100">'s LinkedIn</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Panel B: animated timeline — always mounted, dots transition from origin */}
-            <div className={`absolute inset-0 transition-opacity duration-200 ${!timelineCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-              <div className="mx-auto max-w-6xl px-6 h-full flex items-center">
-                <div className="relative w-full h-12">
-                  <TimelineNodes
-                    selectedStage={selectedStage}
-                    setSelectedStage={setSelectedStage}
-                    mode="expand"
-                    isExpanded={!timelineCollapsed}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </header>
 
       {/* Hero */}
@@ -591,21 +570,29 @@ function Index() {
         </h1>
       </section>
 
-      {/* Timeline — separate sticky row, visible while scrolling (scroll-progress collapse) */}
-      {!scrolledDown && (
-        <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
-          <section className="mx-auto max-w-6xl px-6 py-6">
-            <div className="relative">
-              <TimelineNodes
-                selectedStage={selectedStage}
-                setSelectedStage={setSelectedStage}
-                mode="scroll"
-                scrollProgress={scrollProgress}
-              />
-            </div>
-          </section>
-        </div>
-      )}
+      {/* Timeline — always sticky second row; compact when scrolled down */}
+      <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
+        <section className={`mx-auto max-w-6xl px-6 transition-all duration-300 ${scrolledDown ? "py-2" : "py-3"}`}>
+          <div className="relative">
+            {/* "present" / "future" — vertically centered on y=10 (same as the line) */}
+            <span
+              className="absolute text-[10px] tracking-[0.1em] text-neutral-400 pointer-events-none select-none normal-case"
+              style={{ top: 10, left: 0, opacity: scrolledDown ? 0.4 : 0.7, transition: "opacity 300ms", transform: "translateY(-50%) translateX(calc(-100% - 10px))" }}
+            >present</span>
+            <span
+              className="absolute text-[10px] tracking-[0.1em] text-neutral-400 pointer-events-none select-none normal-case"
+              style={{ top: 10, right: 0, opacity: scrolledDown ? 0.4 : 0.7, transition: "opacity 300ms", transform: "translateY(-50%) translateX(calc(100% + 10px))" }}
+            >future</span>
+            <TimelineNodes
+              selectedStage={selectedStage}
+              setSelectedStage={setSelectedStage}
+              mode="scroll"
+              scrollProgress={0}
+              compact={scrolledDown}
+            />
+          </div>
+        </section>
+      </div>
 
       {/* Grid */}
       <section className="mx-auto max-w-6xl px-6 py-8 pb-24">
@@ -676,76 +663,6 @@ function Index() {
       <footer className="mx-auto max-w-6xl px-6 pb-10 text-center text-xs text-neutral-500">
         © 2026 — sketched with fountain pen & paper
       </footer>
-
-      {/* Prototype Modal */}
-      {showPrototypeModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 flex items-center justify-between p-6 border-b border-neutral-200 bg-white">
-              <h2 className="text-2xl font-medium text-neutral-900">What do prototypes prototype?</h2>
-              <button
-                onClick={() => setShowPrototypeModal(false)}
-                className="text-neutral-500 hover:text-neutral-900 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="p-6 space-y-8">
-              {/* Triangle diagram */}
-              <div>
-                <img
-                  src="/articles/prototype-triangle.png"
-                  alt="What do prototypes prototype triangle diagram"
-                  className="w-full rounded-lg border border-neutral-200"
-                />
-              </div>
-
-              {/* Explanation */}
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">Implementation</h3>
-                  <p className="text-neutral-600">
-                    Testing whether something is technically possible. What can be built? What are the
-                    constraints? How do different technologies and approaches perform?
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">Look & Feel</h3>
-                  <p className="text-neutral-600">
-                    Exploring how something will be perceived and experienced. What does it feel like to
-                    use? What's the tone, aesthetic, and emotional response? How does it move and
-                    respond?
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-2">Role</h3>
-                  <p className="text-neutral-600">
-                    Understanding what place this thing occupies in the world. What's its purpose? Who
-                    is it for? What problems does it solve? How does it fit into larger systems?
-                  </p>
-                </div>
-
-                <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-                  <p className="text-sm text-neutral-600 mb-3">
-                    Read the original paper by Elisa Giaccardi:
-                  </p>
-                  <a
-                    href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
-                  >
-                    What Do Prototypes Prototype? (PDF) →
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

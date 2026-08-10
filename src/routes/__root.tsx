@@ -71,7 +71,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Qiyu x AI interaction" },
+      { title: "Qiyu Hu — AI Interaction Designer" },
+      {
+        name: "description",
+        content:
+          "Qiyu Hu is an AI interaction designer exploring human–AI collaboration through prototypes and research. Based in San Francisco.",
+      },
+      { name: "author", content: "Qiyu Hu" },
+      { property: "og:site_name", content: "Qiyu Hu" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://key-you.com" },
+      { property: "og:title", content: "Qiyu Hu — AI Interaction Designer" },
+      {
+        property: "og:description",
+        content:
+          "Qiyu Hu is an AI interaction designer exploring human–AI collaboration through prototypes and research.",
+      },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Qiyu Hu — AI Interaction Designer" },
+      {
+        name: "twitter:description",
+        content:
+          "Qiyu Hu is an AI interaction designer exploring human–AI collaboration through prototypes and research.",
+      },
     ],
     links: [
       {
@@ -102,6 +124,19 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Qiyu Hu",
+              url: "https://key-you.com",
+              jobTitle: "AI Interaction Designer",
+              sameAs: ["https://www.linkedin.com/in/qiyu-hu/"],
+            }),
+          }}
+        />
       </body>
     </html>
   );
