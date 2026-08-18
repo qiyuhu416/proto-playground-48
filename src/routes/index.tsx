@@ -198,8 +198,7 @@ const PILLARS: Pillar[] = [
     number: "04",
     subtitle: "",
     title: "Is there another way to express yourself?",
-    description: "Text is never the only way. 
-",
+    description: "Text is never the only way.",
     gapLeft: "Intent",
     gapRight: "Expression",
     activeGap: "top",
