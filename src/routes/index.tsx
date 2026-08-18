@@ -704,9 +704,11 @@ function Index() {
                 const iframe = iframeRef.current;
                 if (!iframe?.contentWindow) return;
                 const handleScroll = () => {
-                  setIsFull(iframe.contentWindow!.scrollY > 30);
+                  const scrolled = iframe.contentWindow?.scrollY || iframe.contentDocument?.documentElement.scrollTop || 0;
+                  setIsFull(scrolled > 30);
                 };
                 iframe.contentWindow.addEventListener("scroll", handleScroll, { passive: true });
+                iframe.contentDocument?.addEventListener("scroll", handleScroll, { passive: true });
               }}
             />
           </div>
