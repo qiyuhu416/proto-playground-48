@@ -668,7 +668,7 @@ function Index() {
             </button>
             <iframe
               ref={iframeRef}
-              src={`/${card.slug}`}
+              src={`/${card.slug}?embed=true`}
               className="w-full h-full border-0"
               title={card.title}
               onLoad={() => {

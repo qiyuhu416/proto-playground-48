@@ -124,6 +124,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <style>{`body.modal-open #header-nav { display: none !important; }
         body.modal-open header { display: none !important; }`}</style>
+        <script dangerouslySetInnerHTML={{
+          __html: `if (window.self !== window.top || new URLSearchParams(window.location.search).get("embed") === "true") {
+            document.documentElement.classList.add("embed-mode");
+          }`
+        }} />
+        <style>{`html.embed-mode header { display: none !important; }
+        html.embed-mode #header-nav { display: none !important; }`}</style>
       </head>
       <body>
         {children}
@@ -150,12 +157,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
   const currentPath = location.pathname;
-  const isEmbed = typeof window !== "undefined" && window.self !== window.top;
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Header badge - present on all pages (hidden in embed mode) */}
-      {!isEmbed && <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
+      {/* Header badge - present on all pages (hidden in embed mode via CSS) */}
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="hidden md:inline-flex group relative">
             <a href="https://www.linkedin.com/in/qiyu-hu/" className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden !cursor-default" target="_blank" rel="noopener noreferrer">
@@ -176,7 +182,7 @@ function RootComponent() {
             })}
           </nav>
         </div>
-      </header>}
+      </header>
 
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
