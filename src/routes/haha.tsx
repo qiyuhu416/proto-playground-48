@@ -126,7 +126,7 @@ function PlayComponent() {
       key={project.slug || project.title}
       {...(wrapperProps as any)}
       className="group relative rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block text-left w-full"
-      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; v.haha(); } }}
+      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; (v as HTMLVideoElement).play(); } }}
       onMouseLeave={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
     >
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">

@@ -172,7 +172,8 @@ function RootComponent() {
                 </a>
               </div>
             </div>
-            <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1">
+          </div>
+          <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1">
               {NAV_ITEMS.map((l) => {
                 const href = navHref(l);
                 const isActive = (l === "work" && currentPath === "/") ||
