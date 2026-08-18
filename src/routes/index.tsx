@@ -609,7 +609,9 @@ function Index() {
   };
 
   const card = selectedCard ? findCard(selectedCard) : undefined;
-  const modalWidth = Math.min(100, 40 + (modalScroll / 200) * 60);
+  const modalExpansion = Math.min(100, (modalScroll / 200) * 100);
+  const modalWidth = Math.min(100, 40 + modalExpansion);
+  const modalHeight = Math.min(100, 80 + (modalScroll / 200) * 20);
 
   return (
     <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
@@ -633,11 +635,22 @@ function Index() {
 
       {/* Card Modal */}
       {selectedCard && card && !card.externalLink && (
-        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4" onClick={() => setSelectedCard(null)}>
+        <div
+          className="fixed z-50 bg-black/30 overflow-hidden flex items-center justify-center transition-all duration-300"
+          style={{
+            inset: 0,
+            padding: modalWidth === 100 ? 0 : 16,
+          }}
+          onClick={() => setSelectedCard(null)}
+        >
           <div
             ref={modalRef}
-            className="bg-white rounded-2xl h-[80vh] overflow-y-auto transition-all duration-300 relative"
-            style={{ width: `${modalWidth}%` }}
+            className="bg-white overflow-y-auto transition-all duration-300 relative"
+            style={{
+              width: `${modalWidth}%`,
+              height: `${modalHeight}vh`,
+              borderRadius: modalWidth === 100 ? 0 : 16,
+            }}
             onClick={(e) => e.stopPropagation()}
             onScroll={handleModalScroll}
           >
