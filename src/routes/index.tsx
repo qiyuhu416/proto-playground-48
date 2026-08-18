@@ -217,91 +217,76 @@ const PILLARS: Pillar[] = [
 ];
 
 // ── Interaction model diagram ─────────────────────────────────────────────────
+// Racetrack circuit: top arrow (→), right arc (↓), bottom arrow (←), left arc (↑)
 
 function InteractionDiagram({ active }: { active: GapId }) {
   const dim = (gap: GapId) => ({
     stroke:      gap === active ? "#171717" : "#d1d5db",
-    strokeWidth: gap === active ? 2        : 1.2,
-    opacity:     gap === active ? 1        : 0.45,
+    strokeWidth: gap === active ? 2        : 1.5,
+    opacity:     gap === active ? 1        : 0.4,
   });
-  const labelFill = (gap: GapId) => gap === active ? "#404040" : "#c0c0c0";
+  const lf = (gap: GapId) => gap === active ? "#404040" : "#bbbbbb";
 
-  // Geometry constants
-  const mex = 108, mey = 126, r = 50;   // ME circle
-  const otx = 310, oty = 126;            // OTHERS circle
-  const topY = 100, botY = 152;          // Arrow y-positions
-  const gapL = mex + r + 2;             // 160
-  const gapR = otx - r - 2;             // 258
+  // Geometry — racetrack around two circles
+  const mex = 140, otx = 340, cy = 115, r = 48;
+  const arcR = 75;                // half the track height
+  const yT = cy - arcR;          // 40  — top of track
+  const yB = cy + arcR;          // 190 — bottom of track
 
   return (
-    <svg viewBox="0 0 420 252" className="w-full max-w-[400px]" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 480 230" className="w-full max-w-[420px]" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-      {/* ── ME self-loop (left dashed arc) ── */}
-      <path
-        d={`M ${mex - 36},${topY} C ${mex - 110},${topY} ${mex - 110},${botY} ${mex - 36},${botY}`}
-        strokeDasharray="4 3"
-        fill="none"
-        {...dim("me-loop")}
-      />
-      {/* arrowhead at bottom of ME loop */}
-      <polyline
-        points={`${mex - 40},${botY - 5} ${mex - 36},${botY} ${mex - 31},${botY - 5}`}
-        fill="none"
-        {...dim("me-loop")}
-      />
-      {/* ME loop labels */}
-      <text x={mex - 72} y={topY - 10} textAnchor="middle" fontSize="8.5" fill={labelFill("me-loop")}
-        fontFamily="ui-sans-serif, system-ui, sans-serif">assume</text>
-      <text x={mex - 72} y={botY + 18} textAnchor="middle" fontSize="8.5" fill={labelFill("me-loop")}
-        fontFamily="ui-sans-serif, system-ui, sans-serif">aware</text>
+      {/* ── Left arc: ↑ counterclockwise, ME self-loop ── */}
+      {/* M bottom → sweep counterclockwise → top */}
+      <path d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`}
+        fill="none" {...dim("me-loop")} />
+      {/* Arrowhead at top of left arc, tangent → right */}
+      <polyline points={`${mex - 6},${yT + 7} ${mex},${yT} ${mex + 6},${yT + 7}`}
+        fill="none" {...dim("me-loop")} />
 
-      {/* ── OTHERS self-loop (right dashed arc) ── */}
-      <path
-        d={`M ${otx + 36},${topY} C ${otx + 110},${topY} ${otx + 110},${botY} ${otx + 36},${botY}`}
-        strokeDasharray="4 3"
-        fill="none"
-        {...dim("others-loop")}
-      />
-      {/* arrowhead at bottom of OTHERS loop */}
-      <polyline
-        points={`${otx + 31},${botY - 5} ${otx + 36},${botY} ${otx + 41},${botY - 5}`}
-        fill="none"
-        {...dim("others-loop")}
-      />
-      {/* OTHERS loop labels */}
-      <text x={otx + 72} y={topY - 10} textAnchor="middle" fontSize="8.5" fill={labelFill("others-loop")}
-        fontFamily="ui-sans-serif, system-ui, sans-serif">expect</text>
-      <text x={otx + 72} y={botY + 18} textAnchor="middle" fontSize="8.5" fill={labelFill("others-loop")}
-        fontFamily="ui-sans-serif, system-ui, sans-serif">reality</text>
+      {/* ── Right arc: ↓ clockwise, OTHERS self-loop ── */}
+      {/* M top → sweep clockwise → bottom */}
+      <path d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`}
+        fill="none" {...dim("others-loop")} />
+      {/* Arrowhead at bottom of right arc, tangent → left */}
+      <polyline points={`${otx + 6},${yB - 7} ${otx},${yB} ${otx - 6},${yB - 7}`}
+        fill="none" {...dim("others-loop")} />
 
-      {/* ── Circles ── */}
-      <circle cx={mex} cy={mey} r={r} stroke="#e5e7eb" strokeWidth="1.5" />
-      <text x={mex} y={mey + 4} textAnchor="middle" fontSize="11" fill="#6b7280"
+      {/* ── Top arrow → (ME expresses to OTHERS) ── */}
+      <line x1={mex} y1={yT} x2={otx} y2={yT} {...dim("top")} />
+      <polyline points={`${otx - 7},${yT - 5} ${otx},${yT} ${otx - 7},${yT + 5}`}
+        fill="none" {...dim("top")} />
+
+      {/* ── Bottom arrow ← (OTHERS responds to ME) ── */}
+      <line x1={otx} y1={yB} x2={mex} y2={yB} {...dim("bottom")} />
+      <polyline points={`${mex + 7},${yB - 5} ${mex},${yB} ${mex + 7},${yB + 5}`}
+        fill="none" {...dim("bottom")} />
+
+      {/* ── Circles (drawn on top so they sit inside the circuit) ── */}
+      <circle cx={mex} cy={cy} r={r} stroke="#d4d4d4" strokeWidth="1.5" />
+      <text x={mex} y={cy + 4} textAnchor="middle" fontSize="11" fill="#737373"
         fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">ME</text>
 
-      <circle cx={otx} cy={oty} r={r} stroke="#e5e7eb" strokeWidth="1.5" />
-      <text x={otx} y={oty + 4} textAnchor="middle" fontSize="11" fill="#6b7280"
+      <circle cx={otx} cy={cy} r={r} stroke="#d4d4d4" strokeWidth="1.5" />
+      <text x={otx} y={cy + 4} textAnchor="middle" fontSize="11" fill="#737373"
         fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">OTHERS</text>
 
-      {/* ── Top arrow ME → OTHERS (Intent → Reception) ── */}
-      <line x1={gapL} y1={topY} x2={gapR} y2={topY} {...dim("top")} />
-      <polyline points={`${gapR - 5},${topY - 4} ${gapR},${topY} ${gapR - 5},${topY + 4}`}
-        fill="none" {...dim("top")} />
-      {/* Top gap label */}
-      <text x={(gapL + gapR) / 2} y={topY - 10} textAnchor="middle" fontSize="7.5"
-        fill={labelFill("top")} fontFamily="ui-sans-serif, system-ui, sans-serif">
-        Intent → Reception
-      </text>
+      {/* ── Labels ── */}
+      <text x={(mex + otx) / 2} y={yT - 12} textAnchor="middle" fontSize="7.5"
+        fill={lf("top")} fontFamily="ui-sans-serif, system-ui, sans-serif">Intent → Reception</text>
 
-      {/* ── Bottom arrow OTHERS → ME (Form → Meaning) ── */}
-      <line x1={gapR} y1={botY} x2={gapL} y2={botY} {...dim("bottom")} />
-      <polyline points={`${gapL + 5},${botY - 4} ${gapL},${botY} ${gapL + 5},${botY + 4}`}
-        fill="none" {...dim("bottom")} />
-      {/* Bottom gap label */}
-      <text x={(gapL + gapR) / 2} y={botY + 16} textAnchor="middle" fontSize="7.5"
-        fill={labelFill("bottom")} fontFamily="ui-sans-serif, system-ui, sans-serif">
-        Form → Meaning
-      </text>
+      <text x={(mex + otx) / 2} y={yB + 18} textAnchor="middle" fontSize="7.5"
+        fill={lf("bottom")} fontFamily="ui-sans-serif, system-ui, sans-serif">Form → Meaning</text>
+
+      <text x="32" y={cy - 7} textAnchor="middle" fontSize="8" fill={lf("me-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">assume</text>
+      <text x="32" y={cy + 10} textAnchor="middle" fontSize="8" fill={lf("me-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">aware</text>
+
+      <text x="448" y={cy - 7} textAnchor="middle" fontSize="8" fill={lf("others-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">expect</text>
+      <text x="448" y={cy + 10} textAnchor="middle" fontSize="8" fill={lf("others-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">reality</text>
 
     </svg>
   );
@@ -477,7 +462,7 @@ function Index() {
       {/* Nav */}
       <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
         <div className="mx-auto flex max-w-6xl items-center justify-center gap-6 px-6 py-4">
-          <a href="https://www.linkedin.com/in/qiyu-hu/" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden cursor-pointer" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/in/qiyu-hu/" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden cursor-auto" target="_blank" rel="noopener noreferrer">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
             <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
             <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">Qiyu's LinkedIn</span>
