@@ -17,13 +17,13 @@ import { Route as DesignAsAResearchToolRouteImport } from './routes/design-as-a-
 import { Route as DesigningForConversationsThatEarnTrustRouteImport } from './routes/designing-for-conversations-that-earn-trust'
 import { Route as DesigningNextGenAiProductsRouteImport } from './routes/designing-next-gen-ai-products'
 import { Route as GoogleCloudRouteImport } from './routes/google-cloud'
+import { Route as HahaRouteImport } from './routes/haha'
 import { Route as HelloHumansRouteImport } from './routes/hello-humans'
 import { Route as HumanAiResearchRouteImport } from './routes/human-ai-research'
 import { Route as ListenRouteImport } from './routes/listen'
 import { Route as MakingDesignFunRouteImport } from './routes/making-design-fun'
 import { Route as PersonalizationRouteImport } from './routes/personalization'
 import { Route as PhysicalAiRouteImport } from './routes/physical-ai'
-import { Route as PlayRouteImport } from './routes/play'
 import { Route as ProactiveRouteImport } from './routes/proactive'
 import { Route as ProductLaunchFrom01RouteImport } from './routes/product-launch-from-0-1'
 import { Route as ReimaginingTheChatbotRouteImport } from './routes/reimagining-the-chatbot'
@@ -72,6 +72,11 @@ const GoogleCloudRoute = GoogleCloudRouteImport.update({
   path: '/google-cloud',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HahaRoute = HahaRouteImport.update({
+  id: '/haha',
+  path: '/haha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HelloHumansRoute = HelloHumansRouteImport.update({
   id: '/hello-humans',
   path: '/hello-humans',
@@ -100,11 +105,6 @@ const PersonalizationRoute = PersonalizationRouteImport.update({
 const PhysicalAiRoute = PhysicalAiRouteImport.update({
   id: '/physical-ai',
   path: '/physical-ai',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlayRoute = PlayRouteImport.update({
-  id: '/play',
-  path: '/play',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProactiveRoute = ProactiveRouteImport.update({
@@ -143,13 +143,13 @@ export interface FileRoutesByFullPath {
   '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
+  '/haha': typeof HahaRoute
   '/hello-humans': typeof HelloHumansRoute
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
   '/physical-ai': typeof PhysicalAiRoute
-  '/play': typeof PlayRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
@@ -165,13 +165,13 @@ export interface FileRoutesByTo {
   '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
+  '/haha': typeof HahaRoute
   '/hello-humans': typeof HelloHumansRoute
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
   '/physical-ai': typeof PhysicalAiRoute
-  '/play': typeof PlayRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
@@ -188,13 +188,13 @@ export interface FileRoutesById {
   '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
+  '/haha': typeof HahaRoute
   '/hello-humans': typeof HelloHumansRoute
   '/human-ai-research': typeof HumanAiResearchRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
   '/physical-ai': typeof PhysicalAiRoute
-  '/play': typeof PlayRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
@@ -212,13 +212,13 @@ export interface FileRouteTypes {
     | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
+    | '/haha'
     | '/hello-humans'
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
     | '/physical-ai'
-    | '/play'
     | '/proactive'
     | '/product-launch-from-0-1'
     | '/reimagining-the-chatbot'
@@ -234,13 +234,13 @@ export interface FileRouteTypes {
     | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
+    | '/haha'
     | '/hello-humans'
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
     | '/physical-ai'
-    | '/play'
     | '/proactive'
     | '/product-launch-from-0-1'
     | '/reimagining-the-chatbot'
@@ -256,13 +256,13 @@ export interface FileRouteTypes {
     | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
+    | '/haha'
     | '/hello-humans'
     | '/human-ai-research'
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
     | '/physical-ai'
-    | '/play'
     | '/proactive'
     | '/product-launch-from-0-1'
     | '/reimagining-the-chatbot'
@@ -279,13 +279,13 @@ export interface RootRouteChildren {
   DesigningForConversationsThatEarnTrustRoute: typeof DesigningForConversationsThatEarnTrustRoute
   DesigningNextGenAiProductsRoute: typeof DesigningNextGenAiProductsRoute
   GoogleCloudRoute: typeof GoogleCloudRoute
+  HahaRoute: typeof HahaRoute
   HelloHumansRoute: typeof HelloHumansRoute
   HumanAiResearchRoute: typeof HumanAiResearchRoute
   ListenRoute: typeof ListenRoute
   MakingDesignFunRoute: typeof MakingDesignFunRoute
   PersonalizationRoute: typeof PersonalizationRoute
   PhysicalAiRoute: typeof PhysicalAiRoute
-  PlayRoute: typeof PlayRoute
   ProactiveRoute: typeof ProactiveRoute
   ProductLaunchFrom01Route: typeof ProductLaunchFrom01Route
   ReimaginingTheChatbotRoute: typeof ReimaginingTheChatbotRoute
@@ -351,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GoogleCloudRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/haha': {
+      id: '/haha'
+      path: '/haha'
+      fullPath: '/haha'
+      preLoaderRoute: typeof HahaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hello-humans': {
       id: '/hello-humans'
       path: '/hello-humans'
@@ -391,13 +398,6 @@ declare module '@tanstack/react-router' {
       path: '/physical-ai'
       fullPath: '/physical-ai'
       preLoaderRoute: typeof PhysicalAiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/play': {
-      id: '/play'
-      path: '/play'
-      fullPath: '/play'
-      preLoaderRoute: typeof PlayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/proactive': {
@@ -448,13 +448,13 @@ const rootRouteChildren: RootRouteChildren = {
     DesigningForConversationsThatEarnTrustRoute,
   DesigningNextGenAiProductsRoute: DesigningNextGenAiProductsRoute,
   GoogleCloudRoute: GoogleCloudRoute,
+  HahaRoute: HahaRoute,
   HelloHumansRoute: HelloHumansRoute,
   HumanAiResearchRoute: HumanAiResearchRoute,
   ListenRoute: ListenRoute,
   MakingDesignFunRoute: MakingDesignFunRoute,
   PersonalizationRoute: PersonalizationRoute,
   PhysicalAiRoute: PhysicalAiRoute,
-  PlayRoute: PlayRoute,
   ProactiveRoute: ProactiveRoute,
   ProductLaunchFrom01Route: ProductLaunchFrom01Route,
   ReimaginingTheChatbotRoute: ReimaginingTheChatbotRoute,

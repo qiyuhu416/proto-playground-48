@@ -131,7 +131,7 @@ function ThinkComponent() {
             },
             {
               title: "Making design fun",
-              excerpt: "On curiosity, vibe-coding, and why creation should feel like play.",
+              excerpt: "On curiosity, vibe-coding, and why creation should feel like haha.",
               date: "Apr 2026",
               readTime: "5 min",
             },

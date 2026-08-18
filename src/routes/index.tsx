@@ -316,6 +316,85 @@ function InteractionDiagram({ active }: { active: GapId }) {
 }
 
 
+// ── Hand-drawn interactive diagram ────────────────────────────────────────────
+
+function HandDrawnDiagram() {
+  const [hovered, setHovered] = useState<GapId | null>(null);
+
+  // Geometry — matches the hand-drawn proportions
+  const mex = 108, otx = 452, cy = 98;
+  const arcR = 60;
+  const yT = cy - arcR;  // 38
+  const yB = cy + arcR;  // 158
+
+  const enter = (g: GapId) => () => setHovered(g);
+  const leave = () => setHovered(null);
+
+  const stroke = (g: GapId) => hovered === g ? "#1a1a1a" : "#c2c2c2";
+  const sw     = (g: GapId) => hovered === g ? 2.4 : 1.7;
+  const trans  = { style: { transition: "stroke 160ms, stroke-width 160ms" } };
+
+  // Shared props for visible strokes
+  const vis = (g: GapId) => ({
+    stroke: stroke(g), strokeWidth: sw(g), strokeLinecap: "round" as const,
+    fill: "none", ...trans,
+  });
+
+  // Wide transparent overlay for easier hover targeting
+  const hit = { stroke: "transparent", strokeWidth: 24, fill: "none", style: { cursor: "pointer" } };
+
+  return (
+    <svg viewBox="0 0 568 196" className="block mx-auto w-full max-w-[560px]"
+      fill="none" xmlns="http://www.w3.org/2000/svg">
+
+      {/* ── LEFT ARC — me-loop ── */}
+      <g onMouseEnter={enter("me-loop")} onMouseLeave={leave}>
+        <path d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`} {...vis("me-loop")} />
+        {/* arrowhead at top, tangent → right */}
+        <polyline points={`${mex-7},${yT+9} ${mex},${yT} ${mex+7},${yT+9}`} {...vis("me-loop")} />
+        {/* wide hit path */}
+        <path d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`} {...hit} />
+      </g>
+
+      {/* ── TOP ARROW — top ── */}
+      <g onMouseEnter={enter("top")} onMouseLeave={leave}>
+        <line x1={mex} y1={yT} x2={otx} y2={yT} {...vis("top")} />
+        {/* arrowhead → at right */}
+        <polyline points={`${otx-9},${yT-6} ${otx},${yT} ${otx-9},${yT+6}`} {...vis("top")} />
+        <line x1={mex} y1={yT} x2={otx} y2={yT} {...hit} />
+      </g>
+
+      {/* ── RIGHT ARC — others-loop ── */}
+      <g onMouseEnter={enter("others-loop")} onMouseLeave={leave}>
+        <path d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`} {...vis("others-loop")} />
+        {/* arrowhead ← at bottom */}
+        <polyline points={`${otx+7},${yB-9} ${otx},${yB} ${otx-7},${yB-9}`} {...vis("others-loop")} />
+        <path d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`} {...hit} />
+      </g>
+
+      {/* ── BOTTOM ARROW — bottom ── */}
+      <g onMouseEnter={enter("bottom")} onMouseLeave={leave}>
+        <line x1={otx} y1={yB} x2={mex} y2={yB} {...vis("bottom")} />
+        {/* arrowhead ← at left */}
+        <polyline points={`${mex+9},${yB-6} ${mex},${yB} ${mex+9},${yB+6}`} {...vis("bottom")} />
+        <line x1={otx} y1={yB} x2={mex} y2={yB} {...hit} />
+      </g>
+
+      {/* ── "me" oval (static) ── */}
+      <ellipse cx={mex} cy={cy} rx={40} ry={32} stroke="#c8c8c8" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <text x={mex} y={cy + 5} textAnchor="middle" fontSize="15" fill="#888"
+        fontFamily="Georgia, 'Times New Roman', serif" fontStyle="italic">me</text>
+
+      {/* ── "others" oval — double ring like the drawing ── */}
+      <ellipse cx={otx} cy={cy} rx={62} ry={42} stroke="#c8c8c8" strokeWidth="2" fill="none" />
+      <ellipse cx={otx} cy={cy} rx={54} ry={35} stroke="#c8c8c8" strokeWidth="1" fill="none" />
+      <text x={otx} y={cy + 5} textAnchor="middle" fontSize="15" fill="#888"
+        fontFamily="Georgia, 'Times New Roman', serif" fontStyle="italic">others</text>
+
+    </svg>
+  );
+}
+
 // ── Card ──────────────────────────────────────────────────────────────────────
 
 function CardItem({ card }: { card: PillarCard }) {
@@ -325,7 +404,7 @@ function CardItem({ card }: { card: PillarCard }) {
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
-    if (v) { v.currentTime = card.videoStartTime ?? 0; v.play(); }
+    if (v) { v.currentTime = card.videoStartTime ?? 0; v.haha(); }
   };
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
@@ -491,11 +570,7 @@ function Index() {
           </p>
         </div>
         <div className="flex justify-center w-full">
-          <img
-            src="/articles/diagram-handdrawn.png"
-            alt="Human interaction model diagram"
-            className="block mx-auto w-full max-w-[560px]"
-          />
+          <HandDrawnDiagram />
         </div>
       </section>
 

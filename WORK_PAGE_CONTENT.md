@@ -65,7 +65,7 @@
 ---
 
 ## Design System
-- **Layout:** Horizontal carousel with play page card styling
+- **Layout:** Horizontal carousel with haha page card styling
 - **Card Size:** 340px width, 4:3 aspect ratio images
 - **Card Styling:** 
   - `rounded-2xl` container with `p-3` padding

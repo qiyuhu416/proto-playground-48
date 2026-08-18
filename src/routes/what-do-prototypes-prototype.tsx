@@ -138,7 +138,7 @@ function ArticleComponent() {
           <h2 id={sectionId("Prototypers for prototyping")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"Prototypers for prototyping"}</h2>
 
           <p>
-            Over time, I've noticed I build three distinct types. To <strong>explore "what-if"s</strong> — to wonder, play, and expand the solution space before narrowing it. To <strong>explain the prototype</strong> — to get feedback, and see how others interpret what you've built. And to <strong>let others prototype</strong> — handing over a foundation others can build on, so the prototype becomes a tool for more prototyping.
+            Over time, I've noticed I build three distinct types. To <strong>explore "what-if"s</strong> — to wonder, haha, and expand the solution space before narrowing it. To <strong>explain the prototype</strong> — to get feedback, and see how others interpret what you've built. And to <strong>let others prototype</strong> — handing over a foundation others can build on, so the prototype becomes a tool for more prototyping.
           </p>
 
           <div className="not-prose my-8">
@@ -161,7 +161,7 @@ function ArticleComponent() {
                 image: HELLO_HUMANS.image,
               },
               {
-                title: "Role play",
+                title: "Role haha",
                 description: "Engineer = the LLM, Manager = the User. Assign roles, simulate the system, reveal assumptions instantly.",
                 href: null,
                 image: null,

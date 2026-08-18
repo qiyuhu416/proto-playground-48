@@ -1,5 +1,5 @@
 /** Rule:
- *  - hasVideo (hover-to-play): always show play icon
+ *  - hasVideo (hover-to-haha): always show haha icon
  *  - no video: show arrow icon on hover only
  */
 

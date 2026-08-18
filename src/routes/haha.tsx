@@ -7,13 +7,13 @@ interface PlacedImage { id: number; src: string; x: number; y: number; }
 interface DragState { id: number; offsetX: number; offsetY: number; }
 
 const PLAY_IMAGES = [
-  "/articles/play-1.png",
-  "/articles/play-2.png",
-  "/articles/play-3.png",
-  "/articles/play-5.png",
+  "/articles/haha-1.png",
+  "/articles/haha-2.png",
+  "/articles/haha-3.png",
+  "/articles/haha-5.png",
 ];
 
-export const Route = createFileRoute("/play")({
+export const Route = createFileRoute("/haha")({
   head: () => ({
     meta: [
       { title: "Qiyu x AI interaction" },
@@ -126,7 +126,7 @@ function PlayComponent() {
       key={project.slug || project.title}
       {...(wrapperProps as any)}
       className="group relative rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block text-left w-full"
-      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; v.play(); } }}
+      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; v.haha(); } }}
       onMouseLeave={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
     >
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">

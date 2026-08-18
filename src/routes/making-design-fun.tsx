@@ -60,7 +60,7 @@ function ArticleComponent() {
           <h2 id={sectionId("Curiosity, not FOMO")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Curiosity, not FOMO"}</h2>
 
           <p>
-            The difference between learning something because it's trendy vs. learning something because you're genuinely curious is everything. FOMO-driven learning feels like obligation. Curiosity feels like play.
+            The difference between learning something because it's trendy vs. learning something because you're genuinely curious is everything. FOMO-driven learning feels like obligation. Curiosity feels like haha.
           </p>
 
           <p>
@@ -131,11 +131,11 @@ function ArticleComponent() {
           </p>
 
           <p>
-            These aren't accidents. They're moments of careful thinking disguised as play. The designer sweated over the details—the easing curve, the timing, the haptic feedback—so the user could experience pure delight.
+            These aren't accidents. They're moments of careful thinking disguised as haha. The designer sweated over the details—the easing curve, the timing, the haptic feedback—so the user could experience pure delight.
           </p>
 
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <p className="m-0"><strong>The core belief:</strong> If I can remove friction, amplify joy, and make creation feel less like work and more like play, then I've done my job.</p>
+            <p className="m-0"><strong>The core belief:</strong> If I can remove friction, amplify joy, and make creation feel less like work and more like haha, then I've done my job.</p>
           </div>
 
           <h2 id={sectionId("Why this matters")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Why this matters"}</h2>
