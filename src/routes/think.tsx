@@ -122,35 +122,40 @@ function ThinkComponent() {
               excerpt: "A reflection on what we're actually testing when we prototype.",
               date: "Apr 2026",
               readTime: "8 min",
+              href: "/what-do-prototypes-prototype",
             },
             {
               title: "How I use AI to create",
               excerpt: "Prototyping as research, and why AI should augment—not replace—thinking.",
               date: "Apr 2026",
               readTime: "5 min",
+              href: "/claude-code-research",
             },
             {
               title: "Making design fun",
               excerpt: "On curiosity, vibe-coding, and why creation should feel like haha.",
               date: "Apr 2026",
               readTime: "5 min",
+              href: "/making-design-fun",
             },
             {
               title: "Designing Next-Gen AI Products",
               excerpt: "Mapping UX to capability. Lessons from conversational AI and human-AI co-writing.",
               date: "Apr 2026",
               readTime: "8 min",
+              href: "/designing-next-gen-ai-products",
             },
             {
               title: "Cheap edges, expensive corners",
               excerpt: "Where quality actually accrues in an interface.",
               date: "Apr 2026",
               readTime: "5 min",
+              href: "/",
             },
           ].map((article) => (
             <a
               key={article.title}
-              href="/"
+              href={article.href}
               className="block rounded-lg border border-neutral-200 p-4 hover:border-neutral-400 hover:bg-neutral-50 transition-all"
             >
               <div className="flex items-start justify-between gap-4">

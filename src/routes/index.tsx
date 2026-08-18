@@ -329,8 +329,8 @@ function InteractionDiagram({ active }: { active: GapId }) {
 
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
-const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
-  "default":      { tag: "", text: "Qiyu is designing technology that brings humans together" },
+const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string; image?: string }> = {
+  "default":      { tag: "", text: "Qiyu is designing technology that brings humans together", image: "/articles/hello-stranger.png" },
   "top":          { tag: "what we think → what we do", text: "Is there another way to express yourself?" },
   "bottom":       { tag: "what others think → what others do",     text: "How do we design feedback to make each other feel seen" },
   "me-loop":      { tag: "what others do → what i think", text: "Who we are is constantly shaped by how we interact with the external world." },
@@ -687,33 +687,36 @@ function Index() {
       )}
 
       {/* Hero */}
-      <section className="flex flex-col items-center justify-start min-h-screen w-full px-6 gap-6 pt-20">
-        <img
-          src="/articles/hello-stranger.png"
-          alt="Hello, stranger!!"
-          className="block mx-auto w-full max-w-[15vw]"
-          style={{ mixBlendMode: "multiply", opacity: 0.5 }}
-        />
-        <div className="flex justify-center w-full mt-4">
-          <HandDrawnDiagram onHover={setHeroGap} />
-        </div>
+      <section className="flex flex-col items-center justify-start min-h-screen w-full px-6 gap-6 pt-40">
         <div className="relative flex flex-col items-center justify-start text-center max-w-[50vw] min-h-[100px] pt-6">
-          {(() => {
-            const content = HERO_CONTENT[heroGap || "default"];
-            return (
-              <>
-                {content.tag && (
-                  <p className="absolute top-6 text-sm text-neutral-400 lowercase tracking-widest">
-                    {content.tag}
+        {(() => {
+              const content = HERO_CONTENT[heroGap || "default"];
+              return (
+                <>
+                  {content.image && (
+                    <img
+                      src={content.image}
+                      alt=""
+                      className="absolute top-0 h-14 w-auto"
+                      style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+                    />
+                  )}
+                  {content.tag && (
+                    <p className="absolute top-6 text-sm text-neutral-400 lowercase tracking-widest">
+                      {content.tag}
+                    </p>
+                  )}
+                  <p className={`text-lg text-neutral-700 leading-relaxed ${content.image || content.tag ? 'mt-10' : 'mt-8'}`}>
+                    {content.text}
                   </p>
-                )}
-                <p className="text-lg text-neutral-700 leading-relaxed mt-6">
-                  {content.text}
-                </p>
-              </>
-            );
-          })()}
-        </div>
+                </>
+              );
+            })()}
+            <div className="flex justify-center w-full mt-16">
+            <HandDrawnDiagram onHover={setHeroGap} />
+          </div>
+
+          </div>
       </section>
 
       {/* 4 Pillar sections */}

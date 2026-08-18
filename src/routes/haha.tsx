@@ -92,7 +92,8 @@ function PlayComponent() {
   }, []);
 
   const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (nextIdx < PLAY_IMAGES.length && e.target === e.currentTarget) {
+    const target = e.target as HTMLElement;
+    if (nextIdx < PLAY_IMAGES.length && !target.closest('img') && !target.closest('section') && !target.closest('button')) {
       setPlaced([
         ...placed,
         { id: nextIdx, src: PLAY_IMAGES[nextIdx], x: e.clientX - 60, y: e.clientY - 60 }
