@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
@@ -326,22 +326,24 @@ function InteractionDiagram({ active }: { active: GapId }) {
 
 
 // ── Hand-drawn interactive diagram ────────────────────────────────────────────
-// Base scan shown at 40% opacity. On hover, the corresponding cropped segment
-// overlay (same handwriting) fades in at 100% — making that line "come alive."
 
-const DIAGRAM_W = 1228, DIAGRAM_H = 679;
+const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
 
+// Crop boxes match the Python crop script exactly
 const SEGMENTS: Record<GapId, SegmentDef> = {
-  top:          { src: "/articles/diagram-top.png",         x1: 155, y1: 248, x2: 1020, y2: 332 },
-  bottom:       { src: "/articles/diagram-bottom.png",     x1: 155, y1: 480, x2: 1020, y2: 548 },
-  "me-loop":    { src: "/articles/diagram-me-loop.png",    x1:  75, y1: 248, x2:  290, y2: 548 },
-  "others-loop":{ src: "/articles/diagram-others-loop.png",x1: 912, y1: 248, x2: 1110, y2: 548 },
+  top:            { src: "/articles/diagram-top.png",          x1: 195, y1:  42, x2: 1190, y2: 110 },
+  bottom:         { src: "/articles/diagram-bottom.png",       x1: 195, y1: 445, x2: 1190, y2: 535 },
+  "me-loop":      { src: "/articles/diagram-me-loop.png",      x1:  77, y1:  58, x2:  195, y2: 540 },
+  "others-loop":  { src: "/articles/diagram-others-loop.png",  x1: 1185, y1: 58, x2: 1469, y2: 540 },
 };
 
-// SVG hit-area paths (in 1228×679 image space)
-const mex = 229, otx = 965, yT = 292, yB = 510, arcR = 109;
+// SVG hit-area geometry calibrated to new 1507×572 image
+// Arc geometry: elliptical (rx ≠ ry) because the drawing is wider than tall
+const mex = 195, otx = 1190;
+const yT = 73, yB = 485;
+const leftRx = 118, rightRx = 275, arcRy = 206;
 
 function HandDrawnDiagram() {
   const [hovered, setHovered] = useState<GapId | null>(null);
@@ -351,7 +353,7 @@ function HandDrawnDiagram() {
   return (
     <div className="relative block mx-auto w-full max-w-[560px]">
 
-      {/* Base — full diagram at low opacity */}
+      {/* Base — full diagram faded */}
       <img
         src="/articles/diagram-handdrawn.png"
         alt="Human interaction model"
@@ -359,29 +361,26 @@ function HandDrawnDiagram() {
         style={{ opacity: 0.38 }}
       />
 
-      {/* Segment overlays — each cropped from the original scan */}
-      {(Object.entries(SEGMENTS) as [GapId, SegmentDef][]).map(([gap, s]) => {
-        const l = (s.x1 / DIAGRAM_W * 100).toFixed(3) + "%";
-        const t = (s.y1 / DIAGRAM_H * 100).toFixed(3) + "%";
-        const w = ((s.x2 - s.x1) / DIAGRAM_W * 100).toFixed(3) + "%";
-        const h = ((s.y2 - s.y1) / DIAGRAM_H * 100).toFixed(3) + "%";
-        return (
-          <img
-            key={gap}
-            src={s.src}
-            alt=""
-            aria-hidden
-            className="absolute pointer-events-none"
-            style={{
-              left: l, top: t, width: w, height: h,
-              opacity: hovered === gap ? 1 : 0,
-              transition: "opacity 160ms",
-            }}
-          />
-        );
-      })}
+      {/* Segment overlays — cropped from the original scan, shown on hover */}
+      {(Object.entries(SEGMENTS) as [GapId, SegmentDef][]).map(([gap, s]) => (
+        <img
+          key={gap}
+          src={s.src}
+          alt=""
+          aria-hidden
+          className="absolute pointer-events-none"
+          style={{
+            left:    `${(s.x1 / DIAGRAM_W * 100).toFixed(2)}%`,
+            top:     `${(s.y1 / DIAGRAM_H * 100).toFixed(2)}%`,
+            width:   `${((s.x2 - s.x1) / DIAGRAM_W * 100).toFixed(2)}%`,
+            height:  `${((s.y2 - s.y1) / DIAGRAM_H * 100).toFixed(2)}%`,
+            opacity: hovered === gap ? 1 : 0,
+            transition: "opacity 160ms",
+          }}
+        />
+      ))}
 
-      {/* Invisible SVG hit areas — sized generously for easy hover */}
+      {/* Invisible SVG hit areas */}
       <svg
         viewBox={`0 0 ${DIAGRAM_W} ${DIAGRAM_H}`}
         className="absolute inset-0 w-full h-full"
@@ -389,18 +388,16 @@ function HandDrawnDiagram() {
         style={{ pointerEvents: "none" }}
       >
         {(["me-loop", "top", "others-loop", "bottom"] as GapId[]).map((gap) => {
-          const hitProps = {
-            stroke: "transparent", strokeWidth: 90, fill: "none",
-            style: { pointerEvents: "all" as const, cursor: "pointer" },
-            onMouseEnter: enter(gap), onMouseLeave: leave,
-          };
+          const h = { stroke: "transparent", strokeWidth: 100, fill: "none",
+                      style: { pointerEvents: "all" as const, cursor: "pointer" },
+                      onMouseEnter: enter(gap), onMouseLeave: leave };
           if (gap === "top")
-            return <line key={gap} x1={mex} y1={yT} x2={otx} y2={yT} {...hitProps} />;
+            return <line key={gap} x1={mex} y1={yT} x2={otx} y2={yT} {...h} />;
           if (gap === "bottom")
-            return <line key={gap} x1={otx} y1={yB} x2={mex} y2={yB} {...hitProps} />;
+            return <line key={gap} x1={otx} y1={yB} x2={mex} y2={yB} {...h} />;
           if (gap === "me-loop")
-            return <path key={gap} d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`} {...hitProps} />;
-          return <path key={gap} d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`} {...hitProps} />;
+            return <path key={gap} d={`M ${mex},${yB} A ${leftRx},${arcRy} 0 0,0 ${mex},${yT}`} {...h} />;
+          return <path key={gap} d={`M ${otx},${yT} A ${rightRx},${arcRy} 0 0,1 ${otx},${yB}`} {...h} />;
         })}
       </svg>
     </div>
@@ -581,6 +578,7 @@ function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; o
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function Index() {
+  const navigate = useNavigate();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
@@ -634,31 +632,26 @@ function Index() {
       )}
 
       {/* Card Modal */}
-      {selectedCard && card && (
+      {selectedCard && card && !card.externalLink && (
         <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4" onClick={() => setSelectedCard(null)}>
           <div
             ref={modalRef}
-            className="bg-white rounded-2xl h-[80vh] overflow-y-auto transition-all duration-300"
+            className="bg-white rounded-2xl h-[80vh] overflow-y-auto transition-all duration-300 relative"
             style={{ width: `${modalWidth}%` }}
             onClick={(e) => e.stopPropagation()}
             onScroll={handleModalScroll}
           >
-            <div className="p-8 max-w-4xl">
-              <button
-                onClick={() => setSelectedCard(null)}
-                className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-900 text-2xl"
-              >
-                ×
-              </button>
-              <h2 className="text-3xl font-semibold text-neutral-900 mb-4">{card.title}</h2>
-              <p className="text-neutral-600 mb-8">{card.meta}</p>
-              {card.thumbnail && (
-                <img src={card.thumbnail} alt={card.title} className="w-full rounded-xl mb-8" />
-              )}
-              <div className="prose prose-neutral max-w-none">
-                <p>Content for {card.title}</p>
-              </div>
-            </div>
+            <button
+              onClick={() => setSelectedCard(null)}
+              className="sticky top-4 right-4 float-right text-neutral-500 hover:text-neutral-900 text-2xl z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center"
+            >
+              ×
+            </button>
+            <iframe
+              src={`/${card.slug}`}
+              className="w-full h-full border-0"
+              title={card.title}
+            />
           </div>
         </div>
       )}
