@@ -60,8 +60,8 @@ const PILLARS: Pillar[] = [
   {
     number: "01",
     subtitle: "",
-    title: "Human-Human Understanding",
-    description: "Understanding others is a black box, just like AI",
+    title: "Others’ Minds",
+    description: "Understanding others is another black box.",
     gapLeft: "Assumption",
     gapRight: "Understanding",
     activeGap: "others-loop",
@@ -109,7 +109,7 @@ const PILLARS: Pillar[] = [
     number: "02",
     subtitle: "",
     title: "How do we design feedback?",
-    description: "The gap between intent and expression",
+    description: "To make each other feel seen.",
     gapLeft: "Intent",
     gapRight: "Expression",
     activeGap: "bottom",
@@ -331,10 +331,10 @@ const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
 const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
   "default":      { tag: "", text: "Qiyu is designing technology that brings humans together" },
-  "top":          { tag: "Intent → Expression", text: "The address the gap between internal intent and how it lands in the world." },
-  "bottom":       { tag: "Other's Intent → Reception",     text: "To minimize the gap between how something is said and what it actually means." },
-  "me-loop":      { tag: "Reception → Internalization", text: "Who we are is constantly shaped by how we interact." },
-  "others-loop":  { tag: "Other's mind",   text: "Understanding others feels like a black box, is it really out of control?" },
+  "top":          { tag: "what we think → what we do", text: "Is there another way to express yourself?" },
+  "bottom":       { tag: "what others think → what others do",     text: "How do we design feedback to make each other feel seen" },
+  "me-loop":      { tag: "what others do → what i think", text: "Who we are is constantly shaped by how we interact with the external world." },
+  "others-loop":  { tag: "others' minds",   text: "Understanding others feels like a black box, but is it really out of control?" },
 };
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };

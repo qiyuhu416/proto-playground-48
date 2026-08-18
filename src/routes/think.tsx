@@ -195,7 +195,7 @@ function ThinkComponent() {
               <div className="bg-white p-5">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Me · Think</span>
+                  <span className="text-xs tracking-widest text-neutral-400 font-semibold">Me · Think</span>
                 </div>
                 <p className="text-sm text-neutral-700">My beliefs, assumptions, mental models, and internal narratives about the situation.</p>
               </div>
@@ -203,7 +203,7 @@ function ThinkComponent() {
               <div className="bg-white p-5">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Others · Think</span>
+                  <span className="text-xs tracking-widest text-neutral-400 font-semibold">Others · Think</span>
                 </div>
                 <p className="text-sm text-neutral-700">What others believe, perceive, or assume — often invisible until you look for it.</p>
               </div>
@@ -211,7 +211,7 @@ function ThinkComponent() {
               <div className="bg-white p-5">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Me · Do</span>
+                  <span className="text-xs tracking-widest text-neutral-400 font-semibold">Me · Do</span>
                 </div>
                 <p className="text-sm text-neutral-700">My actions, behaviors, and choices — what I actually control in the situation.</p>
               </div>
@@ -219,7 +219,7 @@ function ThinkComponent() {
               <div className="bg-white p-5">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="h-3 w-3 rounded-full bg-neutral-900 mt-0.5 shrink-0" />
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">Others · Do</span>
+                  <span className="text-xs tracking-widest text-neutral-400 font-semibold">Others · Do</span>
                 </div>
                 <p className="text-sm text-neutral-700">Others' observable behaviors — what they actually do versus what they say they think.</p>
               </div>

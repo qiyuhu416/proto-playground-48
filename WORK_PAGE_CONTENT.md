@@ -9,7 +9,7 @@
 ---
 
 ## Section 01
-**Title:** Human-Human Understanding
+**Title:** Other's Mind
 
 **Description:** Understanding others is a black box, just like AI
 
