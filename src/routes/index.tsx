@@ -410,10 +410,10 @@ function HandDrawnDiagram() {
 
 // ── Card ──────────────────────────────────────────────────────────────────────
 
-function CardItem({ card, onHoverSlug }: { card: PillarCard; onHoverSlug?: (slug: string | null) => void }) {
+function CardItem({ card, onHoverSlug, onCardClick }: { card: PillarCard; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
   const href = card.externalLink || `/${card.slug}`;
   const isExternal = !!card.externalLink;
-  const Wrapper = card.comingSoon ? "div" : "a";
+  const Wrapper = card.comingSoon ? "div" : (isExternal ? "a" : "button");
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
@@ -426,8 +426,15 @@ function CardItem({ card, onHoverSlug }: { card: PillarCard; onHoverSlug?: (slug
     onHoverSlug?.(null);
   };
 
+  const handleClick = isExternal ? undefined : (e: React.MouseEvent) => {
+    e.preventDefault();
+    onCardClick?.(card.slug);
+  };
+
   const wrapperProps = !card.comingSoon
-    ? { href, target: isExternal ? "_blank" : undefined, rel: isExternal ? "noopener noreferrer" : undefined }
+    ? isExternal
+      ? { href, target: "_blank", rel: "noopener noreferrer" }
+      : { onClick: handleClick, type: "button" as const }
     : {};
 
   return (
@@ -435,7 +442,7 @@ function CardItem({ card, onHoverSlug }: { card: PillarCard; onHoverSlug?: (slug
       {...(wrapperProps as any)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`group relative w-[340px] flex-shrink-0 rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all block text-left ${card.comingSoon ? "cursor-default opacity-40" : "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"}`}
+      className={`group relative w-[340px] flex-shrink-0 rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all block text-left border-0 cursor-pointer ${card.comingSoon ? "cursor-default opacity-40" : "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"}`}
     >
       {/* Visual */}
       <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-white">
@@ -483,7 +490,7 @@ function CardItem({ card, onHoverSlug }: { card: PillarCard; onHoverSlug?: (slug
 
 // ── Carousel ──────────────────────────────────────────────────────────────────
 
-function PillarCarousel({ cards, onHoverSlug }: { cards: PillarCard[]; onHoverSlug?: (slug: string | null) => void }) {
+function PillarCarousel({ cards, onHoverSlug, onCardClick }: { cards: PillarCard[]; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -523,7 +530,7 @@ function PillarCarousel({ cards, onHoverSlug }: { cards: PillarCard[]; onHoverSl
           } as React.CSSProperties}
         >
           {cards.map((card) => (
-            <CardItem key={card.slug} card={card} onHoverSlug={onHoverSlug} />
+            <CardItem key={card.slug} card={card} onHoverSlug={onHoverSlug} onCardClick={onCardClick} />
           ))}
         </div>
       </div>
@@ -556,7 +563,7 @@ function PillarCarousel({ cards, onHoverSlug }: { cards: PillarCard[]; onHoverSl
 
 // ── Pillar section ─────────────────────────────────────────────────────────────
 
-function PillarSection({ pillar, onHoverSlug }: { pillar: Pillar; onHoverSlug?: (slug: string | null) => void }) {
+function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
   return (
     <section className="pb-16">
       {/* Header — constrained to content width */}
@@ -566,7 +573,7 @@ function PillarSection({ pillar, onHoverSlug }: { pillar: Pillar; onHoverSlug?: 
       </div>
 
       {/* Carousel — full bleed to screen edge */}
-      <PillarCarousel cards={pillar.cards} onHoverSlug={onHoverSlug} />
+      <PillarCarousel cards={pillar.cards} onHoverSlug={onHoverSlug} onCardClick={onCardClick} />
     </section>
   );
 }
@@ -576,6 +583,9 @@ function PillarSection({ pillar, onHoverSlug }: { pillar: Pillar; onHoverSlug?: 
 function Index() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const [modalScroll, setModalScroll] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const findCardToc = (slug: string): string[] => {
     for (const pillar of PILLARS) {
@@ -586,6 +596,22 @@ function Index() {
   };
 
   const hoveredToc = hoveredSlug ? findCardToc(hoveredSlug) : [];
+
+  const handleModalScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrolled = e.currentTarget.scrollTop;
+    setModalScroll(scrolled);
+  };
+
+  const findCard = (slug: string): PillarCard | undefined => {
+    for (const pillar of PILLARS) {
+      const card = pillar.cards.find(c => c.slug === slug);
+      if (card) return card;
+    }
+    return undefined;
+  };
+
+  const card = selectedCard ? findCard(selectedCard) : undefined;
+  const modalWidth = Math.min(100, 40 + (modalScroll / 200) * 60);
 
   return (
     <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
@@ -607,6 +633,36 @@ function Index() {
         </div>
       )}
 
+      {/* Card Modal */}
+      {selectedCard && card && (
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4" onClick={() => setSelectedCard(null)}>
+          <div
+            ref={modalRef}
+            className="bg-white rounded-2xl h-[80vh] overflow-y-auto transition-all duration-300"
+            style={{ width: `${modalWidth}%` }}
+            onClick={(e) => e.stopPropagation()}
+            onScroll={handleModalScroll}
+          >
+            <div className="p-8 max-w-4xl">
+              <button
+                onClick={() => setSelectedCard(null)}
+                className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-900 text-2xl"
+              >
+                ×
+              </button>
+              <h2 className="text-3xl font-semibold text-neutral-900 mb-4">{card.title}</h2>
+              <p className="text-neutral-600 mb-8">{card.meta}</p>
+              {card.thumbnail && (
+                <img src={card.thumbnail} alt={card.title} className="w-full rounded-xl mb-8" />
+              )}
+              <div className="prose prose-neutral max-w-none">
+                <p>Content for {card.title}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-center min-h-screen gap-16">
         <div className="text-center max-w-2xl">
@@ -621,7 +677,7 @@ function Index() {
 
       {/* 4 Pillar sections */}
       {PILLARS.map((pillar) => (
-        <PillarSection key={pillar.number} pillar={pillar} onHoverSlug={setHoveredSlug} />
+        <PillarSection key={pillar.number} pillar={pillar} onHoverSlug={setHoveredSlug} onCardClick={setSelectedCard} />
       ))}
 
       <footer className="mt-4 border-t border-neutral-200/60">
