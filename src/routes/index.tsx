@@ -88,13 +88,13 @@ const PILLARS: Pillar[] = [
         meta: "Connection · Open-ended",
         accent: "bg-gradient-to-br from-rose-100 to-pink-200",
         thumbnail: "/articles/meet-stranger-calendly.png",
-        thumbnailSize: "medium",
       },
       {
         slug: "hello-humans",
         title: "Hello humans prototype",
         meta: "Very personal prototype",
         accent: "bg-gradient-to-br from-purple-100 to-pink-200",
+        thumbnail: "/articles/hello-humans-notebook.jpg",
       },
       {
         slug: "oh-man",
@@ -329,13 +329,12 @@ function InteractionDiagram({ active }: { active: GapId }) {
 
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
-const HERO_DESCRIPTION = "Qiyu is designing technology that brings humans together";
-
-const GAP_LABELS: Record<GapId, { tag: string; text: string }> = {
-  "top":          { tag: "Intent → Reception", text: "Is there another way to express yourself? The gap between internal intent and how it lands in the world." },
-  "bottom":       { tag: "Form → Meaning",     text: "How do we design feedback that builds trust? The gap between how something is said and what it actually means." },
-  "me-loop":      { tag: "Assumption ↔ Aware", text: "How much do you know about yourself? Who we are is constantly shaped by how we interact — often faster than we realise." },
-  "others-loop":  { tag: "Expect ↔ Reality",   text: "How can we understand another human? Understanding others is a black box — just like AI." },
+const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
+  "default":      { tag: "", text: "Qiyu is designing technology that brings humans together" },
+  "top":          { tag: "Intent → Expression", text: "The address the gap between internal intent and how it lands in the world." },
+  "bottom":       { tag: "Other's Intent → Reception",     text: "To minimize the gap between how something is said and what it actually means." },
+  "me-loop":      { tag: "Reception → Internalization", text: "Who we are is constantly shaped by how we interact." },
+  "others-loop":  { tag: "Other's mind",   text: "Understanding others feels like a black box, is it really out of control?" },
 };
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
@@ -698,21 +697,20 @@ function Index() {
         <div className="flex justify-center w-full mt-4">
           <HandDrawnDiagram onHover={setHeroGap} />
         </div>
-        <div className="flex flex-col items-center justify-start text-center max-w-2xl min-h-[100px] pt-6">
-          {!heroGap ? (
-            <p className="text-sm text-neutral-500 leading-relaxed">
-              {HERO_DESCRIPTION}
-            </p>
-          ) : (
-            <>
-              <p className="text-xs text-neutral-400 uppercase tracking-widest mb-1">
-                {GAP_LABELS[heroGap].tag}
-              </p>
-              <p className="text-sm text-neutral-700 leading-relaxed">
-                {GAP_LABELS[heroGap].text}
-              </p>
-            </>
-          )}
+        <div className="flex flex-col items-center justify-start text-center max-w-md min-h-[100px] pt-6">
+          {(() => {
+            const content = HERO_CONTENT[heroGap || "default"];
+            return (
+              <>
+                <p className={`text-xs text-neutral-400 uppercase tracking-widest mb-1 ${content.tag ? '' : 'invisible'}`}>
+                  {content.tag}
+                </p>
+                <p className="text-sm text-neutral-700 leading-relaxed">
+                  {content.text}
+                </p>
+              </>
+            );
+          })()}
         </div>
       </section>
 
