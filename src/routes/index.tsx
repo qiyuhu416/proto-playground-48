@@ -480,7 +480,7 @@ function Index() {
         <div className="text-center max-w-2xl">
           <p className="text-base text-neutral-600 leading-relaxed">
             Qiyu is designing technology that brings humans together
-          </h1>
+          </p>
         </div>
         <div className="flex justify-center w-full">
           <InteractionDiagram active="me-loop" />
