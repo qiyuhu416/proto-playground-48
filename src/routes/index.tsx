@@ -345,10 +345,19 @@ const mex = 195, otx = 1190;
 const yT = 73, yB = 485;
 const leftRx = 118, rightRx = 275, arcRy = 206;
 
-function HandDrawnDiagram() {
+function HandDrawnDiagram({
+  selected,
+  onSelect,
+}: {
+  selected: GapId | null;
+  onSelect: (gap: GapId | null) => void;
+}) {
   const [hovered, setHovered] = useState<GapId | null>(null);
   const enter = (g: GapId) => () => setHovered(g);
   const leave = () => setHovered(null);
+  const click = (g: GapId) => () => onSelect(selected === g ? null : g);
+
+  const visible = (gap: GapId) => hovered === gap || selected === gap;
 
   return (
     <div className="relative block mx-auto w-full max-w-[560px]">
@@ -361,7 +370,7 @@ function HandDrawnDiagram() {
         style={{ opacity: 0.38 }}
       />
 
-      {/* Segment overlays — cropped from the original scan, shown on hover */}
+      {/* Segment overlays — shown on hover OR when selected */}
       {(Object.entries(SEGMENTS) as [GapId, SegmentDef][]).map(([gap, s]) => (
         <img
           key={gap}
@@ -374,13 +383,13 @@ function HandDrawnDiagram() {
             top:     `${(s.y1 / DIAGRAM_H * 100).toFixed(2)}%`,
             width:   `${((s.x2 - s.x1) / DIAGRAM_W * 100).toFixed(2)}%`,
             height:  `${((s.y2 - s.y1) / DIAGRAM_H * 100).toFixed(2)}%`,
-            opacity: hovered === gap ? 1 : 0,
+            opacity: visible(gap) ? 1 : 0,
             transition: "opacity 160ms",
           }}
         />
       ))}
 
-      {/* Invisible SVG hit areas */}
+      {/* SVG hit areas — hover + click */}
       <svg
         viewBox={`0 0 ${DIAGRAM_W} ${DIAGRAM_H}`}
         className="absolute inset-0 w-full h-full"
@@ -390,7 +399,8 @@ function HandDrawnDiagram() {
         {(["me-loop", "top", "others-loop", "bottom"] as GapId[]).map((gap) => {
           const h = { stroke: "transparent", strokeWidth: 100, fill: "none",
                       style: { pointerEvents: "all" as const, cursor: "pointer" },
-                      onMouseEnter: enter(gap), onMouseLeave: leave };
+                      onMouseEnter: enter(gap), onMouseLeave: leave,
+                      onClick: click(gap) };
           if (gap === "top")
             return <line key={gap} x1={mex} y1={yT} x2={otx} y2={yT} {...h} />;
           if (gap === "bottom")
@@ -585,12 +595,11 @@ function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; o
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function Index() {
-  const navigate = useNavigate();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
-  const [modalScroll, setModalScroll] = useState(0);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const [isFull, setIsFull] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const findCardToc = (slug: string): string[] => {
     for (const pillar of PILLARS) {
@@ -620,7 +629,6 @@ function Index() {
   };
 
   const card = selectedCard ? findCard(selectedCard) : undefined;
-  const [isFull, setIsFull] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
@@ -649,7 +657,7 @@ function Index() {
             <div className="fixed inset-0 z-[59] bg-black/50 backdrop-blur-sm" onClick={() => setSelectedCard(null)} />
           )}
           <div
-            ref={modalRef}
+            ref={iframeRef}
             className="bg-white transition-all duration-300 relative"
             style={{
               position: "fixed",
@@ -669,12 +677,12 @@ function Index() {
               ×
             </button>
             <iframe
-              ref={modalRef}
+              ref={iframeRef}
               src={`/${card.slug}?embed=1`}
               className="w-full h-full border-0"
               title={card.title}
               onLoad={() => {
-                const iframe = modalRef.current;
+                const iframe = iframeRef.current;
                 if (!iframe?.contentWindow) return;
                 const handleScroll = () => {
                   setIsFull(iframe.contentWindow!.scrollY > 30);
@@ -694,11 +702,24 @@ function Index() {
           className="block mx-auto w-full max-w-[300px]"
           style={{ mixBlendMode: "multiply" }}
         />
-        <p className="text-sm text-neutral-500 leading-relaxed text-center max-w-sm">
-          Qiyu is designing technology that brings humans together
-        </p>
         <div className="flex justify-center w-full mt-4">
-          <HandDrawnDiagram />
+          <HandDrawnDiagram selected={heroGap} onSelect={setHeroGap} />
+        </div>
+        <div className="min-h-[56px] flex flex-col items-center justify-center text-center max-w-sm">
+          {heroGap ? (
+            <>
+              <p className="text-xs text-neutral-400 uppercase tracking-widest mb-1">
+                {GAP_LABELS[heroGap].tag}
+              </p>
+              <p className="text-sm text-neutral-700 leading-relaxed">
+                {GAP_LABELS[heroGap].text}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              Qiyu is designing technology that brings humans together
+            </p>
+          )}
         </div>
       </section>
 
