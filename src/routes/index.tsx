@@ -476,23 +476,14 @@ function Index() {
 
       {/* Nav */}
       <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
-        <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
-          <div className="flex-1 flex items-center">
-            <a href="/what-do-prototypes-prototype" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-              <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
-              <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
-            </a>
-          </div>
-          <div className="flex-1 flex justify-end">
-            <div className="hidden md:flex group relative h-9 items-center">
-              <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
-              <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
-              <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
-                Qiyu<span className="translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-200 delay-100">'s LinkedIn</span>
-              </a>
-            </div>
-          </div>
+        <div className="mx-auto flex max-w-6xl items-center justify-center gap-6 px-6 py-4">
+          <a href="https://www.linkedin.com/in/qiyu-hu/" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden cursor-pointer" target="_blank" rel="noopener noreferrer">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+            <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
+            <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">Qiyu's LinkedIn</span>
+            <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
+          </a>
+          <a href="/" className="hidden md:inline text-sm font-medium text-neutral-900">Qiyu</a>
         </div>
       </header>
 
@@ -500,7 +491,7 @@ function Index() {
       <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-center min-h-screen gap-16">
         <div className="text-center max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight text-neutral-900">
-            I design AI that brings humans together
+            Qiyu is designing technology that brings humans together
           </h1>
         </div>
         <div className="w-full max-w-[700px]">

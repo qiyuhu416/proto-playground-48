@@ -1,7 +1,8 @@
 # Work Page Content Structure
 
 ## Hero Section
-**Main Title:** I design AI that brings humans together
+**Main Title:** Qiyu is designing technology that brings humans together
+
 
 **Visual:** Interaction diagram (currently showing "me-loop" view)
 
