@@ -82,7 +82,7 @@ const WAND_CURSOR = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org
 
 function PlayComponent() {
   const [placed, setPlaced] = useState<PlacedImage[]>([]);
-  const [showEventModal, setShowEventModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(true);  // auto-open on load
   const [nextIdx, setNextIdx] = useState(1);
   const [drag, setDrag] = useState<DragState | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);

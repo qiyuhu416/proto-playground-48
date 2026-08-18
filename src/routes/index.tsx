@@ -329,6 +329,13 @@ function InteractionDiagram({ active }: { active: GapId }) {
 
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
+const GAP_LABELS: Record<GapId, { tag: string; text: string }> = {
+  "top":          { tag: "Intent → Reception", text: "Is there another way to express yourself? The gap between internal intent and how it lands in the world." },
+  "bottom":       { tag: "Form → Meaning",     text: "How do we design feedback that builds trust? The gap between how something is said and what it actually means." },
+  "me-loop":      { tag: "Assumption ↔ Aware", text: "How much do you know about yourself? Who we are is constantly shaped by how we interact — often faster than we realise." },
+  "others-loop":  { tag: "Expect ↔ Reality",   text: "How can we understand another human? Understanding others is a black box — just like AI." },
+};
+
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
 
 // Crop boxes match the Python crop script exactly
@@ -345,19 +352,23 @@ const mex = 195, otx = 1190;
 const yT = 73, yB = 485;
 const leftRx = 118, rightRx = 275, arcRy = 206;
 
-function HandDrawnDiagram({
-  selected,
-  onSelect,
-}: {
-  selected: GapId | null;
-  onSelect: (gap: GapId | null) => void;
-}) {
-  const [hovered, setHovered] = useState<GapId | null>(null);
-  const enter = (g: GapId) => () => setHovered(g);
-  const leave = () => setHovered(null);
-  const click = (g: GapId) => () => onSelect(selected === g ? null : g);
+const GAP_TO_PILLAR: Record<GapId, string> = {
+  "others-loop": "01",
+  "bottom":      "02",
+  "me-loop":     "03",
+  "top":         "04",
+};
 
-  const visible = (gap: GapId) => hovered === gap || selected === gap;
+function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void }) {
+  const [hovered, setHovered] = useState<GapId | null>(null);
+  const enter = (g: GapId) => () => { setHovered(g); onHover(g); };
+  const leave = () => { setHovered(null); onHover(null); };
+  const click = (g: GapId) => () => {
+    const el = document.getElementById(`pillar-${GAP_TO_PILLAR[g]}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const visible = (gap: GapId) => hovered === gap;
 
   return (
     <div className="relative block mx-auto w-full max-w-[560px]">
@@ -579,7 +590,7 @@ const SECTION_ICONS: Record<string, string> = {
 
 function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
   return (
-    <section className="pb-16">
+    <section id={`pillar-${pillar.number}`} className="pb-16">
       {/* Header — constrained to content width */}
       <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
         <h2 className="text-2xl font-medium text-neutral-900 mb-2">{pillar.title}</h2>
@@ -595,6 +606,7 @@ function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; o
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function Index() {
+  const [heroGap, setHeroGap] = useState<GapId | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
@@ -612,12 +624,19 @@ function Index() {
   const hoveredToc = hoveredSlug ? findCardToc(hoveredSlug) : [];
 
   useEffect(() => {
-    if (!selectedCard) return;
+    if (!selectedCard) {
+      document.body.classList.remove("modal-open");
+      return;
+    }
+    document.body.classList.add("modal-open");
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelectedCard(null);
     };
     document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.classList.remove("modal-open");
+    };
   }, [selectedCard]);
 
   const findCard = (slug: string): PillarCard | undefined => {
@@ -703,9 +722,9 @@ function Index() {
           style={{ mixBlendMode: "multiply" }}
         />
         <div className="flex justify-center w-full mt-4">
-          <HandDrawnDiagram selected={heroGap} onSelect={setHeroGap} />
+          <HandDrawnDiagram onHover={setHeroGap} />
         </div>
-        <div className="min-h-[56px] flex flex-col items-center justify-center text-center max-w-sm">
+        <div className="min-h-[56px] flex flex-col items-center justify-center text-center max-w-sm transition-all">
           {heroGap ? (
             <>
               <p className="text-xs text-neutral-400 uppercase tracking-widest mb-1">

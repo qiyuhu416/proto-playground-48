@@ -122,6 +122,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <style>{`body.modal-open { --nav-opacity: 0; --nav-pointer: none; }`}</style>
       </head>
       <body>
         {children}
@@ -184,8 +185,8 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
 
-      {/* Floating bottom nav - present on all pages */}
-      <nav className="fixed bottom-18 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+      {/* Floating bottom nav - present on all pages (hidden when modal open) */}
+      <nav className="fixed bottom-18 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-300" style={{ opacity: "var(--nav-opacity, 1)", pointerEvents: "var(--nav-pointer, auto)" }}>
         {NAV_ITEMS.map((l) => {
           const href = navHref(l);
           const isActive = (l === "work" && currentPath === "/") ||
