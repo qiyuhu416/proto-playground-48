@@ -149,11 +149,12 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
   const currentPath = location.pathname;
+  const isEmbed = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("embed") === "1";
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Header badge - present on all pages */}
-      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
+      {/* Header badge - present on all pages (hidden in embed mode) */}
+      {!isEmbed && <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="hidden md:inline-flex group relative">
             <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
@@ -180,13 +181,13 @@ function RootComponent() {
             <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
           </div>
         </div>
-      </header>
+      </header>}
 
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
 
-      {/* Floating bottom nav - present on all pages (hidden when modal open) */}
-      <nav className="fixed bottom-18 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-300" style={{ opacity: "var(--nav-opacity, 1)" } as any}>
+      {/* Floating bottom nav - present on all pages (hidden when modal open or in embed mode) */}
+      {!isEmbed && <nav className="fixed bottom-18 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-300" style={{ opacity: "var(--nav-opacity, 1)" } as any}>
         {NAV_ITEMS.map((l) => {
           const href = navHref(l);
           const isActive = (l === "work" && currentPath === "/") ||
@@ -195,7 +196,7 @@ function RootComponent() {
             <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
           );
         })}
-      </nav>
+      </nav>}
     </QueryClientProvider>
   );
 }

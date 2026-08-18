@@ -613,15 +613,15 @@ function Index() {
   const [isFull, setIsFull] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const findCardToc = (slug: string): string[] => {
+  const findCard = (slug: string): PillarCard | undefined => {
     for (const pillar of PILLARS) {
       const card = pillar.cards.find(c => c.slug === slug);
-      if (card?.toc) return card.toc;
+      if (card) return card;
     }
-    return [];
+    return undefined;
   };
 
-  const hoveredToc = hoveredSlug ? findCardToc(hoveredSlug) : [];
+  const hoveredCard = hoveredSlug ? findCard(hoveredSlug) : undefined;
 
   useEffect(() => {
     if (!selectedCard) {
@@ -639,32 +639,37 @@ function Index() {
     };
   }, [selectedCard]);
 
-  const findCard = (slug: string): PillarCard | undefined => {
-    for (const pillar of PILLARS) {
-      const card = pillar.cards.find(c => c.slug === slug);
-      if (card) return card;
-    }
-    return undefined;
-  };
-
   const card = selectedCard ? findCard(selectedCard) : undefined;
 
   return (
     <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
 
-      {/* Cursor TOC tooltip */}
-      {hoveredSlug && hoveredToc.length > 0 && (
+      {/* Cursor tooltip — TOC for articles, domain for external links */}
+      {hoveredCard && !hoveredCard.comingSoon && (
         <div
           className="fixed z-50 pointer-events-none"
           style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
         >
           <div className="bg-neutral-900 text-white rounded-2xl px-5 py-4 shadow-xl max-w-[220px]">
-            <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">Article</p>
-            <ul className="space-y-2">
-              {hoveredToc.map((section, idx) => (
-                <li key={idx} className="text-[12px] font-semibold text-white leading-snug">{section}</li>
-              ))}
-            </ul>
+            {hoveredCard.externalLink ? (
+              <>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-2">External</p>
+                <p className="text-[12px] font-semibold text-white leading-snug">
+                  {new URL(hoveredCard.externalLink).hostname.replace(/^www\./, "")} ↗
+                </p>
+              </>
+            ) : hoveredCard.toc && hoveredCard.toc.length > 0 ? (
+              <>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">In this article</p>
+                <ul className="space-y-2">
+                  {hoveredCard.toc.map((section, idx) => (
+                    <li key={idx} className="text-[12px] font-semibold text-white leading-snug">{section}</li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="text-[12px] font-semibold text-white leading-snug">View →</p>
+            )}
           </div>
         </div>
       )}
