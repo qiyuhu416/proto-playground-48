@@ -54,7 +54,7 @@
 ## Section 04
 **Title:** Is there another way to express yourself?
 
-**Description:** The gap between internal intent and external expression—technology that augments human voice beyond words
+**Description:** Text is never the only way. 
 
 **Cards:**
 1. Product launch from 0–1 | Changing through Creating

@@ -38,6 +38,7 @@ type PillarCard = {
   videoTransform?: string;
   externalLink?: string;
   comingSoon?: boolean;
+  toc?: string[];
 };
 
 type GapId = "top" | "bottom" | "me-loop" | "others-loop";
@@ -79,6 +80,7 @@ const PILLARS: Pillar[] = [
         accent: "bg-gradient-to-br from-amber-100 to-orange-200",
         thumbnail: "/articles/prototype-triangle-thumb.svg",
         thumbnailSize: "medium",
+        toc: ["Implementation", "Look & Feel", "Role"],
       },
       {
         slug: "meet-stranger",
@@ -155,7 +157,7 @@ const PILLARS: Pillar[] = [
     number: "03",
     subtitle: "",
     title: "How much do you know about yourself?",
-    description: "Who we are is constantly shaped by how we interact with the external world. Sometimes the changes are faster than we realize",
+    description: "Who we are is constantly shaped by how we interact with the external world.",
     gapLeft: "Unknown",
     gapRight: "Aware",
     activeGap: "me-loop",
@@ -196,7 +198,8 @@ const PILLARS: Pillar[] = [
     number: "04",
     subtitle: "",
     title: "Is there another way to express yourself?",
-    description: "The gap between internal intent and external expression—technology that augments human voice beyond words",
+    description: "Text is never the only way. 
+",
     gapLeft: "Intent",
     gapRight: "Expression",
     activeGap: "top",
@@ -408,7 +411,7 @@ function HandDrawnDiagram() {
 
 // ── Card ──────────────────────────────────────────────────────────────────────
 
-function CardItem({ card }: { card: PillarCard }) {
+function CardItem({ card, onHoverSlug }: { card: PillarCard; onHoverSlug?: (slug: string | null) => void }) {
   const href = card.externalLink || `/${card.slug}`;
   const isExternal = !!card.externalLink;
   const Wrapper = card.comingSoon ? "div" : "a";
@@ -416,10 +419,12 @@ function CardItem({ card }: { card: PillarCard }) {
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
     if (v) { v.currentTime = card.videoStartTime ?? 0; v.play(); }
+    onHoverSlug?.(card.slug);
   };
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
     if (v) { v.pause(); v.currentTime = card.videoStartTime ?? 0; }
+    onHoverSlug?.(null);
   };
 
   const wrapperProps = !card.comingSoon
@@ -479,7 +484,7 @@ function CardItem({ card }: { card: PillarCard }) {
 
 // ── Carousel ──────────────────────────────────────────────────────────────────
 
-function PillarCarousel({ cards }: { cards: PillarCard[] }) {
+function PillarCarousel({ cards, onHoverSlug }: { cards: PillarCard[]; onHoverSlug?: (slug: string | null) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -519,7 +524,7 @@ function PillarCarousel({ cards }: { cards: PillarCard[] }) {
           } as React.CSSProperties}
         >
           {cards.map((card) => (
-            <CardItem key={card.slug} card={card} />
+            <CardItem key={card.slug} card={card} onHoverSlug={onHoverSlug} />
           ))}
         </div>
       </div>
@@ -552,7 +557,7 @@ function PillarCarousel({ cards }: { cards: PillarCard[] }) {
 
 // ── Pillar section ─────────────────────────────────────────────────────────────
 
-function PillarSection({ pillar }: { pillar: Pillar }) {
+function PillarSection({ pillar, onHoverSlug }: { pillar: Pillar; onHoverSlug?: (slug: string | null) => void }) {
   return (
     <section className="pb-16">
       {/* Header — constrained to content width */}
@@ -562,7 +567,7 @@ function PillarSection({ pillar }: { pillar: Pillar }) {
       </div>
 
       {/* Carousel — full bleed to screen edge */}
-      <PillarCarousel cards={pillar.cards} />
+      <PillarCarousel cards={pillar.cards} onHoverSlug={onHoverSlug} />
     </section>
   );
 }
@@ -570,8 +575,38 @@ function PillarSection({ pillar }: { pillar: Pillar }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function Index() {
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+
+  const findCardToc = (slug: string): string[] => {
+    for (const pillar of PILLARS) {
+      const card = pillar.cards.find(c => c.slug === slug);
+      if (card?.toc) return card.toc;
+    }
+    return [];
+  };
+
+  const hoveredToc = hoveredSlug ? findCardToc(hoveredSlug) : [];
+
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
+    <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
+
+      {/* Cursor TOC tooltip */}
+      {hoveredSlug && hoveredToc.length > 0 && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
+        >
+          <div className="bg-neutral-900 text-white rounded-2xl px-5 py-4 shadow-xl max-w-[220px]">
+            <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">Article</p>
+            <ul className="space-y-2">
+              {hoveredToc.map((section, idx) => (
+                <li key={idx} className="text-[12px] font-semibold text-white leading-snug">{section}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-center min-h-screen gap-16">
@@ -587,7 +622,7 @@ function Index() {
 
       {/* 4 Pillar sections */}
       {PILLARS.map((pillar) => (
-        <PillarSection key={pillar.number} pillar={pillar} />
+        <PillarSection key={pillar.number} pillar={pillar} onHoverSlug={setHoveredSlug} />
       ))}
 
       <footer className="mt-4 border-t border-neutral-200/60">
