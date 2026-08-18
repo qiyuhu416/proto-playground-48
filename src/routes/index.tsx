@@ -692,20 +692,22 @@ function Index() {
           src="/articles/hello-stranger.png"
           alt="Hello, stranger!!"
           className="block mx-auto w-full max-w-[300px]"
-          style={{ mixBlendMode: "multiply" }}
+          style={{ mixBlendMode: "multiply", opacity: 0.5 }}
         />
         <div className="flex justify-center w-full mt-4">
           <HandDrawnDiagram onHover={setHeroGap} />
         </div>
-        <div className="flex flex-col items-center justify-start text-center max-w-md min-h-[100px] pt-6">
+        <div className="relative flex flex-col items-center justify-start text-center max-w-md min-h-[100px] pt-6">
           {(() => {
             const content = HERO_CONTENT[heroGap || "default"];
             return (
               <>
-                <p className={`text-xs text-neutral-400 uppercase tracking-widest mb-1 ${content.tag ? '' : 'invisible'}`}>
-                  {content.tag}
-                </p>
-                <p className="text-sm text-neutral-700 leading-relaxed">
+                {content.tag && (
+                  <p className="absolute top-6 text-xs text-neutral-400 uppercase tracking-widest">
+                    {content.tag}
+                  </p>
+                )}
+                <p className="text-sm text-neutral-700 leading-relaxed mt-6">
                   {content.text}
                 </p>
               </>

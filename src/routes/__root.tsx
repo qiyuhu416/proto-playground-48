@@ -155,9 +155,10 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Header badge - present on all pages (hidden in embed mode) */}
       {!isEmbed && <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="hidden md:inline-flex group relative">
-            <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 gap-8">
+          <div className="flex items-center gap-8">
+            <div className="hidden md:inline-flex group relative">
+              <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
             <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto whitespace-nowrap bg-white rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] z-10 p-4 w-max border border-neutral-200">
               <div className="space-y-3">
                 <div className="px-4 py-2 rounded-xl bg-neutral-100 text-sm font-medium text-neutral-900">"key-you" 🔑 🫵</div>
@@ -171,6 +172,16 @@ function RootComponent() {
                 </a>
               </div>
             </div>
+            <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1">
+              {NAV_ITEMS.map((l) => {
+                const href = navHref(l);
+                const isActive = (l === "work" && currentPath === "/") ||
+                                (l !== "work" && currentPath.startsWith(href));
+                return (
+                  <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
+                );
+              })}
+            </nav>
           </div>
           <div className="hidden md:inline-flex group relative">
             <a href="https://www.linkedin.com/in/qiyu-hu/" className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden !cursor-default" target="_blank" rel="noopener noreferrer">
@@ -186,17 +197,6 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
 
-      {/* Floating bottom nav - present on all pages (hidden when modal open or in embed mode) */}
-      {!isEmbed && <nav className="fixed bottom-18 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-300" style={{ opacity: "var(--nav-opacity, 1)" } as any}>
-        {NAV_ITEMS.map((l) => {
-          const href = navHref(l);
-          const isActive = (l === "work" && currentPath === "/") ||
-                          (l !== "work" && currentPath.startsWith(href));
-          return (
-            <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
-          );
-        })}
-      </nav>}
     </QueryClientProvider>
   );
 }
