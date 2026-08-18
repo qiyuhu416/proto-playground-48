@@ -95,12 +95,11 @@ const PILLARS: Pillar[] = [
         accent: "bg-gradient-to-br from-purple-100 to-pink-200",
       },
       {
-        slug: "birthday-card",
-        title: "Birthday card",
-        meta: "Motion · Delight",
-        accent: "bg-gradient-to-br from-yellow-100 to-amber-200",
-        videoPreview: "/articles/birthday-card.mp4",
-        videoStartTime: 1,
+        slug: "oh-man",
+        title: "Oh man",
+        meta: "Very personal prototype",
+        accent: "bg-neutral-100",
+        comingSoon: true,
       },
     ],
   },
@@ -234,6 +233,14 @@ const PILLARS: Pillar[] = [
         videoPreview: "/articles/palo-alto.mp4",
         videoStartTime: 0,
       },
+      {
+        slug: "birthday-card",
+        title: "Birthday card",
+        meta: "Motion · Delight",
+        accent: "bg-gradient-to-br from-yellow-100 to-amber-200",
+        videoPreview: "/articles/birthday-card.mp4",
+        videoStartTime: 1,
+      },
     ],
   },
 ];
@@ -317,83 +324,87 @@ function InteractionDiagram({ active }: { active: GapId }) {
 
 
 // ── Hand-drawn interactive diagram ────────────────────────────────────────────
+// Base scan shown at 40% opacity. On hover, the corresponding cropped segment
+// overlay (same handwriting) fades in at 100% — making that line "come alive."
+
+const DIAGRAM_W = 1228, DIAGRAM_H = 679;
+
+type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
+
+const SEGMENTS: Record<GapId, SegmentDef> = {
+  top:          { src: "/articles/diagram-top.png",         x1: 155, y1: 248, x2: 1020, y2: 332 },
+  bottom:       { src: "/articles/diagram-bottom.png",     x1: 155, y1: 480, x2: 1020, y2: 548 },
+  "me-loop":    { src: "/articles/diagram-me-loop.png",    x1:  75, y1: 248, x2:  290, y2: 548 },
+  "others-loop":{ src: "/articles/diagram-others-loop.png",x1: 912, y1: 248, x2: 1110, y2: 548 },
+};
+
+// SVG hit-area paths (in 1228×679 image space)
+const mex = 229, otx = 965, yT = 292, yB = 510, arcR = 109;
 
 function HandDrawnDiagram() {
   const [hovered, setHovered] = useState<GapId | null>(null);
-
-  // Geometry — matches the hand-drawn proportions
-  const mex = 108, otx = 452, cy = 98;
-  const arcR = 60;
-  const yT = cy - arcR;  // 38
-  const yB = cy + arcR;  // 158
-
   const enter = (g: GapId) => () => setHovered(g);
   const leave = () => setHovered(null);
 
-  const stroke = (g: GapId) => hovered === g ? "#1a1a1a" : "#c2c2c2";
-  const sw     = (g: GapId) => hovered === g ? 2.4 : 1.7;
-  const trans  = { style: { transition: "stroke 160ms, stroke-width 160ms" } };
-
-  // Shared props for visible strokes
-  const vis = (g: GapId) => ({
-    stroke: stroke(g), strokeWidth: sw(g), strokeLinecap: "round" as const,
-    fill: "none", ...trans,
-  });
-
-  // Wide transparent overlay for easier hover targeting
-  const hit = { stroke: "transparent", strokeWidth: 24, fill: "none", style: { cursor: "pointer" } };
-
   return (
-    <svg viewBox="0 0 568 196" className="block mx-auto w-full max-w-[560px]"
-      fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div className="relative block mx-auto w-full max-w-[560px]">
 
-      {/* ── LEFT ARC — me-loop ── */}
-      <g onMouseEnter={enter("me-loop")} onMouseLeave={leave}>
-        <path d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`} {...vis("me-loop")} />
-        {/* arrowhead at top, tangent → right */}
-        <polyline points={`${mex-7},${yT+9} ${mex},${yT} ${mex+7},${yT+9}`} {...vis("me-loop")} />
-        {/* wide hit path */}
-        <path d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`} {...hit} />
-      </g>
+      {/* Base — full diagram at low opacity */}
+      <img
+        src="/articles/diagram-handdrawn.png"
+        alt="Human interaction model"
+        className="block w-full"
+        style={{ opacity: 0.38 }}
+      />
 
-      {/* ── TOP ARROW — top ── */}
-      <g onMouseEnter={enter("top")} onMouseLeave={leave}>
-        <line x1={mex} y1={yT} x2={otx} y2={yT} {...vis("top")} />
-        {/* arrowhead → at right */}
-        <polyline points={`${otx-9},${yT-6} ${otx},${yT} ${otx-9},${yT+6}`} {...vis("top")} />
-        <line x1={mex} y1={yT} x2={otx} y2={yT} {...hit} />
-      </g>
+      {/* Segment overlays — each cropped from the original scan */}
+      {(Object.entries(SEGMENTS) as [GapId, SegmentDef][]).map(([gap, s]) => {
+        const l = (s.x1 / DIAGRAM_W * 100).toFixed(3) + "%";
+        const t = (s.y1 / DIAGRAM_H * 100).toFixed(3) + "%";
+        const w = ((s.x2 - s.x1) / DIAGRAM_W * 100).toFixed(3) + "%";
+        const h = ((s.y2 - s.y1) / DIAGRAM_H * 100).toFixed(3) + "%";
+        return (
+          <img
+            key={gap}
+            src={s.src}
+            alt=""
+            aria-hidden
+            className="absolute pointer-events-none"
+            style={{
+              left: l, top: t, width: w, height: h,
+              opacity: hovered === gap ? 1 : 0,
+              transition: "opacity 160ms",
+            }}
+          />
+        );
+      })}
 
-      {/* ── RIGHT ARC — others-loop ── */}
-      <g onMouseEnter={enter("others-loop")} onMouseLeave={leave}>
-        <path d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`} {...vis("others-loop")} />
-        {/* arrowhead ← at bottom */}
-        <polyline points={`${otx+7},${yB-9} ${otx},${yB} ${otx-7},${yB-9}`} {...vis("others-loop")} />
-        <path d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`} {...hit} />
-      </g>
-
-      {/* ── BOTTOM ARROW — bottom ── */}
-      <g onMouseEnter={enter("bottom")} onMouseLeave={leave}>
-        <line x1={otx} y1={yB} x2={mex} y2={yB} {...vis("bottom")} />
-        {/* arrowhead ← at left */}
-        <polyline points={`${mex+9},${yB-6} ${mex},${yB} ${mex+9},${yB+6}`} {...vis("bottom")} />
-        <line x1={otx} y1={yB} x2={mex} y2={yB} {...hit} />
-      </g>
-
-      {/* ── "me" oval (static) ── */}
-      <ellipse cx={mex} cy={cy} rx={40} ry={32} stroke="#c8c8c8" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <text x={mex} y={cy + 5} textAnchor="middle" fontSize="15" fill="#888"
-        fontFamily="Georgia, 'Times New Roman', serif" fontStyle="italic">me</text>
-
-      {/* ── "others" oval — double ring like the drawing ── */}
-      <ellipse cx={otx} cy={cy} rx={62} ry={42} stroke="#c8c8c8" strokeWidth="2" fill="none" />
-      <ellipse cx={otx} cy={cy} rx={54} ry={35} stroke="#c8c8c8" strokeWidth="1" fill="none" />
-      <text x={otx} y={cy + 5} textAnchor="middle" fontSize="15" fill="#888"
-        fontFamily="Georgia, 'Times New Roman', serif" fontStyle="italic">others</text>
-
-    </svg>
+      {/* Invisible SVG hit areas — sized generously for easy hover */}
+      <svg
+        viewBox={`0 0 ${DIAGRAM_W} ${DIAGRAM_H}`}
+        className="absolute inset-0 w-full h-full"
+        fill="none"
+        style={{ pointerEvents: "none" }}
+      >
+        {(["me-loop", "top", "others-loop", "bottom"] as GapId[]).map((gap) => {
+          const hitProps = {
+            stroke: "transparent", strokeWidth: 90, fill: "none",
+            style: { pointerEvents: "all" as const, cursor: "pointer" },
+            onMouseEnter: enter(gap), onMouseLeave: leave,
+          };
+          if (gap === "top")
+            return <line key={gap} x1={mex} y1={yT} x2={otx} y2={yT} {...hitProps} />;
+          if (gap === "bottom")
+            return <line key={gap} x1={otx} y1={yB} x2={mex} y2={yB} {...hitProps} />;
+          if (gap === "me-loop")
+            return <path key={gap} d={`M ${mex},${yB} A ${arcR},${arcR} 0 0,0 ${mex},${yT}`} {...hitProps} />;
+          return <path key={gap} d={`M ${otx},${yT} A ${arcR},${arcR} 0 0,1 ${otx},${yB}`} {...hitProps} />;
+        })}
+      </svg>
+    </div>
   );
 }
+
 
 // ── Card ──────────────────────────────────────────────────────────────────────
 
@@ -404,7 +415,7 @@ function CardItem({ card }: { card: PillarCard }) {
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
-    if (v) { v.currentTime = card.videoStartTime ?? 0; v.haha(); }
+    if (v) { v.currentTime = card.videoStartTime ?? 0; v.play(); }
   };
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
