@@ -333,10 +333,10 @@ type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number 
 
 // Crop boxes match the Python crop script exactly
 const SEGMENTS: Record<GapId, SegmentDef> = {
-  top:            { src: "/articles/diagram-top.png",          x1: 195, y1:  42, x2: 1190, y2: 110 },
-  bottom:         { src: "/articles/diagram-bottom.png",       x1: 195, y1: 445, x2: 1190, y2: 535 },
+  top:            { src: "/articles/diagram-top.png",          x1: 195, y1:  42, x2: 1340, y2: 160 },
+  bottom:         { src: "/articles/diagram-bottom.png",       x1: 195, y1: 445, x2: 1340, y2: 535 },
   "me-loop":      { src: "/articles/diagram-me-loop.png",      x1:  77, y1:  58, x2:  195, y2: 540 },
-  "others-loop":  { src: "/articles/diagram-others-loop.png",  x1: 1185, y1: 58, x2: 1469, y2: 540 },
+  "others-loop":  { src: "/articles/diagram-others-loop.png",  x1: 1350, y1: 58, x2: 1469, y2: 540 },
 };
 
 // SVG hit-area geometry calibrated to new 1507×572 image
@@ -396,7 +396,7 @@ function HandDrawnDiagram() {
           if (gap === "bottom")
             return <line key={gap} x1={otx} y1={yB} x2={mex} y2={yB} {...h} />;
           if (gap === "me-loop")
-            return <path key={gap} d={`M ${mex},${yB} A ${leftRx},${arcRy} 0 0,0 ${mex},${yT}`} {...h} />;
+            return <path key={gap} d={`M ${mex},${yB} A ${leftRx},${arcRy} 0 0,1 ${mex},${yT}`} {...h} />;
           return <path key={gap} d={`M ${otx},${yT} A ${rightRx},${arcRy} 0 0,1 ${otx},${yB}`} {...h} />;
         })}
       </svg>
@@ -560,6 +560,13 @@ function PillarCarousel({ cards, onHoverSlug, onCardClick }: { cards: PillarCard
 
 // ── Pillar section ─────────────────────────────────────────────────────────────
 
+const SECTION_ICONS: Record<string, string> = {
+  "01": "/articles/section-01-icon.png",
+  "02": "/articles/section-02-icon.png",
+  "03": "/articles/section-03-icon.png",
+  "04": "/articles/section-04-icon.png",
+};
+
 function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
   return (
     <section className="pb-16">
@@ -595,10 +602,14 @@ function Index() {
 
   const hoveredToc = hoveredSlug ? findCardToc(hoveredSlug) : [];
 
-  const handleModalScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrolled = e.currentTarget.scrollTop;
-    setModalScroll(scrolled);
-  };
+  useEffect(() => {
+    if (!selectedCard) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedCard(null);
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [selectedCard]);
 
   const findCard = (slug: string): PillarCard | undefined => {
     for (const pillar of PILLARS) {
@@ -609,9 +620,7 @@ function Index() {
   };
 
   const card = selectedCard ? findCard(selectedCard) : undefined;
-  const modalExpansion = Math.min(100, (modalScroll / 200) * 100);
-  const modalWidth = Math.min(100, 40 + modalExpansion);
-  const modalHeight = Math.min(100, 80 + (modalScroll / 200) * 20);
+  const [isFull, setIsFull] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
@@ -635,48 +644,60 @@ function Index() {
 
       {/* Card Modal */}
       {selectedCard && card && !card.externalLink && (
-        <div
-          className="fixed z-50 bg-black/30 overflow-hidden flex items-center justify-center transition-all duration-300"
-          style={{
-            inset: 0,
-            padding: modalWidth === 100 ? 0 : 16,
-          }}
-          onClick={() => setSelectedCard(null)}
-        >
+        <>
+          {!isFull && (
+            <div className="fixed inset-0 z-[59] bg-black/50 backdrop-blur-sm" onClick={() => setSelectedCard(null)} />
+          )}
           <div
             ref={modalRef}
-            className="bg-white overflow-y-auto transition-all duration-300 relative"
+            className="bg-white transition-all duration-300 relative"
             style={{
-              width: `${modalWidth}%`,
-              height: `${modalHeight}vh`,
-              borderRadius: modalWidth === 100 ? 0 : 16,
+              position: "fixed",
+              zIndex: 60,
+              top: isFull ? 0 : "clamp(24px, 5vh, 48px)",
+              right: isFull ? 0 : "clamp(16px, 8vw, 120px)",
+              bottom: isFull ? 0 : "clamp(24px, 5vh, 48px)",
+              left: isFull ? 0 : "clamp(16px, 8vw, 120px)",
+              borderRadius: isFull ? 0 : 16,
             }}
             onClick={(e) => e.stopPropagation()}
-            onScroll={handleModalScroll}
           >
             <button
               onClick={() => setSelectedCard(null)}
-              className="sticky top-4 right-4 float-right text-neutral-500 hover:text-neutral-900 text-2xl z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center"
+              className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-900 text-2xl z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center"
             >
               ×
             </button>
             <iframe
-              src={`/${card.slug}`}
+              ref={modalRef}
+              src={`/${card.slug}?embed=1`}
               className="w-full h-full border-0"
               title={card.title}
+              onLoad={() => {
+                const iframe = modalRef.current;
+                if (!iframe?.contentWindow) return;
+                const handleScroll = () => {
+                  setIsFull(iframe.contentWindow!.scrollY > 30);
+                };
+                iframe.contentWindow.addEventListener("scroll", handleScroll, { passive: true });
+              }}
             />
           </div>
-        </div>
+        </>
       )}
 
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-center min-h-screen gap-16">
-        <div className="text-center max-w-2xl">
-          <p className="text-base text-neutral-600 leading-relaxed">
-            Qiyu is designing technology that brings humans together
-          </p>
-        </div>
-        <div className="flex justify-center w-full">
+      <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-start pt-20 pb-16 gap-6">
+        <img
+          src="/articles/hello-stranger.png"
+          alt="Hello, stranger!!"
+          className="block mx-auto w-full max-w-[300px]"
+          style={{ mixBlendMode: "multiply" }}
+        />
+        <p className="text-sm text-neutral-500 leading-relaxed text-center max-w-sm">
+          Qiyu is designing technology that brings humans together
+        </p>
+        <div className="flex justify-center w-full mt-4">
           <HandDrawnDiagram />
         </div>
       </section>

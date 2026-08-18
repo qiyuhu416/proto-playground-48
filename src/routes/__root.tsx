@@ -187,8 +187,9 @@ function RootComponent() {
       {/* Floating bottom nav - present on all pages */}
       <nav className="fixed bottom-18 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
         {NAV_ITEMS.map((l) => {
+          const href = navHref(l);
           const isActive = (l === "work" && currentPath === "/") ||
-                          (l !== "work" && currentPath.startsWith(`/${l}`));
+                          (l !== "work" && currentPath.startsWith(href));
           return (
             <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
           );

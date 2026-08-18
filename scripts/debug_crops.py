@@ -23,17 +23,17 @@ SRC    = BASE / "diagram-handdrawn.png"
 # ── Edit these to adjust crop regions ────────────────────────────────────────
 # Each entry: "segment-name": (x1, y1, x2, y2)  in pixels of the source image
 CROPS = {
-    "top":          (195,  42, 1190,  110),
-    "bottom":       (195, 445, 1190,  535),
+    "top":          (195,  42, 1340,  160),
+    "bottom":       (195, 445, 1340,  535),
     "me-loop":      ( 77,  58,  195,  540),
-    "others-loop":  (1185,  58, 1469,  540),
+    "others-loop":  (1350,  58, 1469,  540),
 }
 
 # Erase rectangles within a crop to remove unwanted ink (e.g. circle overlap).
 # Format: "segment-name": [(local_x1, local_y1, local_x2, local_y2), ...]
 # "local" means relative to the crop's own top-left corner.
 ERASE = {
-    "others-loop": [(0, 102, 95, 372)],   # removes "others" circle right-edge overlap
+    "others-loop": [(0, 102, 0, 372)],   # removes "others" circle right-edge overlap
 }
 
 # Debug overlay colors (R, G, B, alpha)
