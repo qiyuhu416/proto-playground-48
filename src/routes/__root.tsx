@@ -154,6 +154,7 @@ function RootComponent() {
       {/* Header badge - present on all pages */}
       <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <a href="/" className="hidden md:inline text-sm font-medium text-neutral-900">Qiyu</a>
           <div className="hidden md:inline-flex group relative">
             <a href="https://www.linkedin.com/in/qiyu-hu/" className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden !cursor-default" target="_blank" rel="noopener noreferrer">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
@@ -162,7 +163,6 @@ function RootComponent() {
             </a>
             <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
           </div>
-          <a href="/" className="hidden md:inline text-sm font-medium text-neutral-900">Qiyu</a>
         </div>
       </header>
 
