@@ -1,8 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState, useEffect, useRef } from "react";
-import { LayoutGrid, Wrench, Sparkles, UserRound, FileText, Box } from "lucide-react";
-import { ARTICLE_META } from "./-articleMeta";
-import { NAV_ITEMS, navHref } from "./-navItems";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
 
 export const Route = createFileRoute("/")({
@@ -26,646 +24,501 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Kind = "Prototype" | "Article";
-type Category = "Implementation" | "Look & Feel" | "Role";
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-type Item = {
+type PillarCard = {
+  slug: string;
   title: string;
-  blurb: string;
-  category: Category;
-  kind: Kind;
   meta: string;
-  accent: string; // tailwind bg for the visual tile
-  highlightWord?: string;
-  externalLink?: string;
+  accent: string;
   thumbnail?: string;
   thumbnailSize?: "xs" | "small" | "medium";
   videoPreview?: string;
   videoStartTime?: number;
-  videoZoom?: number; // scale factor, e.g. 1.5 = 50% zoom in
-  videoTransform?: string; // full CSS transform override, e.g. "scale(2) translateX(-15%)"
+  videoTransform?: string;
+  externalLink?: string;
+  comingSoon?: boolean;
 };
 
-type ItemWithSlug = Item & { slug: string };
+type GapId = "top" | "bottom" | "me-loop" | "others-loop";
 
-const ITEMS: ItemWithSlug[] = [
+type Pillar = {
+  number: string;
+  subtitle: string;
+  title: string;
+  description: string;
+  gapLeft: string;
+  gapRight: string;
+  activeGap: GapId;
+  cards: PillarCard[];
+};
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+
+const PILLARS: Pillar[] = [
   {
-    slug: "what-do-prototypes-prototype",
-    title: ARTICLE_META["what-do-prototypes-prototype"].title,
-    thumbnail: ARTICLE_META["what-do-prototypes-prototype"].thumbnail,
-    thumbnailSize: ARTICLE_META["what-do-prototypes-prototype"].thumbnailSize,
-    blurb: "Prototyping as a research mindset, and designing to elicit errors rather than hide them.",
-    category: "Implementation",
-    kind: "Article",
-    meta: "6 min read",
-    accent: "bg-gradient-to-br from-amber-100 to-orange-200",
+    number: "01",
+    subtitle: "",
+    title: "Human-Human Understanding",
+    description: "Understanding others is a black box, just like AI",
+    gapLeft: "Assumption",
+    gapRight: "Understanding",
+    activeGap: "others-loop",
+    cards: [
+      {
+        slug: "design-as-a-research-tool",
+        title: "Research through Design",
+        meta: "User-centered service design",
+        accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
+        thumbnail: "/articles/design-as-research-tool-thumb.png",
+      },
+      {
+        slug: "designing-for-conversations-that-earn-trust",
+        title: "Who should the bot listen to?",
+        meta: "Conversational design in multi-stakeholder cases",
+        accent: "bg-gradient-to-br from-green-100 to-emerald-200",
+        thumbnail: "/articles/conversation-trust-icon.svg",
+        thumbnailSize: "small",
+      },
+      {
+        slug: "what-do-prototypes-prototype",
+        title: "What do prototypes prototype?",
+        meta: "5 min read",
+        accent: "bg-gradient-to-br from-amber-100 to-orange-200",
+        thumbnail: "/articles/prototype-triangle-thumb.svg",
+        thumbnailSize: "medium",
+      },
+    ],
   },
   {
-    slug: "ai-ai-interaction",
-    title: ARTICLE_META["ai-ai-interaction"].title,
-    blurb: "Visualizing how two AI agents communicate and resolve differences in real-time.",
-    category: "Look & Feel",
-    kind: "Prototype",
-    meta: "Concept · Motion",
-    accent: "bg-gradient-to-br from-sky-100 to-indigo-200",
-    videoPreview: "/articles/ai-ai-interaction.mp4",
-    videoStartTime: 5,
+    number: "02",
+    subtitle: "",
+    title: "How do we design feedback?",
+    description: "The gap between intent and expression",
+    gapLeft: "Intent",
+    gapRight: "Expression",
+    activeGap: "bottom",
+    cards: [
+      {
+        slug: "google-cloud",
+        title: "Launching AI for assisted browsing",
+        meta: "0-1 for Google",
+        accent: "bg-gradient-to-br from-blue-100 to-cyan-200",
+        thumbnail: "/articles/google-cloud-hero.png",
+      },
+      {
+        slug: "reimagining-the-chatbot",
+        title: "The chatbot beyond a tab?",
+        meta: "Exploring interface paradigms",
+        accent: "bg-gradient-to-br from-violet-100 to-purple-200",
+        thumbnail: "/articles/chatbot-thumb.png",
+      },
+      {
+        slug: "physical-ai",
+        title: "Physical AI for service design",
+        meta: "Understanding behavioral intent",
+        accent: "bg-gradient-to-br from-slate-100 to-gray-200",
+        thumbnail: "/articles/physical-ai-thumb.png",
+      },
+      {
+        slug: "a2ui-generative",
+        title: "Generative UI",
+        meta: "Personalization",
+        accent: "bg-gradient-to-br from-purple-100 to-pink-200",
+        thumbnail: "/articles/a2ui-thumb.svg",
+        thumbnailSize: "small",
+      },
+    ],
   },
   {
-    slug: "designing-next-gen-ai-products",
-    title: ARTICLE_META["designing-next-gen-ai-products"].title,
-    thumbnail: ARTICLE_META["designing-next-gen-ai-products"].thumbnail,
-    thumbnailSize: ARTICLE_META["designing-next-gen-ai-products"].thumbnailSize,
-    blurb: "Mapping UX to tech capability. Insights from conversational AI, elder care, and human–AI co-writing.",
-    category: "Role",
-    kind: "Article",
-    meta: "8 min read",
-    accent: "bg-gradient-to-br from-stone-200 to-stone-300",
+    number: "03",
+    subtitle: "",
+    title: "How much do you know about yourself?",
+    description: "Who we are is constantly shaped by how we interact with the external world. Sometimes the changes are faster than we realize",
+    gapLeft: "Unknown",
+    gapRight: "Aware",
+    activeGap: "me-loop",
+    cards: [
+      {
+        slug: "claude-code-research",
+        title: "How Claude shapes my thinking",
+        meta: "AI workflow",
+        accent: "bg-gradient-to-br from-indigo-100 to-blue-200",
+        thumbnail: "/articles/claude-code-thumb.png",
+        thumbnailSize: "small",
+      },
+      {
+        slug: "personalization",
+        title: "Personalization? What is a Person?",
+        meta: "Thoughts about the vision",
+        accent: "bg-gradient-to-br from-violet-100 to-purple-200",
+        thumbnail: "/articles/personalization-thumb.svg",
+        thumbnailSize: "xs",
+      },
+      {
+        slug: "aios",
+        title: "AIOS to see my unknown-unknowns",
+        meta: "Self-discovery",
+        accent: "bg-neutral-100",
+        comingSoon: true,
+      },
+      {
+        slug: "ai-journaling",
+        title: "AI-assisted journaling",
+        meta: "Self-discovery through reflection",
+        accent: "bg-neutral-100",
+        comingSoon: true,
+      },
+    ],
   },
   {
-    slug: "reimagining-the-chatbot",
-    title: ARTICLE_META["reimagining-the-chatbot"].title,
-    thumbnail: ARTICLE_META["reimagining-the-chatbot"].thumbnail,
-    blurb: "Exploring how prompts reshape design workflows—generative design meets human intent.",
-    category: "Implementation",
-    kind: "Prototype",
-    meta: "Collection · Design system",
-    accent: "bg-gradient-to-br from-violet-100 to-purple-200",
-  },
-  {
-    slug: "product-launch-from-0-1",
-    title: ARTICLE_META["product-launch-from-0-1"].title,
-    thumbnail: ARTICLE_META["product-launch-from-0-1"].thumbnail,
-    blurb: "Building Meetfood from concept to launch—a food discovery app connecting people to local cuisine.",
-    category: "Role",
-    kind: "Article",
-    meta: "Case study",
-    accent: "bg-gradient-to-br from-pink-100 to-red-200",
-    externalLink: "https://meetfood.us/",
-  },
-  {
-    slug: "knowledge-graph-visualization",
-    title: ARTICLE_META["knowledge-graph-visualization"].title,
-    blurb: "Turning abstract AI reasoning into tangible, navigable visual structures.",
-    category: "Look & Feel",
-    kind: "Prototype",
-    meta: "Data viz · Interaction",
-    accent: "bg-gradient-to-br from-neutral-200 to-neutral-300",
-    videoPreview: "/articles/chatbot-knowledge-graph.mp4",
-    videoTransform: "scale(2) translateY(20%)",
-  },
-  {
-    slug: "google-cloud",
-    title: ARTICLE_META["google-cloud"].title,
-    thumbnail: ARTICLE_META["google-cloud"].thumbnail,
-    blurb: "Embedding AI into the product discovery experience for startup customers.",
-    category: "Implementation",
-    kind: "Prototype",
-    meta: "Research · 0→1",
-    accent: "bg-gradient-to-br from-blue-100 to-cyan-200",
-  },
-  {
-    slug: "a2ui-generative",
-    title: ARTICLE_META["a2ui-generative"].title,
-    thumbnail: ARTICLE_META["a2ui-generative"].thumbnail,
-    thumbnailSize: ARTICLE_META["a2ui-generative"].thumbnailSize,
-    blurb: "AI-driven user interfaces that generate and adapt components based on intent.",
-    category: "Look & Feel",
-    kind: "Prototype",
-    meta: "Research · AI",
-    accent: "bg-gradient-to-br from-purple-100 to-pink-200",
-  },
-  {
-    slug: "design-as-a-research-tool",
-    title: ARTICLE_META["design-as-a-research-tool"].title,
-    thumbnail: ARTICLE_META["design-as-a-research-tool"].thumbnail,
-    blurb: "Using design methods to uncover hidden user behaviors and inform transportation policy.",
-    category: "Role",
-    kind: "Article",
-    meta: "Case study",
-    accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
-  },
-  {
-    slug: "physical-ai",
-    title: ARTICLE_META["physical-ai"].title,
-    thumbnail: ARTICLE_META["physical-ai"].thumbnail,
-    blurb: "Exploring AI beyond screens—how intelligent systems interact with and shape the physical world.",
-    category: "Role",
-    kind: "Prototype",
-    meta: "Research · Physical",
-    accent: "bg-gradient-to-br from-slate-100 to-gray-200",
-  },
-  {
-    slug: "claude-code-research",
-    title: ARTICLE_META["claude-code-research"].title,
-    thumbnail: ARTICLE_META["claude-code-research"].thumbnail,
-    thumbnailSize: ARTICLE_META["claude-code-research"].thumbnailSize,
-    blurb: "Building and evolving development tools powered by AI assistance.",
-    category: "Implementation",
-    kind: "Prototype",
-    meta: "Research · Tools",
-    accent: "bg-gradient-to-br from-indigo-100 to-blue-200",
-  },
-  {
-    slug: "designing-for-conversations-that-earn-trust",
-    title: ARTICLE_META["designing-for-conversations-that-earn-trust"].title,
-    thumbnail: ARTICLE_META["designing-for-conversations-that-earn-trust"].thumbnail,
-    thumbnailSize: ARTICLE_META["designing-for-conversations-that-earn-trust"].thumbnailSize,
-    blurb: "How to build AI systems that users can depend on—insights from caring AI research.",
-    category: "Role",
-    kind: "Article",
-    meta: "Research · Design",
-    accent: "bg-gradient-to-br from-green-100 to-emerald-200",
-  },
-  {
-    slug: "proactive",
-    title: ARTICLE_META["proactive"].title,
-    thumbnail: ARTICLE_META["proactive"].thumbnail,
-    thumbnailSize: ARTICLE_META["proactive"].thumbnailSize,
-    blurb: "Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.",
-    category: "Implementation",
-    kind: "Prototype",
-    meta: "Research · Testing",
-    accent: "bg-gradient-to-br from-cyan-100 to-blue-200",
-  },
-  {
-    slug: "personalization",
-    title: ARTICLE_META["personalization"].title,
-    thumbnail: ARTICLE_META["personalization"].thumbnail,
-    thumbnailSize: ARTICLE_META["personalization"].thumbnailSize,
-    blurb: "Understanding what makes humans human—exploring the future of AI through the lens of personal connection.",
-    category: "Role",
-    kind: "Article",
-    meta: "Research · AI Philosophy",
-    accent: "bg-gradient-to-br from-violet-100 to-purple-200",
-  },
-  {
-    slug: "always-here",
-    title: ARTICLE_META["always-here"].title,
-    blurb: "What if the AI didn't wait to be asked? Exploring proactive presence and reducing cognitive load.",
-    category: "Look & Feel",
-    kind: "Prototype",
-    meta: "Interaction · AI",
-    accent: "bg-gradient-to-br from-rose-100 to-orange-200",
-    videoPreview: "/articles/chatbot-always-here.mp4",
-    videoTransform: "scale(2.2) translateX(-12%)",
+    number: "04",
+    subtitle: "",
+    title: "Is there another way to express yourself?",
+    description: "The gap between internal intent and external expression—technology that augments human voice beyond words",
+    gapLeft: "Intent",
+    gapRight: "Expression",
+    activeGap: "top",
+    cards: [
+      {
+        slug: "product-launch-from-0-1",
+        title: "Product launch from 0–1",
+        meta: "Changing through Creating",
+        accent: "bg-gradient-to-br from-pink-100 to-red-200",
+        thumbnail: "/articles/product-launch-thumb.png",
+        externalLink: "https://meetfood.us/",
+      },
+      {
+        slug: "hand-gesture-interactions",
+        title: "Hand gesture interactions",
+        meta: "Physical expression",
+        accent: "bg-gradient-to-br from-sky-100 to-blue-200",
+        videoPreview: "/articles/hand-gesture.mp4",
+        videoStartTime: 0,
+      },
+      {
+        slug: "voice-interaction",
+        title: "Voice interaction",
+        meta: "Vocal expression",
+        accent: "bg-gradient-to-br from-violet-100 to-purple-200",
+        videoPreview: "/articles/voice.mp4",
+        videoStartTime: 0,
+      },
+      {
+        slug: "palo-alto-moment",
+        title: "Palo Alto moment",
+        meta: "Just for fun",
+        accent: "bg-gradient-to-br from-amber-100 to-orange-200",
+        videoPreview: "/articles/palo-alto.mp4",
+        videoStartTime: 0,
+      },
+    ],
   },
 ];
 
-// ── Shared timeline node data ──────────────────────────────────────────────
-const TIMELINE_NODES = [
-  { key: "All",          nat: 0,   txFull: 0,    toLeft: "0%",   toTx: "translateX(0)",     delay: 0   },
-  { key: "chatbot",      nat: 22,  txFull: -50,  toLeft: "22%",  toTx: "translateX(-50%)",  delay: 35  },
-  { key: "reasoner",     nat: 36,  txFull: -50,  toLeft: "36%",  toTx: "translateX(-50%)",  delay: 70  },
-  { key: "agent",        nat: 50,  txFull: -50,  toLeft: "50%",  toTx: "translateX(-50%)",  delay: 105 },
-  { key: "innovator",    nat: 63,  txFull: -50,  toLeft: "63%",  toTx: "translateX(-50%)",  delay: 140 },
-  { key: "Organization", nat: 76,  txFull: -50,  toLeft: "76%",  toTx: "translateX(-50%)",  delay: 175 },
-  { key: "human",        nat: 100, txFull: -100, toLeft: "100%", toTx: "translateX(-100%)", delay: 210 },
-] as const;
+// ── Interaction model diagram ─────────────────────────────────────────────────
 
-/**
- * Renders timeline dots in two modes:
- *  - "scroll"  : dots converge as scrollProgress → 1, label opacity fades
- *  - "expand"  : dots fly out via CSS transitions when isExpanded flips
- *
- * Label visibility: active label always shows; inactive labels use `hidden lg:block` (CSS only, no JS measurement).
- */
-function TimelineNodes({
-  selectedStage, setSelectedStage,
-  mode, scrollProgress = 0, isExpanded = true, compact = false,
-}: {
-  selectedStage: string;
-  setSelectedStage: (s: string) => void;
-  mode: "scroll" | "expand";
-  scrollProgress?: number;
-  isExpanded?: boolean;
-  compact?: boolean;
-}) {
-  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-  const expandEase   = "cubic-bezier(0.34,1.56,0.64,1)";
-  const collapseEase = "cubic-bezier(0.55,0,1,0.45)";
+function InteractionDiagram({ active }: { active: GapId }) {
+  const dim = (gap: GapId) => ({
+    stroke:      gap === active ? "#171717" : "#d1d5db",
+    strokeWidth: gap === active ? 2        : 1.2,
+    opacity:     gap === active ? 1        : 0.45,
+  });
+  const labelFill = (gap: GapId) => gap === active ? "#404040" : "#c0c0c0";
+
+  // Geometry constants
+  const mex = 108, mey = 126, r = 50;   // ME circle
+  const otx = 310, oty = 126;            // OTHERS circle
+  const topY = 100, botY = 152;          // Arrow y-positions
+  const gapL = mex + r + 2;             // 160
+  const gapR = otx - r - 2;             // 258
 
   return (
-    <>
-      {/* Connecting lines */}
-      {/* Line pinned at y=10 from container top — matches full dot center (h-5 w-5 / 2 = 10px) */}
-      <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 1, overflow: "visible", pointerEvents: "none", zIndex: 1 }}>
-        <line x1="0%" y1="10" x2="76%" y2="10" stroke="#d1d5db" strokeWidth="1.5"
-          style={{ opacity: mode === "scroll" ? 1 - scrollProgress : isExpanded ? 1 : 0,
-                   transition: mode === "expand" ? "opacity 200ms ease 300ms" : undefined }} />
-        <line x1="76%" y1="10" x2="100%" y2="10" stroke="#d1d5db" strokeWidth="1.5" strokeDasharray="4,4"
-          style={{ opacity: mode === "scroll" ? 1 - scrollProgress : isExpanded ? 1 : 0,
-                   transition: mode === "expand" ? "opacity 200ms ease 300ms" : undefined }} />
-      </svg>
+    <svg viewBox="0 0 420 252" className="w-full max-w-[400px]" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-      {/* Dots — top=0 for full (20px dot center = 10px); top=5 for compact (10px dot center = 5+5=10px) */}
-      <div className="relative z-10 h-12">
-        {TIMELINE_NODES.map(({ key, nat, txFull, toLeft, toTx, delay }) => {
-          const isActive = selectedStage === key;
-          const isHovered = hoveredKey === key;
+      {/* ── ME self-loop (left dashed arc) ── */}
+      <path
+        d={`M ${mex - 36},${topY} C ${mex - 110},${topY} ${mex - 110},${botY} ${mex - 36},${botY}`}
+        strokeDasharray="4 3"
+        fill="none"
+        {...dim("me-loop")}
+      />
+      {/* arrowhead at bottom of ME loop */}
+      <polyline
+        points={`${mex - 40},${botY - 5} ${mex - 36},${botY} ${mex - 31},${botY - 5}`}
+        fill="none"
+        {...dim("me-loop")}
+      />
+      {/* ME loop labels */}
+      <text x={mex - 72} y={topY - 10} textAnchor="middle" fontSize="8.5" fill={labelFill("me-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">assume</text>
+      <text x={mex - 72} y={botY + 18} textAnchor="middle" fontSize="8.5" fill={labelFill("me-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">aware</text>
 
-          // compact dots (10px) need top=5 so their center lands at y=10 (line position)
-          // full dots (20px) need top=0 so their center lands at y=10
-          const dotTop = compact ? 5 : 0;
+      {/* ── OTHERS self-loop (right dashed arc) ── */}
+      <path
+        d={`M ${otx + 36},${topY} C ${otx + 110},${topY} ${otx + 110},${botY} ${otx + 36},${botY}`}
+        strokeDasharray="4 3"
+        fill="none"
+        {...dim("others-loop")}
+      />
+      {/* arrowhead at bottom of OTHERS loop */}
+      <polyline
+        points={`${otx + 31},${botY - 5} ${otx + 36},${botY} ${otx + 41},${botY - 5}`}
+        fill="none"
+        {...dim("others-loop")}
+      />
+      {/* OTHERS loop labels */}
+      <text x={otx + 72} y={topY - 10} textAnchor="middle" fontSize="8.5" fill={labelFill("others-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">expect</text>
+      <text x={otx + 72} y={botY + 18} textAnchor="middle" fontSize="8.5" fill={labelFill("others-loop")}
+        fontFamily="ui-sans-serif, system-ui, sans-serif">reality</text>
 
-          const dotStyle = mode === "scroll"
-            ? {
-                top: dotTop,
-                left: `${nat}%`,
-                transform: `translateX(${txFull}%)`,
-                opacity: 1,
-                pointerEvents: "auto" as const,
-              }
-            : {
-                top: dotTop,
-                left: isExpanded ? toLeft : "0%",
-                transform: isExpanded ? toTx : "translateX(0)",
-                opacity: isExpanded ? 1 : 0,
-                transition: isExpanded
-                  ? `left 380ms ${expandEase} ${delay}ms, transform 380ms ${expandEase} ${delay}ms, opacity 180ms ease ${delay}ms`
-                  : `left 260ms ${collapseEase}, transform 260ms ${collapseEase}, opacity 120ms ease`,
-                pointerEvents: isExpanded ? "auto" as const : "none" as const,
-              };
+      {/* ── Circles ── */}
+      <circle cx={mex} cy={mey} r={r} stroke="#e5e7eb" strokeWidth="1.5" />
+      <text x={mex} y={mey + 4} textAnchor="middle" fontSize="11" fill="#6b7280"
+        fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">ME</text>
 
-          // compact (scrolled down): hover or active only
-          // full modes: always visible (with scrollProgress fade)
-          const showLabel = compact ? (isActive || isHovered) : true;
+      <circle cx={otx} cy={oty} r={r} stroke="#e5e7eb" strokeWidth="1.5" />
+      <text x={otx} y={oty + 4} textAnchor="middle" fontSize="11" fill="#6b7280"
+        fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">OTHERS</text>
 
-          const dotSize = compact ? (isActive ? "h-3 w-3" : "h-2.5 w-2.5") : "h-5 w-5";
-          const dotColor = isActive
-            ? "bg-neutral-900"
-            : "bg-white border-2 border-neutral-400 hover:border-neutral-900";
-          const displayLabel = key === "All" ? null : key;
+      {/* ── Top arrow ME → OTHERS (Intent → Reception) ── */}
+      <line x1={gapL} y1={topY} x2={gapR} y2={topY} {...dim("top")} />
+      <polyline points={`${gapR - 5},${topY - 4} ${gapR},${topY} ${gapR - 5},${topY + 4}`}
+        fill="none" {...dim("top")} />
+      {/* Top gap label */}
+      <text x={(gapL + gapR) / 2} y={topY - 10} textAnchor="middle" fontSize="7.5"
+        fill={labelFill("top")} fontFamily="ui-sans-serif, system-ui, sans-serif">
+        Intent → Reception
+      </text>
 
-          return (
-            <button
-              key={key}
-              onClick={() => setSelectedStage(key)}
-              onMouseEnter={() => setHoveredKey(key)}
-              onMouseLeave={() => setHoveredKey(null)}
-              className="absolute flex flex-col items-center"
-              style={dotStyle}
-            >
-              {/* Dot — this element's vertical center is at the line (y=10 from container) */}
-              <div className={`rounded-full transition-all relative z-20 ${dotSize} ${dotColor}`} />
-              {/* Label — absolutely below the dot, not in flex flow */}
-              <span
-                className="absolute whitespace-nowrap font-medium transition-all duration-150"
-                style={{
-                  top: compact ? 14 : 22,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  opacity: (displayLabel && showLabel) ? 1 : 0,
-                  color: isActive ? "#171717" : "#737373",
-                  fontSize: compact ? 10 : 12,
-                }}
-              >
-                {displayLabel ?? ""}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </>
+      {/* ── Bottom arrow OTHERS → ME (Form → Meaning) ── */}
+      <line x1={gapR} y1={botY} x2={gapL} y2={botY} {...dim("bottom")} />
+      <polyline points={`${gapL + 5},${botY - 4} ${gapL},${botY} ${gapL + 5},${botY + 4}`}
+        fill="none" {...dim("bottom")} />
+      {/* Bottom gap label */}
+      <text x={(gapL + gapR) / 2} y={botY + 16} textAnchor="middle" fontSize="7.5"
+        fill={labelFill("bottom")} fontFamily="ui-sans-serif, system-ui, sans-serif">
+        Form → Meaning
+      </text>
+
+    </svg>
   );
 }
 
-const CATEGORIES = [
-  { label: "All", icon: LayoutGrid },
-  { label: "Implementation", icon: Wrench },
-  { label: "Look & Feel", icon: Sparkles },
-  { label: "Role", icon: UserRound },
-] as const;
+// ── Card ──────────────────────────────────────────────────────────────────────
 
-const KINDS = [
-  { label: "All", icon: LayoutGrid },
-  { label: "Prototype", icon: Box },
-  { label: "Article", icon: FileText },
-] as const;
+function CardItem({ card }: { card: PillarCard }) {
+  const href = card.externalLink || `/${card.slug}`;
+  const isExternal = !!card.externalLink;
+  const Wrapper = card.comingSoon ? "div" : "a";
 
-
-function Index() {
-  const [selectedStage, setSelectedStage] = useState<string>("All");
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
-  const [scrolledDown, setScrolledDown] = useState(false);
-  const [timelineCollapsed, setTimelineCollapsed] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0); // 0 = fully expanded, 1 = fully collapsed
-  const lockedOpen = useRef(false);
-  const rafId = useRef(0);
-  // collapse only when there's more than one row of cards (lg = 3 cols)
-  const canCollapse = useRef(true);
-
-  useEffect(() => {
-    const SCROLL_START = 80;
-    const SCROLL_END   = 300;
-
-    const handleScroll = () => {
-      if (!canCollapse.current) return;
-      cancelAnimationFrame(rafId.current);
-      rafId.current = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        const p = Math.max(0, Math.min(1, (y - SCROLL_START) / (SCROLL_END - SCROLL_START)));
-        setScrollProgress(p);
-        const down = y >= SCROLL_END;
-        setScrolledDown(down);
-        if (y < SCROLL_START) {
-          lockedOpen.current = false;
-          setTimelineCollapsed(false);
-        } else if (down) {
-          lockedOpen.current = false;
-          setTimelineCollapsed(true);
-        }
-      });
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      cancelAnimationFrame(rafId.current);
-    };
-  }, []);
-
-  const handleHeaderMouseLeave = () => {
-    if (scrolledDown && !lockedOpen.current) setTimelineCollapsed(true);
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    const v = e.currentTarget.querySelector("video");
+    if (v) { v.currentTime = card.videoStartTime ?? 0; v.play(); }
   };
-  const handleDotHover = () => {
-    if (scrolledDown) setTimelineCollapsed(false);
-  };
-  const handleDotClick = () => {
-    lockedOpen.current = true;
-    setTimelineCollapsed(false);
+  const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+    const v = e.currentTarget.querySelector("video");
+    if (v) { v.pause(); v.currentTime = card.videoStartTime ?? 0; }
   };
 
-  const stageMap: Record<string, string[]> = {
-    All: [],
-    chatbot: ["select-fill-with-prompts", "google-cloud", "reimagining-the-chatbot", "designing-for-conversations-that-earn-trust"],
-    reasoner: ["knowledge-graph-visualization"],
-    agent: ["proactive"],
-    innovator: ["making-design-fun", "a2ui-generative"],
-    human: ["design-as-a-research-tool", "physical-ai", "designing-next-gen-ai-products", "personalization"],
-    Organization: ["ai-ai-interaction", "claude-code-research"],
-  };
-
-  const stageSections: Record<string, { main: string; sub: string }[]> = {
-    chatbot: [
-      { main: "how AI communicates", sub: "designing conversations that matter" },
-      { main: "building trust through transparency", sub: "when AI asks for feedback" },
-    ],
-    reasoner: [
-      { main: "visualizing complexity", sub: "making abstract thinking visible" },
-    ],
-    agent: [
-      { main: "prototyping as learning", sub: "using tests to understand problems" },
-    ],
-    innovator: [
-      { main: "making things fun", sub: "creativity without friction" },
-    ],
-    human: [
-      { main: "AI beyond screens", sub: "design as a tool, AI beyond screens" },
-      { main: "relationship > interactions", sub: "understanding what makes us human" },
-    ],
-    Organization: [
-      { main: "tools that amplify", sub: "building infrastructure for capability" },
-    ],
-  };
-
-  const tableOfContents: Record<string, string[]> = Object.fromEntries(
-    Object.entries(ARTICLE_META)
-      .filter(([, meta]) => meta.sections)
-      .map(([slug, meta]) => [slug, meta.sections!])
-  );
-
-  const filtered = useMemo(
-    () =>
-      selectedStage === "All"
-        ? ITEMS
-        : ITEMS.filter((i) => stageMap[selectedStage]?.includes(i.slug)),
-    [selectedStage],
-  );
-
-  // Keep canCollapse in sync with filtered count; reset if falling to 1 row
-  useEffect(() => {
-    const moreThanOneRow = filtered.length > 3;
-    canCollapse.current = moreThanOneRow;
-    if (!moreThanOneRow) {
-      lockedOpen.current = false;
-      setScrolledDown(false);
-      setTimelineCollapsed(false);
-      setScrollProgress(0);
-    }
-  }, [filtered.length]);
-
-  const renderCard = (item: ItemWithSlug) => {
-    const href = item.externalLink || `/${item.slug}`;
-    const isExternal = !!item.externalLink;
-
-    return (
-      <a
-        key={item.slug}
-        href={href}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noopener noreferrer" : undefined}
-        className="group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-0 bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block w-full text-left"
-        onMouseEnter={(e) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = item.videoStartTime ?? 0; v.play(); } }}
-        onMouseMove={(e) => { setCursorPos({ x: e.clientX, y: e.clientY }); setHoveredSlug(item.slug); }}
-        onMouseLeave={(e) => { setHoveredSlug(null); const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = item.videoStartTime ?? 0; } }}
-      >
-        <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">
-          {item.thumbnail ? (
-            <img
-              src={item.thumbnail}
-              alt={item.title}
-              className={item.thumbnailSize === "xs" ? "w-8 h-8 object-contain" : item.thumbnailSize === "small" ? "w-16 h-16 object-contain" : item.thumbnailSize === "medium" ? "w-32 h-32 object-contain" : "h-full w-full object-contain p-2"}
-            />
-          ) : item.videoPreview ? (
-            <video
-              src={`${item.videoPreview}#t=${item.videoStartTime ?? 0.001}`}
-              preload="metadata"
-              muted
-              loop
-              className="h-full w-full object-cover"
-              style={{ transform: item.videoTransform ?? (item.videoZoom ? `scale(${item.videoZoom})` : undefined) }}
-            />
-          ) : (
-            <span className="text-xs uppercase tracking-[0.2em] text-neutral-400"
-            >
-              {item.kind}
-            </span>
-          )}
-          <CardIcon hasVideo={!!item.videoPreview} />
-        </div>
-        <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-              <span>{item.category}</span>
-              <span>·</span>
-              <span>{item.meta}</span>
-            </div>
-            <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
-              {item.title}
-            </h3>
-          </div>
-        </div>
-      </a>
-    );
-  };
-
-  const hoveredToc = hoveredSlug ? (tableOfContents[hoveredSlug] || []) : [];
+  const wrapperProps = !card.comingSoon
+    ? { href, target: isExternal ? "_blank" : undefined, rel: isExternal ? "noopener noreferrer" : undefined }
+    : {};
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      {/* Cursor TOC tooltip */}
-      {hoveredSlug && hoveredToc.length > 0 && (
-        <div
-          className="fixed z-50 pointer-events-none"
-          style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
-        >
-          <div className="bg-neutral-900 text-white rounded-2xl px-5 py-4 shadow-xl max-w-[220px]">
-            <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">Article</p>
-            <ul className="space-y-2">
-              {hoveredToc.map((section, idx) => (
-                <li key={idx} className="text-[12px] font-semibold text-white leading-snug">{section}</li>
-              ))}
-            </ul>
+    <Wrapper
+      {...(wrapperProps as any)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`group relative w-[340px] flex-shrink-0 rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all block text-left ${card.comingSoon ? "cursor-default opacity-40" : "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"}`}
+    >
+      {/* Visual */}
+      <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-white">
+        {card.comingSoon ? (
+          <span className="text-[10px] uppercase tracking-widest text-neutral-400">Coming soon</span>
+        ) : card.thumbnail ? (
+          <img
+            src={card.thumbnail}
+            alt={card.title}
+            className={
+              card.thumbnailSize === "xs"     ? "w-10 h-10 object-contain" :
+              card.thumbnailSize === "small"  ? "w-20 h-20 object-contain" :
+              card.thumbnailSize === "medium" ? "w-36 h-36 object-contain" :
+              "w-full h-full object-cover"
+            }
+          />
+        ) : card.videoPreview ? (
+          <video
+            src={`${card.videoPreview}#t=${card.videoStartTime ?? 0.001}`}
+            preload="metadata"
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+            style={{ transform: card.videoTransform }}
+          />
+        ) : null}
+        {!card.comingSoon && <CardIcon hasVideo={!!card.videoPreview} />}
+      </div>
+
+      {/* Text */}
+      <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 text-xs text-neutral-500">
+            <span>{card.meta}</span>
           </div>
+          <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
+            {card.title}
+          </h3>
         </div>
-      )}
-      {/* Nav */}
-      <header
-        className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50"
-        onMouseLeave={handleHeaderMouseLeave}
+      </div>
+    </Wrapper>
+  );
+}
+
+// ── Carousel ──────────────────────────────────────────────────────────────────
+
+function PillarCarousel({ cards }: { cards: PillarCard[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const updateBounds = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft <= 2);
+    setAtEnd(el.scrollLeft >= el.scrollWidth - el.clientWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(updateBounds, 50);
+    return () => clearTimeout(t);
+  }, [updateBounds, cards]);
+
+  const scrollBy = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({ left: dir === "right" ? 316 : -316, behavior: "smooth" });
+  };
+
+  // Mirrors mx-auto max-w-6xl px-6 left edge at every viewport width
+  const edgePad = "max(24px, calc((100vw - 72rem) / 2 + 24px))";
+
+  return (
+    <div>
+      {/* Full-bleed scroll — outer clips page scroll, inner scrolls */}
+      <div className="overflow-hidden">
+        <div
+          ref={scrollRef}
+          onScroll={updateBounds}
+          className="flex gap-4 overflow-x-auto pb-2"
+          style={{
+            paddingLeft: edgePad,
+            paddingRight: "24px",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+          } as React.CSSProperties}
+        >
+          {cards.map((card) => (
+            <CardItem key={card.slug} card={card} />
+          ))}
+        </div>
+      </div>
+
+      {/* Arrows — aligned to right edge of content */}
+      <div
+        className="flex justify-end gap-2 mt-4"
+        style={{ paddingRight: edgePad }}
       >
-          {/* ── Always: badge + nav + Qiyu ── */}
-          <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
-            <div className="flex-1 flex items-center">
-              <a href="/what-do-prototypes-prototype" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
-                <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
+        <button
+          onClick={() => scrollBy("left")}
+          disabled={atStart}
+          aria-label="Previous"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 disabled:opacity-25 transition-all"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </button>
+        <button
+          onClick={() => scrollBy("right")}
+          disabled={atEnd}
+          aria-label="Next"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 disabled:opacity-25 transition-all"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Pillar section ─────────────────────────────────────────────────────────────
+
+function PillarSection({ pillar }: { pillar: Pillar }) {
+  return (
+    <section className="pb-16">
+      {/* Header — constrained to content width */}
+      <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
+        <h2 className="text-2xl font-medium text-neutral-900 mb-2">{pillar.title}</h2>
+        <p className="text-neutral-600 text-sm">{pillar.description}</p>
+      </div>
+
+      {/* Carousel — full bleed to screen edge */}
+      <PillarCarousel cards={pillar.cards} />
+    </section>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
+function Index() {
+  return (
+    <div className="min-h-screen bg-background text-neutral-900">
+
+      {/* Nav */}
+      <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
+        <div className="mx-auto flex max-w-6xl items-center px-6 py-4">
+          <div className="flex-1 flex items-center">
+            <a href="/what-do-prototypes-prototype" className="hidden md:inline-flex group relative items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+              <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
+              <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">What do prototypes prototype?</span>
+            </a>
+          </div>
+          <div className="flex-1 flex justify-end">
+            <div className="hidden md:flex group relative h-9 items-center">
+              <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
+              <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
+              <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
+                Qiyu<span className="translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-200 delay-100">'s LinkedIn</span>
               </a>
             </div>
-            <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
-              {NAV_ITEMS.map((l) => (
-                <Link key={l} to={navHref(l)} className={"rounded-full px-4 py-1.5 text-sm transition-colors " + (l === "work" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900")}>{l}</Link>
-              ))}
-            </nav>
-            <div className="flex-1 flex justify-end">
-              <div className="hidden md:flex group relative h-9 items-center">
-                <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
-                <a href="/" className="text-sm font-medium text-neutral-900 transition-opacity duration-150 group-hover:opacity-0 group-hover:pointer-events-none">Qiyu</a>
-                <a href="https://www.linkedin.com/in/qiyu-hu/" className="absolute inset-0 flex items-center justify-end text-sm font-medium text-neutral-900 opacity-0 group-hover:opacity-100 transition-opacity duration-150 whitespace-nowrap">
-                  Qiyu<span className="translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-200 delay-100">'s LinkedIn</span>
-                </a>
-              </div>
-            </div>
           </div>
+        </div>
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-3xl px-6 pt-16 pb-28 text-center">
-        <h1 className="text-5xl font-medium tracking-tight text-neutral-900 md:text-6xl">
-          Prototyping "What-if"
-          <br />
-          in Human–AI Interactions
-        </h1>
+      <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-center min-h-screen gap-16">
+        <div className="text-center max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight text-neutral-900">
+            I design AI that brings humans together
+          </h1>
+        </div>
+        <div className="w-full max-w-[700px]">
+          <InteractionDiagram active="me-loop" />
+        </div>
       </section>
 
-      {/* Timeline — always sticky second row; compact when scrolled down */}
-      <div className="sticky top-[69px] z-40 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
-        <section className={`mx-auto max-w-6xl px-6 transition-all duration-300 ${scrolledDown ? "py-2" : "py-3"}`}>
-          <div className="relative">
-            {/* "present" / "future" — vertically centered on y=10 (same as the line) */}
-            <span
-              className="absolute text-[10px] tracking-[0.1em] text-neutral-400 pointer-events-none select-none normal-case"
-              style={{ top: 10, left: 0, opacity: scrolledDown ? 0.4 : 0.7, transition: "opacity 300ms", transform: "translateY(-50%) translateX(calc(-100% - 10px))" }}
-            >present</span>
-            <span
-              className="absolute text-[10px] tracking-[0.1em] text-neutral-400 pointer-events-none select-none normal-case"
-              style={{ top: 10, right: 0, opacity: scrolledDown ? 0.4 : 0.7, transition: "opacity 300ms", transform: "translateY(-50%) translateX(calc(100% + 10px))" }}
-            >future</span>
-            <TimelineNodes
-              selectedStage={selectedStage}
-              setSelectedStage={setSelectedStage}
-              mode="scroll"
-              scrollProgress={0}
-              compact={scrolledDown}
-            />
-          </div>
-        </section>
-      </div>
+      {/* 4 Pillar sections */}
+      {PILLARS.map((pillar) => (
+        <PillarSection key={pillar.number} pillar={pillar} />
+      ))}
 
-      {/* Grid */}
-      <section className="mx-auto max-w-6xl px-6 py-8 pb-24">
-        {selectedStage === "human" ? (
-          <div className="mb-12">
-            <div className="space-y-12">
-              {stageSections.human.map((section, idx) => (
-                <div key={idx}>
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-semibold text-neutral-900">{section.main}</h3>
-                    <p className="text-sm text-neutral-600 mt-1">{section.sub}</p>
-                  </div>
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {filtered
-                      .filter((item) => {
-                        if (idx === 0) return ["design-as-a-research-tool", "physical-ai"].includes(item.slug);
-                        if (idx === 1) return ["designing-next-gen-ai-products", "personalization"].includes(item.slug);
-                        return false;
-                      })
-                      .map((item) => renderCard(item))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : selectedStage !== "All" && stageSections[selectedStage] ? (
-          <div className="mb-12">
-            <div className="space-y-12">
-              {stageSections[selectedStage].map((section, idx) => {
-                const sectionSlugs: Record<string, string[][]> = {
-                  chatbot: [
-                    ["reimagining-the-chatbot", "google-cloud", "select-fill-with-prompts"],
-                    ["designing-for-conversations-that-earn-trust"],
-                  ],
-                };
-                const slugsForSection = sectionSlugs[selectedStage]?.[idx];
-                const cards = slugsForSection
-                  ? filtered.filter((item) => slugsForSection.includes(item.slug))
-                  : filtered;
-                return (
-                  <div key={idx}>
-                    <div className="mb-6">
-                      <h3 className="text-2xl font-semibold text-neutral-900">{section.main}</h3>
-                      <p className="text-sm text-neutral-600 mt-1">{section.sub}</p>
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                      {cards.map((item) => renderCard(item))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((item) => renderCard(item))}
-            </div>
-            {filtered.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-neutral-300 py-16 text-center text-sm text-neutral-500">
-                Nothing here yet — try another filter.
-              </div>
-            )}
-          </>
-        )}
-      </section>
-
-      <footer className="mx-auto max-w-6xl px-6 pb-10 text-center text-xs text-neutral-500">
-        © 2026 — sketched with fountain pen & paper
+      <footer className="mt-4 border-t border-neutral-200/60">
+        <p className="mx-auto max-w-6xl px-6 py-8 text-center text-xs text-neutral-400">
+          © 2026 — sketched with fountain pen & paper
+        </p>
       </footer>
 
     </div>
   );
 }
-
-
