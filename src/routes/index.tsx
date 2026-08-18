@@ -468,7 +468,6 @@ function Index() {
             <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">Qiyu's LinkedIn ↗</span>
             <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
           </a>
-          <a href="/" className="hidden md:inline text-sm font-medium text-neutral-900">Qiyu</a>
         </div>
       </header>
 
