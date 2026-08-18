@@ -82,7 +82,7 @@ const WAND_CURSOR = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org
 
 function PlayComponent() {
   const [placed, setPlaced] = useState<PlacedImage[]>([]);
-  const [showEventModal, setShowEventModal] = useState(true);  // auto-open on load
+  const [showEventModal, setShowEventModal] = useState(false);
   const [nextIdx, setNextIdx] = useState(1);
   const [drag, setDrag] = useState<DragState | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -91,14 +91,14 @@ function PlayComponent() {
     setPlaced([{ id: 0, src: PLAY_IMAGES[0], x: window.innerWidth / 2 - 120, y: 120 }]);
   }, []);
 
-  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    setPlaced(prev => [...prev, {
-      id: Date.now(),
-      src: PLAY_IMAGES[nextIdx % PLAY_IMAGES.length],
-      x: e.pageX - 80,
-      y: e.pageY - 80,
-    }]);
-    setNextIdx(i => i + 1);
+  const handlePageClick = () => {
+    if (nextIdx < PLAY_IMAGES.length) {
+      setPlaced([
+        ...placed,
+        { id: nextIdx, src: PLAY_IMAGES[nextIdx], x: Math.random() * window.innerWidth - 120, y: Math.random() * (window.innerHeight - 300) + 120 }
+      ]);
+      setNextIdx(nextIdx + 1);
+    }
   };
 
   const startDrag = (e: React.PointerEvent<HTMLImageElement>, id: number) => {

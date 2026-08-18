@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
-import { ARTICLE_META } from "./-articleMeta";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -330,6 +329,8 @@ function InteractionDiagram({ active }: { active: GapId }) {
 
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
+const HERO_DESCRIPTION = "Qiyu is designing technology that brings humans together";
+
 const GAP_LABELS: Record<GapId, { tag: string; text: string }> = {
   "top":          { tag: "Intent → Reception", text: "Is there another way to express yourself? The gap between internal intent and how it lands in the world." },
   "bottom":       { tag: "Form → Meaning",     text: "How do we design feedback that builds trust? The gap between how something is said and what it actually means." },
@@ -429,7 +430,7 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
 
 // ── Card ──────────────────────────────────────────────────────────────────────
 
-function CardItem({ card, onHoverSlug, onCardClick }: { card: PillarCard; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
+function CardItem({ card, onCardClick }: { card: PillarCard; onCardClick?: (slug: string) => void }) {
   const href = card.externalLink || `/${card.slug}`;
   const isExternal = !!card.externalLink;
   const Wrapper = card.comingSoon ? "div" : (isExternal ? "a" : "button");
@@ -437,12 +438,10 @@ function CardItem({ card, onHoverSlug, onCardClick }: { card: PillarCard; onHove
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
     if (v) { v.currentTime = card.videoStartTime ?? 0; v.play(); }
-    onHoverSlug?.(card.slug);
   };
   const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     const v = e.currentTarget.querySelector("video");
     if (v) { v.pause(); v.currentTime = card.videoStartTime ?? 0; }
-    onHoverSlug?.(null);
   };
 
   const handleClick = isExternal ? undefined : (e: React.MouseEvent) => {
@@ -509,7 +508,7 @@ function CardItem({ card, onHoverSlug, onCardClick }: { card: PillarCard; onHove
 
 // ── Carousel ──────────────────────────────────────────────────────────────────
 
-function PillarCarousel({ cards, onHoverSlug, onCardClick }: { cards: PillarCard[]; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
+function PillarCarousel({ cards, onCardClick }: { cards: PillarCard[]; onCardClick?: (slug: string) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -549,7 +548,7 @@ function PillarCarousel({ cards, onHoverSlug, onCardClick }: { cards: PillarCard
           } as React.CSSProperties}
         >
           {cards.map((card) => (
-            <CardItem key={card.slug} card={card} onHoverSlug={onHoverSlug} onCardClick={onCardClick} />
+            <CardItem key={card.slug} card={card} onCardClick={onCardClick} />
           ))}
         </div>
       </div>
@@ -589,7 +588,7 @@ const SECTION_ICONS: Record<string, string> = {
   "04": "/articles/section-04-icon.png",
 };
 
-function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; onHoverSlug?: (slug: string | null) => void; onCardClick?: (slug: string) => void }) {
+function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: (slug: string) => void }) {
   return (
     <section id={`pillar-${pillar.number}`} className="pb-16">
       {/* Header — constrained to content width */}
@@ -599,7 +598,7 @@ function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; o
       </div>
 
       {/* Carousel — full bleed to screen edge */}
-      <PillarCarousel cards={pillar.cards} onHoverSlug={onHoverSlug} onCardClick={onCardClick} />
+      <PillarCarousel cards={pillar.cards} onCardClick={onCardClick} />
     </section>
   );
 }
@@ -608,8 +607,6 @@ function PillarSection({ pillar, onHoverSlug, onCardClick }: { pillar: Pillar; o
 
 function Index() {
   const [heroGap, setHeroGap] = useState<GapId | null>(null);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -617,12 +614,10 @@ function Index() {
   const findCard = (slug: string): PillarCard | undefined => {
     for (const pillar of PILLARS) {
       const card = pillar.cards.find(c => c.slug === slug);
-      if (card) return { ...card, toc: card.toc ?? ARTICLE_META[slug]?.sections };
+      if (card) return card;
     }
     return undefined;
   };
-
-  const hoveredCard = hoveredSlug ? findCard(hoveredSlug) : undefined;
 
   useEffect(() => {
     if (!selectedCard) {
@@ -643,37 +638,9 @@ function Index() {
   const card = selectedCard ? findCard(selectedCard) : undefined;
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900" onMouseMove={(e) => setCursorPos({ x: e.clientX, y: e.clientY })}>
+    <div className="min-h-screen bg-background text-neutral-900">
 
-      {/* Cursor tooltip — TOC for articles, domain for external links */}
-      {hoveredCard && !hoveredCard.comingSoon && (
-        <div
-          className="fixed z-50 pointer-events-none"
-          style={{ left: cursorPos.x + 16, top: cursorPos.y + 16 }}
-        >
-          <div className="bg-neutral-900 text-white rounded-2xl px-5 py-4 shadow-xl max-w-[220px]">
-            {hoveredCard.externalLink ? (
-              <>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-2">External</p>
-                <p className="text-[12px] font-semibold text-white leading-snug">
-                  {new URL(hoveredCard.externalLink).hostname.replace(/^www\./, "")} ↗
-                </p>
-              </>
-            ) : hoveredCard.toc && hoveredCard.toc.length > 0 ? (
-              <>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-white/40 font-semibold mb-3">In this article</p>
-                <ul className="space-y-2">
-                  {hoveredCard.toc.map((section, idx) => (
-                    <li key={idx} className="text-[12px] font-semibold text-white leading-snug">{section}</li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p className="text-[12px] font-semibold text-white leading-snug">View →</p>
-            )}
-          </div>
-        </div>
-      )}
+
 
       {/* Card Modal */}
       {selectedCard && card && !card.externalLink && (
@@ -731,8 +698,12 @@ function Index() {
         <div className="flex justify-center w-full mt-4">
           <HandDrawnDiagram onHover={setHeroGap} />
         </div>
-        <div className="min-h-[56px] flex flex-col items-center justify-center text-center max-w-sm transition-all">
-          {heroGap ? (
+        <div className="flex flex-col items-center justify-center text-center max-w-2xl min-h-[100px]">
+          {!heroGap ? (
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              {HERO_DESCRIPTION}
+            </p>
+          ) : (
             <>
               <p className="text-xs text-neutral-400 uppercase tracking-widest mb-1">
                 {GAP_LABELS[heroGap].tag}
@@ -741,17 +712,13 @@ function Index() {
                 {GAP_LABELS[heroGap].text}
               </p>
             </>
-          ) : (
-            <p className="text-sm text-neutral-500 leading-relaxed">
-              Qiyu is designing technology that brings humans together
-            </p>
           )}
         </div>
       </section>
 
       {/* 4 Pillar sections */}
       {PILLARS.map((pillar) => (
-        <PillarSection key={pillar.number} pillar={pillar} onHoverSlug={setHoveredSlug} onCardClick={setSelectedCard} />
+        <PillarSection key={pillar.number} pillar={pillar} onCardClick={setSelectedCard} />
       ))}
 
       <footer className="mt-4 border-t border-neutral-200/60">
