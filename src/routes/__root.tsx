@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useLocation,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -145,6 +146,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -154,7 +157,6 @@ function RootComponent() {
       {/* Floating bottom nav - present on all pages */}
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 rounded-full border border-neutral-200 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
         {NAV_ITEMS.map((l) => {
-          const currentPath = window.location.pathname;
           const isActive = (l === "work" && currentPath === "/") ||
                           (l !== "work" && currentPath.startsWith(`/${l}`));
           return (
