@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { SiteNav } from "./-SiteNav";
 
 export const Route = createFileRoute("/listen")({
   head: () => ({
@@ -293,8 +292,6 @@ function ListenComponent() {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-white">
-      <SiteNav active="listen" theme="dark" />
-
       <section className="mx-auto max-w-6xl px-6 pt-12">
         <div className="mb-6">
           <h1 className="text-4xl font-medium mb-3">Listen</h1>

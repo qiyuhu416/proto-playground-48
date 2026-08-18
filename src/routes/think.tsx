@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { SiteNav } from "./-SiteNav";
 
 export const Route = createFileRoute("/think")({
   head: () => ({
@@ -19,7 +18,6 @@ function ThinkComponent() {
   const [quadrantOpen, setQuadrantOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background text-neutral-900">
-      <SiteNav active="reflect" />
 
       {/* Frameworks section */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-12">

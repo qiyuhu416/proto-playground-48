@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
-import { SiteNav } from "./-SiteNav";
 import { CardIcon } from "./-CardIcon";
 import { HELLO_HUMANS } from "./helloHumansData";
 
@@ -193,10 +192,6 @@ function PlayComponent() {
           }}
         />
       ))}
-      <SiteNav
-        active="play"
-        headerProps={{ onClick: (e) => e.stopPropagation(), style: { cursor: "auto" } }}
-      />
 
       {/* Hero space */}
       <div ref={boardRef} className="w-full" style={{ minHeight: "50vh" }} />
