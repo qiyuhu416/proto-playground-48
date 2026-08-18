@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
+import { ARTICLE_META } from "./-articleMeta";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -616,7 +617,7 @@ function Index() {
   const findCard = (slug: string): PillarCard | undefined => {
     for (const pillar of PILLARS) {
       const card = pillar.cards.find(c => c.slug === slug);
-      if (card) return card;
+      if (card) return { ...card, toc: card.toc ?? ARTICLE_META[slug]?.sections };
     }
     return undefined;
   };
@@ -681,7 +682,6 @@ function Index() {
             <div className="fixed inset-0 z-[59] bg-black/50 backdrop-blur-sm" onClick={() => setSelectedCard(null)} />
           )}
           <div
-            ref={iframeRef}
             className="bg-white transition-all duration-300 relative"
             style={{
               position: "fixed",
@@ -702,7 +702,7 @@ function Index() {
             </button>
             <iframe
               ref={iframeRef}
-              src={`/${card.slug}?embed=1`}
+              src={`/${card.slug}`}
               className="w-full h-full border-0"
               title={card.title}
               onLoad={() => {

@@ -149,7 +149,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
   const currentPath = location.pathname;
-  const isEmbed = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("embed") === "1";
+  const isEmbed = typeof window !== "undefined" && window.self !== window.top;
 
   return (
     <QueryClientProvider client={queryClient}>
