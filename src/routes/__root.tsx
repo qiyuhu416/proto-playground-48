@@ -155,43 +155,25 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Header badge - present on all pages (hidden in embed mode) */}
       {!isEmbed && <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 gap-8">
-          <div className="flex items-center gap-8">
-            <div className="hidden md:inline-flex group relative">
-              <a href="/" className="text-sm font-medium text-neutral-900">Qiyu</a>
-            <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto whitespace-nowrap bg-white rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] z-10 p-4 w-max border border-neutral-200">
-              <div className="space-y-3">
-                <div className="px-4 py-2 rounded-xl bg-neutral-100 text-sm font-medium text-neutral-900">"key-you" 🔑 🫵</div>
-                <a href="https://www.linkedin.com/in/qiyu-hu/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:text-neutral-900 transition-colors">
-                  <span className="text-lg">in</span>
-                  LinkedIn
-                </a>
-                <a href="/" className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:text-neutral-900 transition-colors">
-                  <span className="text-lg">📄</span>
-                  Resume
-                </a>
-              </div>
-            </div>
-          </div>
-          <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1">
-              {NAV_ITEMS.map((l) => {
-                const href = navHref(l);
-                const isActive = (l === "work" && currentPath === "/") ||
-                                (l !== "work" && currentPath.startsWith(href));
-                return (
-                  <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
-                );
-              })}
-            </nav>
-          </div>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="hidden md:inline-flex group relative">
             <a href="https://www.linkedin.com/in/qiyu-hu/" className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden !cursor-default" target="_blank" rel="noopener noreferrer">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
               <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
-              <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">what do prototypes prototype</span>
+              <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">Qiyu's LinkedIn ↗</span>
             </a>
             <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
           </div>
+          <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1">
+            {NAV_ITEMS.map((l) => {
+              const href = navHref(l);
+              const isActive = (l === "work" && currentPath === "/") ||
+                              (l !== "work" && currentPath.startsWith(href));
+              return (
+                <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
+              );
+            })}
+          </nav>
         </div>
       </header>}
 
