@@ -122,7 +122,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        <style>{`body.modal-open nav { display: none; }`}</style>
+        <style>{`body.modal-open #header-nav { display: none; }`}</style>
       </head>
       <body>
         {children}
@@ -164,7 +164,7 @@ function RootComponent() {
             </a>
             <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
           </div>
-          <nav className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1 transition-all duration-300">
+          <nav id="header-nav" className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1 transition-all duration-300">
             {NAV_ITEMS.map((l) => {
               const href = navHref(l);
               const isActive = (l === "work" && currentPath === "/") ||
