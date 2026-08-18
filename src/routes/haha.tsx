@@ -91,11 +91,11 @@ function PlayComponent() {
     setPlaced([{ id: 0, src: PLAY_IMAGES[0], x: window.innerWidth / 2 - 120, y: 120 }]);
   }, []);
 
-  const handlePageClick = () => {
-    if (nextIdx < PLAY_IMAGES.length) {
+  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (nextIdx < PLAY_IMAGES.length && e.target === e.currentTarget) {
       setPlaced([
         ...placed,
-        { id: nextIdx, src: PLAY_IMAGES[nextIdx], x: Math.random() * window.innerWidth - 120, y: Math.random() * (window.innerHeight - 300) + 120 }
+        { id: nextIdx, src: PLAY_IMAGES[nextIdx], x: e.clientX - 60, y: e.clientY - 60 }
       ]);
       setNextIdx(nextIdx + 1);
     }
@@ -183,7 +183,7 @@ function PlayComponent() {
           style={{
             left: img.x,
             top: img.y,
-            maxHeight: "40vh",
+            maxHeight: "20vh",
             width: "auto",
             zIndex: 0,
             cursor: drag?.id === img.id ? "grabbing" : "grab",

@@ -698,7 +698,7 @@ function Index() {
         <div className="flex justify-center w-full mt-4">
           <HandDrawnDiagram onHover={setHeroGap} />
         </div>
-        <div className="flex flex-col items-center justify-center text-center max-w-2xl min-h-[100px]">
+        <div className="flex flex-col items-center justify-start text-center max-w-2xl min-h-[100px] pt-6">
           {!heroGap ? (
             <p className="text-sm text-neutral-500 leading-relaxed">
               {HERO_DESCRIPTION}
