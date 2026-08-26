@@ -174,8 +174,8 @@ function RootComponent() {
           <nav id="header-nav" className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1 transition-all duration-300">
             {NAV_ITEMS.map((l) => {
               const href = navHref(l);
-              const isActive = (l === "work" && currentPath === "/") ||
-                              (l !== "work" && currentPath.startsWith(href));
+              const isActive = (l === "create" && currentPath === "/") ||
+                              (l !== "create" && currentPath.startsWith(href));
               return (
                 <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
               );
