@@ -7,6 +7,7 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
+import { Link } from "@tanstack/react-router";
 
 import React, { useRef, useState } from "react";
 
@@ -135,7 +136,7 @@ export const NavItems = ({ items, className, onItemClick, currentPath = "" }: Na
       {items.map((item, idx) => {
         const active = isActive(item.link);
         return (
-          <a
+          <Link
             onMouseEnter={() => setHovered(idx)}
             onClick={onItemClick}
             className={cn(
@@ -143,7 +144,7 @@ export const NavItems = ({ items, className, onItemClick, currentPath = "" }: Na
               active && "text-white dark:text-white"
             )}
             key={`link-${idx}`}
-            href={item.link}
+            to={item.link}
           >
             {hovered === idx && !active && (
               <motion.div
@@ -158,7 +159,7 @@ export const NavItems = ({ items, className, onItemClick, currentPath = "" }: Na
               />
             )}
             <span className="relative z-20">{item.name}</span>
-          </a>
+          </Link>
         );
       })}
     </motion.div>
@@ -252,12 +253,12 @@ export const MobileNavToggle = ({
 
 export const NavbarLogo = () => {
   return (
-    <a
-      href="/"
+    <Link
+      to="/"
       className="relative z-20 mr-4 flex items-center space-x-2 text-sm font-medium text-black dark:text-white"
     >
       <span>Qiyu</span>
-    </a>
+    </Link>
   );
 };
 
