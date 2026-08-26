@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { NAV_ITEMS, navHref } from "./-navItems";
+import { NavbarWrapper } from "./-NavbarWrapper";
 
 function NotFoundComponent() {
   return (
@@ -137,7 +138,12 @@ function RootShell({ children }: { children: ReactNode }) {
               name: "Qiyu Hu",
               url: "https://key-you.com",
               jobTitle: "AI Interaction Designer",
+              worksFor: {
+                "@type": "Organization",
+                name: "Apple"
+              },
               sameAs: ["https://www.linkedin.com/in/qiyu-hu/"],
+              description: "AI interaction designer exploring human–AI collaboration through prototypes and research. Currently at Apple.",
             }),
           }}
         />
@@ -148,39 +154,13 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const location = useLocation();
-  const currentPath = location.pathname;
   const isEmbed = typeof window !== "undefined" && window.self !== window.top;
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Header badge - present on all pages (hidden in embed mode) */}
-      {!isEmbed && <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-sm border-b border-neutral-200/50">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="hidden md:inline-flex group relative">
-            <a href="https://www.linkedin.com/in/qiyu-hu/" className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:bg-neutral-900 hover:text-white hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all overflow-hidden !cursor-default" target="_blank" rel="noopener noreferrer">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-              <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
-              <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">Qiyu's LinkedIn ↗</span>
-            </a>
-            <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
-          </div>
-          <nav id="header-nav" className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1 transition-all duration-300">
-            {NAV_ITEMS.map((l) => {
-              const href = navHref(l);
-              const isActive = (l === "work" && currentPath === "/") ||
-                              (l !== "work" && currentPath.startsWith(href));
-              return (
-                <Link key={l} to={navHref(l)} className={`rounded-full px-4 py-1.5 text-sm transition-colors ${isActive ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900"}`}>{l}</Link>
-              );
-            })}
-          </nav>
-        </div>
-      </header>}
-
+      {!isEmbed && <NavbarWrapper />}
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-
     </QueryClientProvider>
   );
 }

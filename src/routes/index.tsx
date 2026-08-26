@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
+import { TextGradientScroll } from "@/components/TextGradientScroll";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -330,11 +331,11 @@ function InteractionDiagram({ active }: { active: GapId }) {
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
 const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
-  "default":      { tag: "", text: "Qiyu is designing technology that brings humans together" },
-  "top":          { tag: "Intent → Expression", text: "The address the gap between internal intent and how it lands in the world." },
-  "bottom":       { tag: "Other's Intent → Reception",     text: "To minimize the gap between how something is said and what it actually means." },
-  "me-loop":      { tag: "Reception → Internalization", text: "Who we are is constantly shaped by how we interact." },
-  "others-loop":  { tag: "Other's mind",   text: "Understanding others feels like a black box, is it really out of control?" },
+  "default":      { tag: "", text: "Qiyu is designing technology that brings humans together through thoughtful interaction design, research-driven prototyping, and exploring the gaps between intention and understanding." },
+  "top":          { tag: "Intent → Expression", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
+  "bottom":       { tag: "Other's Intent → Reception",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
+  "me-loop":      { tag: "Reception → Internalization", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
+  "others-loop":  { tag: "Other's mind",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
 };
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
@@ -372,7 +373,7 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
   const visible = (gap: GapId) => hovered === gap;
 
   return (
-    <div className="relative block mx-auto w-full max-w-[560px]">
+    <div className="relative block mx-auto w-full max-w-2xl">
 
       {/* Base — full diagram faded */}
       <img
@@ -401,13 +402,15 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
         />
       ))}
 
-      {/* SVG hit areas — hover + click */}
+      {/* SVG hit areas + annotations */}
       <svg
         viewBox={`0 0 ${DIAGRAM_W} ${DIAGRAM_H}`}
         className="absolute inset-0 w-full h-full"
+        preserveAspectRatio="xMidYMid meet"
         fill="none"
         style={{ pointerEvents: "none" }}
       >
+        {/* Hit areas */}
         {(["me-loop", "top", "others-loop", "bottom"] as GapId[]).map((gap) => {
           const h = { stroke: "transparent", strokeWidth: 100, fill: "none",
                       style: { pointerEvents: "all" as const, cursor: "pointer" },
@@ -421,6 +424,12 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
             return <path key={gap} d={`M ${mex},${yB} A ${leftRx},${arcRy} 0 0,1 ${mex},${yT}`} {...h} />;
           return <path key={gap} d={`M ${otx},${yT} A ${rightRx},${arcRy} 0 0,1 ${otx},${yB}`} {...h} />;
         })}
+
+        {/* Annotations — bigger and handwritten style, grey by default, black on hover */}
+        <text x={mex + 30} y={yT - 20} fontSize="36" fontWeight="700" fill={hovered === "top" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
+        <text x={otx + 70} y={yT + yB / 2} fontSize="36" fontWeight="700" fill={hovered === "others-loop" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
+        <text x={otx - 40} y={yB + 30} fontSize="36" fontWeight="700" fill={hovered === "bottom" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
+        <text x={mex - 90} y={yT + yB / 2} fontSize="36" fontWeight="700" fill={hovered === "me-loop" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
       </svg>
     </div>
   );
@@ -589,7 +598,10 @@ const SECTION_ICONS: Record<string, string> = {
 
 function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: (slug: string) => void }) {
   return (
-    <section id={`pillar-${pillar.number}`} className="pb-16">
+    <section
+      id={`pillar-${pillar.number}`}
+      className="pb-16"
+    >
       {/* Header — constrained to content width */}
       <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
         <h2 className="text-2xl font-medium text-neutral-900 mb-2">{pillar.title}</h2>
@@ -687,32 +699,42 @@ function Index() {
       )}
 
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-start pt-20 pb-16 gap-6">
-        <img
-          src="/articles/hello-stranger.png"
-          alt="Hello, stranger!!"
-          className="block mx-auto w-full max-w-[300px]"
-          style={{ mixBlendMode: "multiply", opacity: 0.5 }}
-        />
-        <div className="flex justify-center w-full mt-4">
-          <HandDrawnDiagram onHover={setHeroGap} />
+      <section className="relative w-full min-h-screen flex flex-col items-center">
+        {/* Diagram + Gap tag section — grouped at 20% from top */}
+        <div className="mt-[20vh] flex flex-col items-center justify-center px-6 gap-6">
+          <img
+            src="/articles/hello-stranger.png"
+            alt="Hello, stranger!!"
+            className="block mx-auto w-full max-w-[300px]"
+            style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+          />
+          <div className="flex justify-center w-full">
+            <HandDrawnDiagram onHover={setHeroGap} />
+          </div>
+
+          {/* Gap tag — shows default or hovered gap tag */}
+          <div className="relative w-full flex justify-center px-6 min-h-[28px]">
+            {heroGap && (
+              <p className="tag-style">
+                {HERO_CONTENT[heroGap].tag}
+              </p>
+            )}
+            {!heroGap && (
+              <p className="tag-style">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
+            )}
+          </div>
         </div>
-        <div className="relative flex flex-col items-center justify-start text-center max-w-md min-h-[100px] pt-6">
-          {(() => {
-            const content = HERO_CONTENT[heroGap || "default"];
-            return (
-              <>
-                {content.tag && (
-                  <p className="absolute top-6 text-xs text-neutral-400 uppercase tracking-widest">
-                    {content.tag}
-                  </p>
-                )}
-                <p className="text-sm text-neutral-700 leading-relaxed mt-6">
-                  {content.text}
-                </p>
-              </>
-            );
-          })()}
+
+        {/* Paragraph section — always shows default text */}
+        <div className="relative w-full flex flex-col items-center justify-center text-center px-6 min-h-[180px] py-12">
+          <div className="w-full">
+            <TextGradientScroll
+              text={HERO_CONTENT["default"].text}
+              type="letter"
+              textOpacity="soft"
+              className="mx-auto text-2xl md:text-4xl text-neutral-900 leading-relaxed justify-center font-medium max-w-6xl"
+            />
+          </div>
         </div>
       </section>
 

@@ -1,17 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef, useEffect } from "react";
-import { CardIcon } from "./-CardIcon";
+import { useState } from "react";
 import { HELLO_HUMANS } from "./helloHumansData";
+import { MarqueeAlongSvgPath } from "@/components/ui/marquee-along-svg-path";
 
-interface PlacedImage { id: number; src: string; x: number; y: number; }
-interface DragState { id: number; offsetX: number; offsetY: number; }
-
-const PLAY_IMAGES = [
-  "/articles/haha-1.png",
-  "/articles/haha-2.png",
-  "/articles/haha-3.png",
-  "/articles/haha-5.png",
-];
+const SVG_PATH =
+  "M1.12756 531.57C28.0893 516.8 74.8013 483.241 115.862 435.167M115.862 435.167C142.71 403.734 167.142 366.095 182.056 323.447C229.212 188.604 -65.6747 303.582 53.6794 397.09C73.8056 412.858 94.5052 425.626 115.862 435.167ZM115.862 435.167C221.157 482.211 342.426 450.85 489.709 314.125C517.752 288.093 540.139 265.319 557.876 245.305M557.876 245.305C652.19 138.884 615.024 110.493 597.546 85.1004C576.782 54.9327 401.867 14.2899 417.559 188.351C424.308 263.214 481.985 261.608 557.876 245.305ZM557.876 245.305C646.667 226.232 760.389 187.041 846.65 226.667M846.65 226.667C858.081 231.918 869.031 238.554 879.376 246.804C1034.5 370.518 957.576 540.884 843.253 562.658C768.137 576.964 767.606 395.943 846.65 226.667ZM846.65 226.667C887.908 138.309 950.848 53.1511 1036.18 0.642822";
 
 export const Route = createFileRoute("/haha")({
   head: () => ({
@@ -78,205 +71,118 @@ function EventModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-const WAND_CURSOR = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"56\" height=\"56\" viewBox=\"0 0 56 56\"><text y=\"48\" font-size=\"46\">🪄</text></svg>') 0 56, auto";
-
 function PlayComponent() {
-  const [placed, setPlaced] = useState<PlacedImage[]>([]);
   const [showEventModal, setShowEventModal] = useState(false);
-  const [nextIdx, setNextIdx] = useState(1);
-  const [drag, setDrag] = useState<DragState | null>(null);
-  const boardRef = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLElement | null>(null);
 
-  useEffect(() => {
-    setPlaced([{ id: 0, src: PLAY_IMAGES[0], x: window.innerWidth / 2 - 120, y: 120 }]);
-  }, []);
+  const allProjects = [
+    {
+      title: HELLO_HUMANS.title,
+      description: HELLO_HUMANS.description,
+      category: HELLO_HUMANS.category,
+      meta: HELLO_HUMANS.meta,
+      image: HELLO_HUMANS.image,
+    },
+    {
+      title: "Meet the stranger challenge",
+      description: "A simple post with a Calendly link: 'Hi all, I'm running a small experiment.' No agenda, just conversation. A real-time experiment in how people connect.",
+      category: "Experiment",
+      meta: "Connection · Open-ended",
+      image: "/articles/meet-stranger-calendly.png",
+      thumbnailSize: "medium",
+      external: "https://www.linkedin.com/feed/update/urn:li:activity:7404207024164683776/",
+    },
+    {
+      title: "Hosting events @Apple",
+      description: "A year of gatherings—from vibe coding to questioning AI to just having fun. 5 events, 1 mental shift.",
+      category: "Event",
+      meta: "Community · IRL",
+      image: "/articles/events-thumb.svg",
+      thumbnailSize: "small",
+      onCardClick: () => setShowEventModal(true),
+    },
+    {
+      title: "Birthday card",
+      description: "A small moment of delight. The joy is in the details, the unexpected animation, the gesture that makes you smile.",
+      slug: "birthday-card",
+      category: "Vibe-coding",
+      meta: "Motion · Delight",
+      videoPreview: "/articles/birthday-card.mp4",
+      videoStartTime: 1,
+    },
+    {
+      title: "Hand gesture interactions",
+      description: "Exploring how gestures can make technology feel natural and embodied.",
+      slug: "hand-gesture-interactions",
+      category: "Vibe-coding",
+      meta: "Gesture · Motion",
+      videoPreview: "/articles/hand-gesture.mp4",
+    },
+    {
+      title: "Palo Alto moment",
+      description: "A location-based concept. What happens when design meets place?",
+      slug: "palo-alto-moment",
+      category: "Vibe-coding",
+      meta: "Context · Place",
+      videoPreview: "/articles/palo-alto.mp4",
+    },
+    {
+      title: "Voice interaction",
+      description: "Beyond screens. Exploring how voice can become an interface—natural, conversational, human.",
+      slug: "voice-interaction",
+      category: "Vibe-coding",
+      meta: "Voice · AI",
+      videoPreview: "/articles/voice.mp4",
+    },
+  ];
 
-  const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (nextIdx < PLAY_IMAGES.length && e.target === e.currentTarget) {
-      setPlaced([
-        ...placed,
-        { id: nextIdx, src: PLAY_IMAGES[nextIdx], x: e.clientX - 60, y: e.clientY - 60 }
-      ]);
-      setNextIdx(nextIdx + 1);
+  const getThumbnail = (project: any) => {
+    if (project.image) {
+      return project.image;
     }
-  };
-
-  const startDrag = (e: React.PointerEvent<HTMLImageElement>, id: number) => {
-    e.stopPropagation();
-    const img = e.currentTarget;
-    const rect = img.getBoundingClientRect();
-    setDrag({ id, offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top });
-    img.setPointerCapture(e.pointerId);
-  };
-
-  const onDragMove = (e: React.PointerEvent<HTMLImageElement>, id: number) => {
-    if (!drag || drag.id !== id) return;
-    setPlaced(prev => prev.map(p =>
-      p.id === id ? { ...p, x: e.pageX - drag.offsetX, y: e.pageY - drag.offsetY } : p
-    ));
-  };
-
-  const renderCard = (project: any) => {
-    const Wrapper = project.onCardClick ? "button" : "a";
-    const wrapperProps = project.onCardClick
-      ? { onClick: project.onCardClick, type: "button" as const }
-      : { href: project.external ? project.external : `/${project.slug}`, target: project.external ? "_blank" : undefined, rel: project.external ? "noopener noreferrer" : undefined };
-    return (
-    <Wrapper
-      key={project.slug || project.title}
-      {...(wrapperProps as any)}
-      className="group relative rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block text-left w-full"
-      onMouseEnter={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.currentTime = 0; (v as HTMLVideoElement).play(); } }}
-      onMouseLeave={(e: React.MouseEvent<HTMLElement>) => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }}
-    >
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white">
-        {project.image ? (
-          <img
-            src={project.image}
-            alt={project.title}
-            className={project.thumbnailSize === "small" ? "w-16 h-16 object-contain" : project.thumbnailSize === "medium" ? "w-80 h-80 object-contain" : "h-full w-full object-cover"}
-          />
-        ) : project.videoPreview ? (
-          <video src={`${project.videoPreview}#t=${project.videoStartTime ?? 0.001}`} preload="metadata" muted loop className="h-full w-full object-cover" />
-        ) : (
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">
-            {project.category}
-          </span>
-        )}
-        <CardIcon hasVideo={!!project.videoPreview} />
-      </div>
-      <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
-        <div className="min-w-0">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-            <span>{project.category}</span>
-            <span>·</span>
-            <span>{project.meta}</span>
-          </div>
-          <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
-            {project.title}
-          </h3>
-        </div>
-      </div>
-    </Wrapper>
-    );
+    // Use default for video projects since <img> can't display video files
+    return "/articles/haha-1.png";
   };
 
   return (
     <div
-      className="relative min-h-screen bg-background text-neutral-900"
-      onClick={handlePageClick}
-      style={{ cursor: WAND_CURSOR }}
+      className="w-screen h-screen relative bg-zinc-50 flex flex-col overflow-auto"
+      ref={(node) => setContainer(node)}
     >
       {showEventModal && <EventModal onClose={() => setShowEventModal(false)} />}
-      {/* Fixed floating images */}
-      {placed.map((img) => (
-        <img
-          key={img.id}
-          src={img.src}
-          alt=""
-          draggable={false}
-          onPointerDown={(e) => startDrag(e, img.id)}
-          onPointerMove={(e) => onDragMove(e, img.id)}
-          onPointerUp={() => setDrag(null)}
-          onClick={(e) => e.stopPropagation()}
-              className="absolute select-none"
-          style={{
-            left: img.x,
-            top: img.y,
-            maxHeight: "20vh",
-            width: "auto",
-            zIndex: 0,
-            cursor: drag?.id === img.id ? "grabbing" : "grab",
-            userSelect: "none",
-            touchAction: "none",
-          }}
-        />
-      ))}
 
-      {/* Hero space */}
-      <div ref={boardRef} className="w-full" style={{ minHeight: "50vh" }} />
-
-      {/* Human-Human Interaction Prototypes */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24" onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }}>
-        <div className="mb-12">
-          <h2 className="text-2xl font-medium text-neutral-900 mb-2">Human-human interaction prototypes</h2>
-          <p className="text-neutral-600 text-sm">Actually, humans are more interesting</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[
-            {
-              title: HELLO_HUMANS.title,
-              description: HELLO_HUMANS.description,
-              category: HELLO_HUMANS.category,
-              meta: HELLO_HUMANS.meta,
-              image: HELLO_HUMANS.image,
-            },
-            {
-              title: "Meet the stranger challenge",
-              description: "A simple post with a Calendly link: 'Hi all, I'm running a small experiment.' No agenda, just conversation. A real-time experiment in how people connect.",
-              category: "Experiment",
-              meta: "Connection · Open-ended",
-              image: "/articles/meet-stranger-calendly.png",
-              thumbnailSize: "medium",
-              external: "https://www.linkedin.com/feed/update/urn:li:activity:7404207024164683776/",
-            },
-            {
-              title: "Hosting events @Apple",
-              description: "A year of gatherings—from vibe coding to questioning AI to just having fun. 5 events, 1 mental shift.",
-              category: "Event",
-              meta: "Community · IRL",
-              image: "/articles/events-thumb.svg",
-              thumbnailSize: "small",
-              onCardClick: () => setShowEventModal(true),
-            },
-          ].map((project) => renderCard(project))}
-        </div>
-      </section>
-
-      {/* Qiyu-Technology Interaction */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24" onClick={(e) => e.stopPropagation()} style={{ cursor: "auto" }}>
-        <div className="mb-12">
-          <h2 className="text-2xl font-medium text-neutral-900 mb-2">Qiyu–technology interaction</h2>
-          <p className="text-neutral-600 text-sm">Vibe-coding projects and creative explorations with code and tools</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[
-            {
-              title: "Birthday card",
-              description: "A small moment of delight. The joy is in the details, the unexpected animation, the gesture that makes you smile.",
-              slug: "birthday-card",
-              category: "Vibe-coding",
-              meta: "Motion · Delight",
-              videoPreview: "/articles/birthday-card.mp4",
-              videoStartTime: 1,
-            },
-            {
-              title: "Hand gesture interactions",
-              description: "Exploring how gestures can make technology feel natural and embodied.",
-              slug: "hand-gesture-interactions",
-              category: "Vibe-coding",
-              meta: "Gesture · Motion",
-              videoPreview: "/articles/hand-gesture.mp4",
-            },
-            {
-              title: "Palo Alto moment",
-              description: "A location-based concept. What happens when design meets place?",
-              slug: "palo-alto-moment",
-              category: "Vibe-coding",
-              meta: "Context · Place",
-              videoPreview: "/articles/palo-alto.mp4",
-            },
-            {
-              title: "Voice interaction",
-              description: "Beyond screens. Exploring how voice can become an interface—natural, conversational, human.",
-              slug: "voice-interaction",
-              category: "Vibe-coding",
-              meta: "Voice · AI",
-              videoPreview: "/articles/voice.mp4",
-            },
-          ].map((project) => renderCard(project))}
-        </div>
-      </section>
+      <div className="absolute h-[120%] sm:h-[150%] top-40 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4">
+        <MarqueeAlongSvgPath
+          path={SVG_PATH}
+          viewBox="0 0 1040 570"
+          baseVelocity={4}
+          showPath={false}
+          slowdownOnHover={true}
+          draggable={true}
+          dragAwareDirection
+          dragVelocityDecay={0.98}
+          scrollAwareDirection={true}
+          useScrollVelocity={true}
+          scrollContainer={{ current: container }}
+          repeat={4}
+          enableRollingZIndex={true}
+          dragSensitivity={0.01}
+          className="absolute top-0 w-full h-full"
+          responsive
+          grabCursor
+        >
+          {allProjects.map((project, i) => (
+            <div key={i} className="w-14 h-full cursor-pointer">
+              <img
+                src={getThumbnail(project)}
+                alt={project.title}
+                className="w-full h-full object-cover"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </MarqueeAlongSvgPath>
+      </div>
     </div>
   );
 }

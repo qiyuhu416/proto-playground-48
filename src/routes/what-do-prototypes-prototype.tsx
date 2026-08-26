@@ -14,6 +14,9 @@ export const Route = createFileRoute("/what-do-prototypes-prototype")({
         content: "Prototyping as a research mindset, and designing to elicit errors rather than hide them.",
       },
     ],
+    links: [
+      { rel: "canonical", href: "https://key-you.com/what-do-prototypes-prototype" },
+    ],
   }),
   component: ArticleComponent,
 });
