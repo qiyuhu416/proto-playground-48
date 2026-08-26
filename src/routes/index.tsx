@@ -60,7 +60,7 @@ const PILLARS: Pillar[] = [
   {
     number: "01",
     subtitle: "",
-    title: "Others’ Minds",
+    title: "How to understand others’ mind?",
     description: "Understanding others is another black box.",
     gapLeft: "Assumption",
     gapRight: "Understanding",
@@ -108,7 +108,7 @@ const PILLARS: Pillar[] = [
   {
     number: "02",
     subtitle: "",
-    title: "How do we design feedback?",
+    title: "How might we design AI's mind?",
     description: "To make each other feel seen.",
     gapLeft: "Intent",
     gapRight: "Expression",
@@ -156,7 +156,7 @@ const PILLARS: Pillar[] = [
   {
     number: "03",
     subtitle: "",
-    title: "How much do you know about yourself?",
+    title: "How might we know the real self?",
     description: "Who we are is constantly shaped by how we interact with the external world.",
     gapLeft: "Unknown",
     gapRight: "Aware",
@@ -712,23 +712,11 @@ function Index() {
                 </>
               );
             })()}
-            <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
 
             <div className="flex justify-center w-full mt-16">
               <HandDrawnDiagram onHover={setHeroGap} />
             </div>
 
-            {/* Gap tag — shows default or hovered gap tag */}
-            <div className="relative w-full flex justify-center px-6 min-h-[28px]">
-              {heroGap && (
-                <p className="tag-style">
-                  {HERO_CONTENT[heroGap].tag}
-                </p>
-              )}
-              {!heroGap && (
-                <p className="tag-style">1 != 2 != 3 != 4 != 1</p>
-              )}
-            </div>
         </div>
       </section>
 
