@@ -700,8 +700,8 @@ function Index() {
 
       {/* Hero */}
       <section className="relative w-full min-h-screen flex flex-col items-center">
-        {/* Diagram + Gap tag section — 20% from top */}
-        <div className="mt-[20vh] min-h-screen flex flex-col items-center px-6 gap-6">
+        {/* Diagram + Gap tag section — 20% from top, 80vh height */}
+        <div className="mt-[20vh] min-h-[80vh] flex flex-col items-center px-6 gap-6">
           <img
             src="/articles/hello-stranger.png"
             alt="Hello, stranger!!"
