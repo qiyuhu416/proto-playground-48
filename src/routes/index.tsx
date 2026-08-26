@@ -712,15 +712,12 @@ function Index() {
             <HandDrawnDiagram onHover={setHeroGap} />
           </div>
 
-          {/* Gap tag — shows default or hovered gap tag */}
+          {/* Gap tag — shows tag on hover */}
           <div className="relative w-full flex justify-center px-6 min-h-[28px]">
             {heroGap && (
               <p className="tag-style">
                 {HERO_CONTENT[heroGap].tag}
               </p>
-            )}
-            {!heroGap && (
-              <p className="tag-style">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
             )}
           </div>
         </div>
