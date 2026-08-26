@@ -401,7 +401,7 @@ function ThinkComponent() {
                 onClick={() => isLong && toggleReflection(idx)}
               >
                 <div className="flex flex-col gap-3">
-                  <div className="text-xs text-neutral-500 font-medium">{reflection.date}</div>
+                  <div className="text-xs text-neutral-500 font-medium">{`${reflection.date.split(' ')[0]} ${reflection.date.split(' ')[2]}`}</div>
                   <p className="text-sm text-neutral-700 leading-relaxed">
                     {displayContent}
                     {isLong && !isExpanded && <span className="text-neutral-400">...</span>}

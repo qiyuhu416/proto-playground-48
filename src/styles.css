@@ -189,7 +189,7 @@ a[href*="key-you-who.com"][target="_blank"] {
 
 @layer components {
   .tag-style {
-    @apply text-xs text-neutral-500 tracking-normal;
+    @apply text-sm text-neutral-500 tracking-normal;
   }
 }
 

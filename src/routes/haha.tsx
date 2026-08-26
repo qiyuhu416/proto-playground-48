@@ -50,7 +50,7 @@ function EventModal({ onClose }: { onClose: () => void }) {
           <img
             src={EVENT_IMAGES[activeIdx]}
             alt={`Event ${activeIdx + 1}`}
-            className="w-full rounded-xl border border-neutral-200 object-contain"
+            className="w-full rounded-xl border-2 border-neutral-300 object-contain"
           />
         </div>
 
@@ -60,9 +60,9 @@ function EventModal({ onClose }: { onClose: () => void }) {
             <button
               key={i}
               onClick={() => setActiveIdx(i)}
-              className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${activeIdx === i ? "border-neutral-900" : "border-transparent"}`}
+              className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${activeIdx === i ? "border-neutral-900" : "border-neutral-300"}`}
             >
-              <img src={src} alt={`Event ${i + 1}`} className="w-full h-full object-cover" />
+              <img src={src} alt={`Event ${i + 1}`} className="w-full h-full object-cover border border-neutral-300" />
             </button>
           ))}
         </div>
@@ -176,7 +176,7 @@ function PlayComponent() {
               <img
                 src={getThumbnail(project)}
                 alt={project.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover border border-neutral-300"
                 draggable={false}
               />
             </div>
