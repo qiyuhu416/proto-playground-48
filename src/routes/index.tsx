@@ -712,27 +712,24 @@ function Index() {
                 </>
               );
             })()}
-            <div className="flex justify-center w-full mt-16">
-            <HandDrawnDiagram onHover={setHeroGap} />
-          </div>
+            <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
 
-<<<<<<< HEAD
-=======
-          {/* Gap tag — shows default or hovered gap tag */}
-          <div className="relative w-full flex justify-center px-6 min-h-[28px]">
-            {heroGap && (
-              <p className="tag-style">
-                {HERO_CONTENT[heroGap].tag}
-              </p>
-            )}
-            {!heroGap && (
-              <>
-                <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
+            <div className="flex justify-center w-full mt-16">
+              <HandDrawnDiagram onHover={setHeroGap} />
+            </div>
+
+            {/* Gap tag — shows default or hovered gap tag */}
+            <div className="relative w-full flex justify-center px-6 min-h-[28px]">
+              {heroGap && (
+                <p className="tag-style">
+                  {HERO_CONTENT[heroGap].tag}
+                </p>
+              )}
+              {!heroGap && (
                 <p className="tag-style">1 != 2 != 3 != 4 != 1</p>
-              </>
-            )}
->>>>>>> focused-version
-          </div>
+              )}
+            </div>
+        </div>
       </section>
 
       {/* 4 Pillar sections */}
