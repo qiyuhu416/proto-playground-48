@@ -18,6 +18,7 @@ function ThinkComponent() {
   const [quadrantOpen, setQuadrantOpen] = useState(false);
   const [expandedReflections, setExpandedReflections] = useState<Set<number>>(new Set());
   const [reflectionsWithImages, setReflectionsWithImages] = useState<Array<{content: string; date: string; image?: string}>>([]);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     // Parse markdown to extract images
@@ -414,7 +415,8 @@ function ThinkComponent() {
                     <img
                       src={reflection.image}
                       alt="Reflection image"
-                      className="w-full max-w-md rounded-lg mt-3 border border-neutral-200"
+                      onClick={() => setSelectedImage(reflection.image!)}
+                      className="w-full max-w-xs rounded-lg mt-3 border border-neutral-200 cursor-pointer hover:opacity-80 transition-opacity"
                     />
                   )}
                   {isLong && (
@@ -491,6 +493,31 @@ function ThinkComponent() {
             </div>
 
             <p className="mt-6 text-xs text-neutral-400">Use this to spot where your assumptions about others' thinking diverge from their actual behavior — that gap is often where design problems hide.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 transition-colors"
+            >
+              ✕
+            </button>
+            <img
+              src={selectedImage}
+              alt="Expanded reflection"
+              className="w-full rounded-2xl"
+            />
           </div>
         </div>
       )}
