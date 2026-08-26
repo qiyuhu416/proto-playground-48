@@ -123,7 +123,8 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
         <style>{`body.modal-open #header-nav { display: none !important; }
-        body.modal-open header { display: none !important; }`}</style>
+        body.modal-open header { display: none !important; }
+        body.modal-open #navbar { display: none !important; }`}</style>
         <script dangerouslySetInnerHTML={{
           __html: `if (window.self !== window.top || new URLSearchParams(window.location.search).get("embed") === "true") {
             document.documentElement.classList.add("embed-mode");

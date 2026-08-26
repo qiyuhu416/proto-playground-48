@@ -716,6 +716,22 @@ function Index() {
             <HandDrawnDiagram onHover={setHeroGap} />
           </div>
 
+<<<<<<< HEAD
+=======
+          {/* Gap tag — shows default or hovered gap tag */}
+          <div className="relative w-full flex justify-center px-6 min-h-[28px]">
+            {heroGap && (
+              <p className="tag-style">
+                {HERO_CONTENT[heroGap].tag}
+              </p>
+            )}
+            {!heroGap && (
+              <>
+                <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
+                <p className="tag-style">1 != 2 != 3 != 4 != 1</p>
+              </>
+            )}
+>>>>>>> focused-version
           </div>
       </section>
 
