@@ -9,9 +9,9 @@
 ---
 
 ## Section 01
-**Title:** Human-Human Understanding
+**Title:** How to understand others' mind?
 
-**Description:** Understanding others is a black box, just like AI
+**Description:** Others' mind is a black box, just like AI
 
 **Cards:**
 1. Research through Design | User-centered service design

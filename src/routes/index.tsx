@@ -61,8 +61,8 @@ const PILLARS: Pillar[] = [
   {
     number: "01",
     subtitle: "",
-    title: "Human-Human Understanding",
-    description: "Understanding others is a black box, just like AI",
+    title: "How to understand others' mind?",
+    description: "Design to understand just enough information",
     gapLeft: "Assumption",
     gapRight: "Understanding",
     activeGap: "others-loop",
@@ -109,8 +109,8 @@ const PILLARS: Pillar[] = [
   {
     number: "02",
     subtitle: "",
-    title: "How do we design feedback?",
-    description: "The gap between intent and expression",
+    title: "How might we design AI's mind?",
+    description: "AI that knows when humans need what",
     gapLeft: "Intent",
     gapRight: "Expression",
     activeGap: "bottom",
@@ -157,8 +157,8 @@ const PILLARS: Pillar[] = [
   {
     number: "03",
     subtitle: "",
-    title: "How much do you know about yourself?",
-    description: "Who we are is constantly shaped by how we interact with the external world.",
+    title: "How might we know the real self?",
+    description: "Tech-assisted self augmentation",
     gapLeft: "Unknown",
     gapRight: "Aware",
     activeGap: "me-loop",
@@ -198,7 +198,7 @@ const PILLARS: Pillar[] = [
   {
     number: "04",
     subtitle: "",
-    title: "Is there another way to express yourself?",
+    title: "Is there another way to express ourselves?",
     description: "Text is never the only way.",
     gapLeft: "Intent",
     gapRight: "Expression",
@@ -331,11 +331,11 @@ function InteractionDiagram({ active }: { active: GapId }) {
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
 const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
-  "default":      { tag: "", text: "Qiyu designs technology that bring the two circles closer when Others = Humans, and prototypes the \"what-ifs\" when Others = AI." },
-  "top":          { tag: "1: What I do or say", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
-  "bottom":       { tag: "3: What others do or say",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
-  "me-loop":      { tag: "2: How I interpret what others do or say", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
-  "others-loop":  { tag: "4: How others interpret what others do or say",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
+  "default":      { tag: "", text: "Qiyu designs technology that brings people together, prototyping new ways for humans, AI, and each other to interact." },
+  "top":          { tag: "What I do or say ", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
+  "bottom":       { tag: "What others do or say",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
+  "me-loop":      { tag: "How I interpret what others do or say", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
+  "others-loop":  { tag: "How others interpret what others do or say",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
 };
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
@@ -701,7 +701,7 @@ function Index() {
       {/* Hero */}
       <section className="relative w-full min-h-screen flex flex-col items-center">
         {/* Diagram + Gap tag section — grouped at 20% from top, 80% screen height */}
-        <div className="mt-[20vh] min-h-[60vh] flex flex-col items-center justify-center px-6 gap-6">
+        <div className="min-h-screen flex flex-col items-center justify-center px-6 gap-6">
           <img
             src="/articles/hello-stranger.png"
             alt="Hello, stranger!!"
@@ -720,7 +720,8 @@ function Index() {
               </p>
             )}
             {!heroGap && (
-              <p className="tag-style">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
+              <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
+              <p className="tag-style">1 != 2 != 3 != 4 != 1</p>
             )}
           </div>
         </div>
