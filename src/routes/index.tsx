@@ -705,7 +705,7 @@ function Index() {
           <img
             src="/articles/hello-stranger.png"
             alt="Hello, stranger!!"
-            className="hidden block mx-auto w-full max-w-[300px]"
+            className="block mx-auto w-full max-w-[300px]"
             style={{ mixBlendMode: "multiply", opacity: 0.5 }}
           />
           <div className="flex justify-center w-full">
