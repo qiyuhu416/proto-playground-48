@@ -331,7 +331,7 @@ function InteractionDiagram({ active }: { active: GapId }) {
 const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
 const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
-  "default":      { tag: "", text: "Qiyu is designing technology that brings humans together through thoughtful interaction design, research-driven prototyping, and exploring the gaps between intention and understanding." },
+  "default":      { tag: "", text: "Qiyu designs technology that bring the two circles closer when Others = Humans, and prototypes the \"what-ifs\" when Others = AI." },
   "top":          { tag: "Intent → Expression", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
   "bottom":       { tag: "Other's Intent → Reception",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
   "me-loop":      { tag: "Reception → Internalization", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
