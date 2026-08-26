@@ -332,10 +332,10 @@ const DIAGRAM_W = 1507, DIAGRAM_H = 572;
 
 const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
   "default":      { tag: "", text: "Qiyu designs technology that bring the two circles closer when Others = Humans, and prototypes the \"what-ifs\" when Others = AI." },
-  "top":          { tag: "Intent → Expression", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
-  "bottom":       { tag: "Other's Intent → Reception",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
-  "me-loop":      { tag: "Reception → Internalization", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
-  "others-loop":  { tag: "Other's mind",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
+  "top":          { tag: "1: What I do or say", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
+  "bottom":       { tag: "3: What others do or say",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
+  "me-loop":      { tag: "2: How I interpret what others do or say", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
+  "others-loop":  { tag: "4: How others interpret what others do or say",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
 };
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
@@ -425,11 +425,11 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
           return <path key={gap} d={`M ${otx},${yT} A ${rightRx},${arcRy} 0 0,1 ${otx},${yB}`} {...h} />;
         })}
 
-        {/* Annotations — bigger and handwritten style, grey by default, black on hover */}
-        <text x={mex + 30} y={yT - 20} fontSize="36" fontWeight="700" fill={hovered === "top" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
-        <text x={otx + 70} y={yT + yB / 2} fontSize="36" fontWeight="700" fill={hovered === "others-loop" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
-        <text x={otx - 40} y={yB + 30} fontSize="36" fontWeight="700" fill={hovered === "bottom" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
-        <text x={mex - 90} y={yT + yB / 2} fontSize="36" fontWeight="700" fill={hovered === "me-loop" ? "#171717" : "#d4d4d4"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
+        {/* Annotations — bigger and handwritten style, red by default, black on hover */}
+        <text x={mex + 30} y={yT - 20} fontSize="56" fontWeight="700" fill={hovered === "top" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
+        <text x={otx + 290} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "others-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
+        <text x={otx - 40} y={yB + 30} fontSize="56" fontWeight="700" fill={hovered === "bottom" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
+        <text x={mex - 170} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "me-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
       </svg>
     </div>
   );
@@ -700,12 +700,12 @@ function Index() {
 
       {/* Hero */}
       <section className="relative w-full min-h-screen flex flex-col items-center">
-        {/* Diagram + Gap tag section — grouped at 20% from top */}
-        <div className="mt-[20vh] flex flex-col items-center justify-center px-6 gap-6">
+        {/* Diagram + Gap tag section — grouped at 20% from top, 80% screen height */}
+        <div className="mt-[20vh] min-h-[60vh] flex flex-col items-center justify-center px-6 gap-6">
           <img
             src="/articles/hello-stranger.png"
             alt="Hello, stranger!!"
-            className="block mx-auto w-full max-w-[300px]"
+            className="hidden block mx-auto w-full max-w-[300px]"
             style={{ mixBlendMode: "multiply", opacity: 0.5 }}
           />
           <div className="flex justify-center w-full">
@@ -726,15 +726,13 @@ function Index() {
         </div>
 
         {/* Paragraph section — always shows default text */}
-        <div className="relative w-full flex flex-col items-center justify-center text-center px-6 min-h-[180px] py-12">
-          <div className="w-full">
-            <TextGradientScroll
-              text={HERO_CONTENT["default"].text}
-              type="letter"
-              textOpacity="soft"
-              className="mx-auto text-2xl md:text-4xl text-neutral-900 leading-relaxed justify-center font-medium max-w-6xl"
-            />
-          </div>
+        <div className="mx-auto max-w-6xl px-6 py-12 mb-20 text-center">
+          <TextGradientScroll
+            text={HERO_CONTENT["default"].text}
+            type="letter"
+            textOpacity="soft"
+            className="text-2xl md:text-4xl text-neutral-900 leading-relaxed font-medium justify-center"
+          />
         </div>
       </section>
 
