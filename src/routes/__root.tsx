@@ -170,7 +170,6 @@ function RootComponent() {
               <span className="transition-all duration-300 group-hover:-translate-x-4 group-hover:opacity-0 whitespace-nowrap">currently AI prototyper @Apple</span>
               <span className="absolute left-6 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">Qiyu's LinkedIn ↗</span>
             </a>
-            <div className="absolute left-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap bg-neutral-900 text-white text-xs px-3 py-1.5 rounded-full z-10">"key-you" it is 🔑 🫵</div>
           </div>
           <nav id="header-nav" className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 p-1 transition-all duration-300">
             {NAV_ITEMS.map((l) => {
