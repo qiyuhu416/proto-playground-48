@@ -61,8 +61,8 @@ const PILLARS: Pillar[] = [
   {
     number: "01",
     subtitle: "",
-    title: "Human-Human Understanding",
-    description: "Understanding others is a black box, just like AI",
+    title: "How to understand others' mind?",
+    description: "Understanding others is another black box.",
     gapLeft: "Assumption",
     gapRight: "Understanding",
     activeGap: "others-loop",
@@ -109,8 +109,8 @@ const PILLARS: Pillar[] = [
   {
     number: "02",
     subtitle: "",
-    title: "How do we design feedback?",
-    description: "The gap between intent and expression",
+    title: "How might we design AI's mind?",
+    description: "AI that knows when humans need what",
     gapLeft: "Intent",
     gapRight: "Expression",
     activeGap: "bottom",
@@ -157,8 +157,8 @@ const PILLARS: Pillar[] = [
   {
     number: "03",
     subtitle: "",
-    title: "How much do you know about yourself?",
-    description: "Who we are is constantly shaped by how we interact with the external world.",
+    title: "How might we know the real self?",
+    description: "Tech-assisted self augmentation",
     gapLeft: "Unknown",
     gapRight: "Aware",
     activeGap: "me-loop",
