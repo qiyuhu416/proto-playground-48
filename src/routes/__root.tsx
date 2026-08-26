@@ -124,7 +124,8 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
         <style>{`body.modal-open #header-nav { display: none !important; }
-        body.modal-open header { display: none !important; }`}</style>
+        body.modal-open header { display: none !important; }
+        body.modal-open #navbar { display: none !important; }`}</style>
       </head>
       <body>
         {children}

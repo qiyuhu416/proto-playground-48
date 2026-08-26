@@ -720,8 +720,10 @@ function Index() {
               </p>
             )}
             {!heroGap && (
-              <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
-              <p className="tag-style">1 != 2 != 3 != 4 != 1</p>
+              <>
+                <p className="tag-style">Hello stranger. Here is my understanding of human-human interactions.</p>
+                <p className="tag-style">1 != 2 != 3 != 4 != 1</p>
+              </>
             )}
           </div>
         </div>
