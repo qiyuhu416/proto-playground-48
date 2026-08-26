@@ -726,7 +726,7 @@ function Index() {
         </div>
 
         {/* Paragraph section — always shows default text */}
-        <div className="mx-auto max-w-6xl px-6 py-12 mb-20 text-center">
+        <div className="mx-auto max-w-6xl px-6 py-12 mb-20 text-center min-h-[40vh] flex flex-col items-center justify-center">
           <TextGradientScroll
             text={HERO_CONTENT["default"].text}
             type="letter"
