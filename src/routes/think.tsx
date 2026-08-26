@@ -389,7 +389,11 @@ function ThinkComponent() {
               content: "Interesting. The concept of the 'weak robot' (from ICD-LAB in Japan). One example is a trash-picking bot that asks a human for help (in a well-designed way) when it spots trash, instead of picking it up itself. Some say it fulfills a basic human need: to protect and feel needed. In contrast, an agentic AI project I'm working on aims to have AI complete tasks independently, as much as possible. It's not just us—many emerging AI startups are pushing similar ideas (you see them all over SF, on buses, posters, and ad boards). Zooming out, doesn't the current industry feel like it's in the diverging stage of the double diamond? But I think we'll eventually reach a turning point and start to converge — Yes, AI can do (almost) ANYTHING, but do we really want it to do EVERYTHING? 'Everything can be research.' — Yuwen Lu, 2025, coffee chat @SF",
               date: "Aug 26, 2025",
             },
-          ].concat(reflectionsWithImages).map((reflection, idx) => {
+          ].concat(reflectionsWithImages).sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return dateB.getTime() - dateA.getTime();
+          }).map((reflection, idx) => {
             const isExpanded = expandedReflections.has(idx);
             const isLong = isLongContent(reflection.content);
             const displayContent = isExpanded ? reflection.content : reflection.content.substring(0, 250);
