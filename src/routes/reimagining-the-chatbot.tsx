@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { X } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/reimagining-the-chatbot")({
 });
 
 function CollectionComponent() {
+  const navigate = useNavigate();
   const [activeExploration, setActiveExploration] = useState<"select-fill" | "browsing" | "ai-asks">("select-fill");
 
   const explorations = [
@@ -45,6 +47,15 @@ function CollectionComponent() {
 
   return (
     <div className="min-h-screen bg-background text-neutral-900">
+      {/* Close Button */}
+      <button
+        onClick={() => navigate({ to: "/" })}
+        className="fixed top-6 right-6 z-50 text-neutral-400 hover:text-neutral-900 transition-colors p-2"
+        aria-label="Close"
+      >
+        <X className="h-6 w-6" />
+      </button>
+
       <article className="mx-auto max-w-2xl px-6 py-12">
 
         <div className="mb-16">

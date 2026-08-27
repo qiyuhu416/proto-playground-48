@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { X } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
@@ -16,8 +17,19 @@ export const Route = createFileRoute("/google-cloud")({
 });
 
 function CaseStudyComponent() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background text-neutral-900">
+      {/* Close Button */}
+      <button
+        onClick={() => navigate({ to: "/" })}
+        className="fixed top-6 right-6 z-50 text-neutral-400 hover:text-neutral-900 transition-colors p-2"
+        aria-label="Close"
+      >
+        <X className="h-6 w-6" />
+      </button>
+
       <article className="mx-auto max-w-4xl px-6 py-12">
 
         <div className="mb-16">
@@ -131,7 +143,7 @@ Our Solution: Contextual AI guidance at each discovery stage
               <h5 className="text-sm font-semibold text-neutral-900 mb-3">Semi-Structured Interviews</h5>
               <p className="text-xs text-neutral-600 mb-2"><strong>N=8</strong> startup CTOs, CEOs, and Founders</p>
               <p className="text-xs text-neutral-600">
-                In-depth interviews revealed mental models and decision-making processes that surveys couldn't capture.
+                Finding: Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists. Users also want to understand WHY an AI recommends something, not just receive the recommendation.
               </p>
             </div>
 
@@ -139,7 +151,7 @@ Our Solution: Contextual AI guidance at each discovery stage
               <h5 className="text-sm font-semibold text-neutral-900 mb-3">Competitive Analysis</h5>
               <p className="text-xs text-neutral-600 mb-2">AWS & Azure UX patterns</p>
               <p className="text-xs text-neutral-600">
-                Identified where Google Cloud could differentiate through AI-powered recommendations.
+                Finding: Comparing similar products requires switching between multiple pages and reading dense documentation.
               </p>
             </div>
 
@@ -147,36 +159,7 @@ Our Solution: Contextual AI guidance at each discovery stage
               <h5 className="text-sm font-semibold text-neutral-900 mb-3">Literature Review</h5>
               <p className="text-xs text-neutral-600 mb-2">Behavioral science research</p>
               <p className="text-xs text-neutral-600">
-                Decision-making psychology, online purchasing behavior, AI trust mechanisms.
-              </p>
-            </div>
-          </div>
-
-          <h4 className="mt-6 mb-6 text-base font-semibold">Key Insights</h4>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-8">
-            <div className="border-l-4 border-neutral-900 pl-4 py-2">
-              <h6 className="text-sm font-semibold text-neutral-900">Mental Models</h6>
-              <p className="text-xs text-neutral-600 mt-1">
-                Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists.
-              </p>
-            </div>
-            <div className="border-l-4 border-neutral-900 pl-4 py-2">
-              <h6 className="text-sm font-semibold text-neutral-900">Discovery Friction</h6>
-              <p className="text-xs text-neutral-600 mt-1">
-                Comparing similar products requires switching between multiple pages and reading dense documentation.
-              </p>
-            </div>
-            <div className="border-l-4 border-neutral-900 pl-4 py-2">
-              <h6 className="text-sm font-semibold text-neutral-900">Trust Mechanisms</h6>
-              <p className="text-xs text-neutral-600 mt-1">
-                Clear product positioning and social proof (customer testimonials, case studies) drive adoption.
-              </p>
-            </div>
-            <div className="border-l-4 border-neutral-900 pl-4 py-2">
-              <h6 className="text-sm font-semibold text-neutral-900">AI Transparency</h6>
-              <p className="text-xs text-neutral-600 mt-1">
-                Users want to understand WHY an AI recommends something, not just receive the recommendation.
+                Finding: Clear product positioning and social proof (customer testimonials, case studies) drive adoption.
               </p>
             </div>
           </div>
