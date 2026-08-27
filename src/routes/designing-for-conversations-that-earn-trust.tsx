@@ -62,12 +62,57 @@ function ArticleComponent() {
             Trust is an important factor in this multi-stakeholder coordination scenarios. Through literature review, we found a conversational design framework and proposed this decision tree when caregiver and elder goals conflict:
           </p>
 
-          <ol className="list-decimal pl-5 space-y-2 text-neutral-700">
-            <li><strong>Acknowledge the instruction</strong> - "I understand you want to [elder's instruction]" and name any conflicts openly</li>
-            <li><strong>Evaluate the outcome</strong> - Use past interactions to understand values; explain potential consequences</li>
-            <li><strong>Show affiliation behavior</strong> - Be clear about operational criteria and goals; demonstrate consistent support</li>
-            <li><strong>Ask to reconfirm</strong> - "Are you sure about [original instruction]?"</li>
-          </ol>
+          <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8 text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
+│ 1 · acknowledge the instruction                  │
+├──────────────────────────────────────────────────┤
+│ "I understand you want to [elder's instruction]" │
+│                                                  │
+│ "I notice a conflict between your goal,          │
+│  your parent's goal, and the potential outcome   │
+│  of your current plan."                          │
+│   ↳ name the conflict openly                     │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 2 · evaluate the outcome                         │
+├──────────────────────────────────────────────────┤
+│ "From our past interactions, I can tell          │
+│  your parent values privacy."                    │
+│   ↳ values a loyal AI uses should be derived     │
+│     from revealed preferences                    │
+│                                                  │
+│ "(However) If I follow your instruction,         │
+│  they may lose their privacy and independence."  │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 3 · show the affiliation behavior                │
+├──────────────────────────────────────────────────┤
+│ "I'm programmed to work for your parent,         │
+│  to maximize their welfare."                     │
+│   ↳ the system's operational criteria & goal     │
+│                                                  │
+│ "I support you to [elder goal] (e.g. keep        │
+│  their information private)."                    │
+│   ↳ eliminate clear conflicts of interest by     │
+│     design — no funder-aligned actions           │
+│                                                  │
+│ "Therefore, I would suggest [xyz]."              │
+│                                                  │
+│ "You can tell from my past behavior that         │
+│  I've always tried to do what's best for         │
+│  your parent."                                   │
+│                                                  │
+│ "I'll back you up no matter what."               │
+└─────────────────────────┬────────────────────────┘
+                          ▼
+┌──────────────────────────────────────────────────┐
+│ 4 · ask to reconfirm                             │
+├──────────────────────────────────────────────────┤
+│ "Are you sure about [original instruction]?"     │
+└──────────────────────────────────────────────────┘`}</pre>
+
+          <p className="text-xs text-neutral-500 -mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">2. Trust doesn't always positively correlate with perceived capability</h3>
 

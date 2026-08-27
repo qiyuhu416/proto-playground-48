@@ -32,6 +32,12 @@ function ArticleComponent() {
           </div>
         </div>
 
+        <img
+          src="/articles/physical-ai-hero.png"
+          alt="Physical AI healthcare interaction design"
+          className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
+        />
+
         <TableOfContents />
 
         <div className="prose prose-neutral max-w-4xl">
@@ -86,8 +92,24 @@ function ArticleComponent() {
             In diagnostic testing, sample collection is critical. A single error cascades through the entire lab process—false results, wasted samples, delayed diagnoses.
           </p>
 
-          <p>
-            Common pre-analytical errors include:
+          <img
+            src="/articles/physical-ai-17.png"
+            alt="Diagnostic testing phases and error opportunities"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic">
+            Three phases of the diagnostic journey: pre-analytical (collection), analytical (testing), post-analytical (reporting). The pre-analytical phase is where most errors occur.
+          </p>
+
+          <img
+            src="/articles/physical-ai-18.png"
+            alt="Current flow showing errors at each step"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic">
+            Phlebotomists and patients navigate a series of critical checkpoints. Each is an opportunity for error:
           </p>
 
           <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
@@ -145,7 +167,62 @@ function ArticleComponent() {
             <li><strong>System-level limitations:</strong> problems around responsibility, workflow, and error correction that don't automatically disappear with a better model.</li>
           </ul>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Map tech capability to the service blueprint</h3>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Mapping AI to Error: Short-term vs. Long-term</h3>
+
+          <img
+            src="/articles/physical-ai-21.png"
+            alt="AI capability mapping to errors - short term and long term vision"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic">
+            The same system serves two roles: short-term, it assists the phlebotomist (catching errors before they happen). Long-term, it becomes a performer (autonomous quality verification and execution).
+          </p>
+
+          <h4 className="mt-6 mb-3 text-base font-semibold">Short-term: AI as Assistant</h4>
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Confirmation phase:</strong> Compare label info & patient ID</li>
+            <li><strong>Selection phase:</strong> Evaluate vial-label match, find correct filling status</li>
+            <li><strong>Extraction phase:</strong> Monitor tube filling status, detect incorrect amount</li>
+            <li><strong>Storage phase:</strong> Generate summary, identify storage location, notice unusual sample changes</li>
+          </ul>
+
+          <h4 className="mt-6 mb-3 text-base font-semibold">Long-term: AI as Performer</h4>
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Automation:</strong> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
+            <li><strong>Integration:</strong> Act on human feedback, refine based on patterns</li>
+            <li><strong>Reliability:</strong> Reduce human error to near-zero through consistent, tireless execution</li>
+          </ul>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">4. The System: Hardware & Design</h3>
+
+          <img
+            src="/articles/physical-ai-23.png"
+            alt="Hardware artifacts: base station, tracker base, and tracker module"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic">
+            Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
+          </p>
+
+          <p>
+            The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">5. The User Flow: 8-Step Collection Journey</h3>
+
+          <img
+            src="/articles/physical-ai-24.png"
+            alt="Proposed user flow with 8 interaction steps"
+            className="w-full rounded-2xl my-8 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic">
+            Step-by-step, the system guides the phlebotomist through collection while validating each decision. Computer vision reads IDs. The CVA (Computer Vision Assistant) manages vial storage. On-screen UI confirms selections. Smart labels verify matches. The system is always watching, always confirming.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">6. Map tech capability to the service blueprint</h3>
 
           <p>
             The previous analysis helped me reframe the question into: <strong>where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?</strong>
@@ -155,7 +232,7 @@ function ArticleComponent() {
             Therefore, I created the service blueprint to map out the user flow and corresponding AI intervention points.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">4. Understand the limitations</h3>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">7. Understand the limitations</h3>
 
           <p>
             Moving beyond this specific use case, let's think about the bigger service system. AI will "definitely" make errors, and in a service system, someone has to detect it, correct it, communicate the correction, and deal with whatever downstream impact it creates.

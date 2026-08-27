@@ -80,8 +80,11 @@ function CollectionComponent() {
             Instead of waiting for a complete prompt, I wanted to explore: <strong>Can AI reduce the work of prompt-writing without taking away the user's control over what they actually want to ask?</strong>
           </p>
 
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm text-neutral-600 italic">
-            [Prototype video: Select & Fill interaction]
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white my-6">
+            <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+              <source src="/articles/chatbot-select-fill.mp4" type="video/mp4" />
+              Your browser doesn't support video playback.
+            </video>
           </div>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">What if chat lives inside browsing?</h3>
@@ -90,8 +93,11 @@ function CollectionComponent() {
             What if collecting context is part of the interaction, rather than something the user has to reconstruct afterward? The user can select information directly in the browsing window and add it to a <strong>question list</strong> to ask later. Instead of repeatedly copying context into a chatbot, the question can build alongside the browsing process.
           </p>
 
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm text-neutral-600 italic">
-            [Prototype video: I Am Always Here—Just Let Me Know interaction]
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white my-6">
+            <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+              <source src="/articles/chatbot-always-here.mp4" type="video/mp4" />
+              Your browser doesn't support video playback.
+            </video>
           </div>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">What if AI asks <em>for you</em>?</h3>
@@ -100,8 +106,11 @@ function CollectionComponent() {
             Users don't know what to ask, so why not have AI ask on users' behalf if it understands enough about user's preferences? Learning can happen in 2 ways: active and passive. If understanding is the goal, we don't have to rely on users to ask questions for them to learn, they can also learn by "watching 2 AIs chatting".
           </p>
 
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm text-neutral-600 italic">
-            [Prototype video: AI-AI interaction]
+          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white my-6">
+            <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+              <source src="/articles/ai-ai-interaction.mp4" type="video/mp4" />
+              Your browser doesn't support video playback.
+            </video>
           </div>
 
           <h2 id={sectionId("So what's next after those concepts?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">So what's next after those concepts?</h2>
