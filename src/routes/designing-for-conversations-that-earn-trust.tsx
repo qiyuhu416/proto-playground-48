@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-
 
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
@@ -10,7 +8,7 @@ export const Route = createFileRoute("/designing-for-conversations-that-earn-tru
       { title: "Qiyu x AI interaction" },
       {
         name: "description",
-        content: "How to design AI that humans trust—borrowing from human relationships, scripting small moments, and knowing when to hand off.",
+        content: "Research on designing AI for eldercare: building trust through conversational design across multiple stakeholders.",
       },
     ],
   }),
@@ -23,17 +21,14 @@ function ArticleComponent() {
       <article className="mx-auto max-w-3xl px-6 py-12">
 
         <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Role</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Bot for Multi-Stakeholder Eldercare</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
             {ARTICLE_META["designing-for-conversations-that-earn-trust"].title}
           </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            Designing human–AI interaction is designing the human–AI <em>relationship</em>. The interaction is what the user touches. The relationship is everything underneath.
-          </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Research · AI-Caring</span>
+            <span>8 min read</span>
             <span className="text-neutral-300">·</span>
-            <span>2023–2024</span>
+            <span>Apr 2026</span>
           </div>
         </div>
 
@@ -41,215 +36,97 @@ function ArticleComponent() {
 
         <div className="prose prose-neutral max-w-3xl">
 
-          <h2 id={sectionId("Designing the relationship")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the relationship"}</h2>
-
-          <h3 className="mt-8 mb-3 text-lg font-semibold">Case study: Elder care Bot (research @AI-Caring)</h3>
+          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
 
           <p>
-            Instead of AI–individual reaction, this project was about <strong>AI–group interaction</strong>: AI steps into an already-existing human web and learns to deal with relationships between elder, caregiver, and family.
+            This was a research project at AI Caring, where I worked as a research assistant. My role included helping design the research method, conducting interviews, and exploring concepts through storyboards. The paper writing is still WIP—and moving very slowly, since my PI switched to industry (and now we are at the same company lol).
           </p>
 
           <p>
-            If we look at the evolution of HCI, it has always been about relationships:
-          </p>
-
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-5 my-6 text-sm font-mono text-neutral-700">
-            humans adapt to machines (terminal)<br />
-            → machines adapt to humans (GUI)<br />
-            → humans &amp; machines work together (AI agents)
-          </div>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-4 my-6 rounded text-sm text-neutral-600 italic">
-            Interestingly we're now back to terminal again (hello, Claude Code)
-          </div>
-
-          <p>
-            One aspect of the relationship is "trust." How do we minimize the gap between what AI says and what humans understand, and how do we design AI that humans trust?
+            The theme of the research was: <strong>What if AI plays a role beyond a tool, as a caregiver for older adults?</strong>
           </p>
 
           <p>
-            This is a <strong>hard inference</strong> case. How would you explain to AI what "trust" is? I couldn't remember how much literature review I did trying to understand humans. We design human–AI relationships by borrowing from human–human relationships, but humans are complicated—human–human relationships are even <strong>MUCH MORE</strong> complicated. So most of this HCI research was about understanding humans.
+            The trickiest part is that there are many stakeholders and the older adult's health may decline. As the bot becomes a party that knows information from both sides, the elder might not want the bot to tell everything to their caregiver. In social science, <em>affiliation</em> is the affective stance of being on someone's side—distinct from <em>alignment</em>, which is just structural cooperation. Designing this requires understanding what it means to be loyal to one party while respecting another's autonomy.
           </p>
 
-          <h2 id={sectionId("Trust can be scripted")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Trust can be scripted"}</h2>
+          <h2 id={sectionId("Outcome")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Outcome</h2>
 
           <p>
-            Trust is usually built through small interactions. Below is a decision structure we proposed—see how small things can build up to create those feelings:
+            Conversational design is not just about <em>what the bot says</em>. We designed the conversations for not just single-turn AI response but also focus on the high-level interaction flow to create a decision tree that defines the logics of whether the bot feels trustworthy in the first place.
           </p>
 
-          <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8 text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
-│ 1 · acknowledge the instruction                  │
-├──────────────────────────────────────────────────┤
-│ "I understand you want to [elder's instruction]" │
-│                                                  │
-│ "I notice a conflict between your goal,          │
-│  your parent's goal, and the potential outcome   │
-│  of your current plan."                          │
-│   ↳ name the conflict openly                     │
-└─────────────────────────┬────────────────────────┘
-                          ▼
-┌──────────────────────────────────────────────────┐
-│ 2 · evaluate the outcome                         │
-├──────────────────────────────────────────────────┤
-│ "From our past interactions, I can tell          │
-│  your parent values privacy."                    │
-│   ↳ values a loyal AI uses should be derived     │
-│     from revealed preferences                    │
-│                                                  │
-│ "(However) If I follow your instruction,         │
-│  they may lose their privacy and independence."  │
-└─────────────────────────┬────────────────────────┘
-                          ▼
-┌──────────────────────────────────────────────────┐
-│ 3 · show the affiliation behavior                │
-├──────────────────────────────────────────────────┤
-│ "I'm programmed to work for your parent,         │
-│  to maximize their welfare."                     │
-│   ↳ the system's operational criteria & goal     │
-│                                                  │
-│ "I support you to [elder goal] (e.g. keep        │
-│  their information private)."                    │
-│   ↳ eliminate clear conflicts of interest by     │
-│     design — no funder-aligned actions           │
-│                                                  │
-│ "Therefore, I would suggest [xyz]."              │
-│                                                  │
-│ "You can tell from my past behavior that         │
-│  I've always tried to do what's best for         │
-│  your parent."                                   │
-│                                                  │
-│ "I'll back you up no matter what."               │
-└─────────────────────────┬────────────────────────┘
-                          ▼
-┌──────────────────────────────────────────────────┐
-│ 4 · ask to reconfirm                             │
-├──────────────────────────────────────────────────┤
-│ "Are you sure about [original instruction]?"     │
-└──────────────────────────────────────────────────┘`}</pre>
-          <p className="text-xs text-neutral-500 -mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
-
-          <h2 id={sectionId("Trust means knowing your limits")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Trust means knowing your limits"}</h2>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Trust can be scripted</h3>
 
           <p>
-            In eldercare, the trickiest part is when the older adult's health declines. The bot is more than just a messenger—it's a party that knows information from both sides and can talk to both. But the elder might not want the bot to tell everything to their caregiver.
+            Trust is an important factor in this multi-stakeholder coordination scenarios. Through literature review, we found a conversational design framework and proposed this decision tree when caregiver and elder goals conflict:
           </p>
 
-          <p> <strong>If you were the bot, what would you do? </strong></p>
+          <ol className="list-decimal pl-5 space-y-2 text-neutral-700">
+            <li><strong>Acknowledge the instruction</strong> - "I understand you want to [elder's instruction]" and name any conflicts openly</li>
+            <li><strong>Evaluate the outcome</strong> - Use past interactions to understand values; explain potential consequences</li>
+            <li><strong>Show affiliation behavior</strong> - Be clear about operational criteria and goals; demonstrate consistent support</li>
+            <li><strong>Ask to reconfirm</strong> - "Are you sure about [original instruction]?"</li>
+          </ol>
 
-          <details className="my-6 border-l-4 border-neutral-300 pl-5">
-            <summary className="text-xs uppercase tracking-[0.15em] text-neutral-500 cursor-pointer font-semibold">"Affiliation" in human-robot interaction</summary>
-            <div className="mt-4 text-sm text-neutral-700 space-y-5">
-              <p>
-                In social science (Stivers et al., 2011; Lee &amp; Tanaka, 2016), <em>affiliation</em> is the affective stance of being on someone's side, displaying empathy, matching their preference, cooperating. It's distinct from <em>alignment</em>, which is just the structural level of cooperation.
-              </p>
-              <p>
-                Affiliation can be approach-based (love, secure attachment, intimacy) or avoidance-based (laughing off tension, fearing rejection). Even when humans show affiliation, there's often avoidance underneath.
-              </p>
-              <p>When we tried to define "affiliation" for the bot, we had six possible goals on the table:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>instructions</li>
-                <li>expressed intentions</li>
-                <li>revealed preferences (what behavior reveals one prefers)</li>
-                <li>informed preferences (what one would want if rational and informed)</li>
-                <li>interests</li>
-                <li>value (what is moral)</li>
-              </ul>
-              <p>We narrowed to <em>"best interest"</em>—broad enough to cover the scenarios, specific enough to actually design around.</p>
-            </div>
-          </details>
-
+          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Trust doesn't always positively correlate with perceived capability</h3>
 
           <p>
-            This is a tricky question even for humans. When we design it, we map out all the variables in the scenarios:
-          </p>
-
-          <div className="not-prose overflow-x-auto my-8">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="border-b-2 border-neutral-900">
-                  <th className="text-left py-3 pr-6 font-semibold text-neutral-900">Variable</th>
-                  <th className="text-left py-3 font-semibold text-neutral-900">Possible values</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {[
-                  ["affiliation", "kid · caregiver · elder · neutral"],
-                  ["present", "kid · caregiver · elder"],
-                  ["health", "healthy · MCI"],
-                  ["recurrence", "never · a few times · a lot"],
-                  ["fraud-aware", "yes · no · not sure"],
-                  ["finances", "cares about money · low-income"],
-                  ["bot tenure", "short · long"],
-                  ["elder goal", "stay at home · appear capable · financial freedom · avoid embarrassment · for the son's best interest"],
-                  ["hide reason", "family conflict · privacy"],
-                ].map(([variable, values]) => (
-                  <tr key={variable}>
-                    <td className="py-3 pr-6 font-mono text-xs text-neutral-600 align-top whitespace-nowrap">{variable}</td>
-                    <td className="py-3 text-neutral-700 text-sm">{values}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className="text-xs text-neutral-500 mt-2">Variables the bot would need to weigh to make the call alone. The combinatorial space is the point — no fixed script covers all paths.</p>
-          </div>
-
-          <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8 text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`                       tell the kid?
-                             │
-               ┌─────────────┴─────────────┐
-              YES                         NO
-               │                           │
-       ┌───────┴───────┐           ┌───────┴───────┐
-   short-term    long-term     short-term    long-term
-       │             │             │             │
-    ┌──┴──┐       ┌──┴──┐       ┌──┴──┐       ┌──┴──┐
-    1     2       3     4       5     6       7     8
-
-
-1. kid feels respected; no bot-kid conflict
-2. shares the info without elder's permission
-3. no bot-kid conflict; elder's health gets assurance
-4. elder-bot conflict (elder may think bot isn't working
-   → less interaction; elder loses trust in the bot);
-   kid-elder conflict (elder loses trust in the kid)
-5. kid feels the bot's loyalty
-   → confident about the bot's previous work
-6. kid worries about the elder's health
-7. elder's health data is protected
-8. (—)`}</pre>
-          <p className="text-xs text-neutral-500 -mt-4 mb-8">Mapping outcomes for the elder care bot deciding whether to share information with the caregiver. The "long-term Yes / bad" branch is the one the bot can't reason through alone.</p>
-
-          <p>
-            The conclusion highlights an important factor of "human in the loop." Should the AI be the one doing this at all? Of course not—the "long-term Yes / bad" branch is the one the bot can't reason through alone. This is essentially a question about tradeoffs: respect, privacy, well-being. Compared to "having the bot solve every problem," participants said that they value those factors more.
-          </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-4 my-6 rounded text-sm text-neutral-600 italic">
-            Lol, it was fun applying a logical lens to such a soft problem.
-          </div>
-
-          <h2 id={sectionId("What this means for designers")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"What this means for designers"}</h2>
-
-          <p>
-            When you design systems where AI interacts with humans—especially in high-stakes scenarios like elder care—the structure you build becomes the foundation of the relationship.
+            In some situations, an AI saying <strong>"I'm not capable of providing that support"</strong> could create more trust than confidently trying to answer everything.
           </p>
 
           <p>
-            The designer's role is to architect these moments of conflict and clarity. To decide: when the AI can't decide alone, what does it say? How does it acknowledge the tension? Does it show affiliation or just compliance?
+            To answer the question of "when the bot should say I don't know", we mapped out the decision tree with different possible scenarios and metrics to evaluate the outcome for each.
+          </p>
+
+          <h2 id={sectionId("Implications")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Implications</h2>
+
+          <p>
+            The design goal shifted from simply making the bot feel intelligent to <strong>clearly communicating what it can do, what it cannot do, and when a human should be involved.</strong>
           </p>
 
           <p>
-            This is where design still matters deeply. Not in generating more options, but in understanding what matters most when everything is on the line.
+            There is a nuance here: being transparent does not mean the bot should constantly remind users that it is limited. The interaction still needs to feel supportive. The question is how to design the right boundary so the AI can be helpful without pretending to have authority it doesn't have.
+          </p>
+
+          <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Desktop research: understand the stakeholders and common scenarios</h3>
+
+          <p>
+            We started with desktop research to understand the care ecosystem: who is involved, what kinds of decisions they make together, and where their interests might conflict.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Research-through-design, with storyboards as the medium</h3>
+
+          <p>
+            We created storyboards based on the researched scenarios, visualizing different extents of bot involvement in each one. This helped us focus less on <strong>"what should the chatbot screen look like?"</strong> and more on <strong>"what role should the bot play here?"</strong>
+          </p>
+
+          <p>
+            We also adopted a speed-dating research method: 10 storyboards across five scenarios, with two levels of bot involvement for each scenario. We showed them to participants in randomized order and asked them to quickly compare and react. The goal was to explore: <strong>to what extent should the bot be involved, and how does that change across different scenarios?</strong>
+          </p>
+
+          <p>
+            We then conducted qualitative interviews at a senior center, showing participants the storyboards and asking questions like: <strong>"What would you want the bot to do in this scenario?"</strong>
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Affinity-cluster the results</h3>
+
+          <p>
+            After the interviews, we affinity-clustered participants' responses to look for patterns across scenarios—not just whether people liked or disliked a specific bot behavior, but <em>why</em> they wanted more or less AI involvement.
+          </p>
+
+          <p>
+            That analysis led to the trust findings above, especially around capability, boundaries, and the bot's role in a multi-stakeholder relationship.
+          </p>
+
+          <p>
+            There are more nuances here than I can fit into a portfolio page. The paper is still WIP, so: <strong>stay tuned :)</strong>
           </p>
 
         </div>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related experiences</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
-            <li>Apple — GenAI Prototyper (May 2025 – present)</li>
-            <li>AI-Caring Research — Conversational AI Researcher (Aug 2023 – Aug 2024)</li>
-            <li>Cornell — Conversational AI Prototyper (Feb 2022 – May 2023)</li>
-          </ul>
-        </div>
       </article>
     </div>
   );

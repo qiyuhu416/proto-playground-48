@@ -144,14 +144,6 @@ const PILLARS: Pillar[] = [
         accent: "bg-gradient-to-br from-slate-100 to-gray-200",
         thumbnail: "/articles/physical-ai-thumb.png",
       },
-      {
-        slug: "a2ui-generative",
-        title: "Generative UI",
-        meta: "Personalization",
-        accent: "bg-gradient-to-br from-purple-100 to-pink-200",
-        thumbnail: "/articles/a2ui-thumb.svg",
-        thumbnailSize: "small",
-      },
     ],
   },
   {

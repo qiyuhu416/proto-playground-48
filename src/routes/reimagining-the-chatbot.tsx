@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-
 
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
@@ -19,177 +16,149 @@ export const Route = createFileRoute("/reimagining-the-chatbot")({
 });
 
 function CollectionComponent() {
-  const [showAssumptions, setShowAssumptions] = useState(false);
-
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
 
         <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Collection</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Collection · Design System</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
             {ARTICLE_META["reimagining-the-chatbot"].title}
           </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            If not the current way, then what could it be?
-          </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Collection</span>
+            <span>5 min read</span>
             <span className="text-neutral-300">·</span>
             <span>Apr 2026</span>
           </div>
         </div>
 
+        <TableOfContents />
+
         <div className="prose prose-neutral max-w-2xl">
 
-          <TableOfContents />
+          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
 
-          <h2 id={sectionId("The Promise")} className="mt-12 mb-4 text-2xl font-semibold text-neutral-900">{"The Promise"}</h2>
+          <p>
+            Users often don't know what to ask an AI. Yet most AI products still wait inside a chat tab for the user to initiate.
+          </p>
 
-          <h2 id={sectionId("Task Analysis: What \"Asking a Question\" Takes")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Task Analysis: What \"Asking a Question\" Takes"}</h2>
-            <p>Current chatbots are stuck in an ask-and-answer loop. But if we dive deeper, we can uncover the details that are often overlooked in what "ask and answer" really means.</p>          
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border border-neutral-200 bg-white my-6">
-            <img
-              src={showAssumptions ? "/articles/task-assumptions.png" : "/articles/task-analysis-flow.png"}
-              alt={showAssumptions ? "Assumptions made at each step" : "Six-step task analysis flow"}
-              className="w-full h-full object-contain transition-opacity duration-300"
-            />
-          </div>
-          <div className="flex items-center justify-between mb-8">
-            <p className="text-sm text-neutral-600 italic">
-              {showAssumptions
-                ? "Every step carries hidden assumptions about what users know, what the system can do, and how they work together."
-                : "A user's interaction with a chatbot involves six distinct steps—each with its own friction points and assumptions."}
-            </p>
-            <button
-              onClick={() => setShowAssumptions(v => !v)}
-              className="ml-6 shrink-0 text-xs px-3 py-1.5 rounded-full border border-neutral-300 text-neutral-500 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
-            >
-              {showAssumptions ? "← back to flow" : "reveal assumptions →"}
-            </button>
-          </div>
+          <p>
+            This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that <strong>meets users where they are.</strong>
+          </p>
 
-          <h2 id={sectionId("Prototypes Exploring These Dimensions")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Prototypes Exploring These Dimensions"}</h2>
+          <h2 id={sectionId("How to think outside the box?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">How to think outside the box?</h2>
 
-          <div className="space-y-8 my-8">
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
-                Select & Fill with Prompts <span className="font-normal text-neutral-400">awareness</span>
-              </h3>
-              <p className="text-neutral-600 mb-4">
-                The core interaction model: select a region, describe what you want, and let the AI fill it in. This prototype tests whether prompting can become a natural design tool, bridging intent and execution.
-              </p>
-              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-                <source src="/articles/chatbot-select-fill.mp4" type="video/mp4" />
-                Your browser doesn't support video playback.
-              </video></div>
-            </div>
+          <p>
+            The first step of thinking outside the box is to realize where the box is. There is a cool model called "task analysis" that helped me break out "mundane" interaction into detailed steps.
+          </p>
 
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
-                I Am Always Here—Just Let Me Know <span className="font-normal text-neutral-400">browsing & awareness combined</span>
-              </h3>
-              <p className="text-neutral-600 mb-4">
-                What if the AI didn't wait to be asked? This prototype reimagines the assistant as proactive and present, reducing the cognitive load of "knowing what to ask." It explores the assumption that users must always initiate.
-              </p>
-              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-                <source src="/articles/chatbot-always-here.mp4" type="video/mp4" />
-                Your browser doesn't support video playback.
-              </video></div>
-            </div>
+          <p>
+            I saw there are a lot of assumptions hidden in this flow:
+          </p>
 
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
-                AI–AI Interaction <span className="font-normal text-neutral-400">comprehend</span>
-              </h3>
-              <p className="text-neutral-600 mb-4">
-                When two AI agents communicate, what happens? This prototype visualizes real-time conversation between systems, exploring how they resolve misunderstandings and align intent.
-              </p>
-              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-                <source src="/articles/ai-ai-interaction.mp4" type="video/mp4" />
-                Your browser doesn't support video playback.
-              </video>
-              </div>
-            </div>
+          <ol className="list-decimal pl-5 space-y-2 text-neutral-700 mb-6">
+            <li><strong>Awareness</strong> - User forms the awareness of what to ask - assumption: user knows clearly what to ask</li>
+            <li><strong>Expression</strong> - User the conversation by expressing the question - assumption: user express through typing (or clicking on the prompt buttons)</li>
+            <li><strong>Processing</strong> - User waits for AI to generate response - assumption: waiting is boring</li>
+            <li><strong>Reception</strong> - User realizes the AI finished process</li>
+            <li><strong>Interpretation</strong> - User understands AI response</li>
+          </ol>
 
-            <div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-3">
-                Knowledge Graph Visualization <span className="font-normal text-neutral-400">comprehend & followup</span>
-              </h3>
-              <p className="text-neutral-600 mb-4">
-                When AI generates an answer, where does it come from? This prototype visualizes the reasoning process—showing connections between concepts, sources, and inferences. Making the invisible thinking visible.
-              </p>
-              <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-                <source src="/articles/chatbot-knowledge-graph.mp4" type="video/mp4" />
-                Your browser doesn't support video playback.
-              </video></div>
-            </div>
+          <p>
+            Once I wrote those assumptions down, the design space became much bigger. Instead of asking <strong>"how do we redesign the chatbot?"</strong>, I could ask: <strong>which part of this interaction flow doesn't have to exist at all?</strong>
+          </p>
+
+          <h2 id={sectionId("Explorations")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Explorations</h2>
+
+          <p>
+            So I am sharing this collection, it is less about UI but more about exploring <strong>different relationships between a person and an AI system.</strong>
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">What if AI helps you form the question while you type?</h3>
+
+          <p>
+            Instead of waiting for a complete prompt, I wanted to explore: <strong>Can AI reduce the work of prompt-writing without taking away the user's control over what they actually want to ask?</strong>
+          </p>
+
+          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm text-neutral-600 italic">
+            [Prototype video: Select & Fill interaction]
           </div>
 
-          <h2 id={sectionId("What Gets Tested")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What Gets Tested"}</h2>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">What if chat lives inside browsing?</h3>
+
           <p>
-            This collection explores prototypes across three dimensions of prototyping:
+            What if collecting context is part of the interaction, rather than something the user has to reconstruct afterward? The user can select information directly in the browsing window and add it to a <strong>question list</strong> to ask later. Instead of repeatedly copying context into a chatbot, the question can build alongside the browsing process.
           </p>
 
-          <div className="space-y-4 my-8">
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h3 className="font-semibold text-neutral-900 mb-1">Implementation</h3>
-              <p className="text-sm text-neutral-600">
-                Can a prompt engine understand spatial context? How does it preserve design intent
-                through multiple iterations?
-              </p>
-            </div>
-
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h3 className="font-semibold text-neutral-900 mb-1">Look & Feel</h3>
-              <p className="text-sm text-neutral-600">
-                How does real-time generation feel to use? Is the latency acceptable? Does the output
-                feel like it was designed by a human or a machine?
-              </p>
-            </div>
-
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h3 className="font-semibold text-neutral-900 mb-1">Role</h3>
-              <p className="text-sm text-neutral-600">
-                Does this make designers more productive or less? Does it amplify creativity or constrain
-                it? How does human-AI collaboration change the definition of design skill?
-              </p>
-            </div>
+          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm text-neutral-600 italic">
+            [Prototype video: I Am Always Here—Just Let Me Know interaction]
           </div>
 
-          <h2 id={sectionId("The Challenge")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Challenge"}</h2>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">What if AI asks <em>for you</em>?</h3>
+
           <p>
-            The hardest part isn't building the system. It's understanding what designers actually want
-            to communicate. The gap between intent and articulation is where most prototype attempts fail.
+            Users don't know what to ask, so why not have AI ask on users' behalf if it understands enough about user's preferences? Learning can happen in 2 ways: active and passive. If understanding is the goal, we don't have to rely on users to ask questions for them to learn, they can also learn by "watching 2 AIs chatting".
+          </p>
+
+          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm text-neutral-600 italic">
+            [Prototype video: AI-AI interaction]
+          </div>
+
+          <h2 id={sectionId("So what's next after those concepts?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">So what's next after those concepts?</h2>
+
+          <p>
+            Prototypes, in my opinion, serve two goals:
+          </p>
+
+          <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Produce knowledge or principles</strong></li>
+            <li><strong>Be turned into production</strong></li>
+          </ol>
+
+          <p>Those goals need different next steps.</p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">If the goal = production: run more controlled experiments</h3>
+
+          <p>
+            More business-related factors need to be considered.
           </p>
 
           <p>
-            Getting the interaction model right means testing relentlessly. Testing what people ask for.
-            Testing what the system misunderstands. Testing the moments where human and AI intent diverge.
-          </p>
-
-          <h2 id={sectionId("Next Steps")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Next Steps"}</h2>
-          <p>
-            This collection documents the journey. From first-pass concepts to polished interactions.
-            From "does it work?" to "does it feel right?" to "does it matter?"
+            For example, in scenarios where intrusiveness matters, we need to be careful about <strong>to what extent AI feels proactive versus intrusive in assisted browsing.</strong>
           </p>
 
           <p>
-            Each prototype is a question. Each iteration is an answer. And together, they're reshaping
-            what the future of design tools could be.
+            I created an interactive prototype with Claude Code and tested it using Wizard of Oz. A control panel let me adjust the metrics that defined when and how proactive the AI should be.
           </p>
+
+          <p>
+            The implication was: <strong>don't go with proactivity for now. First, explore better ways to collect contextual data.</strong>
+          </p>
+
+          <p>
+            The interesting design problem became less about making AI proactively pop up, and more about <strong>what information it needs before that behavior feels justified.</strong>
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">If the goal = knowledge: look for reusable principles</h3>
+
+          <p>
+            There is one design-thinking model I really like: the <strong>analysis–synthesis model</strong>. It taught me not to just look at each concept individually, but to derive common themes across them—and then brainstorm again based on those themes.
+          </p>
+
+          <p>
+            Across these explorations, a few things kept coming back: make uncertainty visible, preserve user agency, design recovery as carefully as the happy path, and choose the interface based on the task instead of defaulting to chat.
+          </p>
+
+          <p>
+            Given those are the actual goals, the "chatbot" is probably just the <strong>current interface</strong>—one of many possible solutions.
+          </p>
+
+          <p>
+            More to come. And hopefully, as the technology changes, we get more room to imagine what those other solutions could be.
+          </p>
+
         </div>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related concepts</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
-            <li>Generative design workflows</li>
-            <li>Prompt engineering for spatial context</li>
-            <li>Human-AI collaboration patterns</li>
-            <li>Real-time generation feedback loops</li>
-            <li>Designing for ambiguity and iteration</li>
-          </ul>
-        </div>
       </article>
     </div>
   );

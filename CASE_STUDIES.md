@@ -1,150 +1,12 @@
 # Case Studies & Articles
 
 ## Table of Contents
-1. [What do prototypes prototype?](#what-do-prototypes-prototype)
-2. [How Claude shapes my thinking](#how-claude-shapes-my-thinking)
-3. [Personalization? What is a Person?](#personalization-what-is-a-person)
-4. [Conversational Design for Trust](#conversational-design-for-trust)
-5. [The Chatbot Beyond a Tab?](#the-chatbot-beyond-a-tab)
-6. [Physical AI for Service Design](#physical-ai-for-service-design)
-7. [Reimagining the Chatbot](#reimagining-the-chatbot)
-8. [Designing Next-Gen AI Products](#designing-next-gen-ai-products)
-9. [Making Design Fun](#making-design-fun)
-10. [Google Cloud - Launching AI for Assisted Browsing](#google-cloud)
+[Conversational Design for Trust](#conversational-design-for-trust)
+[Physical AI for Service Design](#physical-ai-for-service-design)
+[Reimagining the Chatbot](#reimagining-the-chatbot)
+[Google Cloud --- Launching AI for Assisted Browsing](#google-cloud--launching-ai-for-assisted-browsing)
 
----
-
-## What do prototypes prototype?
-
-**Category:** Implementation  
-**Read Time:** 6 min  
-**Date:** Apr 2026
-
-### Prototype = Research mindset
-
-The word "prototype" might have been automatically associated with a digital phone frame where people can click around. But we could actually expand the scope here: as creation itself becomes easier, prototypes can be any form of experiments used to test "what to create."
-
-But prototyping = research. It is essentially a mindset to test what to design. Prototypes can be anything that serves those goals:
-- Explore more directions
-- Test more interactions
-- Simulate more edge cases
-- Communicate ideas that used to be too expensive to build
-- Much more
-
-**Figure 1:** Houde & Hill, "What Do Prototypes Prototype?" (1997). Stanford HCI.
-- Role: What it does
-- Implementation: How it works
-- Look & Feel: How it feels to interact with
-
-### Look & Feel
-
-Prototypes that test how something *feels* to interact with—motion, tone, visual language. Does it feel right? Does it feel trustworthy? You can't answer this with a spec doc.
-
-### Implementation
-
-Prototypes that test the technical feasibility and functionality. Can the concept actually work? What are the constraints?
-
-### Role
-
-Prototypes that test the conceptual model. Does this solve the right problem? Is this the right approach?
-
----
-
-## How Claude shapes my thinking
-
-**Category:** AI Workflow  
-**Read Time:** 5 min  
-**Date:** Apr 2026
-
-Building and evolving development tools powered by AI assistance.
-
-### What AI can't do
-
-After collaborating intensely with Claude Code, the limits became very specific. There are three things that stand out:
-
-#### 1. It doesn't stop
-
-Prompt it to "act as a world-class designer, critique the work, and then give suggestions based on the critique" and it will keep going. It will critique, suggest, critique the suggestion, suggest again. Infinitely helpful, infinitely exhausting.
-
-Someone still has to decide: **enough.** That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
-
-#### 2. It generates options, not judgments
-
-A navbar can be designed a hundred good ways. Which one is right depends on whether the tabs have dependencies, whether users navigate by keyboard, whether one client hits a particular button six times a day out of habit. I have a client who lives on the keyboard—Claude would never have thought of that because it's never watched them work.
-
-AI fills the distribution. It generates the options that a competent designer would consider. But it doesn't *judge* which one matters most. That judgment lives in context: the person, their situation, the hidden patterns in how they work.
-
-#### 3. It doesn't feel the consequences
-
-It generates; it doesn't live inside the system afterwards. It doesn't notice a week later that the pattern it suggested is quietly producing support tickets. It doesn't pick up the subtle signals from a person—the hesitation, the habit, the context behind a decision.
-
-Experience over time is something only humans can have. Being in the system, noticing the effects of your decisions on real people, learning from those effects—that's lived knowledge. AI can simulate that knowledge, but it doesn't have it.
-
-### Don't be AI's agent
-
-A lot of things about AI are unteachable lessons — just go and try it out. And you may find it addictive.
-
-The real problem seems to be how to face our FOMO, and find the space where AI leaves room.
-
-#### 1. You either use AI to amplify your thinking, or become the human agent executing for AI
-
-There were moments where I would prompt Claude Code with something like "You are a world-class designer. Analyze this problem, give me options, critique those options, and improve them based on your critique."
-
-Honestly, that feels awful. I was too eager to want that productivity, to trade my own brain. And sometimes we took a long loop, going back to the original point. Intentionally. Practice. To urge. Your impulse. To get that efficiency.
-
-#### 2. Don't chase the tool
-
-One funny thing about AI tools: **"If you learn AI slowly enough, sometimes you realize you didn't even need to learn the majority of them."**
-
-Things are moving so fast. For a while everyone talked about prompt engineering, Claude Code tricks (like `/compact` or `skills.md`). Then a few months later, the product abstracts half of it away:
-- Stuff gets baked into the models
-- Automatic context handling
-
-Right now: sometimes I use tools like Stitch for fast brainstorming. Sometimes I go back to Figma because visual sketches help the LLM understand direction better. Sometimes I prototype directly in code.
-
-Languages change. Frameworks change. Interfaces change.
-
-You see, this whole process is a prototype. We are all in the prototyping phase of human–AI interaction.
-
----
-
-## Personalization? What is a Person?
-
-**Category:** AI Philosophy  
-**Read Time:** 8 min  
-**Date:** NDA Project
-
-When asked to work on "personalization," I started by asking people around me this question: **"What makes you you?"**
-
-### So, what makes a person a person?
-
-My favorite movie "Little Prince" says "what's important is the unseen." I spent time in conversations, asking what people value about their closest relationships, their creative work, their growth—the places where they feel most like themselves. The answers weren't about algorithms or efficiency. They were about presence, consistency, genuine interest, and the freedom to be imperfect.
-
-Most personalization work focuses on data—learning preferences, predicting behavior, optimizing for engagement. But that's not what makes something feel personal. What makes something personal is being seen, understood, and respected as a unique individual.
-
-### Person & Personalization
-
-Out of those conversations, I formed my own simplified version of a roadmap for the future of personalization: **For Me, With Me, As Me.**
-
-#### 1. Learn For Me
-
-AI should serve my specific goals and context, not generic templates. It understands what I'm trying to accomplish and adapts to my situation, not the reverse.
-
-#### 2. Stay With Me
-
-AI should be a collaborator, not a replacement. I should feel like we're thinking together. The system asks me questions, validates my thinking, and invites my perspective. I have agency and a voice.
-
-#### 3. Act As Me
-
-AI should recognize and respect who I am—my values, my boundaries, my inconsistencies. It doesn't try to optimize me or push me toward what it thinks is best. It accepts that being human means being complicated.
-
-### Humanity-centered Design
-
-Yeah, it's a big word... but AI that only understands data will build systems that feel intrusive, prescriptive, or hollow. AI that understands humanity means it knows what we need, how we grow, what we struggle with, and respects our feelings.
-
-The future of AI isn't about knowing everything about you. It's about understanding something essential about what it means to be human, and building systems that respect and support that.
-
----
+------------------------------------------------------------------------
 
 ## Conversational Design for Trust
 
@@ -152,45 +14,67 @@ The future of AI isn't about knowing everything about you. It's about understand
 **Read Time:** 8 min  
 **Date:** Apr 2026
 
-Designing conversational interfaces that build trust across multiple stakeholders in healthcare contexts.
+### Context
 
-### The Challenge
+This was a research project at AI Caring, where I worked as a research assistant. My role included helping design the research method, conducting interviews, and exploring concepts through storyboards. The paper writing is still WIP—and moving very slowly, since my PI switched to industry (and now we are at the same company lol).
 
-In eldercare settings, you have multiple stakeholders:
-- The elderly person using the system
-- Family members who care for them
-- Healthcare providers managing their care
-- Administrators ensuring compliance
+The theme of the research was **What if AI *plays* a role beyond a tool, as a caregiver for older adults?**
 
-Each has different needs, different levels of tech comfort, and different concerns about trust and privacy.
+The trickiest part is that there are many stakeholders and the older adult's health may decline. 
+As the bot becomes a party that knows information from both sides. But the elder might not want the bot to tell everything to their caregiver. In social science, *affiliation* is the affective stance of being on someone's side—distinct from *alignment*, which is just structural cooperation. Designing this requires understanding what it means to be loyal to one party while respecting another's autonomy.
 
-### Conversational Design Principles
+### Outcome
+Conversational design is not just about *what the bot says*. We designed the conversations for not just single-turn AI response but also focus on the high-level interaction flow to create a decision tree that defines the logics of whether the bot feels trustworthy in the first place.
 
-1. **Clarity over cleverness** - Complex language breaks trust
-2. **Consistency in tone** - Familiarity builds trust
-3. **Transparency about limitations** - Being honest about what the AI can and cannot do
-4. **Human escalation paths** - Always offer a way to reach a human
-5. **Cultural sensitivity** - Language and metaphors matter
 
----
+#### 1. Trust can be scripted
 
-## The Chatbot Beyond a Tab?
+Trust is an important factor in this multi-stakeholer coordination scenarios. Through listerature review, we found a conversational design framework and proposed this decision tree when caregiver and elder goals conflict: 
 
-**Category:** Exploring Interface Paradigms  
-**Read Time:** 7 min  
-**Date:** Apr 2026
+1. **Acknowledge the instruction** - "I understand you want to [elder's instruction]" and name any conflicts openly
+2. **Evaluate the outcome** - Use past interactions to understand values; explain potential consequences
+3. **Show affiliation behavior** - Be clear about operational criteria and goals; demonstrate consistent support
+4. **Ask to reconfirm** - "Are you sure about [original instruction]?"
 
-What happens when we move conversational AI beyond the traditional chat interface?
 
-The current paradigm for AI interaction is a chat interface in a tab or window. But this may be limiting what these systems can do. What if AI could:
-- Interrupt you at the right moment
-- Understand the context of what you're working on
-- Provide just-in-time information without leaving your current task
-- Appear in a more natural, peripheral way
 
-This exploration looks at alternative interface paradigms and their tradeoffs.
+#### 2. Trust doesn't always positively correlate with perceived capability
 
----
+In some situations, an AI saying **"I'm not capable of providing that support"** could create more trust than confidently trying to answer everything.
+
+To answer the question of "when the bot shoudl say I don't know", we maped out the decision tree with different possibile scenarios and metrics to evaluate the outcome for each. 
+
+
+### Implications
+
+The design goal shifted from simply making the bot feel intelligent to **clearly communicating what it can do, what it cannot do, and when a human should be involved.**
+
+There is a nuance here: being transparent does not mean the bot should constantly remind users that it is limited. The interaction still needs to feel supportive. The question is how to design the right boundary so the AI can be helpful without pretending to have authority it doesn't have.
+
+
+### Process
+
+#### 1. Desktop research: understand the stakeholders and common scenarios
+
+We started with desktop research to understand the care ecosystem: who is involved, what kinds of decisions they make together, and where their interests might conflict.
+
+
+
+#### 2. Research-through-design, with storyboards as the medium
+
+We created storyboards based on the researched scenarios, visualizing different extents of bot involvement in each one. This helped us focus less on **"what should the chatbot screen look like?"** and more on **"what role should the bot play here?"**
+
+We also adopted a speed-dating research method: 10 storyboards across five scenarios, with two levels of bot involvement for each scenario. We showed them to participants in randomized order and asked them to quickly compare and react. The goal was to explore: **to what extent should the bot be involved, and how does that change across different scenarios?**
+
+We then conducted qualitative interviews at a senior center, showing participants the storyboards and asking questions like: **"What would you want the bot to do in this scenario?"**
+
+#### 3. Affinity-cluster the results
+
+After the interviews, we affinity-clustered participants' responses to look for patterns across scenarios—not just whether people liked or disliked a specific bot behavior, but *why* they wanted more or less AI involvement.
+
+That analysis led to the trust findings above, especially around capability, boundaries, and the bot's role in a multi-stakeholder relationship.
+
+There are more nuances here than I can fit into a portfolio page. The paper is still WIP, so: **stay tuned :)**
 
 ## Physical AI for Service Design
 
@@ -198,17 +82,92 @@ This exploration looks at alternative interface paradigms and their tradeoffs.
 **Read Time:** 6 min  
 **Date:** Apr 2026
 
-When AI takes physical form, how do we design interactions that feel natural?
+### Context
 
-Physical manifestations of AI—whether robots, displays, or other devices—create different interaction expectations than software AI.
+This was a fast-paced, experimental concept design project in partnership with Strange VC and two clients:
 
-Key considerations:
-- Presence: Physical objects command attention differently
-- Embodiment: Movement and physicality affect how we interpret intent
-- Trust: Physical presence can either increase or decrease trust depending on design
-- Agency: How physical is a device expected to be?
 
----
+1. **Archetype AI**, focused on physical AI
+2. **Roche**, in healthcare
+
+Archetype AI came with the request to map its multimodal AI capabilities to Roche's healthcare use cases.
+
+The team was small—an engineer, a PM, and me. My role was to conduct the research, including creating the service blueprint and analyzing **when to use AI and when *not* to use AI**. The three of us collectively shared ideas and created the final artifacts.
+
+The problems we wanted to solve were:
+
+1. Errors in the hospital-to-lab experience, with the goal of minimizing errors and reducing waste.
+2. How to be technology-driven but not tech-centered: finding the right intervention point to maximize the model's capabilities without forcing the technology into the experience.
+
+### Outcome
+
+#### 1. Service blueprint
+
+The service blueprint mapped where humans, existing systems, and AI could coordinate across the hospital-to-lab experience. More importantly, it made the boundaries visible: where AI could increase efficiency, where human judgment still mattered, and where an AI intervention might create more risk than value.
+
+#### 2. Storyboard
+
+Storyboarding helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on **when, where, and why AI should exist in the status quo.**
+
+### Process
+
+#### 1. Understand the problem 
+
+In diagnostic testing, sample collection is critical. A single error cascades through the entire lab process—false results, wasted samples, delayed diagnoses. 
+
+Common pre-analytical errors include:
+- Wrong patient info (9%)
+- Order misinterpretation (1%)
+- Incorrect container (8%)
+- Labeling mismatches (9%)
+- Tube filling errors (13%)
+- Storage failures (7%)
+
+#### 2. Explore whether AI is really needed
+
+AI *could* be a solution, but it might not always be the best solution.
+
+1. understandin the model capabilty
+
+Do we really need AI? Yes. We leverage AI's capacity to store, process, and communicate massive information.
+
+We However, the  the current workflow relies entirely on human attention and memory.
+- Tracking multiple variables simultaneously
+- Remembering complex sequences
+- Validating against large datasets
+- Communicating information clearly
+
+Potentail use case of Newton's modal oin phlebotomy include, AI can confirm patient identity against records, validate that selected vials match test orders, verify that labels are correct before they're applied, and monitor the collection process to detect deviations.
+
+2. okay it is feasible, but is it the best solution? 
+if not AI, what is an alternative solution? 
+
+For each intervention point, we compared AI with alternatives—including existing workflows and human labor. 
+
+We also looked at the risks of using AI: probabilistic errors, missing context, and the new coordination work created when a human needs to verify or correct the system.
+
+I found it useful to separate those risks into two types:
+
+- **Short-term capability limitations:** problems that may improve as the technology gets better.
+- **System-level limitations:** problems around responsibility, workflow, and error correction that don't automatically disappear with a better model.
+
+
+#### 3. Map tech capability to the service blueprint
+
+The previous analysis helped me reframed the question into: **where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?**
+
+Therefore, I created the service blueprint to map out the user flow and corresponding AI interverion point 
+
+#### 4. Understand the limitations
+
+Moving beyond this specific use case, let's think about the bigger service system. AI will "definitely" make errors, and in a service system, someone has to detect it, correct it, communicate the correction, and deal with whatever downstream impact it creates.
+
+So there are questions I was thinning about but didn't have an answer to yet:
+- **Who is responsible for error correction?**
+- **How does one AI error affect the larger service system?**
+- **Does AI remove work, or move the work to someone else?**
+- **Where should a human stay in the loop even if the model becomes more capable?**
+
 
 ## Reimagining the Chatbot
 
@@ -216,90 +175,123 @@ Key considerations:
 **Read Time:** 5 min  
 **Date:** Apr 2026
 
-A design system exploration of conversational UI patterns.
+### Context
 
-Rather than building from scratch each time, what if we could systematize the patterns that work in conversational interfaces?
+Users often don't know what to ask an AI. Yet most AI products still wait inside a chat tab for the user to initiate.
 
-Patterns explored:
-- Confirmation flows
-- Error recovery
-- Disambiguation
-- Context switching
-- Multi-turn reasoning
+This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that **meets users where they are.**
 
----
+### How to think outside the box?
 
-## Designing Next-Gen AI Products
+The first step of thining outside the box is to realize where the box is. There is a cool model called "task analysis" that helped me break out "mandane" interaction into detailed steps. 
 
-**Category:** Mapping UX to Capability  
-**Read Time:** 8 min  
+I saw there are a lot of assumptions hidden in this flow. 
+
+1. **Awareness** - User forms the awareness of what to ask - assumption: user knows claerly what to ask
+2. **Expression** - User the conversation by expressesing the question  - assumpytion: user express trhough typing (or cliking on the prompt buttons)
+4. **Processing** - User waits for AI to generate response - assumptionL waiting is bording
+5. **Reception** - User realize the AI finished process
+6. **Interpretation** - User understands AI response
+
+Once I wrote those assumptions down, the design space became much bigger. Instead of asking **"how do we redesign the chatbot?"**, I could ask: **which part of this interaction flow doesn't have to exist at all?**
+
+### Explorations
+
+So I am sharing this collection, it is less about UI but more about exploring **different relationships between a person and an AI system.**
+
+#### What if AI helps you form the question while you type?
+
+Instead of waiting for a complete prompt, I wanted to explore: **Can AI reduce the work of prompt-writing without taking away the user's control over what they actually want to ask?**
+
+#### What if chat lives inside browsing? 
+
+What if collecting context is part of the interaction, rather than something the user has to reconstruct afterward? 
+The user can select information directly in the browsing window and add it to a **question list** to ask later. Instead of repeatedly copying context into a chatbot, the question can build alongside the browsing process.
+
+
+#### What if AI asks *for you*?
+
+users don't know what to ask, so why now we have AI ask on users behalf if it understand enough about user's preferences. 
+Learning can happen in 2 ways: active and passive. If understanidng is the goal, we don't have to rely on users to ask questions for them to learn, they can also learn by "watching 2 AIs chatting". 
+
+
+### So what's next after those concepts?
+
+Prototypes, in my opinion, serve two goals:
+
+1. **Produce knowledge or principles**
+2. **Be turned into production**
+
+Those goals need different next steps.
+
+#### If the goal = production: run more controlled experiments
+
+More business-related factors need to be considered.
+
+For example, in scenarios where intrusiveness matters, we need to be careful about **to what extent AI feels proactive versus intrusive in assisted browsing.**
+
+I created an interactive prototype with Claude Code and tested it using Wizard of Oz. A control panel let me adjust the metrics that defined when and how proactive the AI should be.
+
+The implication was: **don't go with proactivity for now. First, explore better ways to collect contextual data.**
+
+The interesting design problem became less about making AI proactively pop up, and more about **what information it needs before that behavior feels justified.**
+
+#### If the goal = knowledge: look for reusable principles
+
+There is one design-thinking model I really like: the **analysis–synthesis model**. It taught me not to just look at each concept individually, but to derive common themes across them—and then brainstorm again based on those themes.
+
+Across these explorations, a few things kept coming back: make uncertainty visible, preserve user agency, design recovery as carefully as the happy path, and choose the interface based on the task instead of defaulting to chat.
+
+Given those are the actual goals, the "chatbot" is probably just the **current interface**—one of many possible solutions.
+
+More to come. And hopefully, as the technology changes, we get more room to imagine what those other solutions could be.
+
+------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------
+
+## Google Cloud --- Launching AI for Assisted Browsing
+
+**Category:** 0--1 Product Launch\
+**Read Time:** 10 min\
 **Date:** Apr 2026
 
-Lessons from conversational AI and human-AI co-writing.
+### Context
 
-The gap between what AI can do and what users expect is where bad experiences happen. Bridging this requires:
+Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to intergate intelligence to support the browsing experinece. 
+I researched and designed an 0-1 prototype, for startup consumers to different between similar offerings on the platform. It was launched on Google Cloud in 2024. 
 
-1. **Capability Mapping** - Understanding what the model actually does vs. what users think it does
-2. **Expectation Setting** - Being clear about limitations upfront
-3. **Progressive Disclosure** - Revealing capabilities gradually as users get comfortable
-4. **Feedback Loops** - Learning from what users try to do with the system
-5. **Fail Gracefully** - When the AI can't do something, the experience should still be coherent
-
----
-
-## Making Design Fun
-
-**Category:** Vibe-coding and Creative Practice  
-**Read Time:** 5 min  
-**Date:** Apr 2026
-
-On curiosity, vibe-coding, and why creation should feel like play.
-
-The best design work happens when you're having fun. Not frivolous fun, but the deep satisfaction of exploration and discovery.
-
-Vibe-coding—building things primarily for the joy of building them—is a valid and valuable practice. It's how you learn. It's where inspiration comes from. It's where playful constraints lead to novel solutions.
-
-The future of design is more playful, more exploratory, and less precious about "the right way."
-
----
-
-## Google Cloud - Launching AI for Assisted Browsing
-
-**Category:** 0→1 GenAI Project  
 **Duration:** 4 months  
-**Role:** UX Designer  
+**Role:** UX Designer, owned all research and the UX design of chatbot interaction. 
 **Deliverables:** Figma hi-fi prototypes, Research report
+**Collabotio:n** 1 senior designer, 1 UI designer, 1 engineer  
 
 Embedding AI into the Product Discovery Experience for Startup Customers
 
-### The Challenge
+Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, Browsing is messy. startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
 
-Google Cloud offers 100+ products with different pricing, integrations, and capabilities. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
 
-### Problem Statement
-
-**"When startup consumers search for solutions that align with their business objectives, how might Google Cloud assist them in differentiating between similar offerings on the platform?"**
-
-### Research Questions
-
-**Understand:** What mental models do startup leaders use when evaluating cloud solutions to purchase?
-
-**Identify:** What are the UX gaps between Google and competitors in supporting cloud solution discovery?
-
-**Compare:** What cognitive biases and trust mechanisms influence digital product purchase decisions?
 
 ### The Deliverables: 0→1 Prototypes
 
-Back in 2023 Q3, Google Cloud didn't have a chatbot—everything in this project was new.
 
-#### The Chatbot
+#### The Chatbot for contextual recommendation
 Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
 
-#### Dynamic UI
+#### Dynamic UI for personalized expereinces
 Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
 
-#### Comparison Tool
+#### Comparison Tool for faster decision making
 Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
+
+The broader takeaway was that assisted browsing works only when the
+system earns the right to intervene.
+
+### Process
+
+#### 1. Understand real browsing behavior
 
 ### Research Methodology
 
@@ -319,55 +311,38 @@ Researched decision-making psychology, online purchasing behavior, and AI trust 
 - **Trust mechanisms:** Clear product positioning and social proof (customer testimonials, case studies) drive adoption
 - **AI transparency:** Users want to understand WHY an AI recommends something, not just receive the recommendation
 
+We looked at how people actually move through tasks rather than assuming
+a clean search → result → action flow.
+
+Real behavior contains backtracking, hesitation, context switching, and
+signals that are ambiguous on their own.
+
+#### 2. Translate behavior into intent carefully
+
+The product needed to infer enough to be useful without treating every
+action as a confident signal.
+
+That meant thinking about context, confidence, and what evidence should
+be required before the system acts.
+
+#### 3. Design the explanation with the assistance
+
+The AI's reasoning could not stay completely invisible. If the system surfaced a suggestion, the experience needed to help the user understand
+why it was relevant and what control they still had.
+
+#### 4. Treat privacy and scale as design constraints
+
+Assisted browsing touches highly contextual behavior, so privacy and
+security shaped the experience from the beginning.
+
+At scale, incremental rollout also becomes part of the design process:
+launch, observe, learn, and adjust rather than assuming the first
+behavior model is final.
+
 ### Impact & Outcomes
 
 **Validated Hypothesis:** Final prototype SUS score = **86.3%** (excellent usability). Confirmed that helping users differentiate between similar solutions is critical to improving adoption.
 
 **Comprehensive Hand-offs:** Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.
 
----
-
-## Additional Case Studies
-
-The following case studies are available in the portfolio:
-
-### Design & Research
-- **Research through Design** - User-centered service design
-- **Meet the stranger challenge** - Connection and open-ended interaction
-- **Hello humans prototype** - Very personal prototype exploration
-- **Design as a Research Tool** - Using design methodology for discovery
-
-### AI & Interaction
-- **Generative UI** - Personalization through generative design
-- **AI-AI Interaction** - When two AI agents communicate
-- **Human-AI Research** - Exploring the dynamics of human-AI collaboration
-- **AIOS to see my unknown-unknowns** - Self-discovery through AI
-
-### Product & Expression
-- **Product launch from 0–1** - Building food delivery marketplace (meetfood)
-- **Hand gesture interactions** - Physical expression beyond voice
-- **Voice interaction** - Vocal expression as interface
-- **Palo Alto moment** - Playful experiments in place-based design
-
----
-
-## Themes Across Case Studies
-
-### Design Mindset
-- Prototyping as research, not just execution
-- Understanding problems deeply before solving them
-- Playfulness and experimentation as valid practices
-
-### AI & Humans
-- AI as augmentation, not replacement
-- The importance of clear communication about AI capabilities
-- Privacy and trust as foundational
-
-### Expression & Interaction
-- Multiple modalities beyond text and screens
-- The value of embodied interaction
-- Designing for actual user behavior, not idealized usage
-
----
-
-*Portfolio by Qiyu Hu | 2026*
+------------------------------------------------------------------------

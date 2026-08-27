@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
@@ -13,194 +12,168 @@ export const Route = createFileRoute("/physical-ai")({
       },
     ],
   }),
-  component: PhysicalAIComponent,
+  component: ArticleComponent,
 });
 
-function PhysicalAIComponent() {
+function ArticleComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-4xl px-6 py-12">
 
         <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Research</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Understanding Behavioral Intent</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
             {ARTICLE_META["physical-ai"].title}
           </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
-            Designing AI beyond screens. How embedding intelligence in physical systems can prevent human error in diagnostic healthcare.
-          </p>
           <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Research · Healthcare Design</span>
+            <span>6 min read</span>
             <span className="text-neutral-300">·</span>
-            <span>AI-Assisted Phlebotomy</span>
+            <span>Apr 2026</span>
           </div>
         </div>
 
-        <img
-          src="/articles/physical-ai-hero.png"
-          alt="Physical AI healthcare interaction design"
-          className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
-        />
+        <TableOfContents />
 
         <div className="prose prose-neutral max-w-4xl">
-          <TableOfContents />
 
-          <h2 id={sectionId("The Challenge: Human Error in Phlebotomy")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Challenge: Human Error in Phlebotomy"}</h2>
-
-          <p>
-            In diagnostic testing, sample collection is critical. A single error in this phase cascades through the entire lab process—false results, wasted samples, delayed diagnoses. Yet the current workflow relies entirely on human attention and memory.
-          </p>
+          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
 
           <p>
-            The patient interaction is complex: confirmation, sample collection, labeling, storage. The phlebotomist juggles multiple information sources (test orders, patient data, vial requirements) while performing a delicate physical task. Errors happen not from incompetence, but from cognitive overload.
+            This was a fast-paced, experimental concept design project in partnership with Strange VC and two clients:
           </p>
 
-          <img
-            src="/articles/physical-ai-17.png"
-            alt="Diagnostic testing phases and error opportunities"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            Three phases of the diagnostic journey: pre-analytical (collection), analytical (testing), post-analytical (reporting). The pre-analytical phase is where most errors occur.
-          </p>
-
-          <img
-            src="/articles/physical-ai-18.png"
-            alt="Current flow showing errors at each step"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            Phlebotomists and patients navigate a series of critical checkpoints. Each is an opportunity for error: wrong patient info (9%), order misinterpretation (1%), incorrect container (8%), labeling mismatches (9%), tube filling errors (13%), and storage failures (7%).
-          </p>
-
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <p className="m-0"><strong>The insight:</strong> These aren't rare mistakes—they're endemic to the process. The phlebotomist is managing too much cognitive load while performing a precision task.</p>
-          </div>
-
-          <h2 id={sectionId("Why AI?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Why AI?"}</h2>
+          <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Archetype AI</strong>, focused on physical AI</li>
+            <li><strong>Roche</strong>, in healthcare</li>
+          </ol>
 
           <p>
-            Do we really need AI? <strong>Yes. We leverage AI's capacity to store, process, and communicate massive information.</strong>
+            Archetype AI came with the request to map its multimodal AI capabilities to Roche's healthcare use cases.
           </p>
 
           <p>
-            AI can't draw blood. It can't feel tissue or make judgment calls based on subtle physical feedback. But AI excels at what humans struggle with: tracking multiple variables simultaneously, remembering complex sequences, validating against large datasets, communicating information clearly.
+            The team was small—an engineer, a PM, and me. My role was to conduct the research, including creating the service blueprint and analyzing <strong>when to use AI and when <em>not</em> to use AI</strong>. The three of us collectively shared ideas and created the final artifacts.
           </p>
 
           <p>
-            In phlebotomy, that means: AI can confirm patient identity against records, validate that the selected vial matches the test order, verify that labels are correct before they're applied, and monitor the collection process to detect deviations.
+            The problems we wanted to solve were:
           </p>
 
-          <h2 id={sectionId("Mapping AI to Error: Short-term vs. Long-term")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Mapping AI to Error: Short-term vs. Long-term"}</h2>
+          <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+            <li>Errors in the hospital-to-lab experience, with the goal of minimizing errors and reducing waste.</li>
+            <li>How to be technology-driven but not tech-centered: finding the right intervention point to maximize the model's capabilities without forcing the technology into the experience.</li>
+          </ol>
 
-          <img
-            src="/articles/physical-ai-21.png"
-            alt="AI capability mapping to errors - short term and long term vision"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
+          <h2 id={sectionId("Outcome")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Outcome</h2>
 
-          <p className="text-sm text-neutral-500 italic">
-            The same system serves two roles: short-term, it assists the phlebotomist (catching errors before they happen). Long-term, it becomes a performer (autonomous quality verification and execution).
+          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Service blueprint</h3>
+
+          <p>
+            The service blueprint mapped where humans, existing systems, and AI could coordinate across the hospital-to-lab experience. More importantly, it made the boundaries visible: where AI could increase efficiency, where human judgment still mattered, and where an AI intervention might create more risk than value.
           </p>
 
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Short-term: AI as Assistant</h3>
-          <ul>
-            <li><strong>Confirmation phase:</strong> Compare label info & patient ID</li>
-            <li><strong>Selection phase:</strong> Evaluate vial-label match, find correct filling status</li>
-            <li><strong>Extraction phase:</strong> Monitor tube filling status, detect incorrect amount</li>
-            <li><strong>Storage phase:</strong> Generate summary, identify storage location, notice unusual sample changes</li>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Storyboard</h3>
+
+          <p>
+            Storyboarding helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <strong>when, where, and why AI should exist in the status quo.</strong>
+          </p>
+
+          <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Understand the problem</h3>
+
+          <p>
+            In diagnostic testing, sample collection is critical. A single error cascades through the entire lab process—false results, wasted samples, delayed diagnoses.
+          </p>
+
+          <p>
+            Common pre-analytical errors include:
+          </p>
+
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li>Wrong patient info (9%)</li>
+            <li>Order misinterpretation (1%)</li>
+            <li>Incorrect container (8%)</li>
+            <li>Labeling mismatches (9%)</li>
+            <li>Tube filling errors (13%)</li>
+            <li>Storage failures (7%)</li>
           </ul>
 
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Long-term: AI as Performer</h3>
-          <ul>
-            <li><strong>Automation:</strong> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
-            <li><strong>Integration:</strong> Act on human feedback, refine based on patterns</li>
-            <li><strong>Reliability:</strong> Reduce human error to near-zero through consistent, tireless execution</li>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Explore whether AI is really needed</h3>
+
+          <p>
+            AI <em>could</em> be a solution, but it might not always be the best solution.
+          </p>
+
+          <p>
+            Do we really need AI? Yes. We leverage AI's capacity to store, process, and communicate massive information.
+          </p>
+
+          <p>
+            However, the current workflow relies entirely on human attention and memory. AI excels at:
+          </p>
+
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li>Tracking multiple variables simultaneously</li>
+            <li>Remembering complex sequences</li>
+            <li>Validating against large datasets</li>
+            <li>Communicating information clearly</li>
           </ul>
 
-          <h2 id={sectionId("The System: Hardware & Design")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The System: Hardware & Design"}</h2>
-
-          <img
-            src="/articles/physical-ai-23.png"
-            alt="Hardware artifacts: base station, tracker base, and tracker module"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
+          <p>
+            Potential use cases of AI in phlebotomy include: AI can confirm patient identity against records, validate that selected vials match test orders, verify that labels are correct before they're applied, and monitor the collection process to detect deviations.
           </p>
 
           <p>
-            The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
-          </p>
-
-          <h2 id={sectionId("The User Flow: 8-Step Collection Journey")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The User Flow: 8-Step Collection Journey"}</h2>
-
-          <img
-            src="/articles/physical-ai-24.png"
-            alt="Proposed user flow with 8 interaction steps"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            Step-by-step, the system guides the phlebotomist through collection while validating each decision. Computer vision reads IDs. The CVA (Computer Vision Assistant) manages vial storage. On-screen UI confirms selections. Smart labels verify matches. The system is always watching, always confirming.
-          </p>
-
-          <div className="space-y-6 my-8">
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Step 1-2: Identity & Order</h4>
-              <p className="text-sm text-neutral-600">Phlebotomist asks for ID, ID is scanned. Machine prints tube selection guide. Phlebotomist confirms test order.</p>
-            </div>
-
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Step 3-4: Vial Selection & Labeling</h4>
-              <p className="text-sm text-neutral-600">CVA starts, requires view of vial storage. System confirms correct starting vial (1-by-1 match). Printer outputs smart labels (NFC, QR, barcode).</p>
-            </div>
-
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Step 5-6: Collection & Verification</h4>
-              <p className="text-sm text-neutral-600">Phlebotomist inserts needle. CVA confirms correct vial order. Phlebotomist fills first vial. CVA watching for tube filling, additive type/amount, tube match.</p>
-            </div>
-
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Step 7-8: Completion & Validation</h4>
-              <p className="text-sm text-neutral-600">Phlebotomist changes & fills additional vials if needed. CVA confirms all samples (total volume, all barcodes, against lab order). Labels confirm against patient info.</p>
-            </div>
-          </div>
-
-          <h2 id={sectionId("Team & Collaboration")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Team & Collaboration"}</h2>
-
-          <img
-            src="/articles/physical-ai-16.png"
-            alt="Project team: Qiyu Hu, Greg McNamara, Emily Privot"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            This project was a collaboration between HCI research, industrial & UX design, and technology specialists—bringing together human-centered design with hardware and software engineering.
-          </p>
-
-          <h2 id={sectionId("Key Takeaway")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Key Takeaway"}</h2>
-
-          <p>
-            Physical AI isn't about replacing humans. It's about <strong>removing cognitive overload from moments that require precision.</strong> The phlebotomist's skill—understanding tissue, sensing pressure, making judgment calls—remains irreplaceable. But the burden of remembering 10 variables while drawing blood? That's where AI excels.
+            However, okay it is feasible, but is it the best solution? If not AI, what is an alternative solution?
           </p>
 
           <p>
-            When AI is embedded in the physical environment, it becomes a tool that feels natural, not intrusive. It doesn't ask for input; it confirms choices. It doesn't replace the human; it amplifies their focus.
+            For each intervention point, we compared AI with alternatives—including existing workflows and human labor.
           </p>
+
+          <p>
+            We also looked at the risks of using AI: probabilistic errors, missing context, and the new coordination work created when a human needs to verify or correct the system.
+          </p>
+
+          <p>
+            I found it useful to separate those risks into two types:
+          </p>
+
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Short-term capability limitations:</strong> problems that may improve as the technology gets better.</li>
+            <li><strong>System-level limitations:</strong> problems around responsibility, workflow, and error correction that don't automatically disappear with a better model.</li>
+          </ul>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Map tech capability to the service blueprint</h3>
+
+          <p>
+            The previous analysis helped me reframe the question into: <strong>where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?</strong>
+          </p>
+
+          <p>
+            Therefore, I created the service blueprint to map out the user flow and corresponding AI intervention points.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">4. Understand the limitations</h3>
+
+          <p>
+            Moving beyond this specific use case, let's think about the bigger service system. AI will "definitely" make errors, and in a service system, someone has to detect it, correct it, communicate the correction, and deal with whatever downstream impact it creates.
+          </p>
+
+          <p>
+            So there are questions I was thinking about but didn't have an answer to yet:
+          </p>
+
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Who is responsible for error correction?</strong></li>
+            <li><strong>How does one AI error affect the larger service system?</strong></li>
+            <li><strong>Does AI remove work, or move the work to someone else?</strong></li>
+            <li><strong>Where should a human stay in the loop even if the model becomes more capable?</strong></li>
+          </ul>
+
         </div>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related experiences</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
-            <li>CMF & Technology Design — Industrial Design, AI Integration</li>
-            <li>Healthcare Systems — Error Prevention, Workflow Optimization</li>
-            <li>Human-AI Collaboration — Assistive Design Patterns</li>
-          </ul>
-        </div>
       </article>
     </div>
   );

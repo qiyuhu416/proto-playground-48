@@ -1,6 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
@@ -10,216 +8,153 @@ export const Route = createFileRoute("/google-cloud")({
       { title: "Qiyu x AI interaction" },
       {
         name: "description",
-        content: "Embedding AI into the product discovery experience for startup customers.",
+        content: "0→1 GenAI project: Embedding AI into the product discovery experience for Google Cloud's startup customers.",
       },
     ],
   }),
-  component: ProjectComponent,
+  component: CaseStudyComponent,
 });
 
-function ProjectComponent() {
-  const [activeTab, setActiveTab] = useState(0);
-
+function CaseStudyComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-4xl px-6 py-12">
 
-        <div className="mb-20">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Project</span>
+        <div className="mb-16">
+          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">0→1 Product Launch</span>
           <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
             {ARTICLE_META["google-cloud"].title}
           </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
-            Embedding AI into the Product Discovery Experience for Startup Customers
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-2 mb-8">
-            <span className="text-xs font-medium px-3 py-1 bg-neutral-100 rounded-full">GenAI</span>
-            <span className="text-xs font-medium px-3 py-1 bg-neutral-100 rounded-full">0→1</span>
-            <span className="text-xs font-medium px-3 py-1 bg-neutral-100 rounded-full">Web</span>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6 mt-8">
-            <div>
-              <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Duration</h3>
-              <p className="text-neutral-900 font-medium">4 months</p>
-            </div>
-            <div>
-              <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Deliverable</h3>
-              <p className="text-neutral-900 font-medium">Figma hi-fi prototypes<br/>Research report</p>
-            </div>
-            <div>
-              <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Role</h3>
-              <p className="text-neutral-900 font-medium">UX Designer</p>
-            </div>
-            <div>
-              <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">Team</h3>
-              <p className="text-neutral-900 font-medium">1 senior designer@Google<br/>1 researcher, 1 designer</p>
-            </div>
+          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
+            <span>10 min read</span>
+            <span className="text-neutral-300">·</span>
+            <span>Apr 2026</span>
           </div>
         </div>
 
-        <img
-          src="/articles/google-cloud-hero.png"
-          alt="Google Cloud product discovery project"
-          className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
-        />
+        <TableOfContents />
 
         <div className="prose prose-neutral max-w-4xl">
-          <h2 id={sectionId("The Challenge")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"The Challenge"}</h2>
-          <p>
-            Google Cloud offers 100+ products with different pricing, integrations, and capabilities. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
-          </p>
-          <img
-            src="/articles/google-cloud-industry-solutions.png"
-            alt="Google Cloud Industry Solutions page showing the breadth of products across sectors"
-            className="w-full rounded-xl my-6 border border-neutral-200"
-          />
 
-          <TableOfContents />
+          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
 
-          <h2 id={sectionId("Problem Statement")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Problem Statement"}</h2>
           <p>
-            <strong>"When startup consumers search for solutions that align with their business objectives, how might Google Cloud assist them in differentiating between similar offerings on the platform?"</strong>
+            Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to integrate intelligence to support the browsing experience. I researched and designed an 0-1 prototype for startup consumers to differentiate between similar offerings on the platform. It was launched on Google Cloud in 2024.
           </p>
 
-          <h2 id={sectionId("Research Questions")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Research Questions"}</h2>
-          <div className="grid md:grid-cols-3 gap-6 mt-6 mb-8">
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-              <h4 className="font-semibold mb-2 text-neutral-900">Understand</h4>
-              <p className="text-sm text-neutral-600">What mental models do startup leaders use when evaluating cloud solutions to purchase?</p>
-            </div>
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-              <h4 className="font-semibold mb-2 text-neutral-900">Identify</h4>
-              <p className="text-sm text-neutral-600">What are the UX gaps between Google and competitors in supporting cloud solution discovery?</p>
-            </div>
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-              <h4 className="font-semibold mb-2 text-neutral-900">Compare</h4>
-              <p className="text-sm text-neutral-600">What cognitive biases and trust mechanisms influence digital product purchase decisions?</p>
-            </div>
+          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm">
+            <p className="m-0"><strong>Duration:</strong> 4 months</p>
+            <p className="m-0"><strong>Role:</strong> UX Designer, owned all research and the UX design of chatbot interaction.</p>
+            <p className="m-0"><strong>Deliverables:</strong> Figma hi-fi prototypes, Research report</p>
+            <p className="m-0"><strong>Collaboration:</strong> 1 senior designer, 1 UI designer, 1 engineer</p>
           </div>
 
-          <h2 id={sectionId("The Deliverables: 0→1 Prototypes")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Deliverables: 0→1 Prototypes"}</h2>
-          <p>Back in 2023 Q3, Google Cloud didn't have a chatbot—everything in this project was new.</p>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">Embedding AI into the Product Discovery Experience for Startup Customers</h3>
 
-          <div className="mt-8 border border-neutral-200 rounded-lg overflow-hidden">
-            <div className="flex flex-col sm:flex-row border-b border-neutral-200 bg-neutral-50">
-              {[
-                { name: "The Chatbot", desc: "Personalized recommendations for product discovery" },
-                { name: "Dynamic UI", desc: "Adaptive interface for user journey stages" },
-                { name: "Comparison Tool", desc: "Side-by-side solution evaluation" },
-              ].map((tab, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveTab(idx)}
-                  className={`flex-1 px-4 py-3 text-left text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === idx
-                      ? "bg-white border-b-neutral-900 border-neutral-900"
-                      : "border-transparent text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  <div className="font-semibold">{tab.name}</div>
-                  <div className="text-xs text-neutral-500 mt-1">{tab.desc}</div>
-                </button>
-              ))}
-            </div>
-            <div className="p-6 bg-white">
-              {activeTab === 0 && (
-                <>
-                  <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden bg-neutral-50 mb-4">
-                    <img src="/articles/google-cloud-chatbot.png" alt="Chatbot prototype" className="w-full h-full object-contain" />
-                  </div>
-                  <p className="text-neutral-600">
-                    The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
-                  </p>
-                </>
-              )}
-              {activeTab === 1 && (
-                <>
-                  <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden bg-neutral-50 mb-4">
-                    <img src="/articles/google-cloud-dynamic.png" alt="Dynamic UI prototype" className="w-full h-full object-contain" />
-                  </div>
-                  <p className="text-neutral-600">
-                    Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
-                  </p>
-                </>
-              )}
-              {activeTab === 2 && (
-                <>
-                  <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden bg-neutral-50 mb-4">
-                    <img src="/articles/google-cloud-comparison.png" alt="Comparison tool prototype" className="w-full h-full object-contain" />
-                  </div>
-                  <p className="text-neutral-600">
-                    Side-by-side comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
+          <p>
+            Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, browsing is messy. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
+          </p>
 
-          <h2 id={sectionId("Research Methodology")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Research Methodology"}</h2>
-          <div className="space-y-6 mt-6 mb-8">
-            <div>
-              <h4 className="font-semibold text-neutral-900 mb-2">Semi-Structured Interviews (N=8)</h4>
-              <p className="text-neutral-600 text-sm">
-                Recruited startup CTOs, CEOs, and Founders as key decision-makers. In-depth interviews revealed mental models and decision-making processes that surveys couldn't capture.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-neutral-900 mb-2">Competitive Analysis</h4>
-              <p className="text-neutral-600 text-sm">
-                Analyzed AWS and Azure UX patterns for product discovery. Identified where Google Cloud could differentiate through AI-powered recommendations.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-neutral-900 mb-2">Literature Review</h4>
-              <p className="text-neutral-600 text-sm">
-                Researched decision-making psychology, online purchasing behavior, and AI trust mechanisms. Grounded design decisions in behavioral science.
-              </p>
-            </div>
-          </div>
+          <h2 id={sectionId("The Deliverables")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">The Deliverables: 0→1 Prototypes</h2>
 
-          <h2 id={sectionId("Key Insights")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Key Insights"}</h2>
-          <ul className="list-disc pl-6 space-y-3 text-neutral-600">
-            <li>Mental models: Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists</li>
-            <li>Discovery friction: Comparing similar products requires switching between multiple pages and reading dense documentation</li>
-            <li>Trust mechanisms: Clear product positioning and social proof (customer testimonials, case studies) drive adoption</li>
-            <li>AI transparency: Users want to understand WHY an AI recommends something, not just receive the recommendation</li>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">The Chatbot for contextual recommendation</h3>
+
+          <p>
+            Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">Dynamic UI for personalized experiences</h3>
+
+          <p>
+            Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">Comparison Tool for faster decision making</h3>
+
+          <p>
+            Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
+          </p>
+
+          <p>
+            The broader takeaway was that assisted browsing works only when the system earns the right to intervene.
+          </p>
+
+          <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Understand real browsing behavior</h3>
+
+          <h4 className="mt-6 mb-2 text-base font-semibold">Research Methodology</h4>
+
+          <h5 className="mt-4 mb-2 text-sm font-semibold text-neutral-700">Semi-Structured Interviews (N=8)</h5>
+          <p className="text-neutral-700">
+            Recruited startup CTOs, CEOs, and Founders as key decision-makers. In-depth interviews revealed mental models and decision-making processes that surveys couldn't capture.
+          </p>
+
+          <h5 className="mt-4 mb-2 text-sm font-semibold text-neutral-700">Competitive Analysis</h5>
+          <p className="text-neutral-700">
+            Analyzed AWS and Azure UX patterns for product discovery. Identified where Google Cloud could differentiate through AI-powered recommendations.
+          </p>
+
+          <h5 className="mt-4 mb-2 text-sm font-semibold text-neutral-700">Literature Review</h5>
+          <p className="text-neutral-700">
+            Researched decision-making psychology, online purchasing behavior, and AI trust mechanisms. Grounded design decisions in behavioral science.
+          </p>
+
+          <h4 className="mt-6 mb-2 text-base font-semibold">Key Insights</h4>
+
+          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+            <li><strong>Mental models:</strong> Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists</li>
+            <li><strong>Discovery friction:</strong> Comparing similar products requires switching between multiple pages and reading dense documentation</li>
+            <li><strong>Trust mechanisms:</strong> Clear product positioning and social proof (customer testimonials, case studies) drive adoption</li>
+            <li><strong>AI transparency:</strong> Users want to understand WHY an AI recommends something, not just receive the recommendation</li>
           </ul>
 
-          <h2 id={sectionId("Impact & Outcomes")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Impact & Outcomes"}</h2>
-          <div className="grid md:grid-cols-3 gap-6 mt-6 mb-8">
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-              <h4 className="font-semibold mb-2 text-neutral-900">Validated Hypothesis</h4>
-              <p className="text-sm text-neutral-600">Final prototype SUS score = <strong>86.3%</strong> (excellent usability). Confirmed that helping users differentiate between similar solutions is critical to improving adoption.</p>
-            </div>
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-              <h4 className="font-semibold mb-2 text-neutral-900">Comprehensive Hand-offs</h4>
-              <p className="text-sm text-neutral-600">Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.</p>
-            </div>
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
-              <h4 className="font-semibold mb-2 text-neutral-900">Driving Implementation</h4>
-              <p className="text-sm text-neutral-600">6 Google executives expressed strong interest across 2 presentation rounds. Chatbot feature is now being implemented on the Google Cloud website.</p>
-            </div>
-          </div>
+          <p>
+            We looked at how people actually move through tasks rather than assuming a clean search → result → action flow.
+          </p>
 
-          <h2 id={sectionId("Key Learnings")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Key Learnings"}</h2>
-          <ul className="list-disc pl-6 space-y-2 text-neutral-600 text-sm">
-            <li>When designing AI features, transparency matters more than perfection</li>
-            <li>Real user interviews with decision-makers reveal constraints that analytics never show</li>
-            <li>Prototypes are powerful tools for stakeholder alignment and executive buy-in</li>
-            <li>Tight timelines with small, focused teams can produce research-driven, high-quality prototypes</li>
-          </ul>
+          <p>
+            Real behavior contains backtracking, hesitation, context switching, and signals that are ambiguous on their own.
+          </p>
 
-          <div className="mt-12 pt-8 border-t border-neutral-200">
-            <p className="text-sm text-neutral-600">
-              For detailed prototypes, interactive demos, and full research documentation, visit the{" "}
-              <a href="https://www.key-you-who.com/projects/google-cloud" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">
-                complete project page
-              </a>.
-            </p>
-          </div>
+          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Translate behavior into intent carefully</h3>
+
+          <p>
+            The product needed to infer enough to be useful without treating every action as a confident signal.
+          </p>
+
+          <p>
+            That meant thinking about context, confidence, and what evidence should be required before the system acts.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Design the explanation with the assistance</h3>
+
+          <p>
+            The AI's reasoning could not stay completely invisible. If the system surfaced a suggestion, the experience needed to help the user understand why it was relevant and what control they still had.
+          </p>
+
+          <h3 className="mt-8 mb-3 text-lg font-semibold">4. Treat privacy and scale as design constraints</h3>
+
+          <p>
+            Assisted browsing touches highly contextual behavior, so privacy and security shaped the experience from the beginning.
+          </p>
+
+          <p>
+            At scale, incremental rollout also becomes part of the design process: launch, observe, learn, and adjust rather than assuming the first behavior model is final.
+          </p>
+
+          <h2 id={sectionId("Impact & Outcomes")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Impact & Outcomes</h2>
+
+          <p>
+            <strong>Validated Hypothesis:</strong> Final prototype SUS score = <strong>86.3%</strong> (excellent usability). Confirmed that helping users differentiate between similar solutions is critical to improving adoption.
+          </p>
+
+          <p>
+            <strong>Comprehensive Hand-offs:</strong> Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.
+          </p>
+
         </div>
+
       </article>
     </div>
   );
