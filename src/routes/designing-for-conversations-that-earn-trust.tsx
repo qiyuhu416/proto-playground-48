@@ -126,6 +126,25 @@ function ArticleComponent() {
             To answer the question of "when the bot should say I don't know", we mapped out the decision tree with different possible scenarios and metrics to evaluate the outcome for each.
           </p>
 
+          <div className="bg-gradient-to-r from-neutral-50 to-neutral-100 border-2 border-neutral-300 rounded-xl p-6 my-8 overflow-x-auto">
+            <pre className="text-xs leading-relaxed text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Scenario Analysis: When to say "I don't know"
+
+┌─────────────────────────────────────────────────────────────┐
+│ Context: The older adult had a fall                          │
+│ Question: Should the bot tell the kids?                      │
+└─────────────────────────────────────────────────────────────┘
+
+               ELDER PREFERENCE  |  HEALTH STATUS  |  DISTANCE
+───────────────────────────────────────────────────────────────
+Wants privacy         Private   |   Recovering    |   Nearby   → Tell gradually
+Wants privacy         Private   |   Declining     |   Far away → Tell immediately
+Wants transparency    Share     |   Any status    |   Any      → Tell + explain
+Unclear preference    Unknown   |   Critical      |   Any      → Tell + support
+
+Each scenario requires different communication strategies
+from the bot to maintain both trust and safety.`}</pre>
+          </div>
+
           <h2 id={sectionId("Implications")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Implications</h2>
 
           <p>
@@ -150,12 +169,39 @@ function ArticleComponent() {
             We created storyboards based on the researched scenarios, visualizing different extents of bot involvement in each one. This helped us focus less on <strong>"what should the chatbot screen look like?"</strong> and more on <strong>"what role should the bot play here?"</strong>
           </p>
 
+          <div className="grid md:grid-cols-2 gap-4 my-6">
+            <img
+              src="/articles/slz-speeddating-1.png"
+              alt="Speed dating research method setup 1"
+              className="w-full rounded-lg border border-neutral-200"
+            />
+            <img
+              src="/articles/slz-speeddating-2.png"
+              alt="Speed dating research method setup 2"
+              className="w-full rounded-lg border border-neutral-200"
+            />
+          </div>
+
+          <p className="text-sm text-neutral-500 italic mb-6">
+            Speed-dating research method: 10 storyboards across five scenarios, shown to participants in randomized order to quickly gather reactions on bot involvement levels.
+          </p>
+
           <p>
             We also adopted a speed-dating research method: 10 storyboards across five scenarios, with two levels of bot involvement for each scenario. We showed them to participants in randomized order and asked them to quickly compare and react. The goal was to explore: <strong>to what extent should the bot be involved, and how does that change across different scenarios?</strong>
           </p>
 
           <p>
             We then conducted qualitative interviews at a senior center, showing participants the storyboards and asking questions like: <strong>"What would you want the bot to do in this scenario?"</strong>
+          </p>
+
+          <img
+            src="/articles/slz-testing.png"
+            alt="Qualitative interview and testing session"
+            className="w-full rounded-lg border border-neutral-200 my-6"
+          />
+
+          <p className="text-sm text-neutral-500 italic mb-6">
+            Conducting qualitative interviews with participants at a senior center, showing storyboards and exploring their preferences for bot involvement.
           </p>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">3. Affinity-cluster the results</h3>

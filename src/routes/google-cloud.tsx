@@ -55,6 +55,29 @@ function CaseStudyComponent() {
             Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, browsing is messy. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
           </p>
 
+          <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8">
+            <pre className="text-xs leading-relaxed text-neutral-700 overflow-x-auto" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`The Discovery Problem:
+
+STARTUP LEADER
+      │
+      ├─→ Goal: "Find the right cloud solution"
+      │
+      ├─→ Challenges:
+      │   • 100+ products to choose from
+      │   • Similar solutions with different pricing
+      │   • Dense documentation
+      │   • Multiple decision factors (cost, integration, capability)
+      │
+      └─→ Current experience: Search → Browse → Document → Compare → Still confused
+
+Our Solution: Contextual AI guidance at each discovery stage
+      │
+      ├─→ Understand what they're building
+      ├─→ Recommend relevant products
+      ├─→ Explain differentiators
+      └─→ Enable confident comparison`}</pre>
+          </div>
+
           <h2 id={sectionId("The Deliverables")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">The Deliverables: 0→1 Prototypes</h2>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">The Chatbot for contextual recommendation</h3>
@@ -63,17 +86,35 @@ function CaseStudyComponent() {
             Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
           </p>
 
+          <img
+            src="/articles/google-cloud-chatbot.png"
+            alt="Google Cloud chatbot interface for product recommendations"
+            className="w-full rounded-2xl my-6 border border-neutral-200"
+          />
+
           <h3 className="mt-8 mb-3 text-lg font-semibold">Dynamic UI for personalized experiences</h3>
 
           <p>
             Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
           </p>
 
+          <img
+            src="/articles/google-cloud-dynamic.png"
+            alt="Dynamic UI adapting to user journey stages"
+            className="w-full rounded-2xl my-6 border border-neutral-200"
+          />
+
           <h3 className="mt-8 mb-3 text-lg font-semibold">Comparison Tool for faster decision making</h3>
 
           <p>
             Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
           </p>
+
+          <img
+            src="/articles/google-cloud-comparison.png"
+            alt="Side-by-side solution comparison tool"
+            className="w-full rounded-2xl my-6 border border-neutral-200"
+          />
 
           <p>
             The broader takeaway was that assisted browsing works only when the system earns the right to intervene.

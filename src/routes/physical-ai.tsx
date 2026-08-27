@@ -78,6 +78,22 @@ function ArticleComponent() {
             The service blueprint mapped where humans, existing systems, and AI could coordinate across the hospital-to-lab experience. More importantly, it made the boundaries visible: where AI could increase efficiency, where human judgment still mattered, and where an AI intervention might create more risk than value.
           </p>
 
+          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-6 my-6">
+            <pre className="text-xs leading-relaxed text-neutral-700 overflow-x-auto" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Service Blueprint: AI in Phlebotomy
+
+PATIENT JOURNEY  │  Human Actions      │  System Actions    │  AI Role
+─────────────────┼──────────────────────┼────────────────────┼──────────────
+Confirmation     │  Verify ID           │  Compare records   │  ✓ Assist
+Selection        │  Choose vials        │  Validate order    │  ✓ Verify
+Extraction       │  Draw blood          │  Monitor status    │  ✓ Guide
+Labeling         │  Apply labels        │  Scan & confirm    │  ✓ Validate
+Storage          │  Place samples       │  Track location    │  ✓ Monitor
+Transport        │  Package boxes       │  Update status     │  ~ Alert only
+Result           │  Inform patient      │  Generate report   │  ✗ No AI
+
+Legend: ✓ AI takes active role  ~ Limited AI role  ✗ Human-only`}</pre>
+          </div>
+
           <h3 className="mt-8 mb-3 text-lg font-semibold">2. Storyboard</h3>
 
           <p>

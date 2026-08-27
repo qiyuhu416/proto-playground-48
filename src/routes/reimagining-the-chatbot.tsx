@@ -79,6 +79,16 @@ function CollectionComponent() {
             The first step of thinking outside the box is to realize where the box is. There is a cool model called "task analysis" that helped me break out "mundane" interaction into detailed steps.
           </p>
 
+          <img
+            src="/articles/task-analysis-flow.png"
+            alt="Six-step task analysis flow for asking a question"
+            className="w-full rounded-2xl my-6 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic mb-6">
+            A user's interaction with a chatbot involves six distinct steps—each with its own friction points and assumptions.
+          </p>
+
           <p>
             I saw there are a lot of assumptions hidden in this flow:
           </p>
@@ -90,6 +100,16 @@ function CollectionComponent() {
             <li><strong>Reception</strong> - User realizes the AI finished process</li>
             <li><strong>Interpretation</strong> - User understands AI response</li>
           </ol>
+
+          <img
+            src="/articles/task-assumptions.png"
+            alt="Assumptions made at each step of the interaction"
+            className="w-full rounded-2xl my-6 border border-neutral-200"
+          />
+
+          <p className="text-sm text-neutral-500 italic mb-6">
+            Every step carries hidden assumptions about what users know, what the system can do, and how they work together.
+          </p>
 
           <p>
             Once I wrote those assumptions down, the design space became much bigger. Instead of asking <strong>"how do we redesign the chatbot?"</strong>, I could ask: <strong>which part of this interaction flow doesn't have to exist at all?</strong>
