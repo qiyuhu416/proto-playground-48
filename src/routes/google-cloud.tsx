@@ -181,13 +181,6 @@ Our Solution: Contextual AI guidance at each discovery stage
             </div>
           </div>
 
-          <p>
-            We looked at how people actually move through tasks rather than assuming a clean search → result → action flow.
-          </p>
-
-          <p>
-            Real behavior contains backtracking, hesitation, context switching, and signals that are ambiguous on their own.
-          </p>
 
           <h3 className="mt-12 mb-4 text-lg font-semibold">2. Translate behavior into intent carefully</h3>
 

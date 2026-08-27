@@ -607,6 +607,7 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function Index() {
+  const navigate = useNavigate();
   const [heroGap, setHeroGap] = useState<GapId | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
@@ -618,6 +619,15 @@ function Index() {
       if (card) return card;
     }
     return undefined;
+  };
+
+  const handleCardClick = (slug: string) => {
+    const card = findCard(slug);
+    if (!card?.externalLink) {
+      navigate({ to: `/${slug}` });
+    } else {
+      window.open(card.externalLink, '_blank');
+    }
   };
 
   useEffect(() => {
@@ -728,7 +738,7 @@ function Index() {
 
       {/* 4 Pillar sections */}
       {PILLARS.map((pillar) => (
-        <PillarSection key={pillar.number} pillar={pillar} onCardClick={setSelectedCard} />
+        <PillarSection key={pillar.number} pillar={pillar} onCardClick={handleCardClick} />
       ))}
 
       <footer className="mt-4 border-t border-neutral-200/60">
