@@ -49,14 +49,14 @@ function CaseStudyComponent() {
             <p className="m-0"><strong>Collaboration:</strong> 1 senior designer, 1 UI designer, 1 engineer</p>
           </div>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">Embedding AI into the Product Discovery Experience for Startup Customers</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">Embedding AI into the Product Discovery Experience for Startup Customers</h3>
 
           <p>
             Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, browsing is messy. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
           </p>
 
-          <div className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8">
-            <pre className="text-xs leading-relaxed text-neutral-700 overflow-x-auto" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`The Discovery Problem:
+          <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-6 my-8">
+            <pre className="text-xs leading-relaxed text-white overflow-x-auto" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`The Discovery Problem:
 
 STARTUP LEADER
       │
@@ -80,7 +80,7 @@ Our Solution: Contextual AI guidance at each discovery stage
 
           <h2 id={sectionId("The Deliverables")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">The Deliverables: 0→1 Prototypes</h2>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">The Chatbot for contextual recommendation</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">The Chatbot for contextual recommendation</h3>
 
           <p>
             Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
@@ -92,7 +92,7 @@ Our Solution: Contextual AI guidance at each discovery stage
             className="w-full rounded-2xl my-6 border border-neutral-200"
           />
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">Dynamic UI for personalized experiences</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">Dynamic UI for personalized experiences</h3>
 
           <p>
             Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
@@ -104,7 +104,7 @@ Our Solution: Contextual AI guidance at each discovery stage
             className="w-full rounded-2xl my-6 border border-neutral-200"
           />
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">Comparison Tool for faster decision making</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">Comparison Tool for faster decision making</h3>
 
           <p>
             Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
@@ -122,7 +122,7 @@ Our Solution: Contextual AI guidance at each discovery stage
 
           <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Understand real browsing behavior</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Understand real browsing behavior</h3>
 
           <h4 className="mt-6 mb-6 text-base font-semibold">Research Methodology</h4>
 
@@ -189,7 +189,7 @@ Our Solution: Contextual AI guidance at each discovery stage
             Real behavior contains backtracking, hesitation, context switching, and signals that are ambiguous on their own.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Translate behavior into intent carefully</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">2. Translate behavior into intent carefully</h3>
 
           <p>
             The product needed to infer enough to be useful without treating every action as a confident signal.
@@ -199,13 +199,13 @@ Our Solution: Contextual AI guidance at each discovery stage
             That meant thinking about context, confidence, and what evidence should be required before the system acts.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Design the explanation with the assistance</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">3. Design the explanation with the assistance</h3>
 
           <p>
             The AI's reasoning could not stay completely invisible. If the system surfaced a suggestion, the experience needed to help the user understand why it was relevant and what control they still had.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">4. Treat privacy and scale as design constraints</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">4. Treat privacy and scale as design constraints</h3>
 
           <p>
             Assisted browsing touches highly contextual behavior, so privacy and security shaped the experience from the beginning.

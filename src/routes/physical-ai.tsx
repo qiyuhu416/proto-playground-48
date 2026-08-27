@@ -32,12 +32,6 @@ function ArticleComponent() {
           </div>
         </div>
 
-        <img
-          src="/articles/physical-ai-hero.png"
-          alt="Physical AI healthcare interaction design"
-          className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
-        />
-
         <TableOfContents />
 
         <div className="prose prose-neutral max-w-4xl">
@@ -72,37 +66,44 @@ function ArticleComponent() {
 
           <h2 id={sectionId("Outcome")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Outcome</h2>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Service blueprint</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Storyboard</h3>
 
           <p>
-            The service blueprint mapped where humans, existing systems, and AI could coordinate across the hospital-to-lab experience. More importantly, it made the boundaries visible: where AI could increase efficiency, where human judgment still mattered, and where an AI intervention might create more risk than value.
+            Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <strong>when, where, and why AI should exist in the status quo.</strong>
           </p>
+          <img
+          src="/articles/physical-ai-hero.png"
+          alt="Physical AI healthcare interaction design"
+        />
 
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-6 my-6">
-            <pre className="text-xs leading-relaxed text-neutral-700 overflow-x-auto" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Service Blueprint: AI in Phlebotomy
 
-PATIENT JOURNEY  │  Human Actions      │  System Actions    │  AI Role
-─────────────────┼──────────────────────┼────────────────────┼──────────────
-Confirmation     │  Verify ID           │  Compare records   │  ✓ Assist
-Selection        │  Choose vials        │  Validate order    │  ✓ Verify
-Extraction       │  Draw blood          │  Monitor status    │  ✓ Guide
-Labeling         │  Apply labels        │  Scan & confirm    │  ✓ Validate
-Storage          │  Place samples       │  Track location    │  ✓ Monitor
-Transport        │  Package boxes       │  Update status     │  ~ Alert only
-Result           │  Inform patient      │  Generate report   │  ✗ No AI
+          <h3 className="mt-12 mb-4 text-lg font-semibold">2. The Hardware Protoype</h3>
 
-Legend: ✓ AI takes active role  ~ Limited AI role  ✗ Human-only`}</pre>
-          </div>
+            <img
+              src="/articles/physical-ai-23.png"
+              alt="Hardware artifacts: base station, tracker base, and tracker module"
+              className="w-full rounded-2xl my-8 border border-neutral-200"
+            />
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Storyboard</h3>
+            <p className="text-sm text-neutral-500 italic">
+              Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
+            </p>
 
-          <p>
-            Storyboarding helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <strong>when, where, and why AI should exist in the status quo.</strong>
-          </p>
+            <p>
+              The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
+            </p>
+
+            <h3 className="mt-12 mb-4 text-lg font-semibold">3. The Flow</h3>
+              <img
+              src="/articles/physical-ai-24.png"
+              alt="Proposed user flow with 8 interaction steps"
+              className="w-full rounded-2xl my-8 border border-neutral-200"
+            />
+
 
           <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Understand the problem</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Understand the problem</h3>
 
           <p>
             In diagnostic testing, sample collection is critical. A single error cascades through the entire lab process—false results, wasted samples, delayed diagnoses.
@@ -137,18 +138,14 @@ Legend: ✓ AI takes active role  ~ Limited AI role  ✗ Human-only`}</pre>
             <li>Storage failures (7%)</li>
           </ul>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Explore whether AI is really needed</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">2. Explore whether AI is really needed</h3>
 
           <p>
             AI <em>could</em> be a solution, but it might not always be the best solution.
           </p>
 
           <p>
-            Do we really need AI? Yes. We leverage AI's capacity to store, process, and communicate massive information.
-          </p>
-
-          <p>
-            However, the current workflow relies entirely on human attention and memory. AI excels at:
+            Compare with the current workflow which relies entirely on human attention and memory. AI excels at:
           </p>
 
           <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
@@ -159,40 +156,7 @@ Legend: ✓ AI takes active role  ~ Limited AI role  ✗ Human-only`}</pre>
           </ul>
 
           <p>
-            Potential use cases of AI in phlebotomy include: AI can confirm patient identity against records, validate that selected vials match test orders, verify that labels are correct before they're applied, and monitor the collection process to detect deviations.
-          </p>
-
-          <p>
-            However, okay it is feasible, but is it the best solution? If not AI, what is an alternative solution?
-          </p>
-
-          <p>
-            For each intervention point, we compared AI with alternatives—including existing workflows and human labor.
-          </p>
-
-          <p>
-            We also looked at the risks of using AI: probabilistic errors, missing context, and the new coordination work created when a human needs to verify or correct the system.
-          </p>
-
-          <p>
-            I found it useful to separate those risks into two types:
-          </p>
-
-          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
-            <li><strong>Short-term capability limitations:</strong> problems that may improve as the technology gets better.</li>
-            <li><strong>System-level limitations:</strong> problems around responsibility, workflow, and error correction that don't automatically disappear with a better model.</li>
-          </ul>
-
-          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Mapping AI to Error: Short-term vs. Long-term</h3>
-
-          <img
-            src="/articles/physical-ai-21.png"
-            alt="AI capability mapping to errors - short term and long term vision"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            The same system serves two roles: short-term, it assists the phlebotomist (catching errors before they happen). Long-term, it becomes a performer (autonomous quality verification and execution).
+            AI capability will grow for sure, so I explored the preset & future use cases. In the short-term, it assists the phlebotomist (catching errors before they happen). Long-term, it becomes a performer (autonomous quality verification and execution).
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 my-8">
@@ -216,45 +180,26 @@ Legend: ✓ AI takes active role  ~ Limited AI role  ✗ Human-only`}</pre>
             </div>
           </div>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">4. The System: Hardware & Design</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">3. Map tech capability to the service blueprint</h3>
+            <p>
+              The previous analysis helped me reframe the question into: <strong>where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?</strong>
+            </p>
+
+            <p>
+              Therefore, I created the service blueprint to map out the user flow and corresponding AI intervention points.
+            </p>
 
           <img
-            src="/articles/physical-ai-23.png"
-            alt="Hardware artifacts: base station, tracker base, and tracker module"
+            src="/articles/physical-ai-21.png"
+            alt="AI capability mapping to errors - short term and long term vision"
             className="w-full rounded-2xl my-8 border border-neutral-200"
           />
 
-          <p className="text-sm text-neutral-500 italic">
-            Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
-          </p>
+          </div>
 
-          <p>
-            The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
-          </p>
+        
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">5. The User Flow: 8-Step Collection Journey</h3>
-
-          <img
-            src="/articles/physical-ai-24.png"
-            alt="Proposed user flow with 8 interaction steps"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <p className="text-sm text-neutral-500 italic">
-            Step-by-step, the system guides the phlebotomist through collection while validating each decision. Computer vision reads IDs. The CVA (Computer Vision Assistant) manages vial storage. On-screen UI confirms selections. Smart labels verify matches. The system is always watching, always confirming.
-          </p>
-
-          <h3 className="mt-8 mb-3 text-lg font-semibold">6. Map tech capability to the service blueprint</h3>
-
-          <p>
-            The previous analysis helped me reframe the question into: <strong>where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?</strong>
-          </p>
-
-          <p>
-            Therefore, I created the service blueprint to map out the user flow and corresponding AI intervention points.
-          </p>
-
-          <h3 className="mt-8 mb-3 text-lg font-semibold">7. Understand the limitations</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">7. Understand the limitations</h3>
 
           <p>
             Moving beyond this specific use case, let's think about the bigger service system. AI will "definitely" make errors, and in a service system, someone has to detect it, correct it, communicate the correction, and deal with whatever downstream impact it creates.
@@ -270,8 +215,6 @@ Legend: ✓ AI takes active role  ~ Limited AI role  ✗ Human-only`}</pre>
             <li><strong>Does AI remove work, or move the work to someone else?</strong></li>
             <li><strong>Where should a human stay in the loop even if the model becomes more capable?</strong></li>
           </ul>
-
-        </div>
 
       </article>
     </div>

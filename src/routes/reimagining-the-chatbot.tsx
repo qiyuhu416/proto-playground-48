@@ -196,7 +196,7 @@ function CollectionComponent() {
 
           <p>Those goals need different next steps.</p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">If the goal = production: run more controlled experiments</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">If the goal = production: run more controlled experiments</h3>
 
           <p>
             More business-related factors need to be considered.
@@ -218,7 +218,7 @@ function CollectionComponent() {
             The interesting design problem became less about making AI proactively pop up, and more about <strong>what information it needs before that behavior feels justified.</strong>
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">If the goal = knowledge: look for reusable principles</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">If the goal = knowledge: look for reusable principles</h3>
 
           <p>
             There is one design-thinking model I really like: the <strong>analysis–synthesis model</strong>. It taught me not to just look at each concept individually, but to derive common themes across them—and then brainstorm again based on those themes.

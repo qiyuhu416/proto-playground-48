@@ -56,14 +56,14 @@ function ArticleComponent() {
             Conversational design is not just about <em>what the bot says</em>. We designed the conversations for not just single-turn AI response but also focus on the high-level interaction flow to create a decision tree that defines the logics of whether the bot feels trustworthy in the first place.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Trust can be scripted</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Trust can be scripted</h3>
 
           <p>
             Trust is an important factor in this multi-stakeholder coordination scenarios. Through literature review, we found a conversational design framework and proposed this decision tree when caregiver and elder goals conflict:
           </p>
 
-          <div className="bg-gradient-to-r from-neutral-50 to-neutral-100 border-2 border-neutral-300 rounded-xl p-8 my-8">
-            <pre className="text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
+          <div className="bg-neutral-900 border-2 border-neutral-700 rounded-xl p-8 my-8">
+            <pre className="text-xs leading-relaxed overflow-x-auto text-white" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
 │ 1 · acknowledge the instruction                  │
 ├──────────────────────────────────────────────────┤
 │ "I understand you want to [elder's instruction]" │
@@ -116,7 +116,7 @@ function ArticleComponent() {
 
           <p className="text-xs text-neutral-500 mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Trust doesn't always positively correlate with perceived capability</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">2. Trust doesn't always positively correlate with perceived capability</h3>
 
           <p>
             In some situations, an AI saying <strong>"I'm not capable of providing that support"</strong> could create more trust than confidently trying to answer everything.
@@ -126,8 +126,8 @@ function ArticleComponent() {
             To answer the question of "when the bot should say I don't know", we mapped out the decision tree with different possible scenarios and metrics to evaluate the outcome for each.
           </p>
 
-          <div className="bg-gradient-to-r from-neutral-50 to-neutral-100 border-2 border-neutral-300 rounded-xl p-6 my-8 overflow-x-auto">
-            <pre className="text-xs leading-relaxed text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Scenario Analysis: When to say "I don't know"
+          <div className="bg-neutral-900 border-2 border-neutral-700 rounded-xl p-6 my-8 overflow-x-auto">
+            <pre className="text-xs leading-relaxed text-white" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Scenario Analysis: When to say "I don't know"
 
 ┌─────────────────────────────────────────────────────────────┐
 │ Context: The older adult had a fall                          │
@@ -157,13 +157,13 @@ from the bot to maintain both trust and safety.`}</pre>
 
           <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">1. Desktop research: understand the stakeholders and common scenarios</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Desktop research: understand the stakeholders and common scenarios</h3>
 
           <p>
             We started with desktop research to understand the care ecosystem: who is involved, what kinds of decisions they make together, and where their interests might conflict.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">2. Research-through-design, with storyboards as the medium</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">2. Research-through-design, with storyboards as the medium</h3>
 
           <p>
             We created storyboards based on the researched scenarios, visualizing different extents of bot involvement in each one. This helped us focus less on <strong>"what should the chatbot screen look like?"</strong> and more on <strong>"what role should the bot play here?"</strong>
@@ -204,7 +204,7 @@ from the bot to maintain both trust and safety.`}</pre>
             Conducting qualitative interviews with participants at a senior center, showing storyboards and exploring their preferences for bot involvement.
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">3. Affinity-cluster the results</h3>
+          <h3 className="mt-12 mb-4 text-lg font-semibold">3. Affinity-cluster the results</h3>
 
           <p>
             After the interviews, we affinity-clustered participants' responses to look for patterns across scenarios—not just whether people liked or disliked a specific bot behavior, but <em>why</em> they wanted more or less AI involvement.
