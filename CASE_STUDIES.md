@@ -56,34 +56,93 @@ Prototypes that test the conceptual model. Does this solve the right problem? Is
 **Read Time:** 5 min  
 **Date:** Apr 2026
 
-Prototyping as research, and why AI should augment—not replace—thinking.
+Building and evolving development tools powered by AI assistance.
 
-Claude Code has become a thinking tool for me. It's not about outsourcing creativity, but about augmenting my thinking process. The best results come when I maintain intellectual ownership while leveraging AI to accelerate exploration.
+### What AI can't do
 
-Key insights:
-- AI is most useful for rapid iteration and exploration
-- The human brings context, judgment, and the "why"
-- The best workflows involve continuous back-and-forth
-- Thinking through the problem first, then using AI to implement, yields better results than starting from scratch
+After collaborating intensely with Claude Code, the limits became very specific. There are three things that stand out:
+
+#### 1. It doesn't stop
+
+Prompt it to "act as a world-class designer, critique the work, and then give suggestions based on the critique" and it will keep going. It will critique, suggest, critique the suggestion, suggest again. Infinitely helpful, infinitely exhausting.
+
+Someone still has to decide: **enough.** That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
+
+#### 2. It generates options, not judgments
+
+A navbar can be designed a hundred good ways. Which one is right depends on whether the tabs have dependencies, whether users navigate by keyboard, whether one client hits a particular button six times a day out of habit. I have a client who lives on the keyboard—Claude would never have thought of that because it's never watched them work.
+
+AI fills the distribution. It generates the options that a competent designer would consider. But it doesn't *judge* which one matters most. That judgment lives in context: the person, their situation, the hidden patterns in how they work.
+
+#### 3. It doesn't feel the consequences
+
+It generates; it doesn't live inside the system afterwards. It doesn't notice a week later that the pattern it suggested is quietly producing support tickets. It doesn't pick up the subtle signals from a person—the hesitation, the habit, the context behind a decision.
+
+Experience over time is something only humans can have. Being in the system, noticing the effects of your decisions on real people, learning from those effects—that's lived knowledge. AI can simulate that knowledge, but it doesn't have it.
+
+### Don't be AI's agent
+
+A lot of things about AI are unteachable lessons — just go and try it out. And you may find it addictive.
+
+The real problem seems to be how to face our FOMO, and find the space where AI leaves room.
+
+#### 1. You either use AI to amplify your thinking, or become the human agent executing for AI
+
+There were moments where I would prompt Claude Code with something like "You are a world-class designer. Analyze this problem, give me options, critique those options, and improve them based on your critique."
+
+Honestly, that feels awful. I was too eager to want that productivity, to trade my own brain. And sometimes we took a long loop, going back to the original point. Intentionally. Practice. To urge. Your impulse. To get that efficiency.
+
+#### 2. Don't chase the tool
+
+One funny thing about AI tools: **"If you learn AI slowly enough, sometimes you realize you didn't even need to learn the majority of them."**
+
+Things are moving so fast. For a while everyone talked about prompt engineering, Claude Code tricks (like `/compact` or `skills.md`). Then a few months later, the product abstracts half of it away:
+- Stuff gets baked into the models
+- Automatic context handling
+
+Right now: sometimes I use tools like Stitch for fast brainstorming. Sometimes I go back to Figma because visual sketches help the LLM understand direction better. Sometimes I prototype directly in code.
+
+Languages change. Frameworks change. Interfaces change.
+
+You see, this whole process is a prototype. We are all in the prototyping phase of human–AI interaction.
 
 ---
 
 ## Personalization? What is a Person?
 
-**Category:** Thoughts about the Vision  
+**Category:** AI Philosophy  
 **Read Time:** 8 min  
-**Date:** Apr 2026
+**Date:** NDA Project
 
-A deep dive into what personalization actually means in the context of AI products.
+When asked to work on "personalization," I started by asking people around me this question: **"What makes you you?"**
 
-If we're designing personalized experiences, we need to understand what a "person" is to the system. Are we personalizing based on:
-- Behavior patterns
-- Preferences
-- Context
-- Values
-- Something else entirely?
+### So, what makes a person a person?
 
-The challenge is that people are multifaceted. We're different in different contexts. We change over time. A truly personalized system needs to account for this complexity, not reduce it.
+My favorite movie "Little Prince" says "what's important is the unseen." I spent time in conversations, asking what people value about their closest relationships, their creative work, their growth—the places where they feel most like themselves. The answers weren't about algorithms or efficiency. They were about presence, consistency, genuine interest, and the freedom to be imperfect.
+
+Most personalization work focuses on data—learning preferences, predicting behavior, optimizing for engagement. But that's not what makes something feel personal. What makes something personal is being seen, understood, and respected as a unique individual.
+
+### Person & Personalization
+
+Out of those conversations, I formed my own simplified version of a roadmap for the future of personalization: **For Me, With Me, As Me.**
+
+#### 1. Learn For Me
+
+AI should serve my specific goals and context, not generic templates. It understands what I'm trying to accomplish and adapts to my situation, not the reverse.
+
+#### 2. Stay With Me
+
+AI should be a collaborator, not a replacement. I should feel like we're thinking together. The system asks me questions, validates my thinking, and invites my perspective. I have agency and a voice.
+
+#### 3. Act As Me
+
+AI should recognize and respect who I am—my values, my boundaries, my inconsistencies. It doesn't try to optimize me or push me toward what it thinks is best. It accepts that being human means being complicated.
+
+### Humanity-centered Design
+
+Yeah, it's a big word... but AI that only understands data will build systems that feel intrusive, prescriptive, or hollow. AI that understands humanity means it knows what we need, how we grow, what we struggle with, and respects our feelings.
+
+The future of AI isn't about knowing everything about you. It's about understanding something essential about what it means to be human, and building systems that respect and support that.
 
 ---
 
