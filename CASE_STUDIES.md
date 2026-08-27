@@ -265,31 +265,65 @@ The future of design is more playful, more exploratory, and less precious about 
 
 ## Google Cloud - Launching AI for Assisted Browsing
 
-**Category:** 0-1 for Google  
-**Read Time:** 10 min  
-**Date:** Apr 2026
+**Category:** 0→1 GenAI Project  
+**Duration:** 4 months  
+**Role:** UX Designer  
+**Deliverables:** Figma hi-fi prototypes, Research report
 
-The story of bringing an AI-powered browsing assistant to market.
+Embedding AI into the Product Discovery Experience for Startup Customers
 
-### The Vision
+### The Challenge
 
-What if your browser understood your intent and could help you achieve your goals more efficiently? Not just search, but actual assistance.
+Google Cloud offers 100+ products with different pricing, integrations, and capabilities. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
 
-### The Reality
+### Problem Statement
 
-Building this required:
-- Understanding how people actually browse
-- Creating AI that can interpret intent from messy, real-world behavior
-- Designing interfaces that explain AI reasoning
-- Managing privacy and security concerns
-- Scaling to billions of users
+**"When startup consumers search for solutions that align with their business objectives, how might Google Cloud assist them in differentiating between similar offerings on the platform?"**
 
-### Key Learnings
+### Research Questions
 
-1. **Intent is contextual** - The same action means different things in different contexts
-2. **Explainability matters** - Users need to understand why the AI is suggesting something
-3. **Privacy is a feature** - In a browsing context, privacy concerns are paramount
-4. **Incremental rollout is essential** - Launching AI products at scale requires careful monitoring
+**Understand:** What mental models do startup leaders use when evaluating cloud solutions to purchase?
+
+**Identify:** What are the UX gaps between Google and competitors in supporting cloud solution discovery?
+
+**Compare:** What cognitive biases and trust mechanisms influence digital product purchase decisions?
+
+### The Deliverables: 0→1 Prototypes
+
+Back in 2023 Q3, Google Cloud didn't have a chatbot—everything in this project was new.
+
+#### The Chatbot
+Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
+
+#### Dynamic UI
+Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
+
+#### Comparison Tool
+Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
+
+### Research Methodology
+
+**Semi-Structured Interviews (N=8)**
+Recruited startup CTOs, CEOs, and Founders as key decision-makers. In-depth interviews revealed mental models and decision-making processes that surveys couldn't capture.
+
+**Competitive Analysis**
+Analyzed AWS and Azure UX patterns for product discovery. Identified where Google Cloud could differentiate through AI-powered recommendations.
+
+**Literature Review**
+Researched decision-making psychology, online purchasing behavior, and AI trust mechanisms. Grounded design decisions in behavioral science.
+
+### Key Insights
+
+- **Mental models:** Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists
+- **Discovery friction:** Comparing similar products requires switching between multiple pages and reading dense documentation
+- **Trust mechanisms:** Clear product positioning and social proof (customer testimonials, case studies) drive adoption
+- **AI transparency:** Users want to understand WHY an AI recommends something, not just receive the recommendation
+
+### Impact & Outcomes
+
+**Validated Hypothesis:** Final prototype SUS score = **86.3%** (excellent usability). Confirmed that helping users differentiate between similar solutions is critical to improving adoption.
+
+**Comprehensive Hand-offs:** Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.
 
 ---
 
