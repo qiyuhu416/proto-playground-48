@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
@@ -16,6 +17,32 @@ export const Route = createFileRoute("/reimagining-the-chatbot")({
 });
 
 function CollectionComponent() {
+  const [activeExploration, setActiveExploration] = useState<"select-fill" | "browsing" | "ai-asks">("select-fill");
+
+  const explorations = [
+    {
+      id: "select-fill" as const,
+      title: "AI helps you form the question",
+      subtitle: "awareness",
+      description: "Can AI reduce the work of prompt-writing without taking away your control?",
+      video: "/articles/chatbot-select-fill.mp4",
+    },
+    {
+      id: "browsing" as const,
+      title: "Chat lives inside browsing",
+      subtitle: "browsing & awareness combined",
+      description: "What if collecting context is part of the interaction, rather than something you have to reconstruct afterward?",
+      video: "/articles/chatbot-always-here.mp4",
+    },
+    {
+      id: "ai-asks" as const,
+      title: "AI asks for you",
+      subtitle: "comprehend",
+      description: "Users don't know what to ask, so why not have AI ask on their behalf?",
+      video: "/articles/ai-ai-interaction.mp4",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
@@ -74,43 +101,66 @@ function CollectionComponent() {
             So I am sharing this collection, it is less about UI but more about exploring <strong>different relationships between a person and an AI system.</strong>
           </p>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">What if AI helps you form the question while you type?</h3>
+          {/* Exploration Tabs */}
+          <div className="my-8">
+            <div className="flex gap-2 mb-6 border-b border-neutral-200">
+              {explorations.map((exp) => (
+                <button
+                  key={exp.id}
+                  onClick={() => setActiveExploration(exp.id)}
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    activeExploration === exp.id
+                      ? "border-neutral-900 text-neutral-900"
+                      : "border-transparent text-neutral-500 hover:text-neutral-700"
+                  }`}
+                >
+                  {exp.title}
+                </button>
+              ))}
+            </div>
 
-          <p>
-            Instead of waiting for a complete prompt, I wanted to explore: <strong>Can AI reduce the work of prompt-writing without taking away the user's control over what they actually want to ask?</strong>
-          </p>
+            {/* Exploration Content */}
+            <div className="space-y-4">
+              {explorations.map((exp) => (
+                activeExploration === exp.id && (
+                  <div key={exp.id} className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-neutral-900">
+                        {exp.title} <span className="font-normal text-neutral-400">{exp.subtitle}</span>
+                      </h3>
+                      <p className="text-neutral-600 mt-2">
+                        {exp.description}
+                      </p>
+                    </div>
 
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white my-6">
-            <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-              <source src="/articles/chatbot-select-fill.mp4" type="video/mp4" />
-              Your browser doesn't support video playback.
-            </video>
-          </div>
+                    <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white">
+                      <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                        <source src={exp.video} type="video/mp4" />
+                        Your browser doesn't support video playback.
+                      </video>
+                    </div>
 
-          <h3 className="mt-8 mb-3 text-lg font-semibold">What if chat lives inside browsing?</h3>
+                    {exp.id === "select-fill" && (
+                      <p>
+                        Instead of waiting for a complete prompt, I wanted to explore: <strong>Can AI reduce the work of prompt-writing without taking away the user's control over what they actually want to ask?</strong>
+                      </p>
+                    )}
 
-          <p>
-            What if collecting context is part of the interaction, rather than something the user has to reconstruct afterward? The user can select information directly in the browsing window and add it to a <strong>question list</strong> to ask later. Instead of repeatedly copying context into a chatbot, the question can build alongside the browsing process.
-          </p>
+                    {exp.id === "browsing" && (
+                      <p>
+                        The user can select information directly in the browsing window and add it to a <strong>question list</strong> to ask later. Instead of repeatedly copying context into a chatbot, the question can build alongside the browsing process.
+                      </p>
+                    )}
 
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white my-6">
-            <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-              <source src="/articles/chatbot-always-here.mp4" type="video/mp4" />
-              Your browser doesn't support video playback.
-            </video>
-          </div>
-
-          <h3 className="mt-8 mb-3 text-lg font-semibold">What if AI asks <em>for you</em>?</h3>
-
-          <p>
-            Users don't know what to ask, so why not have AI ask on users' behalf if it understands enough about user's preferences? Learning can happen in 2 ways: active and passive. If understanding is the goal, we don't have to rely on users to ask questions for them to learn, they can also learn by "watching 2 AIs chatting".
-          </p>
-
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white my-6">
-            <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-              <source src="/articles/ai-ai-interaction.mp4" type="video/mp4" />
-              Your browser doesn't support video playback.
-            </video>
+                    {exp.id === "ai-asks" && (
+                      <p>
+                        Learning can happen in 2 ways: active and passive. If understanding is the goal, we don't have to rely on users to ask questions for them to learn. They can also learn by "watching 2 AIs chatting".
+                      </p>
+                    )}
+                  </div>
+                )
+              ))}
+            </div>
           </div>
 
           <h2 id={sectionId("So what's next after those concepts?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">So what's next after those concepts?</h2>

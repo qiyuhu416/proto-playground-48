@@ -179,20 +179,26 @@ function ArticleComponent() {
             The same system serves two roles: short-term, it assists the phlebotomist (catching errors before they happen). Long-term, it becomes a performer (autonomous quality verification and execution).
           </p>
 
-          <h4 className="mt-6 mb-3 text-base font-semibold">Short-term: AI as Assistant</h4>
-          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
-            <li><strong>Confirmation phase:</strong> Compare label info & patient ID</li>
-            <li><strong>Selection phase:</strong> Evaluate vial-label match, find correct filling status</li>
-            <li><strong>Extraction phase:</strong> Monitor tube filling status, detect incorrect amount</li>
-            <li><strong>Storage phase:</strong> Generate summary, identify storage location, notice unusual sample changes</li>
-          </ul>
+          <div className="grid md:grid-cols-2 gap-6 my-8">
+            <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
+              <h4 className="text-base font-semibold text-neutral-900 mb-4">Short-term: AI as Assistant</h4>
+              <ul className="space-y-3 text-sm text-neutral-700">
+                <li><strong>Confirmation:</strong> Compare label info & patient ID</li>
+                <li><strong>Selection:</strong> Evaluate vial-label match, find correct filling status</li>
+                <li><strong>Extraction:</strong> Monitor tube filling status, detect incorrect amount</li>
+                <li><strong>Storage:</strong> Generate summary, identify storage location, notice unusual sample changes</li>
+              </ul>
+            </div>
 
-          <h4 className="mt-6 mb-3 text-base font-semibold">Long-term: AI as Performer</h4>
-          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
-            <li><strong>Automation:</strong> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
-            <li><strong>Integration:</strong> Act on human feedback, refine based on patterns</li>
-            <li><strong>Reliability:</strong> Reduce human error to near-zero through consistent, tireless execution</li>
-          </ul>
+            <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
+              <h4 className="text-base font-semibold text-neutral-900 mb-4">Long-term: AI as Performer</h4>
+              <ul className="space-y-3 text-sm text-neutral-700">
+                <li><strong>Automation:</strong> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
+                <li><strong>Integration:</strong> Act on human feedback, refine based on patterns</li>
+                <li><strong>Reliability:</strong> Reduce human error to near-zero through consistent, tireless execution</li>
+              </ul>
+            </div>
+          </div>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">4. The System: Hardware & Design</h3>
 

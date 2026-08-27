@@ -83,31 +83,62 @@ function CaseStudyComponent() {
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">1. Understand real browsing behavior</h3>
 
-          <h4 className="mt-6 mb-2 text-base font-semibold">Research Methodology</h4>
+          <h4 className="mt-6 mb-6 text-base font-semibold">Research Methodology</h4>
 
-          <h5 className="mt-4 mb-2 text-sm font-semibold text-neutral-700">Semi-Structured Interviews (N=8)</h5>
-          <p className="text-neutral-700">
-            Recruited startup CTOs, CEOs, and Founders as key decision-makers. In-depth interviews revealed mental models and decision-making processes that surveys couldn't capture.
-          </p>
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            <div className="border border-neutral-200 rounded-lg p-5 bg-white">
+              <h5 className="text-sm font-semibold text-neutral-900 mb-3">Semi-Structured Interviews</h5>
+              <p className="text-xs text-neutral-600 mb-2"><strong>N=8</strong> startup CTOs, CEOs, and Founders</p>
+              <p className="text-xs text-neutral-600">
+                In-depth interviews revealed mental models and decision-making processes that surveys couldn't capture.
+              </p>
+            </div>
 
-          <h5 className="mt-4 mb-2 text-sm font-semibold text-neutral-700">Competitive Analysis</h5>
-          <p className="text-neutral-700">
-            Analyzed AWS and Azure UX patterns for product discovery. Identified where Google Cloud could differentiate through AI-powered recommendations.
-          </p>
+            <div className="border border-neutral-200 rounded-lg p-5 bg-white">
+              <h5 className="text-sm font-semibold text-neutral-900 mb-3">Competitive Analysis</h5>
+              <p className="text-xs text-neutral-600 mb-2">AWS & Azure UX patterns</p>
+              <p className="text-xs text-neutral-600">
+                Identified where Google Cloud could differentiate through AI-powered recommendations.
+              </p>
+            </div>
 
-          <h5 className="mt-4 mb-2 text-sm font-semibold text-neutral-700">Literature Review</h5>
-          <p className="text-neutral-700">
-            Researched decision-making psychology, online purchasing behavior, and AI trust mechanisms. Grounded design decisions in behavioral science.
-          </p>
+            <div className="border border-neutral-200 rounded-lg p-5 bg-white">
+              <h5 className="text-sm font-semibold text-neutral-900 mb-3">Literature Review</h5>
+              <p className="text-xs text-neutral-600 mb-2">Behavioral science research</p>
+              <p className="text-xs text-neutral-600">
+                Decision-making psychology, online purchasing behavior, AI trust mechanisms.
+              </p>
+            </div>
+          </div>
 
-          <h4 className="mt-6 mb-2 text-base font-semibold">Key Insights</h4>
+          <h4 className="mt-6 mb-6 text-base font-semibold">Key Insights</h4>
 
-          <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
-            <li><strong>Mental models:</strong> Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists</li>
-            <li><strong>Discovery friction:</strong> Comparing similar products requires switching between multiple pages and reading dense documentation</li>
-            <li><strong>Trust mechanisms:</strong> Clear product positioning and social proof (customer testimonials, case studies) drive adoption</li>
-            <li><strong>AI transparency:</strong> Users want to understand WHY an AI recommends something, not just receive the recommendation</li>
-          </ul>
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            <div className="border-l-4 border-neutral-900 pl-4 py-2">
+              <h6 className="text-sm font-semibold text-neutral-900">Mental Models</h6>
+              <p className="text-xs text-neutral-600 mt-1">
+                Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists.
+              </p>
+            </div>
+            <div className="border-l-4 border-neutral-900 pl-4 py-2">
+              <h6 className="text-sm font-semibold text-neutral-900">Discovery Friction</h6>
+              <p className="text-xs text-neutral-600 mt-1">
+                Comparing similar products requires switching between multiple pages and reading dense documentation.
+              </p>
+            </div>
+            <div className="border-l-4 border-neutral-900 pl-4 py-2">
+              <h6 className="text-sm font-semibold text-neutral-900">Trust Mechanisms</h6>
+              <p className="text-xs text-neutral-600 mt-1">
+                Clear product positioning and social proof (customer testimonials, case studies) drive adoption.
+              </p>
+            </div>
+            <div className="border-l-4 border-neutral-900 pl-4 py-2">
+              <h6 className="text-sm font-semibold text-neutral-900">AI Transparency</h6>
+              <p className="text-xs text-neutral-600 mt-1">
+                Users want to understand WHY an AI recommends something, not just receive the recommendation.
+              </p>
+            </div>
+          </div>
 
           <p>
             We looked at how people actually move through tasks rather than assuming a clean search → result → action flow.

@@ -62,7 +62,8 @@ function ArticleComponent() {
             Trust is an important factor in this multi-stakeholder coordination scenarios. Through literature review, we found a conversational design framework and proposed this decision tree when caregiver and elder goals conflict:
           </p>
 
-          <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-6 my-8 text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
+          <div className="bg-gradient-to-r from-neutral-50 to-neutral-100 border-2 border-neutral-300 rounded-xl p-8 my-8">
+            <pre className="text-xs leading-relaxed overflow-x-auto text-neutral-700" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
 │ 1 · acknowledge the instruction                  │
 ├──────────────────────────────────────────────────┤
 │ "I understand you want to [elder's instruction]" │
@@ -111,8 +112,9 @@ function ArticleComponent() {
 ├──────────────────────────────────────────────────┤
 │ "Are you sure about [original instruction]?"     │
 └──────────────────────────────────────────────────┘`}</pre>
+          </div>
 
-          <p className="text-xs text-neutral-500 -mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
+          <p className="text-xs text-neutral-500 mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
 
           <h3 className="mt-8 mb-3 text-lg font-semibold">2. Trust doesn't always positively correlate with perceived capability</h3>
 
