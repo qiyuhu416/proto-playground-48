@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { X } from "lucide-react";
+import { useState } from "react";
 import { TableOfContents } from "./-TableOfContents";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
@@ -18,6 +19,34 @@ export const Route = createFileRoute("/google-cloud")({
 
 function CaseStudyComponent() {
   const navigate = useNavigate();
+  const [activeDeliverable, setActiveDeliverable] = useState<"chatbot" | "dynamic" | "comparison">("chatbot");
+
+  const deliverables = [
+    {
+      id: "chatbot" as const,
+      title: "The Chatbot",
+      subtitle: "Contextual recommendation",
+      description: "Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.",
+      image: "/articles/google-cloud-chatbot.png",
+      alt: "Google Cloud chatbot interface for product recommendations",
+    },
+    {
+      id: "dynamic" as const,
+      title: "Dynamic UI",
+      subtitle: "Personalized experiences",
+      description: "Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.",
+      image: "/articles/google-cloud-dynamic.png",
+      alt: "Dynamic UI adapting to user journey stages",
+    },
+    {
+      id: "comparison" as const,
+      title: "Comparison Tool",
+      subtitle: "Faster decision making",
+      description: "Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with \"add to compare\" selections. Making the comparison process explicit and transparent improves decision confidence.",
+      image: "/articles/google-cloud-comparison.png",
+      alt: "Side-by-side solution comparison tool",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-neutral-900">
@@ -92,41 +121,48 @@ Our Solution: Contextual AI guidance at each discovery stage
 
           <h2 id={sectionId("The Deliverables")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">The Deliverables: 0→1 Prototypes</h2>
 
-          <h3 className="mt-12 mb-4 text-lg font-semibold">The Chatbot for contextual recommendation</h3>
+          {/* Deliverable Tabs */}
+          <div className="my-8">
+            <div className="flex gap-2 mb-6 border-b border-neutral-200">
+              {deliverables.map((del) => (
+                <button
+                  key={del.id}
+                  onClick={() => setActiveDeliverable(del.id)}
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    activeDeliverable === del.id
+                      ? "border-neutral-900 text-neutral-900"
+                      : "border-transparent text-neutral-500 hover:text-neutral-700"
+                  }`}
+                >
+                  {del.title}
+                </button>
+              ))}
+            </div>
 
-          <p>
-            Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.
-          </p>
+            {/* Deliverable Content */}
+            <div className="space-y-4">
+              {deliverables.map((del) => (
+                activeDeliverable === del.id && (
+                  <div key={del.id} className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-neutral-900">
+                        {del.title} <span className="font-normal text-neutral-400">{del.subtitle}</span>
+                      </h3>
+                      <p className="text-neutral-600 mt-3">
+                        {del.description}
+                      </p>
+                    </div>
 
-          <img
-            src="/articles/google-cloud-chatbot.png"
-            alt="Google Cloud chatbot interface for product recommendations"
-            className="w-full rounded-2xl my-6 border border-neutral-200"
-          />
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">Dynamic UI for personalized experiences</h3>
-
-          <p>
-            Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.
-          </p>
-
-          <img
-            src="/articles/google-cloud-dynamic.png"
-            alt="Dynamic UI adapting to user journey stages"
-            className="w-full rounded-2xl my-6 border border-neutral-200"
-          />
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">Comparison Tool for faster decision making</h3>
-
-          <p>
-            Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with "add to compare" selections. Making the comparison process explicit and transparent improves decision confidence.
-          </p>
-
-          <img
-            src="/articles/google-cloud-comparison.png"
-            alt="Side-by-side solution comparison tool"
-            className="w-full rounded-2xl my-6 border border-neutral-200"
-          />
+                    <img
+                      src={del.image}
+                      alt={del.alt}
+                      className="w-full rounded-2xl my-6 border border-neutral-200"
+                    />
+                  </div>
+                )
+              ))}
+            </div>
+          </div>
 
           <p>
             The broader takeaway was that assisted browsing works only when the system earns the right to intervene.
