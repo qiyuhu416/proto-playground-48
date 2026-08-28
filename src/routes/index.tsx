@@ -604,6 +604,199 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
   );
 }
 
+// ── 2D Articles Matrix ────────────────────────────────────────────────────────
+
+interface MatrixArticle {
+  slug: string;
+  title: string;
+  x: number;
+  y: number;
+}
+
+const MATRIX_ARTICLES: MatrixArticle[] = [
+  { slug: "design-as-a-research-tool", title: "Research through Design", x: 0.25, y: 0.15 },
+  { slug: "what-do-prototypes-prototype", title: "What do prototypes prototype?", x: 0.35, y: 0.35 },
+  { slug: "hello-humans", title: "Hello humans prototype", x: 0.15, y: 0.2 },
+  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design for trust", x: 0.3, y: 0.55 },
+  { slug: "reimagining-the-chatbot", title: "The chatbot beyond a tab?", x: 0.5, y: 0.45 },
+  { slug: "google-cloud", title: "Launching AI for assisted browsing", x: 0.65, y: 0.5 },
+  { slug: "physical-ai", title: "Physical AI for service design", x: 0.55, y: 0.75 },
+  { slug: "product-launch-from-0-1", title: "Product launch from 0–1", x: 0.2, y: 0.65 },
+];
+
+function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }) {
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (containerRef.current) {
+        setContainerSize({
+          width: containerRef.current.offsetWidth,
+          height: containerRef.current.offsetHeight,
+        });
+      }
+    };
+
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  const margin = 40;
+  const plotWidth = containerSize.width - margin * 2;
+  const plotHeight = containerSize.height - margin * 2;
+
+  return (
+    <section className="py-12 bg-white border-t border-neutral-200/40">
+      <div className="mx-auto max-w-6xl px-6 mb-8">
+        <h2 className="text-2xl font-medium text-neutral-900 mb-2">Articles Landscape</h2>
+        <p className="text-neutral-600 text-sm">Explore articles across different dimensions</p>
+      </div>
+
+      <div
+        ref={containerRef}
+        className="w-full relative"
+        style={{ height: "700px" }}
+      >
+        {containerSize.width > 0 && (
+          <svg
+            viewBox={`0 0 ${containerSize.width} ${containerSize.height}`}
+            className="w-full h-full"
+            style={{ overflow: "visible" }}
+          >
+            {/* Axes */}
+            <line
+              x1={margin}
+              y1={containerSize.height - margin}
+              x2={containerSize.width - margin}
+              y2={containerSize.height - margin}
+              stroke="#d8d8d8"
+              strokeWidth="1.5"
+            />
+            <line
+              x1={margin}
+              y1={margin}
+              x2={margin}
+              y2={containerSize.height - margin}
+              stroke="#d8d8d8"
+              strokeWidth="1.5"
+            />
+
+            {/* Axis labels */}
+            <text
+              x={containerSize.width - margin - 10}
+              y={containerSize.height - margin + 25}
+              textAnchor="end"
+              fontSize="12"
+              fill="#737373"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="500"
+            >
+              FUTURE CONCEPTS
+            </text>
+            <text
+              x={margin + 10}
+              y={containerSize.height - margin + 25}
+              textAnchor="start"
+              fontSize="12"
+              fill="#737373"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="500"
+            >
+              PRODUCTION
+            </text>
+            <text
+              x={margin - 15}
+              y={margin + 10}
+              textAnchor="end"
+              fontSize="12"
+              fill="#737373"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="500"
+            >
+              INDIVIDUAL
+            </text>
+            <text
+              x={margin - 15}
+              y={containerSize.height - margin + 5}
+              textAnchor="end"
+              fontSize="12"
+              fill="#737373"
+              fontFamily="ui-sans-serif, system-ui, sans-serif"
+              fontWeight="500"
+            >
+              COMMUNITY
+            </text>
+
+            {/* Hover lines for hovered article */}
+            {hoveredSlug && (
+              <>
+                {MATRIX_ARTICLES.map((article) => {
+                  if (article.slug !== hoveredSlug) return null;
+                  const x = margin + article.x * plotWidth;
+                  const y = containerSize.height - margin - article.y * plotHeight;
+                  return (
+                    <g key={`lines-${article.slug}`}>
+                      {/* Vertical line to X axis */}
+                      <line
+                        x1={x}
+                        y1={y}
+                        x2={x}
+                        y2={containerSize.height - margin}
+                        stroke="#d32f2f"
+                        strokeWidth="1.5"
+                        strokeDasharray="4,4"
+                        opacity="0.6"
+                      />
+                      {/* Horizontal line to Y axis */}
+                      <line
+                        x1={margin}
+                        y1={y}
+                        x2={x}
+                        y2={y}
+                        stroke="#d32f2f"
+                        strokeWidth="1.5"
+                        strokeDasharray="4,4"
+                        opacity="0.6"
+                      />
+                    </g>
+                  );
+                })}
+              </>
+            )}
+          </svg>
+        )}
+
+        {/* Article pills */}
+        {MATRIX_ARTICLES.map((article) => {
+          const x = margin + article.x * plotWidth;
+          const y = containerSize.height - margin - article.y * plotHeight;
+
+          return (
+            <button
+              key={article.slug}
+              onClick={() => onCardClick(article.slug)}
+              onMouseEnter={() => setHoveredSlug(article.slug)}
+              onMouseLeave={() => setHoveredSlug(null)}
+              style={{
+                position: "absolute",
+                left: `${(x / containerSize.width) * 100}%`,
+                top: `${(y / containerSize.height) * 100}%`,
+                transform: "translate(-50%, -50%)",
+              }}
+              className="px-3 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-full whitespace-nowrap hover:bg-neutral-800 transition-all hover:shadow-lg cursor-pointer border-0"
+            >
+              {article.title}
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function Index() {
@@ -735,6 +928,9 @@ function Index() {
           />
         </div>
       </section>
+
+      {/* 2D Matrix */}
+      <ArticlesMatrix onCardClick={handleCardClick} />
 
       {/* 4 Pillar sections */}
       {PILLARS.map((pillar) => (
