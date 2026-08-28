@@ -919,8 +919,10 @@ function Index() {
         </div>
 
         {/* Paragraph section - 4/5 of screen */}
-        <div className="flex-[4] flex flex-col items-center justify-center">
-          <HeroScrollAnimation />
+        <div className="flex-[4] flex flex-col items-center justify-center overflow-hidden">
+          <div className="w-full h-full">
+            <HeroScrollAnimation />
+          </div>
         </div>
       </section>
 
