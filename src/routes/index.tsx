@@ -893,28 +893,11 @@ function Index() {
       )}
 
       {/* Hero section - diagram (1/5) + paragraph (4/5) = full screen */}
-      <section className="relative w-full min-h-screen flex flex-col">
+      <section className="relative w-full min-h-screen flex flex-col gap-0">
         {/* Diagram section - 1/5 of screen, compact */}
-        <div className="flex-[1] flex flex-col items-center justify-center px-6 py-4 gap-0 bg-background overflow-hidden">
-          <img
-            src="/articles/hello-stranger.png"
-            alt="Hello, stranger!!"
-            className="block mx-auto w-full max-w-[60px] h-auto"
-            style={{ mixBlendMode: "multiply", opacity: 0.5 }}
-          />
-          <div className="flex justify-center w-full scale-50 origin-top -my-8">
+        <div className="flex-[1] flex flex-col items-center justify-center px-6 py-0 gap-0 bg-background overflow-hidden">
+          <div className="flex justify-center w-full scale-50 origin-top -my-6">
             <HandDrawnDiagram onHover={setHeroGap} />
-          </div>
-          {/* Gap tag — shows default or hovered gap tag */}
-          <div className="relative w-full flex justify-center px-6 min-h-[16px]">
-            {heroGap && (
-              <p className="tag-style text-[10px]">
-                {HERO_CONTENT[heroGap].tag}
-              </p>
-            )}
-            {!heroGap && (
-              <p className="tag-style text-[9px]">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
-            )}
           </div>
         </div>
 
