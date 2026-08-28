@@ -7,7 +7,6 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
-import { Link } from "@tanstack/react-router";
 
 import React, { useRef, useState } from "react";
 
@@ -70,7 +69,6 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   return (
     <motion.div
       ref={ref}
-      id="navbar"
       // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
       className={cn("sticky inset-x-0 top-8 z-40 w-full", className)}
     >
@@ -136,7 +134,7 @@ export const NavItems = ({ items, className, onItemClick, currentPath = "" }: Na
       {items.map((item, idx) => {
         const active = isActive(item.link);
         return (
-          <Link
+          <a
             onMouseEnter={() => setHovered(idx)}
             onClick={onItemClick}
             className={cn(
@@ -144,7 +142,7 @@ export const NavItems = ({ items, className, onItemClick, currentPath = "" }: Na
               active && "text-white dark:text-white"
             )}
             key={`link-${idx}`}
-            to={item.link}
+            href={item.link}
           >
             {hovered === idx && !active && (
               <motion.div
@@ -159,7 +157,7 @@ export const NavItems = ({ items, className, onItemClick, currentPath = "" }: Na
               />
             )}
             <span className="relative z-20">{item.name}</span>
-          </Link>
+          </a>
         );
       })}
     </motion.div>
@@ -253,12 +251,12 @@ export const MobileNavToggle = ({
 
 export const NavbarLogo = () => {
   return (
-    <Link
-      to="/"
+    <a
+      href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 text-sm font-medium text-black dark:text-white"
     >
       <span>Qiyu</span>
-    </Link>
+    </a>
   );
 };
 
