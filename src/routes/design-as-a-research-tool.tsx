@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
+import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
 export const Route = createFileRoute("/design-as-a-research-tool")({
@@ -20,26 +20,11 @@ function CaseStudyComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-4xl px-6 py-12">
-
-        <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Case Study</span>
-          <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            {ARTICLE_META["design-as-a-research-tool"].title}
-          </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
-            How design prototyping and physical systems revealed hidden user behaviors that surveys never could—and why Pittsburgh changed their parking policy based on what drivers actually do, not what they say.
-          </p>
-          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Research · Design</span>
-            <span className="text-neutral-300">·</span>
-            <span>Pittsburgh Parking Authority</span>
-          </div>
-        </div>
-
-        <img
-          src="/articles/design-research-hero.jpg"
-          alt="Smart Loading Zone interface research"
-          className="w-full rounded-2xl mb-16 border-4 border-neutral-900"
+        <ArticleHeader
+          title={ARTICLE_META["design-as-a-research-tool"].title}
+          meta="Case Study"
+          heroImage="/articles/design-research-hero.jpg"
+          heroAlt="Smart Loading Zone interface research"
         />
 
         <div className="prose prose-neutral max-w-4xl">

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
+import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
 export const Route = createFileRoute("/proactive")({
@@ -239,21 +239,11 @@ function ProactiveComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
-
-        <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Prototype</span>
-          <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            {ARTICLE_META["proactive"].title}
-          </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time.
-          </p>
-          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Implementation · Testing</span>
-            <span className="text-neutral-300">·</span>
-            <span>Research</span>
-          </div>
-        </div>
+        <ArticleHeader
+          title={ARTICLE_META["proactive"].title}
+          meta="Prototype"
+          description="Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time."
+        />
 
         <div className="prose prose-neutral max-w-2xl">
           <TableOfContents />

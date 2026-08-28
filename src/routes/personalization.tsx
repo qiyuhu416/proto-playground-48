@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { TableOfContents } from "./-TableOfContents";
+import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { WhereNotToUseAI } from "./-sharedContent";
 
@@ -21,21 +21,11 @@ function PersonalizationComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-2xl px-6 py-12">
-
-        <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Research</span>
-          <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            {ARTICLE_META["personalization"].title}
-          </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-          When I was asked to work on "personalization," I started by asking people around me this question: <strong>"What make you you?"</strong>
-          </p>
-          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Research · AI Philosophy</span>
-            <span className="text-neutral-300">·</span>
-            <span>NDA Project</span>
-          </div>
-        </div>
+        <ArticleHeader
+          title={ARTICLE_META["personalization"].title}
+          meta="Research"
+          description="When I was asked to work on 'personalization,' I started by asking people around me this question: What makes you you?"
+        />
 
         <div className="prose prose-neutral max-w-2xl">
           <TableOfContents />

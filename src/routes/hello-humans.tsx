@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TableOfContents } from "./-TableOfContents";
+import { ArticleHeader } from "./-ArticleHeader";
 
 export const Route = createFileRoute("/hello-humans")({
   head: () => ({
@@ -18,25 +19,13 @@ function HelloHumansComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-3xl px-6 py-12">
+        <ArticleHeader
+          title="Hello Humans"
+          meta="Non-software prototype"
+          heroImage="/articles/hello-humans-notebook.jpg"
+          heroAlt="Hello humans notebook prototype"
+        />
         <TableOfContents />
-
-        <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Non-software prototype</span>
-          <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Hello Humans
-          </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            <s>Two experiments in human-human async interaction.</s>
-          </p>
-          <p className="mt-3 text-lg text-neutral-600 max-w-2xl">
-            jk, I just did it for fun. But seriously — these could be great prototyping ideas: NOT all prototypes need to be digital!
-          </p>
-          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Apple</span>
-            <span className="text-neutral-300">·</span>
-            <span>2026</span>
-          </div>
-        </div>
 
         <div className="prose prose-neutral max-w-2xl">
 

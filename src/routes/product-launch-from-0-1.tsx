@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
-import { BackButton } from "./-BackButton";
+import { ArticleHeader } from "./-ArticleHeader";
 
 export const Route = createFileRoute("/product-launch-from-0-1")({
   head: () => ({
@@ -19,22 +18,12 @@ function ArticleComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-3xl px-6 py-12">
-        <BackButton />
-
-        <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Role</span>
-          <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            Product launch from 0–1
-          </h1>
-          <p className="mt-6 text-lg text-neutral-600 max-w-2xl">
-            A case study on building and shipping a product from zero to one.
-          </p>
-          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>Case study</span>
-            <span className="text-neutral-300">·</span>
-            <span>Apr 2026</span>
-          </div>
-        </div>
+        <ArticleHeader
+          title="Product launch from 0–1"
+          meta="Role"
+          heroImage="/articles/product-launch-thumb.png"
+          heroAlt="Product launch from 0–1"
+        />
 
         <div className="prose prose-neutral max-w-2xl">
           <p>

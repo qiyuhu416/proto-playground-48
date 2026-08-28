@@ -3,6 +3,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
 import { TextGradientScroll } from "@/components/TextGradientScroll";
+import { NavbarWrapper } from "./-NavbarWrapper";
+import { HeroScrollAnimation } from "@/components/HeroScrollAnimation";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -843,8 +845,7 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-neutral-900">
-
-
+      <NavbarWrapper />
 
       {/* Card Modal */}
       {selectedCard && card && !card.externalLink && (
@@ -918,15 +919,8 @@ function Index() {
           </div>
         </div>
 
-        {/* Paragraph section — always shows default text */}
-        <div className="mx-auto max-w-6xl px-6 py-12 mb-20 text-center min-h-[40vh] flex flex-col items-center justify-center">
-          <TextGradientScroll
-            text={HERO_CONTENT["default"].text}
-            type="letter"
-            textOpacity="soft"
-            className="text-2xl md:text-4xl text-neutral-900 leading-relaxed font-medium justify-center"
-          />
-        </div>
+        {/* Hero section with scroll animation */}
+        <HeroScrollAnimation />
       </section>
 
       {/* 2D Matrix */}

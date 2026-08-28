@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { X } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
 import { TableOfContents } from "./-TableOfContents";
+import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 
 export const Route = createFileRoute("/physical-ai")({
@@ -17,32 +17,15 @@ export const Route = createFileRoute("/physical-ai")({
 });
 
 function ArticleComponent() {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen bg-background text-neutral-900">
-      {/* Close Button */}
-      <button
-        onClick={() => navigate({ to: "/" })}
-        className="fixed top-6 right-6 z-50 text-neutral-400 hover:text-neutral-900 transition-colors p-2"
-        aria-label="Close"
-      >
-        <X className="h-6 w-6" />
-      </button>
-
       <article className="mx-auto max-w-4xl px-6 py-12">
-
-        <div className="mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">Understanding Behavioral Intent</span>
-          <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-            {ARTICLE_META["physical-ai"].title}
-          </h1>
-          <div className="mt-6 flex items-center gap-3 text-sm text-neutral-500">
-            <span>6 min read</span>
-            <span className="text-neutral-300">·</span>
-            <span>Apr 2026</span>
-          </div>
-        </div>
+        <ArticleHeader
+          title={ARTICLE_META["physical-ai"].title}
+          meta="Understanding Behavioral Intent"
+          heroImage="/articles/physical-ai-thumb.png"
+          heroAlt="Physical AI for service design"
+        />
 
         <TableOfContents />
 
