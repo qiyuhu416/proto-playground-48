@@ -804,6 +804,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
 function Index() {
   const navigate = useNavigate();
   const [heroGap, setHeroGap] = useState<GapId | null>(null);
+  const [diagramExpanded, setDiagramExpanded] = useState(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -892,17 +893,42 @@ function Index() {
         </>
       )}
 
-      {/* Hero section - diagram (1/5) + paragraph (4/5) = full screen */}
-      <section className="relative w-full min-h-screen flex flex-col gap-0">
-        {/* Diagram section - 1/5 of screen, compact */}
-        <div className="flex-[1] flex flex-col items-center justify-center px-6 py-0 gap-0 bg-background overflow-hidden">
-          <div className="flex justify-center w-full scale-50 origin-top -my-6">
+      {/* Hero section - diagram + paragraph with expandable diagram */}
+      <section className={`relative w-full flex flex-col gap-0 transition-all duration-300 ${diagramExpanded ? 'min-h-auto' : 'min-h-screen'}`}>
+        {/* Diagram section - expandable */}
+        <div
+          onClick={() => setDiagramExpanded(!diagramExpanded)}
+          className={`flex flex-col items-center justify-center px-6 gap-0 bg-background overflow-hidden cursor-pointer transition-all duration-300 ${
+            diagramExpanded ? 'flex-[2] py-8' : 'flex-[1] py-0'
+          }`}
+        >
+          {diagramExpanded && (
+            <img
+              src="/articles/hello-stranger.png"
+              alt="Hello, stranger!!"
+              className="block mx-auto w-full max-w-[120px] h-auto mb-4"
+              style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+            />
+          )}
+          <div className={`flex justify-center w-full transition-transform duration-300 ${diagramExpanded ? 'scale-75 origin-top' : 'scale-50 origin-top -my-6'}`}>
             <HandDrawnDiagram onHover={setHeroGap} />
           </div>
+          {diagramExpanded && (
+            <div className="relative w-full flex justify-center px-6 min-h-[20px] mt-4">
+              {heroGap && (
+                <p className="tag-style text-sm">
+                  {HERO_CONTENT[heroGap].tag}
+                </p>
+              )}
+              {!heroGap && (
+                <p className="tag-style text-xs">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Paragraph section - 4/5 of screen */}
-        <div className="flex-[4] flex flex-col items-center justify-center overflow-hidden w-full">
+        {/* Paragraph section - flexible height */}
+        <div className={`flex flex-col items-center justify-center overflow-hidden w-full transition-all duration-300 ${diagramExpanded ? 'flex-[3]' : 'flex-[4]'}`}>
           <HeroScrollAnimation />
         </div>
       </section>
