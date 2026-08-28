@@ -892,36 +892,8 @@ function Index() {
         </>
       )}
 
-      {/* Hero */}
-      <section className="relative w-full min-h-screen flex flex-col items-center">
-        {/* Diagram + Gap tag section — 20% from top, 80vh height */}
-        <div className="mt-[20vh] min-h-[80vh] flex flex-col items-center px-6 gap-6">
-          <img
-            src="/articles/hello-stranger.png"
-            alt="Hello, stranger!!"
-            className="block mx-auto w-full max-w-[300px]"
-            style={{ mixBlendMode: "multiply", opacity: 0.5 }}
-          />
-          <div className="flex justify-center w-full">
-            <HandDrawnDiagram onHover={setHeroGap} />
-          </div>
-
-          {/* Gap tag — shows default or hovered gap tag */}
-          <div className="relative w-full flex justify-center px-6 min-h-[28px]">
-            {heroGap && (
-              <p className="tag-style">
-                {HERO_CONTENT[heroGap].tag}
-              </p>
-            )}
-            {!heroGap && (
-              <p className="tag-style">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
-            )}
-          </div>
-        </div>
-
-        {/* Hero section with scroll animation */}
-        <HeroScrollAnimation />
-      </section>
+      {/* Hero section with scroll animation - now the landing section */}
+      <HeroScrollAnimation />
 
       {/* 2D Matrix */}
       <ArticlesMatrix onCardClick={handleCardClick} />
