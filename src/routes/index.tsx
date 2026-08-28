@@ -803,7 +803,6 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
 
 function Index() {
   const navigate = useNavigate();
-  const [heroGap, setHeroGap] = useState<GapId | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
