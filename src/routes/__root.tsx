@@ -9,6 +9,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { GridOverlay } from "@/components/GridOverlay";
 
 function NotFoundComponent() {
   return (
@@ -152,7 +153,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-
+      <GridOverlay />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
 

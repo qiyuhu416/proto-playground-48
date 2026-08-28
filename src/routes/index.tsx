@@ -611,25 +611,25 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
 interface MatrixArticle {
   slug: string;
   title: string;
+  company?: string;
   x: number;
   y: number;
 }
 
 const MATRIX_ARTICLES: MatrixArticle[] = [
-  { slug: "design-as-a-research-tool", title: "Research through Design", x: 0.25, y: 0.15 },
-  { slug: "what-do-prototypes-prototype", title: "What do prototypes prototype?", x: 0.35, y: 0.35 },
-  { slug: "hello-humans", title: "Hello humans prototype", x: 0.15, y: 0.2 },
-  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design for trust", x: 0.3, y: 0.55 },
-  { slug: "reimagining-the-chatbot", title: "The chatbot beyond a tab?", x: 0.5, y: 0.45 },
-  { slug: "google-cloud", title: "Launching AI for assisted browsing", x: 0.65, y: 0.5 },
-  { slug: "physical-ai", title: "Physical AI for service design", x: 0.55, y: 0.75 },
-  { slug: "product-launch-from-0-1", title: "Product launch from 0–1", x: 0.2, y: 0.65 },
+  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40 },
+  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15 },
+  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65 },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.20, y: 0.75 },
+  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50 },
+  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.10, y: 0.35 },
 ];
 
 function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }) {
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const updateSize = () => {
@@ -651,40 +651,53 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   const plotHeight = containerSize.height - margin * 2;
 
   return (
-    <section className="py-12 bg-white border-t border-neutral-200/40">
-      <div className="mx-auto max-w-6xl px-6 mb-8">
-        <h2 className="text-2xl font-medium text-neutral-900 mb-2">Articles Landscape</h2>
-        <p className="text-neutral-600 text-sm">Explore articles across different dimensions</p>
-      </div>
+    <section className="bg-white border-t border-neutral-200/40">
 
       <div
         ref={containerRef}
         className="w-full relative"
-        style={{ height: "700px" }}
+        style={{ height: "100vh" }}
+        onMouseMove={(e) => {
+          const rect = containerRef.current?.getBoundingClientRect();
+          if (rect) {
+            setCursorPos({
+              x: e.clientX - rect.left,
+              y: e.clientY - rect.top,
+            });
+          }
+        }}
       >
         {containerSize.width > 0 && (
           <svg
             viewBox={`0 0 ${containerSize.width} ${containerSize.height}`}
-            className="w-full h-full"
-            style={{ overflow: "visible" }}
+            className="w-full h-full absolute inset-0"
+            style={{ overflow: "visible", pointerEvents: "none" }}
           >
-            {/* Axes */}
-            <line
-              x1={margin}
-              y1={containerSize.height - margin}
-              x2={containerSize.width - margin}
-              y2={containerSize.height - margin}
-              stroke="#d8d8d8"
-              strokeWidth="1.5"
-            />
-            <line
-              x1={margin}
-              y1={margin}
-              x2={margin}
-              y2={containerSize.height - margin}
-              stroke="#d8d8d8"
-              strokeWidth="1.5"
-            />
+            {/* Axes extended to page edges (SELF and PRODUCTION directions only) */}
+            {(() => {
+              return (
+                <>
+                  {/* X-axis: extends from left edge to FUTURE CONCEPTS dot */}
+                  <line
+                    x1={0}
+                    y1={containerSize.height - margin}
+                    x2={containerSize.width - margin}
+                    y2={containerSize.height - margin}
+                    stroke="#808080"
+                    strokeWidth="1.5"
+                  />
+                  {/* Y-axis: extends from OTHERS dot to bottom edge */}
+                  <line
+                    x1={margin}
+                    y1={margin}
+                    x2={margin}
+                    y2={containerSize.height}
+                    stroke="#808080"
+                    strokeWidth="1.5"
+                  />
+                </>
+              );
+            })()}
 
             {/* Axis labels */}
             <text
@@ -710,64 +723,73 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               PRODUCTION
             </text>
             <text
-              x={margin - 15}
-              y={margin + 10}
-              textAnchor="end"
+              x={margin - 25}
+              y={margin}
+              textAnchor="middle"
+              dominantBaseline="middle"
               fontSize="12"
               fill="#737373"
               fontFamily="ui-sans-serif, system-ui, sans-serif"
               fontWeight="500"
+              transform={`rotate(-90 ${margin - 25} ${margin})`}
             >
-              INDIVIDUAL
+              OTHERS
             </text>
             <text
-              x={margin - 15}
-              y={containerSize.height - margin + 5}
-              textAnchor="end"
+              x={margin - 25}
+              y={containerSize.height - margin - 40}
+              textAnchor="middle"
+              dominantBaseline="middle"
               fontSize="12"
               fill="#737373"
               fontFamily="ui-sans-serif, system-ui, sans-serif"
               fontWeight="500"
+              transform={`rotate(-90 ${margin - 25} ${containerSize.height - margin - 40})`}
             >
-              COMMUNITY
+              SELF
             </text>
 
-            {/* Hover lines for hovered article */}
-            {hoveredSlug && (
-              <>
-                {MATRIX_ARTICLES.map((article) => {
-                  if (article.slug !== hoveredSlug) return null;
-                  const x = margin + article.x * plotWidth;
-                  const y = containerSize.height - margin - article.y * plotHeight;
-                  return (
-                    <g key={`lines-${article.slug}`}>
-                      {/* Vertical line to X axis */}
-                      <line
-                        x1={x}
-                        y1={y}
-                        x2={x}
-                        y2={containerSize.height - margin}
-                        stroke="#d32f2f"
-                        strokeWidth="1.5"
-                        strokeDasharray="4,4"
-                        opacity="0.6"
-                      />
-                      {/* Horizontal line to Y axis */}
-                      <line
-                        x1={margin}
-                        y1={y}
-                        x2={x}
-                        y2={y}
-                        stroke="#d32f2f"
-                        strokeWidth="1.5"
-                        strokeDasharray="4,4"
-                        opacity="0.6"
-                      />
-                    </g>
-                  );
-                })}
-              </>
-            )}
+            {/* Axis corner dots */}
+            {(() => {
+              const gap = 40;
+              return (
+                <>
+                  <circle cx={margin} cy={margin} r="6" fill="#d32f2f" />
+                  <circle cx={margin} cy={containerSize.height - margin - gap} r="6" fill="#d32f2f" />
+                  <circle cx={margin + gap} cy={containerSize.height - margin} r="6" fill="#d32f2f" />
+                  <circle cx={containerSize.width - margin} cy={containerSize.height - margin} r="6" fill="#d32f2f" />
+                </>
+              );
+            })()}
+
+            {/* Cursor tracking lines - color changes on button hover */}
+            <line
+              x1={cursorPos.x}
+              y1={0}
+              x2={cursorPos.x}
+              y2={containerSize.height}
+              stroke={hoveredSlug ? "#d32f2f" : "#d8d8d8"}
+              strokeWidth="1"
+              opacity={hoveredSlug ? "0.6" : "0.4"}
+            />
+            <line
+              x1={0}
+              y1={cursorPos.y}
+              x2={containerSize.width}
+              y2={cursorPos.y}
+              stroke={hoveredSlug ? "#d32f2f" : "#d8d8d8"}
+              strokeWidth="1"
+              opacity={hoveredSlug ? "0.6" : "0.4"}
+            />
+            {/* Cursor indicator dot */}
+            <rect
+              x={cursorPos.x - 4}
+              y={cursorPos.y - 4}
+              width="8"
+              height="8"
+              fill={hoveredSlug ? "#d32f2f" : "#ff9800"}
+            />
+
           </svg>
         )}
 
@@ -775,6 +797,12 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
         {MATRIX_ARTICLES.map((article) => {
           const x = margin + article.x * plotWidth;
           const y = containerSize.height - margin - article.y * plotHeight;
+
+          const distance = Math.sqrt(
+            Math.pow(cursorPos.x - x, 2) + Math.pow(cursorPos.y - y, 2)
+          );
+          const maxDistance = 200;
+          const scale = Math.max(1, 1 + (maxDistance - distance) / maxDistance * 0.3);
 
           return (
             <button
@@ -786,11 +814,13 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                 position: "absolute",
                 left: `${(x / containerSize.width) * 100}%`,
                 top: `${(y / containerSize.height) * 100}%`,
-                transform: "translate(-50%, -50%)",
+                transform: `translate(-50%, -50%) scale(${scale})`,
+                transition: "transform 80ms ease-out",
               }}
-              className="px-3 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-full whitespace-nowrap hover:bg-neutral-800 transition-all hover:shadow-lg cursor-pointer border-0"
+              className="px-3 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-full whitespace-nowrap hover:bg-neutral-800 transition-all hover:shadow-lg cursor-pointer border-0 flex items-center gap-3"
             >
-              {article.title}
+              <span>{article.title}</span>
+              {article.company && <span className="text-neutral-400 text-xs">{article.company}</span>}
             </button>
           );
         })}
@@ -894,12 +924,12 @@ function Index() {
       )}
 
       {/* Hero section - diagram + paragraph with expandable diagram */}
-      <section className={`relative w-full flex flex-col gap-0 transition-all duration-300 ${diagramExpanded ? 'min-h-auto' : 'min-h-screen'}`}>
+      <section className={`relative w-full flex flex-col gap-0 transition-all duration-300 pt-[30vh] ${diagramExpanded ? 'min-h-auto' : 'min-h-screen'}`}>
         {/* Diagram section - expandable */}
         <div
           onClick={() => setDiagramExpanded(!diagramExpanded)}
-          className={`flex flex-col items-center justify-center px-6 gap-0 bg-background overflow-hidden cursor-pointer transition-all duration-300 ${
-            diagramExpanded ? 'flex-[2] py-8' : 'flex-[1] py-0'
+          className={`flex flex-col items-center justify-center px-6 gap-0 bg-background cursor-pointer transition-all duration-300 ${
+            diagramExpanded ? 'h-auto py-8' : 'flex-none h-32 sm:h-40 md:h-48 lg:h-56 py-0'
           }`}
         >
           {diagramExpanded && (

@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 // Adjust these values to customize the animation behavior
 
 const CONFIG = {
+  // Show/hide the entire axis visualization (dots, lines, labels)
+  // Set to false to disable animated dots and axis lines completely
+  showAxisVisualization: false,
+
   // Animation trigger: starts animation when Section 1 is at this visibility %
   // 0.7 = 70% visible, 0.5 = 50% visible, etc.
   animationTrigger: 0.7,
@@ -51,28 +55,41 @@ export function HeroScrollAnimation() {
     { id: "futures", label: "Futures", startX: 0, startY: 0 },
   ]);
 
-  // Observe SECTION 1 - animation starts at configured trigger point
+  // Viewport-based animation trigger
+  // Starts when dots reach ~50% screen height, ends when Section 2 is visible
   useEffect(() => {
-    const section1 = section1Ref.current;
-    if (!section1) return;
+    const handleScroll = () => {
+      if (!section1Ref.current || !section2Ref.current) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        // Start animation at trigger point (e.g., when 70% visible)
-        let progress = (CONFIG.animationTrigger - entry.intersectionRatio) / CONFIG.animationTrigger;
-        progress = Math.max(0, Math.min(1, progress));
-        setAnimationProgress(progress);
-      },
-      {
-        threshold: Array.from({ length: 101 }, (_, i) => i / 100),
+      const viewportHeight = window.innerHeight;
+      const section1Rect = section1Ref.current.getBoundingClientRect();
+      const section2Rect = section2Ref.current.getBoundingClientRect();
+
+      // Dots are in Section 1 - check if they've reached 50% screen height
+      const dotsTriggerPoint = viewportHeight * 0.5;
+      const dotsCurrentViewportY = section1Rect.bottom; // Bottom of Section 1
+
+      // Calculate animation progress based on Section 2 visibility
+      // 0 = Section 2 not yet visible
+      // 1 = Section 2 fully visible
+      const section2Top = section2Rect.top;
+      const section2Bottom = section2Rect.bottom;
+
+      let progress = 0;
+      if (section2Top < viewportHeight) {
+        // Section 2 is entering/in view
+        progress = 1 - section2Top / viewportHeight;
+      } else if (dotsCurrentViewportY < dotsTriggerPoint) {
+        // Dots have passed trigger point but Section 2 not in view yet
+        progress = (dotsTriggerPoint - dotsCurrentViewportY) / (dotsTriggerPoint * 0.5);
       }
-    );
 
-    observer.observe(section1);
-    return () => {
-      if (section1) observer.unobserve(section1);
+      progress = Math.max(0, Math.min(1, progress));
+      setAnimationProgress(progress);
     };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Calculate initial dot positions from text in Section 1
@@ -134,7 +151,10 @@ export function HeroScrollAnimation() {
     if (CONFIG.clampToViewport) {
       const padding = CONFIG.viewportPaddingPx;
       x = Math.max(padding, Math.min(cw - padding, x));
-      y = Math.max(padding, Math.min(window.innerHeight - padding, y));
+      // Clamp Y relative to Section 2, not viewport
+      const s2StartY = Math.max(0, section2TopInContainer - padding);
+      const s2EndY = Math.min(window.innerHeight * 2, section2TopInContainer + s2h + padding);
+      y = Math.max(s2StartY, Math.min(s2EndY, y));
     }
 
     return { x, y };
@@ -156,18 +176,17 @@ export function HeroScrollAnimation() {
   const axisOpacityRange = CONFIG.axisOpacityEnd - CONFIG.axisOpacityStart;
   const axisOpacity = Math.max(0, (animationProgress - CONFIG.axisOpacityStart) / axisOpacityRange);
 
-  const dotOpacity = Math.max(textOpacity, Math.min(1, animationProgress));
+  const dotOpacity = Math.min(1, animationProgress);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full">
-      {/* SECTION 1: Paragraph (OBSERVED) */}
+    <div ref={containerRef} className="w-full">
+      {/* SECTION 1: Diagram + Paragraph (OBSERVED) - natural height */}
       <div
         ref={section1Ref}
-        className="relative h-full flex flex-col items-center justify-center py-12"
+        className="relative w-full mx-auto max-w-6xl flex flex-col items-center gap-8 px-6 pt-8 pb-12"
       >
         <div
-          className="max-w-4xl px-6 py-20 text-center"
-          style={{ opacity: textOpacity, transition: "opacity 100ms" }}
+          className="w-full text-center"
         >
           <p className="text-3xl md:text-5xl text-neutral-900 leading-relaxed font-medium">
             I explore new ways for humans to understand{" "}
@@ -179,7 +198,7 @@ export function HeroScrollAnimation() {
                 style={{ display: "inline-block", verticalAlign: "middle" }}
               />
             </span>
-            , understand{" "}
+            {" "}
             <span className="relative">
               Others
               <span
@@ -210,14 +229,14 @@ export function HeroScrollAnimation() {
         </div>
       </div>
 
-      {/* SECTION 2: Axis labels area */}
+      {/* SECTION 2: Hidden - dots animate to lanspage section instead */}
       <div
         ref={section2Ref}
-        className="relative flex flex-col items-center justify-center"
-        style={{ minHeight: `${CONFIG.section2HeightMultiplier * 100}vh` }}
+        id="axis-section"
+        className="hidden"
       >
         {/* HTML text labels positioned near dots */}
-        {animationProgress > 0.5 && (() => {
+        {CONFIG.showAxisVisualization && animationProgress > 0.5 && (() => {
           const selfPos = getAnimatedPosition(dots.find(d => d.id === "self")!, animationProgress);
           const othersPos = getAnimatedPosition(dots.find(d => d.id === "others")!, animationProgress);
           const productsPos = getAnimatedPosition(dots.find(d => d.id === "products")!, animationProgress);
@@ -276,7 +295,7 @@ export function HeroScrollAnimation() {
       </div>
 
       {/* Dynamic Axis SVG - lines connect the dots */}
-      {containerRef.current && (
+      {CONFIG.showAxisVisualization && containerRef.current && (
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
           viewBox={`0 0 ${containerRef.current.getBoundingClientRect().width} ${containerRef.current.getBoundingClientRect().height}`}
@@ -321,7 +340,7 @@ export function HeroScrollAnimation() {
       )}
 
       {/* Animated dots layer - spans both sections */}
-      {dots.map((dot) => {
+      {CONFIG.showAxisVisualization && dots.map((dot) => {
         const pos = getAnimatedPosition(dot, animationProgress);
 
         return (
