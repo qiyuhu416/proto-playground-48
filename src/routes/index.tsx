@@ -892,13 +892,8 @@ function Index() {
         </>
       )}
 
-      {/* Hero section - paragraph (3/4) + diagram (1/4) = full screen */}
+      {/* Hero section - diagram (1/4) + paragraph (3/4) = full screen */}
       <section className="relative w-full min-h-screen flex flex-col">
-        {/* Paragraph section - 3/4 of screen */}
-        <div className="flex-[3] flex flex-col items-center justify-center">
-          <HeroScrollAnimation />
-        </div>
-
         {/* Diagram section - 1/4 of screen */}
         <div className="flex-[1] flex flex-col items-center justify-center px-6 gap-4 bg-background">
           <img
@@ -921,6 +916,11 @@ function Index() {
               <p className="tag-style text-xs">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
             )}
           </div>
+        </div>
+
+        {/* Paragraph section - 3/4 of screen */}
+        <div className="flex-[3] flex flex-col items-center justify-center">
+          <HeroScrollAnimation />
         </div>
       </section>
 
