@@ -892,14 +892,14 @@ function Index() {
         </>
       )}
 
-      {/* Hero section - diagram (1/4) + paragraph (3/4) = full screen */}
+      {/* Hero section - diagram (1/5) + paragraph (4/5) = full screen */}
       <section className="relative w-full min-h-screen flex flex-col">
-        {/* Diagram section - 1/4 of screen */}
-        <div className="flex-[1] flex flex-col items-center justify-center px-6 gap-4 bg-background">
+        {/* Diagram section - 1/5 of screen */}
+        <div className="flex-[1] flex flex-col items-center justify-center px-6 gap-2 bg-background">
           <img
             src="/articles/hello-stranger.png"
             alt="Hello, stranger!!"
-            className="block mx-auto w-full max-w-[200px]"
+            className="block mx-auto w-full max-w-[120px]"
             style={{ mixBlendMode: "multiply", opacity: 0.5 }}
           />
           <div className="flex justify-center w-full">
@@ -918,8 +918,8 @@ function Index() {
           </div>
         </div>
 
-        {/* Paragraph section - 3/4 of screen */}
-        <div className="flex-[3] flex flex-col items-center justify-center">
+        {/* Paragraph section - 4/5 of screen */}
+        <div className="flex-[4] flex flex-col items-center justify-center">
           <HeroScrollAnimation />
         </div>
       </section>
