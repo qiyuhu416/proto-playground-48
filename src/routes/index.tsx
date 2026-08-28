@@ -803,6 +803,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
 
 function Index() {
   const navigate = useNavigate();
+  const [heroGap, setHeroGap] = useState<GapId | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -891,8 +892,37 @@ function Index() {
         </>
       )}
 
-      {/* Hero section with scroll animation - now the landing section */}
-      <HeroScrollAnimation />
+      {/* Hero section - paragraph (3/4) + diagram (1/4) = full screen */}
+      <section className="relative w-full min-h-screen flex flex-col">
+        {/* Paragraph section - 3/4 of screen */}
+        <div className="flex-[3] flex flex-col items-center justify-center">
+          <HeroScrollAnimation />
+        </div>
+
+        {/* Diagram section - 1/4 of screen */}
+        <div className="flex-[1] flex flex-col items-center justify-center px-6 gap-4 bg-background">
+          <img
+            src="/articles/hello-stranger.png"
+            alt="Hello, stranger!!"
+            className="block mx-auto w-full max-w-[200px]"
+            style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+          />
+          <div className="flex justify-center w-full">
+            <HandDrawnDiagram onHover={setHeroGap} />
+          </div>
+          {/* Gap tag — shows default or hovered gap tag */}
+          <div className="relative w-full flex justify-center px-6 min-h-[20px]">
+            {heroGap && (
+              <p className="tag-style">
+                {HERO_CONTENT[heroGap].tag}
+              </p>
+            )}
+            {!heroGap && (
+              <p className="tag-style text-xs">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
+            )}
+          </div>
+        </div>
+      </section>
 
       {/* 2D Matrix */}
       <ArticlesMatrix onCardClick={handleCardClick} />
