@@ -3,6 +3,7 @@ import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleContent, ArticleHeading2, ArticleHeading3, HighlightedText } from "@/components/ArticleContent";
+import { Accordion } from "@/components/Accordion";
 
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
@@ -144,7 +145,7 @@ function ArticleComponent() {
           </p>
 
           <p>
-            That led to another question I found really interesting: <strong>When should the bot say, "I don't know"?</strong>
+            That led to another question I found really interesting: <HighlightedText>When should the bot say, "I don't know"?</HighlightedText>
           </p>
 
           <p>
@@ -180,7 +181,7 @@ from the bot to maintain both trust and safety.`}</pre>
           </p>
 
           <p>
-            And one nuance is that transparency doesn't mean constantly reminding people that the AI is limited. It still needs to feel supportive. The design question to answer is <strong>how to be helpful without pretending to have authority the AI doesn't have.</strong>
+            And one nuance is that transparency doesn't mean constantly reminding people that the AI is limited. It still needs to feel supportive. The design question to answer is <HighlightedText>how to be helpful without pretending to have authority the AI doesn't have.</HighlightedText>
           </p>
 
           <ArticleHeading2 id={sectionId("Process")}>My Role & Research Process</ArticleHeading2>
@@ -206,11 +207,11 @@ from the bot to maintain both trust and safety.`}</pre>
           </p>
 
           <p>
-            I really liked this method because it moved the conversation away from <strong>"what should the chatbot screen look like?"</strong> toward <strong>"what role should the bot play here?"</strong>
+            I really liked this method because it moved the conversation away from <HighlightedText>"what should the chatbot screen look like?"</HighlightedText> toward <HighlightedText>"what role should the bot play here?"</HighlightedText>
           </p>
 
           <p>
-            We also used a speed-dating research method: 10 storyboards across 5 scenarios, with 2 levels of bot involvement for each. Participants saw them in randomized order and reacted quickly. The goal of this process was to elicit their discussions about <strong>How involved should the bot be—and does that answer change depending on the situation?</strong>
+            We also used a speed-dating research method: 10 storyboards across 5 scenarios, with 2 levels of bot involvement for each. Participants saw them in randomized order and reacted quickly. The goal of this process was to elicit their discussions about <HighlightedText>How involved should the bot be—and does that answer change depending on the situation?</HighlightedText>
           </p>
 
           <ArticleHeading3>3. Talking to real humans @ Vintage Center was my favorite part</ArticleHeading3>
@@ -224,7 +225,7 @@ from the bot to maintain both trust and safety.`}</pre>
           </p>
 
           <p>
-            It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, <strong>"What would you want the bot to do in this scenario?"</strong>, and ended with a survey about how comfortable they felt with different levels of bot intervention.
+            It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, <HighlightedText>"What would you want the bot to do in this scenario?"</HighlightedText>, and ended with a survey about how comfortable they felt with different levels of bot intervention.
           </p>
 
           <p>
@@ -244,7 +245,7 @@ from the bot to maintain both trust and safety.`}</pre>
           </p>
 
           <p>
-            That became one of my biggest learnings: <strong>don't design away the nuance just because it is hard to model.</strong> Some human factors should stay human, and sometimes the most trustworthy thing a bot can say is simply, <strong>"I'm not capable of providing that support."</strong>
+            That became one of my biggest learnings: <HighlightedText>don't design away the nuance just because it is hard to model.</HighlightedText> Some human factors should stay human, and sometimes the most trustworthy thing a bot can say is simply, <HighlightedText>"I'm not capable of providing that support."</HighlightedText>
           </p>
 
           <ArticleHeading3>4. Affinity-cluster the results—but I might choose a different analysis method if I did it again</ArticleHeading3>
@@ -266,7 +267,7 @@ from the bot to maintain both trust and safety.`}</pre>
           </p>
 
           <p>
-            But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us <strong>humans</strong> debrief, notice patterns, and point toward new directions.
+            But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us <HighlightedText>humans</HighlightedText> debrief, notice patterns, and point toward new directions.
           </p>
 
           <p>

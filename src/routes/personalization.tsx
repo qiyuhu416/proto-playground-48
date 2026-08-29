@@ -43,7 +43,7 @@ function PersonalizationComponent() {
 
           <h2 id={sectionId("Person & personalization")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Person & personalization"}</h2>
           <p>
-            Out of those conversations, I've also formed my own simplified version of roadmap for the future of personalization: <strong>For Me, With Me, As Me.</strong>
+            Out of those conversations, I've also formed my own simplified version of roadmap for the future of personalization: <HighlightedText>For Me, With Me, As Me.</HighlightedText>
           </p>
 
           <h3 className="text-lg font-semibold mt-8 mb-3">1. Learn For Me </h3>

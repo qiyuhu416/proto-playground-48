@@ -66,7 +66,7 @@ function CollectionComponent() {
           </p>
 
           <p>
-            This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that <strong>meets users where they are.</strong>
+            This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that <HighlightedText>meets users where they are.</HighlightedText>
           </p>
 
           <h2 id={sectionId("How to think outside the box?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">How to think outside the box?</h2>

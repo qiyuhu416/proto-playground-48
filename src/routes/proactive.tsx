@@ -256,10 +256,10 @@ function ProactiveComponent() {
 
           <h2 id={sectionId("A prototype for prototyping")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"A prototype for prototyping"}</h2>
           <p>
-            This is a prototype that prototypes. The thing being designed was a proactive chatbot—an AI that surfaces on a page without being asked. But rather than committing to one version of that behavior, the prototype was built to <strong>expose the design variables live</strong>, so the team could debate and tune them with stakeholders in real time.
+            This is a prototype that prototypes. The thing being designed was a proactive chatbot—an AI that surfaces on a page without being asked. But rather than committing to one version of that behavior, the prototype was built to <HighlightedText>expose the design variables live</HighlightedText>, so the team could debate and tune them with stakeholders in real time.
           </p>
           <p>
-            The core question: <strong>what defines the right moment for an AI to speak up?</strong> That question has no single answer—it depends on timing, context, and how much the product trusts its read of the user. The prototype makes those dependencies visible and adjustable.
+            The core question: <HighlightedText>what defines the right moment for an AI to speak up?</HighlightedText> That question has no single answer—it depends on timing, context, and how much the product trusts its read of the user. The prototype makes those dependencies visible and adjustable.
           </p>
 
       

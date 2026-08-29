@@ -50,7 +50,7 @@ function ResearchComponent() {
           </p>
 
           <p>
-            Someone still has to decide: <strong>enough.</strong> That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
+            Someone still has to decide: <HighlightedText>enough.</HighlightedText> That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
           </p>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">2. It generates options, not judgments</h3>
@@ -102,7 +102,7 @@ function ResearchComponent() {
           <h3 className="mt-8 mb-4 text-lg font-semibold">2. Don't chase the tool</h3>
 
           <p>
-            One funny thing about AI tools I saw from a meme: <strong>"If you learn AI slowly enough, sometimes you realize you didn't even need to learn the majority of them."</strong>
+            One funny thing about AI tools I saw from a meme: <HighlightedText>"If you learn AI slowly enough, sometimes you realize you didn't even need to learn the majority of them."</HighlightedText>
           </p>
 
           <p>

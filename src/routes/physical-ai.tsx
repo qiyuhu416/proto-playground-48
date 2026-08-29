@@ -48,7 +48,7 @@ function ArticleComponent() {
           </p>
 
           <p>
-            The team was small—an engineer, a PM, and me. My role was to conduct the research, including creating the service blueprint and analyzing <strong>when to use AI and when <em>not</em> to use AI</strong>. The three of us collectively shared ideas and created the final artifacts.
+            The team was small—an engineer, a PM, and me. My role was to conduct the research, including creating the service blueprint and analyzing <HighlightedText>when to use AI and when <em>not</em> to use AI</HighlightedText>. The three of us collectively shared ideas and created the final artifacts.
           </p>
 
           <p>
@@ -65,7 +65,7 @@ function ArticleComponent() {
           <h3 className="mt-12 mb-4 text-lg font-semibold">1. Storyboard</h3>
 
           <p>
-            Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <strong>when, where, and why AI should exist in the status quo.</strong>
+            Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <HighlightedText>when, where, and why AI should exist in the status quo.</HighlightedText>
           </p>
           <img
           src="/articles/physical-ai-hero.png"

@@ -7,7 +7,9 @@ interface ArticleContentProps {
 export const ArticleContent = ({ children }: ArticleContentProps) => {
   return (
     <div className="mx-auto px-6 md:px-8 py-12 md:py-16">
-      <div className="mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-neutral-900">
+      <div
+        className="mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-neutral-900 [&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-[0.3em] [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline"
+      >
         {children}
       </div>
     </div>

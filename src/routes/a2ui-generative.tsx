@@ -36,7 +36,7 @@ function ResearchComponent() {
 
           <h2 id={sectionId("What is A2UI?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What is A2UI?"}</h2>
           <p>
-            A2UI (Agent-to-UI) and Generative UI represent a paradigm shift in how interfaces are designed and built. Instead of pre-designing every screen, we specify intent and let AI generate appropriate interfaces. The key insight: <strong>defining what to explore is more important than building the prototype.</strong>
+            A2UI (Agent-to-UI) and Generative UI represent a paradigm shift in how interfaces are designed and built. Instead of pre-designing every screen, we specify intent and let AI generate appropriate interfaces. The key insight: <HighlightedText>defining what to explore is more important than building the prototype.</HighlightedText>
           </p>
 
           <p>
@@ -45,7 +45,7 @@ function ResearchComponent() {
 
           <h2 id={sectionId("Exploring from Use Cases")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Exploring from Use Cases"}</h2>
           <p>
-            Rather than building one "generative UI," I mapped the space by exploring different <strong>user roles</strong> and what they need (connecting to the "role" concept from prototype research). For each role, I designed interactions that would emerge:
+            Rather than building one "generative UI," I mapped the space by exploring different <HighlightedText>user roles</HighlightedText> and what they need (connecting to the "role" concept from prototype research). For each role, I designed interactions that would emerge:
           </p>
 
           <div className="space-y-4 my-8">

@@ -133,7 +133,7 @@ function ArticleComponent() {
           <h2 id={sectionId("Prototypers for prototyping")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"Prototypers for prototyping"}</h2>
 
           <p>
-            Over time, I've noticed I build three distinct types. To <strong>explore "what-if"s</strong> — to wonder, haha, and expand the solution space before narrowing it. To <strong>explain the prototype</strong> — to get feedback, and see how others interpret what you've built. And to <strong>let others prototype</strong> — handing over a foundation others can build on, so the prototype becomes a tool for more prototyping.
+            Over time, I've noticed I build three distinct types. To <HighlightedText>explore "what-if"s</HighlightedText> — to wonder, haha, and expand the solution space before narrowing it. To <HighlightedText>explain the prototype</HighlightedText> — to get feedback, and see how others interpret what you've built. And to <HighlightedText>let others prototype</HighlightedText> — handing over a foundation others can build on, so the prototype becomes a tool for more prototyping.
           </p>
 
           <div className="not-prose my-8">

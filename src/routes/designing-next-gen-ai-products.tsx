@@ -4,6 +4,7 @@ import { TableOfContents } from "./-TableOfContents";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleRefCard } from "./-ArticleRefCard";
+import { HighlightedText } from "@/components/ArticleContent";
 
 
 export const Route = createFileRoute("/designing-next-gen-ai-products")({
@@ -249,7 +250,7 @@ function ArticleComponent() {
           </p>
 
           <p>
-            Designing AI is not always about making the AI smarter—it's always about <strong>mapping the UX to the current tech capability</strong>. Here are reflections from my work in academia and industry.
+            Designing AI is not always about making the AI smarter—it's always about <HighlightedText>mapping the UX to the current tech capability</HighlightedText>. Here are reflections from my work in academia and industry.
           </p>
 
 
@@ -278,7 +279,7 @@ function ArticleComponent() {
           </p>
 
           <p>
-          Instead of AI–individual reaction, this was an HCI research at AI-Caring Institute about <strong>AI–group interaction</strong> in eldercare and learns to deal with relationships between elder, caregiver, and family.             
+          Instead of AI–individual reaction, this was an HCI research at AI-Caring Institute about <HighlightedText>AI–group interaction</HighlightedText> in eldercare and learns to deal with relationships between elder, caregiver, and family.
           </p>
 
           <p>
@@ -412,7 +413,7 @@ function ArticleComponent() {
           </div>
 
           <p>
-            The insight: <strong>Different triggers create different relationships.</strong> Is the AI leading? Waiting? Watching? Interrupting? The trigger mechanism is the most important UX decision you make.
+            The insight: <HighlightedText>Different triggers create different relationships.</HighlightedText> Is the AI leading? Waiting? Watching? Interrupting? The trigger mechanism is the most important UX decision you make.
           </p>
 
           <p>
@@ -433,7 +434,7 @@ function ArticleComponent() {
 
 
           <p>
-            Sometimes, the process itself is the product, and that process generates feelings. When the user feels: <strong> Great AI product design knows its boundaries. </strong>
+            Sometimes, the process itself is the product, and that process generates feelings. When the user feels: <HighlightedText>Great AI product design knows its boundaries.</HighlightedText>
           </p>
 
           <p>
