@@ -4,6 +4,7 @@ import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleRefCard } from "./-ArticleRefCard";
 import { HELLO_HUMANS } from "./helloHumansData";
+import { HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/what-do-prototypes-prototype")({
   head: () => ({

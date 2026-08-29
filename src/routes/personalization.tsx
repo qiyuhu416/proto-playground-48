@@ -3,6 +3,7 @@ import { TableOfContents } from "./-TableOfContents";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { WhereNotToUseAI } from "./-sharedContent";
+import { HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/personalization")({
   head: () => ({

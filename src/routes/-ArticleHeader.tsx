@@ -55,7 +55,7 @@ export function ArticleHeader({
         <img
           src={heroImage}
           alt={heroAlt || title}
-          className="w-full rounded-2xl mb-16 border border-neutral-200"
+          className="w-full h-[60vh] object-cover rounded-2xl mb-16 border border-neutral-200"
         />
       )}
     </>

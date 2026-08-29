@@ -189,7 +189,7 @@ export function HeroScrollAnimation() {
           className="w-full text-center"
         >
           <p className="text-3xl md:text-5xl text-neutral-900 leading-relaxed font-medium">
-            I explore new ways for humans to understand{" "}
+            Qiyu is exploring future technology for humans to understand{" "}
             <span className="relative">
               Self
               <span
@@ -218,7 +218,7 @@ export function HeroScrollAnimation() {
             </span>
             {" "}and{" "}
             <span className="relative">
-              Future Concepts
+              Prototypes
               <span
                 data-dot-id="futures"
                 className="inline-block w-3 h-3 bg-red-400 rounded-full ml-2 mb-1"

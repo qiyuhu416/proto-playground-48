@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
+import { ArticleContent, ArticleHeading2, ArticleHeading3, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/physical-ai")({
   head: () => ({
@@ -27,11 +28,11 @@ function ArticleComponent() {
           heroAlt="Physical AI for service design"
         />
 
-        <TableOfContents />
+        <DynamicIslandTOC />
 
-        <div className="prose prose-neutral max-w-4xl">
+        <ArticleContent>
 
-          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
+          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
 
           <p>
             This was a fast-paced, experimental concept design project in partnership with Strange VC and two clients:
@@ -190,11 +191,7 @@ function ArticleComponent() {
             className="w-full rounded-2xl my-8 border border-neutral-200"
           />
 
-          </div>
-
-        
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">7. Understand the limitations</h3>
+          <ArticleHeading3>7. Understand the limitations</ArticleHeading3>
 
           <p>
             Moving beyond this specific use case, let's think about the bigger service system. AI will "definitely" make errors, and in a service system, someone has to detect it, correct it, communicate the correction, and deal with whatever downstream impact it creates.
@@ -210,6 +207,8 @@ function ArticleComponent() {
             <li><strong>Does AI remove work, or move the work to someone else?</strong></li>
             <li><strong>Where should a human stay in the loop even if the model becomes more capable?</strong></li>
           </ul>
+
+        </ArticleContent>
 
       </article>
     </div>

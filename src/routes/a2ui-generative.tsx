@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { TableOfContents } from "./-TableOfContents";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
+import { HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/a2ui-generative")({
   head: () => ({

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { TableOfContents } from "./-TableOfContents";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
+import { HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/proactive")({
   head: () => ({

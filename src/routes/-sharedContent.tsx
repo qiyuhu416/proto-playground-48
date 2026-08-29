@@ -1,6 +1,8 @@
 // Shared content components for cross-article reuse
 // Update these once, and all articles using them automatically reflect the changes
 
+import { HighlightedText } from "@/components/ArticleContent";
+
 export const DesigningTheRelationship = () => (
   <>
     <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Designing the relationship (when AI has hard inferences)</h2>
@@ -8,7 +10,7 @@ export const DesigningTheRelationship = () => (
     <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
     <p>
-      Instead of AI–individual reaction, this project at AI-Caring was about <strong>AI–group interaction</strong>: AI steps into an already-existing human web and learns to deal with relationships between elder, caregiver, and family.
+      Instead of AI–individual reaction, this project at AI-Caring was about <HighlightedText>AI–group interaction</HighlightedText>: AI steps into an already-existing human web and learns to deal with relationships between elder, caregiver, and family.
     </p>
 
     <p>

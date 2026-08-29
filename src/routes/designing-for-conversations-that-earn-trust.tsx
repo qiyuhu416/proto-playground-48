@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
+import { ArticleContent, ArticleHeading2, ArticleHeading3, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
@@ -27,34 +28,61 @@ function ArticleComponent() {
           heroAlt="Conversation design for trust"
         />
 
-        <TableOfContents />
+        <DynamicIslandTOC />
 
-        <div className="prose prose-neutral max-w-3xl">
+        <ArticleContent>
 
-          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
+          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
 
           <p>
-            This was a research project at AI Caring, where I worked as a research assistant. My role included helping design the research method, conducting interviews, and exploring concepts through storyboards. The paper writing is still WIP—and moving very slowly, since my PI switched to industry (and now we are at the same company lol).
+            This was a research project at AI Caring Institute, where I worked as a research assistant with Mai Lee. Funny enough, two years later, we ended up at the same company :)
           </p>
 
           <p>
-            The theme of the research was: <strong>What if AI plays a role beyond a tool, as a caregiver for older adults?</strong>
+            Mai initiated the topic of AI for eldercare, and I worked with her end to end—from narrowing the research question to field research, analysis, and drafting the analysis section of the paper.
           </p>
 
           <p>
-            The trickiest part is that there are many stakeholders and the older adult's health may decline. As the bot becomes a party that knows information from both sides, the elder might not want the bot to tell everything to their caregiver. In social science, <em>affiliation</em> is the affective stance of being on someone's side—distinct from <em>alignment</em>, which is just structural cooperation. Designing this requires understanding what it means to be loyal to one party while respecting another's autonomy.
+            The paper didn't get published, but I am writing this article to debrief and share my learning from that one year, getting into the weeds—talking to people at the senior center and learning how complex eldercare becomes when you look at actual human lives.
           </p>
 
-          <h2 id={sectionId("Outcome")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Outcome</h2>
-
           <p>
-            Conversational design is not just about <em>what the bot says</em>. We designed the conversations for not just single-turn AI response but also focus on the high-level interaction flow to create a decision tree that defines the logics of whether the bot feels trustworthy in the first place.
+            So this is less a traditional case study and more me sharing what I learned about research, human-AI relationships, and humans. Per policy, I can't directly share the research data, so the examples below come from my desktop research and personal reflections/notes after field research.
           </p>
 
-          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Trust can be scripted</h3>
+          <ArticleHeading2 id={sectionId("Problem")}>Problem</ArticleHeading2>
 
           <p>
-            Trust is an important factor in this multi-stakeholder coordination scenarios. Through literature review, we found a conversational design framework and proposed this decision tree when caregiver and elder goals conflict:
+            Designing human-AI conversations starts with designing the <strong>human-AI relationship</strong>.
+          </p>
+
+          <p>
+            This project explored AI as a caregiver, a.k.a <strong>human-human-human-human-AI interaction</strong>. The tricky parts are:
+          </p>
+
+          <ol className="list-decimal pl-5 space-y-2 mb-6">
+            <li>There are many stakeholders, and their interests can conflict. An older adult might not want to tell their caregiver everything, while that same information could be important to their care.</li>
+            <li>An older adult's health may decline, to a point where they may not remember what they said, or no longer be able to make certain decisions independently.</li>
+          </ol>
+
+          <p>
+            So if a bot enters this dynamic—and potentially knows information from all sides—<HighlightedText>who should it be affiliated with? How does it earn trust? And at what point should that affiliation change?</HighlightedText>
+          </p>
+
+          <p>
+            In social science, <em>affiliation</em> is the affective stance of being on someone's side—distinct from <em>alignment</em>, which is just structural cooperation. Designing this requires understanding what it means to be loyal to one party while respecting another's autonomy.
+          </p>
+
+          <ArticleHeading2 id={sectionId("Outcome")}>Outcome</ArticleHeading2>
+
+          <p>
+            Just like human-human conversations, human-AI conversational design is not only about <em>what the bot says</em>. It is also about the higher-level interaction flow and the decision logic behind it—what makes the bot <HighlightedText>feel</HighlightedText> trustworthy in the first place.
+          </p>
+
+          <ArticleHeading3>1. Building trust is the foundation of showing affiliation—and trust can be scripted</ArticleHeading3>
+
+          <p>
+            Through literature review, I proposed a conversational framework about what the bot could do when caregiver and elder goals conflict:
           </p>
 
           <div className="bg-neutral-900 border-2 border-neutral-700 rounded-xl p-8 my-8">
@@ -109,111 +137,186 @@ function ArticleComponent() {
 └──────────────────────────────────────────────────┘`}</pre>
           </div>
 
-          <p className="text-xs text-neutral-500 mt-4 mb-8">Sketched response structure for when caregiver and elder goals conflict. Each line is a design hypothesis to test in user research.</p>
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">2. Trust doesn't always positively correlate with perceived capability</h3>
+          <ArticleHeading3>2. Trust doesn't always positively correlate with perceived capability</ArticleHeading3>
 
           <p>
             In some situations, an AI saying <strong>"I'm not capable of providing that support"</strong> could create more trust than confidently trying to answer everything.
           </p>
 
           <p>
-            To answer the question of "when the bot should say I don't know", we mapped out the decision tree with different possible scenarios and metrics to evaluate the outcome for each.
+            That led to another question I found really interesting: <strong>When should the bot say, "I don't know"?</strong>
+          </p>
+
+          <p>
+            We mapped different scenarios into a decision tree and looked at the variables that could change the outcome.
           </p>
 
           <div className="bg-neutral-900 border-2 border-neutral-700 rounded-xl p-6 my-8 overflow-x-auto">
-            <pre className="text-xs leading-relaxed text-white" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Scenario Analysis: When to say "I don't know"
+            <pre className="text-xs leading-relaxed text-white" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Scenario: An older adult had a fall
+Question: Should the bot tell their kids?
 
-┌─────────────────────────────────────────────────────────────┐
-│ Context: The older adult had a fall                          │
-│ Question: Should the bot tell the kids?                      │
-└─────────────────────────────────────────────────────────────┘
-
-               ELDER PREFERENCE  |  HEALTH STATUS  |  DISTANCE
+              ELDER PREFERENCE  |  HEALTH STATUS  |  DISTANCE
 ───────────────────────────────────────────────────────────────
-Wants privacy         Private   |   Recovering    |   Nearby   → Tell gradually
-Wants privacy         Private   |   Declining     |   Far away → Tell immediately
-Wants transparency    Share     |   Any status    |   Any      → Tell + explain
-Unclear preference    Unknown   |   Critical      |   Any      → Tell + support
+Wants privacy      Private    |   Recovering    |   Nearby
+                                   → Tell gradually
+
+Wants privacy      Private    |   Declining     |   Far away
+                                   → Tell immediately
+
+Wants transparency Share      |   Any status    |   Any
+                                   → Tell + explain
+
+Unclear preference Unknown    |   Critical      |   Any
+                                   → Tell + support
 
 Each scenario requires different communication strategies
 from the bot to maintain both trust and safety.`}</pre>
           </div>
 
-          <h2 id={sectionId("Implications")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Implications</h2>
+          <ArticleHeading2 id={sectionId("Implications")}>What it means for future human-robot interaction design</ArticleHeading2>
 
           <p>
-            The design goal shifted from simply making the bot feel intelligent to <strong>clearly communicating what it can do, what it cannot do, and when a human should be involved.</strong>
-          </p>
-
-          <p>
-            There is a nuance here: being transparent does not mean the bot should constantly remind users that it is limited. The interaction still needs to feel supportive. The question is how to design the right boundary so the AI can be helpful without pretending to have authority it doesn't have.
-          </p>
-
-          <h2 id={sectionId("Process")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Process</h2>
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">1. Desktop research: understand the stakeholders and common scenarios</h3>
-
-          <p>
-            We started with desktop research to understand the care ecosystem: who is involved, what kinds of decisions they make together, and where their interests might conflict.
-          </p>
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">2. Research-through-design, with storyboards as the medium</h3>
-
-          <p>
-            We created storyboards based on the researched scenarios, visualizing different extents of bot involvement in each one. This helped us focus less on <strong>"what should the chatbot screen look like?"</strong> and more on <strong>"what role should the bot play here?"</strong>
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-4 my-6">
-            <img
-              src="/articles/slz-speeddating-1.png"
-              alt="Speed dating research method setup 1"
-              className="w-full rounded-lg border border-neutral-200"
-            />
-            <img
-              src="/articles/slz-speeddating-2.png"
-              alt="Speed dating research method setup 2"
-              className="w-full rounded-lg border border-neutral-200"
-            />
-          </div>
-
-          <p className="text-sm text-neutral-500 italic mb-6">
-            Speed-dating research method: 10 storyboards across five scenarios, shown to participants in randomized order to quickly gather reactions on bot involvement levels.
+            One learning I still think about: maybe the goal isn't to make AI feel as capable as possible. It is to make its <HighlightedText>capability and boundaries understandable</HighlightedText>—what it can do, what it can't do, and when a human should be involved.
           </p>
 
           <p>
-            We also adopted a speed-dating research method: 10 storyboards across five scenarios, with two levels of bot involvement for each scenario. We showed them to participants in randomized order and asked them to quickly compare and react. The goal was to explore: <strong>to what extent should the bot be involved, and how does that change across different scenarios?</strong>
+            And one nuance is that transparency doesn't mean constantly reminding people that the AI is limited. It still needs to feel supportive. The design question to answer is <strong>how to be helpful without pretending to have authority the AI doesn't have.</strong>
+          </p>
+
+          <ArticleHeading2 id={sectionId("Process")}>My Role & Research Process</ArticleHeading2>
+
+          <ArticleHeading3>1. Desktop research: this field involved so many stakeholders!</ArticleHeading3>
+
+          <p>
+            Before this project, what I knew about eldercare mostly came from personal experience. Research forced me to zoom way out first, then narrow back down.
           </p>
 
           <p>
-            We then conducted qualitative interviews at a senior center, showing participants the storyboards and asking questions like: <strong>"What would you want the bot to do in this scenario?"</strong>
-          </p>
-
-          <img
-            src="/articles/slz-testing.png"
-            alt="Qualitative interview and testing session"
-            className="w-full rounded-lg border border-neutral-200 my-6"
-          />
-
-          <p className="text-sm text-neutral-500 italic mb-6">
-            Conducting qualitative interviews with participants at a senior center, showing storyboards and exploring their preferences for bot involvement.
-          </p>
-
-          <h3 className="mt-12 mb-4 text-lg font-semibold">3. Affinity-cluster the results</h3>
-
-          <p>
-            After the interviews, we affinity-clustered participants' responses to look for patterns across scenarios—not just whether people liked or disliked a specific bot behavior, but <em>why</em> they wanted more or less AI involvement.
+            During the diverging phase, I saw the care ecosystem varies across countries, cultures, age, and private/public healthcare systems.
           </p>
 
           <p>
-            That analysis led to the trust findings above, especially around capability, boundaries, and the bot's role in a multi-stakeholder relationship.
+            Then we narrowed the scope. I created a map to summarize who is involved, what decisions they make together, and where their interests might conflict.
+          </p>
+
+          <ArticleHeading3>2. Designing the Research-through-Design process, with storyboards as the medium</ArticleHeading3>
+
+          <p>
+            Inspired by Prof. John Zimmerman's work on Research through Design, we used storyboards to visualize those scenarios with different levels of bot involvement.
           </p>
 
           <p>
-            There are more nuances here than I can fit into a portfolio page. The paper is still WIP, so: <strong>stay tuned :)</strong>
+            I really liked this method because it moved the conversation away from <strong>"what should the chatbot screen look like?"</strong> toward <strong>"what role should the bot play here?"</strong>
           </p>
 
-        </div>
+          <p>
+            We also used a speed-dating research method: 10 storyboards across 5 scenarios, with 2 levels of bot involvement for each. Participants saw them in randomized order and reacted quickly. The goal of this process was to elicit their discussions about <strong>How involved should the bot be—and does that answer change depending on the situation?</strong>
+          </p>
+
+          <ArticleHeading3>3. Talking to real humans @ Vintage Center was my favorite part</ArticleHeading3>
+
+          <p>
+            I got a badge that said <strong>"special visitor,"</strong> an assigned room at the senior center, and took turns with Mai interviewing 10+ older adults.
+          </p>
+
+          <p>
+            This was my favorite part.
+          </p>
+
+          <p>
+            It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, <strong>"What would you want the bot to do in this scenario?"</strong>, and ended with a survey about how comfortable they felt with different levels of bot intervention.
+          </p>
+
+          <p>
+            And this is a funny thing about HCI research: you can design the research method perfectly, and then humans just...don't follow it. This happened a lot in these interviews. People went on side stories, and Mai Lee sometimes helped steer us back (thank her).
+          </p>
+
+          <p>
+            But honestly, those "side topics" were also why I loved HCI research.
+          </p>
+
+          <p>
+            I felt a little like a journalist trying to enter another person's world. The interviews covered topics like living wills, trust circles, relationships with kids -- all were very personal parts of someone's life. Every story had nuance. As a researcher, I thought my job was to find common themes and turn them into a decision tree: <em>when a person does X, maybe the bot should do Y.</em>
+          </p>
+
+          <p>
+            But humans don't really work like decision trees. There are situations like an older adult met a life friend through school and passed on the living will to them rather than the kids, or have different relationship with different kids due to many many uncontrollable reasons.
+          </p>
+
+          <p>
+            That became one of my biggest learnings: <strong>don't design away the nuance just because it is hard to model.</strong> Some human factors should stay human, and sometimes the most trustworthy thing a bot can say is simply, <strong>"I'm not capable of providing that support."</strong>
+          </p>
+
+          <ArticleHeading3>4. Affinity-cluster the results—but I might choose a different analysis method if I did it again</ArticleHeading3>
+
+          <p>
+            After the interviews, we (Mai Lee, another co-author, and I) affinity-clustered participants' responses to look for patterns across scenarios.
+          </p>
+
+          <p>
+            About a year later, I was reflecting on this analysis with Mai Lee @Apple Park, Cupertino:
+          </p>
+
+          <p className="italic">
+            <strong>Me:</strong> "Affinity clustering was such a common method I was taught in school for qualitative research. But could it be biased? It's so manual, there is so much data—what if there were some really good insights we all overlooked?"
+          </p>
+
+          <p className="italic">
+            <strong>Mai Lee:</strong> "Yes that every research method has limitations, so understanding those constraints is important."
+          </p>
+
+          <p>
+            But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us <strong>humans</strong> debrief, notice patterns, and point toward new directions.
+          </p>
+
+          <p>
+            Now in year of 2026, I see AI as a research tool. I even saw that FigJam has an AI clustering feature.
+          </p>
+
+          <p>
+            But that conversation with Mai Lee made me think <strong>maybe the point of affinity clustering isn't the cluster itself. Maybe the point is the conversation humans have while clustering.</strong>
+          </p>
+
+          <p>
+            If AI can cluster 500 sticky notes in seconds, that was great but I don't necessarily want it to skip the part where researchers argue, remember something a participant said, question a theme, and realize, "wait, maybe this means something else."
+          </p>
+
+          <ArticleHeading2 id={sectionId("Reflections")}>To my future self</ArticleHeading2>
+
+          <p>
+            I'm writing this at 10:07 a.m. on Aug 29, 2026. It's been almost two years, and I still really love the part of HCI research that involved humans:
+          </p>
+
+          <p>
+            <strong>Research about Humans:</strong> Designing human-AI interaction still start with understanding human-human interaction.
+          </p>
+
+          <p>
+            <strong>Research by humans:</strong> Maybe AI can help us see what we overlooked, but Humans do the meaning-making.
+          </p>
+
+          <p>
+            Before this project, I had been an RA in two other labs studying human-robot conversation. Both focused more on <strong>how a robot sounds</strong>:
+          </p>
+
+          <ul className="list-disc pl-5 space-y-2 mb-6">
+            <li><strong>Robot as a teammate:</strong> when it should chime into a human conversation, and what kind of sound it should use.</li>
+            <li><strong>Robot giving a command:</strong> how pitch, tone, and word choice—especially in emergencies—change perceived urgency.</li>
+          </ul>
+
+          <p>
+            This project made me zoom out from <em>how the robot talks</em> to something I now find much more interesting:
+          </p>
+
+          <p>
+            <strong>What relationship does the robot have with the humans in the first place?</strong>
+          </p>
+
+          <p>
+            There is so much to learn. Humans are interesting.
+          </p>
+
+        </ArticleContent>
 
       </article>
     </div>

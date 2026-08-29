@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
+import { ArticleContent, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/google-cloud")({
   head: () => ({
@@ -57,14 +58,13 @@ function CaseStudyComponent() {
           heroAlt="Google Cloud conversational AI interface"
         />
 
-        <TableOfContents />
+        <DynamicIslandTOC />
 
-        <div className="prose prose-neutral max-w-4xl">
-
+        <ArticleContent>
           <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
 
           <p>
-            Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to integrate intelligence to support the browsing experience. I researched and designed an 0-1 prototype for startup consumers to differentiate between similar offerings on the platform. It was launched on Google Cloud in 2024.
+            Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to <HighlightedText>integrate intelligence to support the browsing experience</HighlightedText>. I researched and designed an 0-1 prototype for startup consumers to <HighlightedText>differentiate between similar offerings on the platform</HighlightedText>. It was launched on Google Cloud in 2024.
           </p>
 
           <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm">
@@ -77,7 +77,7 @@ function CaseStudyComponent() {
           <h3 className="mt-12 mb-4 text-lg font-semibold">Embedding AI into the Product Discovery Experience for Startup Customers</h3>
 
           <p>
-            Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, browsing is messy. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
+            Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, <HighlightedText>browsing is messy</HighlightedText>. Startup leaders struggle to find the right solution without clear guidance. The challenge was to <HighlightedText>help customers differentiate between similar offerings</HighlightedText> and discover solutions aligned with their business objectives.
           </p>
 
           <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-6 my-8">
@@ -221,7 +221,7 @@ Our Solution: Contextual AI guidance at each discovery stage
             <strong>Comprehensive Hand-offs:</strong> Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.
           </p>
 
-        </div>
+        </ArticleContent>
 
       </article>
     </div>
