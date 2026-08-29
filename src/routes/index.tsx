@@ -5,6 +5,7 @@ import { CardIcon } from "./-CardIcon";
 import { TextGradientScroll } from "@/components/TextGradientScroll";
 import { NavbarWrapper } from "./-NavbarWrapper";
 import { HeroScrollAnimation } from "@/components/HeroScrollAnimation";
+import { TextHighlighter } from "@/components/TextHighlighter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -614,15 +615,17 @@ interface MatrixArticle {
   company?: string;
   x: number;
   y: number;
+  pillarTheme?: string;
+  workType?: string;
 }
 
 const MATRIX_ARTICLES: MatrixArticle[] = [
-  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40 },
-  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15 },
-  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65 },
-  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.20, y: 0.75 },
-  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50 },
-  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.10, y: 0.35 },
+  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research" },
+  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design" },
+  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design" },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.20, y: 0.75, pillarTheme: "DESIGN AI'S MIND", workType: "Product Launch" },
+  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50, pillarTheme: "DESIGN AI'S MIND", workType: "Service Design" },
+  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.10, y: 0.35, pillarTheme: "EXPRESS YOURSELF", workType: "0-1 Launch" },
 ];
 
 function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }) {
@@ -790,6 +793,38 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               fill={hoveredSlug ? "#d32f2f" : "#ff9800"}
             />
 
+            {/* Hover labels */}
+            {hoveredSlug && (() => {
+              const article = MATRIX_ARTICLES.find(a => a.slug === hoveredSlug);
+              if (!article) return null;
+              return (
+                <>
+                  {/* Y-axis label (pillar theme) */}
+                  <text
+                    x={margin + 8}
+                    y={cursorPos.y - 8}
+                    fontSize="12"
+                    fill="#d32f2f"
+                    fontFamily="ui-sans-serif, system-ui, sans-serif"
+                    fontWeight="500"
+                  >
+                    {article.pillarTheme}
+                  </text>
+                  {/* X-axis label (work type) - horizontal along the line */}
+                  <text
+                    x={cursorPos.x + 12}
+                    y={containerSize.height - margin - 8}
+                    fontSize="12"
+                    fill="#d32f2f"
+                    fontFamily="ui-sans-serif, system-ui, sans-serif"
+                    fontWeight="500"
+                  >
+                    {article.workType?.toUpperCase()}
+                  </text>
+                </>
+              );
+            })()}
+
           </svg>
         )}
 
@@ -802,7 +837,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
             Math.pow(cursorPos.x - x, 2) + Math.pow(cursorPos.y - y, 2)
           );
           const maxDistance = 200;
-          const scale = Math.max(1, 1 + (maxDistance - distance) / maxDistance * 0.3);
+          const scale = Math.max(1, 1 + (maxDistance - distance) / maxDistance * 0.15);
 
           return (
             <button
@@ -819,8 +854,14 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               }}
               className="px-3 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-full whitespace-nowrap hover:bg-neutral-800 transition-all hover:shadow-lg cursor-pointer border-0 flex items-center gap-3"
             >
-              <span>{article.title}</span>
-              {article.company && <span className="text-neutral-400 text-xs">{article.company}</span>}
+              <TextHighlighter triggerType="hover" highlightColor="rgba(255, 255, 255, 0.2)">
+                {article.title}
+              </TextHighlighter>
+              {article.company && (
+                <TextHighlighter triggerType="hover" highlightColor="rgba(255, 255, 255, 0.2)" className="text-neutral-400 text-xs">
+                  {article.company}
+                </TextHighlighter>
+              )}
             </button>
           );
         })}
@@ -885,7 +926,7 @@ function Index() {
             <div className="fixed inset-0 z-[59] bg-black/50 backdrop-blur-sm" onClick={() => setSelectedCard(null)} />
           )}
           <div
-            className="bg-white transition-all duration-300 relative"
+            className="transition-all duration-300 relative w-full h-full flex flex-col"
             style={{
               position: "fixed",
               zIndex: 60,
@@ -894,31 +935,54 @@ function Index() {
               bottom: isFull ? 0 : "clamp(24px, 5vh, 48px)",
               left: isFull ? 0 : "clamp(16px, 8vw, 120px)",
               borderRadius: isFull ? 0 : 16,
+              overflow: "hidden",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={() => setSelectedCard(null)}
-              className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-900 text-2xl z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center"
-            >
-              ×
-            </button>
-            <iframe
-              ref={iframeRef}
-              src={`/${card.slug}`}
-              className="w-full h-full border-0"
-              title={card.title}
-              onLoad={() => {
-                const iframe = iframeRef.current;
-                if (!iframe?.contentWindow) return;
-                const handleScroll = () => {
-                  const scrolled = iframe.contentWindow?.scrollY || iframe.contentDocument?.documentElement.scrollTop || 0;
-                  setIsFull(scrolled > 30);
-                };
-                iframe.contentWindow.addEventListener("scroll", handleScroll, { passive: true });
-                iframe.contentDocument?.addEventListener("scroll", handleScroll, { passive: true });
+            {/* Scrollable container with aiverse pattern */}
+            <div
+              className="w-full h-full overflow-y-auto flex flex-col bg-white"
+              style={{
+                overscrollBehavior: "contain",
               }}
-            />
+            >
+              {/* Sticky Header */}
+              <header className="sticky top-0 z-10 bg-white border-b border-neutral-200/50 px-4 py-3">
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    onClick={() => setSelectedCard(null)}
+                    className="p-2 cursor-pointer rounded-full bg-transparent hover:bg-neutral-100 text-neutral-500 hover:text-neutral-900 transition-colors"
+                    title="Close"
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M18 6 6 18M6 6 18 18" />
+                    </svg>
+                  </button>
+                  <h2 className="flex-1 text-sm font-medium text-neutral-900 truncate">{card.title}</h2>
+                  <div className="text-xs text-neutral-500">Article</div>
+                </div>
+              </header>
+
+              {/* Scrollable Content */}
+              <div className="flex-1 w-full">
+                <iframe
+                  ref={iframeRef}
+                  src={`/${card.slug}`}
+                  className="w-full h-full border-0"
+                  title={card.title}
+                  onLoad={() => {
+                    const iframe = iframeRef.current;
+                    if (!iframe?.contentWindow) return;
+                    const handleScroll = () => {
+                      const scrolled = iframe.contentWindow?.scrollY || iframe.contentDocument?.documentElement.scrollTop || 0;
+                      setIsFull(scrolled > 30);
+                    };
+                    iframe.contentWindow.addEventListener("scroll", handleScroll, { passive: true });
+                    iframe.contentDocument?.addEventListener("scroll", handleScroll, { passive: true });
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </>
       )}
