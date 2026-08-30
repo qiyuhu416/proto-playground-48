@@ -852,11 +852,11 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                 transform: `translate(-50%, -50%) scale(${scale})`,
                 transition: "transform 80ms ease-out",
               }}
-              className="px-3 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-full whitespace-nowrap hover:bg-neutral-800 transition-all hover:shadow-lg cursor-pointer border-0 flex items-center gap-3"
+              className="px-6 py-4 bg-transparent text-neutral-900 text-sm font-medium rounded-2xl hover:bg-neutral-50 transition-all hover:shadow-lg cursor-pointer border-2 border-neutral-900 flex flex-col items-center gap-1"
             >
-              {article.title}
+              <div>{article.title}</div>
               {article.company && (
-                <span className="text-neutral-400 text-xs">{article.company}</span>
+                <div className="text-neutral-500 text-xs">{article.company}</div>
               )}
             </button>
           );

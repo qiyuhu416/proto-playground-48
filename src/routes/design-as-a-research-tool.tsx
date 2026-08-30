@@ -46,97 +46,115 @@ function CaseStudyComponent() {
             <p className="m-0">Traditional research would ask drivers: "Would you use SLZ?" They'd say yes. But observed behavior told a different story entirely.</p>
           </div>
 
-          <ArticleHeading2 id={sectionId("Methodology: Design as Discovery")}>Methodology: Design as Discovery</ArticleHeading2>
+          <ProcessSection
+            id={sectionId("My Role & Research Process")}
+            items={[
+              {
+                title: "1. Understand the Context",
+                children: (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+                      <div>
+                        <img
+                          src="/articles/slz-survey-poster.png"
+                          alt="Survey poster recruiting Pittsburgh SLZ study participants"
+                          className="w-full rounded-xl border border-neutral-200 object-cover"
+                          style={{ height: "260px" }}
+                        />
+                        <p className="text-xs text-neutral-500 mt-2 text-center">Survey Posters</p>
+                      </div>
+                      <div>
+                        <img
+                          src="/articles/slz-onsite-observation.png"
+                          alt="Researchers conducting on-site observation at a Pittsburgh loading zone"
+                          className="w-full rounded-xl border border-neutral-200 object-cover"
+                          style={{ height: "260px" }}
+                        />
+                        <p className="text-xs text-neutral-500 mt-2 text-center">On-site Observation</p>
+                      </div>
+                      <div>
+                        <img
+                          src="/articles/slz-intercept-interviews.png"
+                          alt="Researchers conducting intercept interviews with drivers"
+                          className="w-full rounded-xl border border-neutral-200 object-cover"
+                          style={{ height: "260px" }}
+                        />
+                        <p className="text-xs text-neutral-500 mt-2 text-center">Intercept Interviews</p>
+                      </div>
+                    </div>
 
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 1: Understanding the Context</h3>
+                    <ul>
+                      <li><strong>Desktop research</strong> — Analyzing existing SLZ systems and competitive services</li>
+                      <li><strong>On-site observation</strong> — 10+ hours watching how drivers actually use loading zones (not how we think they should)</li>
+                      <li><strong>Intercept interviews</strong> — 15+ unscripted conversations with delivery drivers, service workers, and regular drivers at actual loading zones</li>
+                    </ul>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
-            <div>
-              <img
-                src="/articles/slz-survey-poster.png"
-                alt="Survey poster recruiting Pittsburgh SLZ study participants"
-                className="w-full rounded-xl border border-neutral-200 object-cover"
-                style={{ height: "260px" }}
-              />
-              <p className="text-xs text-neutral-500 mt-2 text-center">Survey Posters</p>
-            </div>
-            <div>
-              <img
-                src="/articles/slz-onsite-observation.png"
-                alt="Researchers conducting on-site observation at a Pittsburgh loading zone"
-                className="w-full rounded-xl border border-neutral-200 object-cover"
-                style={{ height: "260px" }}
-              />
-              <p className="text-xs text-neutral-500 mt-2 text-center">On-site Observation</p>
-            </div>
-            <div>
-              <img
-                src="/articles/slz-intercept-interviews.png"
-                alt="Researchers conducting intercept interviews with drivers"
-                className="w-full rounded-xl border border-neutral-200 object-cover"
-                style={{ height: "260px" }}
-              />
-              <p className="text-xs text-neutral-500 mt-2 text-center">Intercept Interviews</p>
-            </div>
-          </div>
+                    <p>
+                      The intercept interviews were critical. We caught people in the moment, doing the actual task. They'd show us their phone (how they found spaces), their clipboard (how they tracked time), their frustrations with current apps—things they'd never mention in a formal survey.
+                    </p>
+                  </>
+                )
+              },
+              {
+                title: "2. Test Assumptions with Prototypes",
+                children: (
+                  <>
+                    <p>
+                      We built low-fidelity and high-fidelity prototypes of different service models:
+                    </p>
+                    <ul>
+                      <li><strong>Payment timing:</strong> Upfront registration vs. pay-after-exit</li>
+                      <li><strong>Communication:</strong> Web app vs. text-only vs. phone call</li>
+                      <li><strong>Eligibility signage:</strong> Different visual designs for zone markers</li>
+                    </ul>
 
-          <ul>
-            <li><strong>Desktop research</strong> — Analyzing existing SLZ systems and competitive services</li>
-            <li><strong>On-site observation</strong> — 10+ hours watching how drivers actually use loading zones (not how we think they should)</li>
-            <li><strong>Intercept interviews</strong> — 15+ unscripted conversations with delivery drivers, service workers, and regular drivers at actual loading zones</li>
-          </ul>
+                    <p>
+                      Then we ran <strong>speed dating sessions</strong>—a rapid UX research method where drivers tested multiple concepts in quick succession. The approach tested intentionally unconventional, multimodal concepts without considering business constraints first. This technique enabled quick feedback gathering on multiple prototypes, revealing genuine reactions rather than hypothetical preferences.
+                    </p>
 
-          <p>
-            The intercept interviews were critical. We caught people in the moment, doing the actual task. They'd show us their phone (how they found spaces), their clipboard (how they tracked time), their frustrations with current apps—things they'd never mention in a formal survey.
-          </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                      <img src="/articles/slz-speeddating-1.png" alt="Speed dating concept storyboard 1" className="w-full rounded-xl border border-neutral-200" />
+                      <img src="/articles/slz-speeddating-2.png" alt="Speed dating concept storyboard 2" className="w-full rounded-xl border border-neutral-200" />
+                    </div>
 
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 2: Testing Assumptions with Prototypes</h3>
-          <p>
-            We built low-fidelity and high-fidelity prototypes of different service models:
-          </p>
-          <ul>
-            <li><strong>Payment timing:</strong> Upfront registration vs. pay-after-exit</li>
-            <li><strong>Communication:</strong> Web app vs. text-only vs. phone call</li>
-            <li><strong>Eligibility signage:</strong> Different visual designs for zone markers</li>
-          </ul>
+                    <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Physical artifacts from speed dating</p>
 
-          <p>
-            Then we ran <strong>speed dating sessions</strong>—a rapid UX research method where drivers tested multiple concepts in quick succession. The approach tested intentionally unconventional, multimodal concepts without considering business constraints first. This technique enabled quick feedback gathering on multiple prototypes, revealing genuine reactions rather than hypothetical preferences.
-          </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+                      <div>
+                        <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-neutral-200" />
+                        <p className="text-xs text-neutral-500 mt-2"><strong>Physical Kiosk</strong> — get ticket → go on their errands → scan ticket upon return</p>
+                      </div>
+                      <div>
+                        <img src="/articles/slz-digital-artifact.png" alt="Digital Automated System — SMS onboarding and reminders during parking" className="w-full rounded-xl border border-neutral-200" />
+                        <p className="text-xs text-neutral-500 mt-2"><strong>Digital Automated System</strong> — receive onboarding instructions and reminders during parking</p>
+                      </div>
+                    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-            <img src="/articles/slz-speeddating-1.png" alt="Speed dating concept storyboard 1" className="w-full rounded-xl border border-neutral-200" />
-            <img src="/articles/slz-speeddating-2.png" alt="Speed dating concept storyboard 2" className="w-full rounded-xl border border-neutral-200" />
-          </div>
+                    <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Testing with physical artifacts</p>
 
-          <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Physical artifacts from speed dating</p>
+                    <img src="/articles/slz-testing.png" alt="Testing physical kiosk prototype with drivers on the street" className="w-full rounded-xl border border-neutral-200 my-4" />
+                  </>
+                )
+              },
+              {
+                title: "3. Validate Findings",
+                children: (
+                  <>
+                    <ul>
+                      <li><strong>Think-aloud protocol</strong> — Watching drivers interact with prototypes while verbalizing their thoughts</li>
+                      <li><strong>SUS (System Usability Scale) surveys</strong> — Quantifying usability on a standard 0-100 scale</li>
+                      <li><strong>Behavioral metrics</strong> — Tracking what drivers actually did, not just what they said they'd do</li>
+                    </ul>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
-            <div>
-              <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-neutral-200" />
-              <p className="text-xs text-neutral-500 mt-2"><strong>Physical Kiosk</strong> — get ticket → go on their errands → scan ticket upon return</p>
-            </div>
-            <div>
-              <img src="/articles/slz-digital-artifact.png" alt="Digital Automated System — SMS onboarding and reminders during parking" className="w-full rounded-xl border border-neutral-200" />
-              <p className="text-xs text-neutral-500 mt-2"><strong>Digital Automated System</strong> — receive onboarding instructions and reminders during parking</p>
-            </div>
-          </div>
-
-          <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Testing with physical artifacts</p>
-
-          <img src="/articles/slz-testing.png" alt="Testing physical kiosk prototype with drivers on the street" className="w-full rounded-xl border border-neutral-200 my-4" />
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 3: Validation</h3>
-          <ul>
-            <li><strong>Think-aloud protocol</strong> — Watching drivers interact with prototypes while verbalizing their thoughts</li>
-            <li><strong>SUS (System Usability Scale) surveys</strong> — Quantifying usability on a standard 0-100 scale</li>
-            <li><strong>Behavioral metrics</strong> — Tracking what drivers actually did, not just what they said they'd do</li>
-          </ul>
-
-          <img
-            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae57451_Frame%2093%20(1).png"
-            alt="Research methodology diagram"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
+                    <img
+                      src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae57451_Frame%2093%20(1).png"
+                      alt="Research methodology diagram"
+                      className="w-full rounded-2xl my-8 border border-neutral-200"
+                    />
+                  </>
+                )
+              }
+            ]}
           />
 
           <ArticleHeading2 id={sectionId("What Design Revealed")}>What Design Revealed</ArticleHeading2>
@@ -173,30 +191,46 @@ function CaseStudyComponent() {
             What surveys said drivers wanted ≠ what driver behavior actually required. Design prototypes bridged that gap.
           </blockquote>
 
-          <ArticleHeading2 id={sectionId("Outcome: From Research to Policy")}>Outcome: From Research to Policy</ArticleHeading2>
+          <OutcomeSection
+            id={sectionId("Outcome")}
+            title="Outcome: From Research to Policy"
+            tabs={[
+              {
+                id: "service-model",
+                title: "Service Model Changes",
+                children: (
+                  <>
+                    <p>
+                      The design research led to concrete changes in how Pittsburgh's SLZ operates:
+                    </p>
+                    <ul>
+                      <li><strong>Shifted from upfront payment to pay-after-exit</strong> — Removing the barrier to trial</li>
+                      <li><strong>Text-based messaging system</strong> — The fastest way to reach drivers already on the go</li>
+                      <li><strong>Redesigned signage</strong> — Clearer, color-coded, immediately understandable</li>
+                    </ul>
+                  </>
+                )
+              },
+              {
+                id: "results",
+                title: "Measurable Results",
+                children: (
+                  <>
+                    <ul>
+                      <li><strong>SUS score of 90.3%</strong> on final service prototype (excellent usability threshold)</li>
+                      <li><strong>Projected 40% increase in SLZ adoption</strong> based on behavioral testing</li>
+                      <li><strong>Reduced support calls</strong> — Clearer signage meant fewer confused drivers</li>
+                    </ul>
 
-          <p>
-            The design research led to concrete changes in how Pittsburgh's SLZ operates:
-          </p>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Service Model Changes</h3>
-          <ul>
-            <li><strong>Shifted from upfront payment to pay-after-exit</strong> — Removing the barrier to trial</li>
-            <li><strong>Text-based messaging system</strong> — The fastest way to reach drivers already on the go</li>
-            <li><strong>Redesigned signage</strong> — Clearer, color-coded, immediately understandable</li>
-          </ul>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Measurable Results</h3>
-          <ul>
-            <li><strong>SUS score of 90.3%</strong> on final service prototype (excellent usability threshold)</li>
-            <li><strong>Projected 40% increase in SLZ adoption</strong> based on behavioral testing</li>
-            <li><strong>Reduced support calls</strong> — Clearer signage meant fewer confused drivers</li>
-          </ul>
-
-          <img
-            src="/articles/design-research-2.png"
-            alt="Research findings and empathy maps"
-            className="w-full rounded-2xl my-8"
+                    <img
+                      src="/articles/design-research-2.png"
+                      alt="Research findings and empathy maps"
+                      className="w-full rounded-2xl my-8"
+                    />
+                  </>
+                )
+              }
+            ]}
           />
 
           <ArticleHeading2 id={sectionId("Research Frameworks Used")}>Research Frameworks Used</ArticleHeading2>

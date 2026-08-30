@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { CardIcon } from "./-CardIcon";
-import { HELLO_HUMANS } from "./helloHumansData";
+import { HELLO_HUMANS } from "./-helloHumansData";
 
 interface PlacedImage { id: number; src: string; x: number; y: number; }
 interface DragState { id: number; offsetX: number; offsetY: number; }

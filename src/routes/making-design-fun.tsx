@@ -58,7 +58,7 @@ function ArticleComponent() {
             Every experiment here came from pure curiosity. Not "should I learn this?" but "I have an idea and I want to see it come to life, whatever it takes." The tools are just the means to the end.
           </p>
 
-          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Birthday card</h3>
           <p>
@@ -105,7 +105,7 @@ function ArticleComponent() {
             Your browser doesn't support video playback.
           </video></div>
 
-          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
 
           <p>
             The best creation tools don't drown you in options. They give you one powerful, focused intention. You think in blocks: your idea → your prompt → your output.
@@ -115,7 +115,7 @@ function ArticleComponent() {
             No fussy settings. No analysis paralysis. No endless tweaking. Just flow. The tool becomes invisible and only the delight remains.
           </p>
 
-          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
 
           <p>
             Playful design is when you stumble on surprising interactions. A gesture that feels right. An animation that makes you smile. A workflow that feels effortless.
@@ -129,7 +129,7 @@ function ArticleComponent() {
             <p className="m-0"><strong>The core belief:</strong> If I can remove friction, amplify joy, and make creation feel less like work and more like haha, then I've done my job.</p>
           </div>
 
-          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
 
           <p>
             In an era where creation tools are becoming more powerful, the question isn't "can I make it?" but "can I make it joyfully?"
