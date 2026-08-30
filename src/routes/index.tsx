@@ -891,7 +891,8 @@ function Index() {
   const handleCardClick = (slug: string) => {
     const card = findCard(slug);
     if (!card?.externalLink) {
-      navigate({ to: `/${slug}` });
+      setIsFull(false);
+      setSelectedCard(slug);
     } else {
       window.open(card.externalLink, '_blank');
     }
