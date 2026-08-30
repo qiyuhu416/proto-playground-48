@@ -21,7 +21,7 @@ export const Route = createFileRoute("/personalization")({
 function PersonalizationComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-2xl px-6 py-12">
+      <article className="mx-auto max-w-4xl px-6 py-12">
         <ArticleHeader
           title={ARTICLE_META["personalization"].title}
           meta="Research"

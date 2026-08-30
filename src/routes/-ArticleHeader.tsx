@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { X } from "lucide-react";
 
 interface ArticleHeaderProps {
   title: string;
@@ -26,15 +25,6 @@ export function ArticleHeader({
 
   return (
     <>
-      {/* Close Button */}
-      <button
-        onClick={() => navigate({ to: ".." })}
-        className="fixed top-6 right-6 z-50 h-10 w-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-neutral-400 hover:text-neutral-900 hover:bg-neutral-50 transition-all shadow-sm hover:shadow-md"
-        aria-label="Close"
-      >
-        <X className="h-5 w-5" />
-      </button>
-
       <div className="mb-16">
         {meta && (
           <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">
