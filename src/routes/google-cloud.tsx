@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, HighlightedText, OutcomeSection, ProcessSection } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection } from "@/components/ArticleContent";
+import { ContextMetadata } from "@/components/ContextMetadata";
 
 export const Route = createFileRoute("/google-cloud")({
   head: () => ({
@@ -58,18 +59,18 @@ function CaseStudyComponent() {
         <DynamicIslandTOC />
 
         <ArticleContent>
-          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
+          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
 
           <p>
             Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to <HighlightedText>integrate intelligence to support the browsing experience</HighlightedText>. I researched and designed an 0-1 prototype for startup consumers to <HighlightedText>differentiate between similar offerings on the platform</HighlightedText>. It was launched on Google Cloud in 2024.
           </p>
 
-          <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 my-6 text-sm">
-            <p className="m-0"><strong>Duration:</strong> 4 months</p>
-            <p className="m-0"><strong>Role:</strong> UX Designer, owned all research and the UX design of chatbot interaction.</p>
-            <p className="m-0"><strong>Deliverables:</strong> Figma hi-fi prototypes, Research report</p>
-            <p className="m-0"><strong>Collaboration:</strong> 1 senior designer, 1 UI designer, 1 engineer</p>
-          </div>
+          <ContextMetadata
+            duration="4 months"
+            role="UX Designer, owned all research and the UX design of chatbot interaction."
+            deliverables="Figma hi-fi prototypes, Research report"
+            collaboration="1 senior designer, 1 UI designer, 1 engineer"
+          />
 
           <h3 className="mt-12 mb-4 text-lg font-semibold">Embedding AI into the Product Discovery Experience for Startup Customers</h3>
 

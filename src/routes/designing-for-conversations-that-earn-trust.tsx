@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, ArticleHeading3, HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, ArticleHeading3, HighlightedText, ProcessSection, OutcomeSection } from "@/components/ArticleContent";
 import { Accordion } from "@/components/Accordion";
+import { ContextMetadata } from "@/components/ContextMetadata";
 
 export const Route = createFileRoute("/designing-for-conversations-that-earn-trust")({
   head: () => ({
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/designing-for-conversations-that-earn-tru
 function ArticleComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-3xl px-6 py-12">
+      <article className="mx-auto max-w-4xl px-6 py-12">
         <ArticleHeader
           title={ARTICLE_META["designing-for-conversations-that-earn-trust"].title}
           meta="Bot for Multi-Stakeholder Eldercare"
