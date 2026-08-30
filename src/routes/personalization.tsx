@@ -3,7 +3,7 @@ import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { WhereNotToUseAI } from "./-sharedContent";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/personalization")({
   head: () => ({
@@ -28,10 +28,10 @@ function PersonalizationComponent() {
           description="When I was asked to work on 'personalization,' I started by asking people around me this question: What makes you you?"
         />
 
-        <div className="prose prose-neutral max-w-2xl">
-          <DynamicIslandTOC />
+        <DynamicIslandTOC />
 
-          <h2 id={sectionId("So, what makes person a person?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"So, what makes person a person?"}</h2>
+        <ArticleContent>
+          <ArticleHeading2 id={sectionId("So, what makes person a person?")}>So, what makes person a person?</ArticleHeading2>
           <p className="mt-4">
             My fav movie "Little Prince" says "what's important is the unseen." I spent time in conversations, asking what people value about their closest relationships, their creative work, their growth—the places where they feel most like themselves. The answers weren't about algorithms or efficiency. They were about presence, consistency, genuine interest, and the freedom to be imperfect.
           </p>
@@ -41,7 +41,7 @@ function PersonalizationComponent() {
           </p>
 
 
-          <h2 id={sectionId("Person & personalization")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Person & personalization"}</h2>
+          <ArticleHeading2 id={sectionId("Person & personalization")}>Person & personalization</ArticleHeading2>
           <p>
             Out of those conversations, I've also formed my own simplified version of roadmap for the future of personalization: <HighlightedText>For Me, With Me, As Me.</HighlightedText>
           </p>
@@ -63,7 +63,7 @@ function PersonalizationComponent() {
 
           <WhereNotToUseAI />
 
-          <h2 id={sectionId("Humanity-centered Design")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Humanity-centered Design"}</h2>
+          <ArticleHeading2 id={sectionId("Humanity-centered Design")}>Humanity-centered Design</ArticleHeading2>
           <p>
             Yeah, it's a big word... but AI that only understands data will build systems that feel intrusive, prescriptive, or hollow. AI that understands humanity means it knows what we need, how we grow, what we struggle with, and respect our feelings.
           </p>
@@ -71,7 +71,8 @@ function PersonalizationComponent() {
           <p className="mt-4">
             The future of AI isn't about knowing everything about you. It's about understanding something essential about what it means to be human, and building systems that respect and support that.
           </p>
-        </div>
+
+        </ArticleContent>
       </article>
     </div>
   );

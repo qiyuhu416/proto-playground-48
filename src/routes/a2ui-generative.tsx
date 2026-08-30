@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/a2ui-generative")({
   head: () => ({
@@ -27,14 +27,14 @@ function ResearchComponent() {
           description="AI-driven user interfaces that generate and adapt components based on intent."
         />
 
-        <div className="prose prose-neutral max-w-2xl">
+        <DynamicIslandTOC />
+
+        <ArticleContent>
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <p className="m-0"><strong>Note:</strong> I can't directly show the prototypes I built, but I can share the references and research frameworks I used while exploring A2UI. This is early-stage research—not production-ready, but useful for understanding the space.</p>
           </div>
 
-          <DynamicIslandTOC />
-
-          <h2 id={sectionId("What is A2UI?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What is A2UI?"}</h2>
+          <ArticleHeading2 id={sectionId("What is A2UI?")}>What is A2UI?</ArticleHeading2>
           <p>
             A2UI (Agent-to-UI) and Generative UI represent a paradigm shift in how interfaces are designed and built. Instead of pre-designing every screen, we specify intent and let AI generate appropriate interfaces. The key insight: <HighlightedText>defining what to explore is more important than building the prototype.</HighlightedText>
           </p>
@@ -43,7 +43,7 @@ function ResearchComponent() {
             I used Claude Code to explore these concepts while understanding the boundary: this is research-grade exploration, not a production framework.
           </p>
 
-          <h2 id={sectionId("Exploring from Use Cases")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Exploring from Use Cases"}</h2>
+          <ArticleHeading2 id={sectionId("Exploring from Use Cases")}>Exploring from Use Cases</ArticleHeading2>
           <p>
             Rather than building one "generative UI," I mapped the space by exploring different <HighlightedText>user roles</HighlightedText> and what they need (connecting to the "role" concept from prototype research). For each role, I designed interactions that would emerge:
           </p>
@@ -70,7 +70,7 @@ function ResearchComponent() {
             </div>
           </div>
 
-          <h2 id={sectionId("Interaction Patterns")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Interaction Patterns"}</h2>
+          <ArticleHeading2 id={sectionId("Interaction Patterns")}>Interaction Patterns</ArticleHeading2>
           <p>
             For each role, I explored how interactions might differ when they're AI-generated:
           </p>
@@ -82,20 +82,21 @@ function ResearchComponent() {
             <li><strong>Consistency</strong> — If every interaction generates a new UI, how does the user build mental models?</li>
           </ul>
 
-          <h2 id={sectionId("Research References")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Research References"}</h2>
+          <ArticleHeading2 id={sectionId("Research References")}>Research References</ArticleHeading2>
           <ul>
             <li><a href="https://a2ui.org/composer/" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">A2UI Composer</a> — Framework for thinking about agent-driven interfaces</li>
             <li>Generative UI research from Vercel and Anthropic on how to design for AI-generated components</li>
             <li>"What do prototypes prototype?" — Mapping this to the question: <em>What does a generative UI prototype?</em></li>
           </ul>
 
-          <h2 id={sectionId("The Big Question")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Big Question"}</h2>
+          <ArticleHeading2 id={sectionId("The Big Question")}>The Big Question</ArticleHeading2>
           <p>
             If interfaces can be generated, what's the role of design? The answer: <strong>design moves upstream</strong>. Instead of designing screens, you design the principles that guide generation. You decide: for this role, what matters most? Speed? Exploration? Control? Learning? The AI generates in service of that intention.
           </p>
-        </div>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
+        </ArticleContent>
+
+        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-3xl mx-auto px-6">
           <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Explore</div>
           <ul className="space-y-3 text-sm text-neutral-600">
             <li>How component generation is changing interface design</li>

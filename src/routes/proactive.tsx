@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/proactive")({
   head: () => ({
@@ -246,15 +246,15 @@ function ProactiveComponent() {
           description="Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time."
         />
 
-        <div className="prose prose-neutral max-w-2xl">
-          <DynamicIslandTOC />
+        <DynamicIslandTOC />
 
+        <ArticleContent>
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <p className="m-0"><strong>Note:</strong> This project is under NDA. What I can say is that the most valuable moment was when a stakeholder said mid-meeting "wait, what if we changed this?" That shift from critique to co-creation is what this prototype was built for.
             </p>
           </div>
 
-          <h2 id={sectionId("A prototype for prototyping")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"A prototype for prototyping"}</h2>
+          <ArticleHeading2 id={sectionId("A prototype for prototyping")}>A prototype for prototyping</ArticleHeading2>
           <p>
             This is a prototype that prototypes. The thing being designed was a proactive chatbot—an AI that surfaces on a page without being asked. But rather than committing to one version of that behavior, the prototype was built to <HighlightedText>expose the design variables live</HighlightedText>, so the team could debate and tune them with stakeholders in real time.
           </p>
@@ -264,9 +264,12 @@ function ProactiveComponent() {
 
       
 
-          <ProactiveDemo />
+        </ArticleContent>
 
-          <h2 id={sectionId("Variables as questions")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Variables as questions"}</h2>
+        <ProactiveDemo />
+
+        <ArticleContent>
+          <ArticleHeading2 id={sectionId("Variables as questions")}>Variables as questions</ArticleHeading2>
           <p>
             Each trigger type encodes a different belief about when AI should interrupt:
           </p>
@@ -276,11 +279,12 @@ function ProactiveComponent() {
             <li><strong>Contextual</strong> — How confident does the system need to be? Low confidence risks noise; high confidence risks silence. The threshold shapes the AI's personality.</li>
           </ul>
 
-          <h2 id={sectionId("The takeaway")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The takeaway"}</h2>
+          <ArticleHeading2 id={sectionId("The takeaway")}>The takeaway</ArticleHeading2>
           <p>
             Prototypes that invite tweaking surface what people actually care about. The real design work happened not in building the chatbot, but in the conversations this prototype made possible—about timing, tone, and when an AI earns the right to speak first.
           </p>
-        </div>
+
+        </ArticleContent>
       </article>
     </div>
   );
