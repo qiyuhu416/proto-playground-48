@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DynamicIslandTOC } from "./-DynamicIslandTOC";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";

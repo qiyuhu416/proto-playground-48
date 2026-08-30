@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { DynamicIslandTOC } from "./-DynamicIslandTOC";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 
 function BackButton() {
   return (

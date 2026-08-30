@@ -854,13 +854,9 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               }}
               className="px-3 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-full whitespace-nowrap hover:bg-neutral-800 transition-all hover:shadow-lg cursor-pointer border-0 flex items-center gap-3"
             >
-              <TextHighlighter triggerType="hover" highlightColor="rgba(255, 255, 255, 0.2)">
-                {article.title}
-              </TextHighlighter>
+              {article.title}
               {article.company && (
-                <TextHighlighter triggerType="hover" highlightColor="rgba(255, 255, 255, 0.2)" className="text-neutral-400 text-xs">
-                  {article.company}
-                </TextHighlighter>
+                <span className="text-neutral-400 text-xs">{article.company}</span>
               )}
             </button>
           );
@@ -927,7 +923,7 @@ function Index() {
             <div className="fixed inset-0 z-[59] bg-black/50 backdrop-blur-sm" onClick={() => setSelectedCard(null)} />
           )}
           <div
-            className="transition-all duration-300 relative w-full h-full flex flex-col"
+            className="transition-all duration-300 relative flex flex-col"
             style={{
               position: "fixed",
               zIndex: 60,

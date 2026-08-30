@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, ArticleHeading3, HighlightedText, OutcomeSection, ProcessSection } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/physical-ai")({
   head: () => ({
@@ -19,8 +18,6 @@ export const Route = createFileRoute("/physical-ai")({
 });
 
 function ArticleComponent() {
-  const [activeOutcome, setActiveOutcome] = useState<"storyboard" | "hardware" | "flow">("storyboard");
-
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <article className="mx-auto max-w-4xl px-6 py-12">
@@ -63,72 +60,57 @@ function ArticleComponent() {
             <li>How to be technology-driven but not tech-centered: finding the right intervention point to maximize the model's capabilities without forcing the technology into the experience.</li>
           </ol>
 
-          <h2 id={sectionId("Outcome")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Outcome</h2>
-
-          {/* Tab Navigation */}
-          <div className="my-8">
-            <div className="flex gap-2 mb-6 border-b border-neutral-200">
-              {[
-                { id: "storyboard" as const, label: "Storyboard" },
-                { id: "hardware" as const, label: "Hardware Prototype" },
-                { id: "flow" as const, label: "User Flow" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveOutcome(tab.id)}
-                  className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                    activeOutcome === tab.id
-                      ? "border-neutral-900 text-neutral-900"
-                      : "border-transparent text-neutral-500 hover:text-neutral-700"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Tab Content */}
-            <div className="space-y-4">
-              {activeOutcome === "storyboard" && (
-                <div className="space-y-4">
-                  <p>
-                    Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <HighlightedText>when, where, and why AI should exist in the status quo.</HighlightedText>
-                  </p>
-                  <img
-                    src="/articles/physical-ai-hero.png"
-                    alt="Physical AI healthcare interaction design"
-                    className="w-full rounded-2xl my-6 border border-neutral-200"
-                  />
-                </div>
-              )}
-
-              {activeOutcome === "hardware" && (
-                <div className="space-y-4">
-                  <img
-                    src="/articles/physical-ai-23.png"
-                    alt="Hardware artifacts: base station, tracker base, and tracker module"
-                    className="w-full rounded-2xl my-6 border border-neutral-200"
-                  />
-                  <p className="text-sm text-neutral-500 italic">
-                    Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
-                  </p>
-                  <p>
-                    The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
-                  </p>
-                </div>
-              )}
-
-              {activeOutcome === "flow" && (
-                <div className="space-y-4">
+          <OutcomeSection
+            id={sectionId("Outcome")}
+            tabs={[
+              {
+                id: "storyboard",
+                title: "1. Storyboard",
+                children: (
+                  <>
+                    <p>
+                      Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <HighlightedText>when, where, and why AI should exist in the status quo.</HighlightedText>
+                    </p>
+                    <img
+                      src="/articles/physical-ai-hero.png"
+                      alt="Physical AI healthcare interaction design"
+                      className="w-full rounded-2xl my-6 border border-neutral-200"
+                    />
+                  </>
+                )
+              },
+              {
+                id: "hardware",
+                title: "2. The Hardware Prototype",
+                children: (
+                  <>
+                    <img
+                      src="/articles/physical-ai-23.png"
+                      alt="Hardware artifacts: base station, tracker base, and tracker module"
+                      className="w-full rounded-2xl my-6 border border-neutral-200"
+                    />
+                    <p className="text-sm text-neutral-500 italic">
+                      Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
+                    </p>
+                    <p>
+                      The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
+                    </p>
+                  </>
+                )
+              },
+              {
+                id: "flow",
+                title: "3. The Flow",
+                children: (
                   <img
                     src="/articles/physical-ai-24.png"
                     alt="Proposed user flow with 8 interaction steps"
                     className="w-full rounded-2xl my-6 border border-neutral-200"
                   />
-                </div>
-              )}
-            </div>
-          </div>
+                )
+              }
+            ]}
+          />
 
 
           <ProcessSection

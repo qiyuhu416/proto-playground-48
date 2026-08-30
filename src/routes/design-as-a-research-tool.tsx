@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DynamicIslandTOC } from "./-DynamicIslandTOC";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, ProcessSection, OutcomeSection } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/design-as-a-research-tool")({
   head: () => ({
@@ -28,10 +28,11 @@ function CaseStudyComponent() {
           heroAlt="Smart Loading Zone interface research"
         />
 
-        <div className="prose prose-neutral max-w-4xl">
-          <DynamicIslandTOC />
+        <DynamicIslandTOC />
 
-          <h2 id={sectionId("The Challenge")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Challenge"}</h2>
+        <ArticleContent>
+
+          <ArticleHeading2 id={sectionId("The Challenge")}>The Challenge</ArticleHeading2>
           <p>
             Pittsburgh's Smart Loading Zones (SLZ) were designed to improve parking efficiency and reduce delivery times. But adoption was stuck. Most drivers either didn't know about them or actively avoided them. The Parking Authority had questions that surveys couldn't answer:
           </p>
@@ -45,11 +46,11 @@ function CaseStudyComponent() {
             <p className="m-0">Traditional research would ask drivers: "Would you use SLZ?" They'd say yes. But observed behavior told a different story entirely.</p>
           </div>
 
-          <h2 id={sectionId("Methodology: Design as Discovery")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Methodology: Design as Discovery"}</h2>
+          <ArticleHeading2 id={sectionId("Methodology: Design as Discovery")}>Methodology: Design as Discovery</ArticleHeading2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Phase 1: Understanding the Context</h3>
 
-          <div className="not-prose grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
             <div>
               <img
                 src="/articles/slz-survey-poster.png"
@@ -103,14 +104,14 @@ function CaseStudyComponent() {
             Then we ran <strong>speed dating sessions</strong>—a rapid UX research method where drivers tested multiple concepts in quick succession. The approach tested intentionally unconventional, multimodal concepts without considering business constraints first. This technique enabled quick feedback gathering on multiple prototypes, revealing genuine reactions rather than hypothetical preferences.
           </p>
 
-          <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
             <img src="/articles/slz-speeddating-1.png" alt="Speed dating concept storyboard 1" className="w-full rounded-xl border border-neutral-200" />
             <img src="/articles/slz-speeddating-2.png" alt="Speed dating concept storyboard 2" className="w-full rounded-xl border border-neutral-200" />
           </div>
 
-          <p className="not-prose text-sm font-semibold text-neutral-900 mt-10 mb-4">Physical artifacts from speed dating</p>
+          <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Physical artifacts from speed dating</p>
 
-          <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
             <div>
               <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-neutral-200" />
               <p className="text-xs text-neutral-500 mt-2"><strong>Physical Kiosk</strong> — get ticket → go on their errands → scan ticket upon return</p>
@@ -121,7 +122,7 @@ function CaseStudyComponent() {
             </div>
           </div>
 
-          <p className="not-prose text-sm font-semibold text-neutral-900 mt-10 mb-4">Testing with physical artifacts</p>
+          <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Testing with physical artifacts</p>
 
           <img src="/articles/slz-testing.png" alt="Testing physical kiosk prototype with drivers on the street" className="w-full rounded-xl border border-neutral-200 my-4" />
 
@@ -138,7 +139,7 @@ function CaseStudyComponent() {
             className="w-full rounded-2xl my-8 border border-neutral-200"
           />
 
-          <h2 id={sectionId("What Design Revealed")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What Design Revealed"}</h2>
+          <ArticleHeading2 id={sectionId("What Design Revealed")}>What Design Revealed</ArticleHeading2>
 
           <p>
             <strong>Survey answer:</strong> "Would you use Smart Loading Zones?" 78% said yes.
@@ -172,7 +173,7 @@ function CaseStudyComponent() {
             What surveys said drivers wanted ≠ what driver behavior actually required. Design prototypes bridged that gap.
           </blockquote>
 
-          <h2 id={sectionId("Outcome: From Research to Policy")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Outcome: From Research to Policy"}</h2>
+          <ArticleHeading2 id={sectionId("Outcome: From Research to Policy")}>Outcome: From Research to Policy</ArticleHeading2>
 
           <p>
             The design research led to concrete changes in how Pittsburgh's SLZ operates:
@@ -198,7 +199,7 @@ function CaseStudyComponent() {
             className="w-full rounded-2xl my-8"
           />
 
-          <h2 id={sectionId("Research Frameworks Used")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Research Frameworks Used"}</h2>
+          <ArticleHeading2 id={sectionId("Research Frameworks Used")}>Research Frameworks Used</ArticleHeading2>
 
           <p>Throughout the project, we built:</p>
 
@@ -233,7 +234,7 @@ function CaseStudyComponent() {
             className="w-full rounded-2xl my-8"
           />
 
-          <h2 id={sectionId("Why Design Was Essential")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Why Design Was Essential"}</h2>
+          <ArticleHeading2 id={sectionId("Why Design Was Essential")}>Why Design Was Essential</ArticleHeading2>
 
           <p>
             Traditional research methods would have confirmed the obvious: drivers want efficient parking. But design as research revealed the non-obvious: <strong>drivers will default to hazard lights rather than learn a new system if the system seems confusing.</strong>
@@ -254,7 +255,8 @@ function CaseStudyComponent() {
               complete case study →
             </a>
           </p>
-        </div>
+
+        </ArticleContent>
       </article>
     </div>
   );
