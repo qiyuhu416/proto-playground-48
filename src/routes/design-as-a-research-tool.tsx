@@ -46,6 +46,48 @@ function CaseStudyComponent() {
             <p className="m-0">Traditional research would ask drivers: "Would you use SLZ?" They'd say yes. But observed behavior told a different story entirely.</p>
           </div>
 
+          <OutcomeSection
+            id={sectionId("Outcome")}
+            title="Outcome: From Research to Policy"
+            tabs={[
+              {
+                id: "service-model",
+                title: "Service Model Changes",
+                children: (
+                  <>
+                    <p>
+                      The design research led to concrete changes in how Pittsburgh's SLZ operates:
+                    </p>
+                    <ul>
+                      <li><strong>Shifted from upfront payment to pay-after-exit</strong> — Removing the barrier to trial</li>
+                      <li><strong>Text-based messaging system</strong> — The fastest way to reach drivers already on the go</li>
+                      <li><strong>Redesigned signage</strong> — Clearer, color-coded, immediately understandable</li>
+                    </ul>
+                  </>
+                )
+              },
+              {
+                id: "results",
+                title: "Measurable Results",
+                children: (
+                  <>
+                    <ul>
+                      <li><strong>SUS score of 90.3%</strong> on final service prototype (excellent usability threshold)</li>
+                      <li><strong>Projected 40% increase in SLZ adoption</strong> based on behavioral testing</li>
+                      <li><strong>Reduced support calls</strong> — Clearer signage meant fewer confused drivers</li>
+                    </ul>
+
+                    <img
+                      src="/articles/design-research-2.png"
+                      alt="Research findings and empathy maps"
+                      className="w-full rounded-2xl my-8"
+                    />
+                  </>
+                )
+              }
+            ]}
+          />
+
           <ProcessSection
             id={sectionId("My Role & Research Process")}
             items={[
@@ -190,48 +232,6 @@ function CaseStudyComponent() {
           <blockquote>
             What surveys said drivers wanted ≠ what driver behavior actually required. Design prototypes bridged that gap.
           </blockquote>
-
-          <OutcomeSection
-            id={sectionId("Outcome")}
-            title="Outcome: From Research to Policy"
-            tabs={[
-              {
-                id: "service-model",
-                title: "Service Model Changes",
-                children: (
-                  <>
-                    <p>
-                      The design research led to concrete changes in how Pittsburgh's SLZ operates:
-                    </p>
-                    <ul>
-                      <li><strong>Shifted from upfront payment to pay-after-exit</strong> — Removing the barrier to trial</li>
-                      <li><strong>Text-based messaging system</strong> — The fastest way to reach drivers already on the go</li>
-                      <li><strong>Redesigned signage</strong> — Clearer, color-coded, immediately understandable</li>
-                    </ul>
-                  </>
-                )
-              },
-              {
-                id: "results",
-                title: "Measurable Results",
-                children: (
-                  <>
-                    <ul>
-                      <li><strong>SUS score of 90.3%</strong> on final service prototype (excellent usability threshold)</li>
-                      <li><strong>Projected 40% increase in SLZ adoption</strong> based on behavioral testing</li>
-                      <li><strong>Reduced support calls</strong> — Clearer signage meant fewer confused drivers</li>
-                    </ul>
-
-                    <img
-                      src="/articles/design-research-2.png"
-                      alt="Research findings and empathy maps"
-                      className="w-full rounded-2xl my-8"
-                    />
-                  </>
-                )
-              }
-            ]}
-          />
 
           <ArticleHeading2 id={sectionId("Research Frameworks Used")}>Research Frameworks Used</ArticleHeading2>
 
