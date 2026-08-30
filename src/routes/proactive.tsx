@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";
@@ -247,7 +247,7 @@ function ProactiveComponent() {
         />
 
         <div className="prose prose-neutral max-w-2xl">
-          <TableOfContents />
+          <DynamicIslandTOC />
 
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <p className="m-0"><strong>Note:</strong> This project is under NDA. What I can say is that the most valuable moment was when a stakeholder said mid-meeting "wait, what if we changed this?" That shift from critique to co-creation is what this prototype was built for.

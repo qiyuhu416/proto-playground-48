@@ -186,101 +186,122 @@ from the bot to maintain both trust and safety.`}</pre>
 
           <ArticleHeading2 id={sectionId("Process")}>My Role & Research Process</ArticleHeading2>
 
-          <ArticleHeading3>1. Desktop research: this field involved so many stakeholders!</ArticleHeading3>
+          <Accordion
+            items={[
+              {
+                title: "1. Desktop research: this field involved so many stakeholders!",
+                children: (
+                  <>
+                    <p>
+                      Before this project, what I knew about eldercare mostly came from personal experience. Research forced me to zoom way out first, then narrow back down.
+                    </p>
 
-          <p>
-            Before this project, what I knew about eldercare mostly came from personal experience. Research forced me to zoom way out first, then narrow back down.
-          </p>
+                    <p>
+                      During the diverging phase, I saw the care ecosystem varies across countries, cultures, age, and private/public healthcare systems.
+                    </p>
 
-          <p>
-            During the diverging phase, I saw the care ecosystem varies across countries, cultures, age, and private/public healthcare systems.
-          </p>
+                    <p>
+                      Then we narrowed the scope. I created a map to summarize who is involved, what decisions they make together, and where their interests might conflict.
+                    </p>
+                  </>
+                ),
+              },
+              {
+                title: "2. Designing the Research-through-Design process, with storyboards as the medium",
+                children: (
+                  <>
+                    <p>
+                      Inspired by Prof. John Zimmerman's work on Research through Design, we used storyboards to visualize those scenarios with different levels of bot involvement.
+                    </p>
 
-          <p>
-            Then we narrowed the scope. I created a map to summarize who is involved, what decisions they make together, and where their interests might conflict.
-          </p>
+                    <p>
+                      I really liked this method because it moved the conversation away from <HighlightedText>"what should the chatbot screen look like?"</HighlightedText> toward <HighlightedText>"what role should the bot play here?"</HighlightedText>
+                    </p>
 
-          <ArticleHeading3>2. Designing the Research-through-Design process, with storyboards as the medium</ArticleHeading3>
+                    <p>
+                      We also used a speed-dating research method: 10 storyboards across 5 scenarios, with 2 levels of bot involvement for each. Participants saw them in randomized order and reacted quickly. The goal of this process was to elicit their discussions about <HighlightedText>How involved should the bot be—and does that answer change depending on the situation?</HighlightedText>
+                    </p>
+                  </>
+                ),
+              },
+              {
+                title: "3. Talking to real humans @ Vintage Center was my favorite part",
+                children: (
+                  <>
+                    <p>
+                      I got a badge that said <strong>"special visitor,"</strong> an assigned room at the senior center, and took turns with Mai interviewing 10+ older adults.
+                    </p>
 
-          <p>
-            Inspired by Prof. John Zimmerman's work on Research through Design, we used storyboards to visualize those scenarios with different levels of bot involvement.
-          </p>
+                    <p>
+                      This was my favorite part.
+                    </p>
 
-          <p>
-            I really liked this method because it moved the conversation away from <HighlightedText>"what should the chatbot screen look like?"</HighlightedText> toward <HighlightedText>"what role should the bot play here?"</HighlightedText>
-          </p>
+                    <p>
+                      It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, <HighlightedText>"What would you want the bot to do in this scenario?"</HighlightedText>, and ended with a survey about how comfortable they felt with different levels of bot intervention.
+                    </p>
 
-          <p>
-            We also used a speed-dating research method: 10 storyboards across 5 scenarios, with 2 levels of bot involvement for each. Participants saw them in randomized order and reacted quickly. The goal of this process was to elicit their discussions about <HighlightedText>How involved should the bot be—and does that answer change depending on the situation?</HighlightedText>
-          </p>
+                    <p>
+                      And this is a funny thing about HCI research: you can design the research method perfectly, and then humans just...don't follow it. This happened a lot in these interviews. People went on side stories, and Mai Lee sometimes helped steer us back (thank her).
+                    </p>
 
-          <ArticleHeading3>3. Talking to real humans @ Vintage Center was my favorite part</ArticleHeading3>
+                    <p>
+                      But honestly, those "side topics" were also why I loved HCI research.
+                    </p>
 
-          <p>
-            I got a badge that said <strong>"special visitor,"</strong> an assigned room at the senior center, and took turns with Mai interviewing 10+ older adults.
-          </p>
+                    <p>
+                      I felt a little like a journalist trying to enter another person's world. The interviews covered topics like living wills, trust circles, relationships with kids -- all were very personal parts of someone's life. Every story had nuance. As a researcher, I thought my job was to find common themes and turn them into a decision tree: <em>when a person does X, maybe the bot should do Y.</em>
+                    </p>
 
-          <p>
-            This was my favorite part.
-          </p>
+                    <p>
+                      But humans don't really work like decision trees. There are situations like an older adult met a life friend through school and passed on the living will to them rather than the kids, or have different relationship with different kids due to many many uncontrollable reasons.
+                    </p>
 
-          <p>
-            It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, <HighlightedText>"What would you want the bot to do in this scenario?"</HighlightedText>, and ended with a survey about how comfortable they felt with different levels of bot intervention.
-          </p>
+                    <p>
+                      That became one of my biggest learnings: <HighlightedText>don't design away the nuance just because it is hard to model.</HighlightedText> Some human factors should stay human, and sometimes the most trustworthy thing a bot can say is simply, <HighlightedText>"I'm not capable of providing that support."</HighlightedText>
+                    </p>
+                  </>
+                ),
+              },
+              {
+                title: "4. Affinity-cluster the results—but I might choose a different analysis method if I did it again",
+                children: (
+                  <>
+                    <p>
+                      After the interviews, we (Mai Lee, another co-author, and I) affinity-clustered participants' responses to look for patterns across scenarios.
+                    </p>
 
-          <p>
-            And this is a funny thing about HCI research: you can design the research method perfectly, and then humans just...don't follow it. This happened a lot in these interviews. People went on side stories, and Mai Lee sometimes helped steer us back (thank her).
-          </p>
+                    <p>
+                      About a year later, I was reflecting on this analysis with Mai Lee @Apple Park, Cupertino:
+                    </p>
 
-          <p>
-            But honestly, those "side topics" were also why I loved HCI research.
-          </p>
+                    <p className="italic">
+                      <strong>Me:</strong> "Affinity clustering was such a common method I was taught in school for qualitative research. But could it be biased? It's so manual, there is so much data—what if there were some really good insights we all overlooked?"
+                    </p>
 
-          <p>
-            I felt a little like a journalist trying to enter another person's world. The interviews covered topics like living wills, trust circles, relationships with kids -- all were very personal parts of someone's life. Every story had nuance. As a researcher, I thought my job was to find common themes and turn them into a decision tree: <em>when a person does X, maybe the bot should do Y.</em>
-          </p>
+                    <p className="italic">
+                      <strong>Mai Lee:</strong> "Yes that every research method has limitations, so understanding those constraints is important."
+                    </p>
 
-          <p>
-            But humans don't really work like decision trees. There are situations like an older adult met a life friend through school and passed on the living will to them rather than the kids, or have different relationship with different kids due to many many uncontrollable reasons.
-          </p>
+                    <p>
+                      But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us <HighlightedText>humans</HighlightedText> debrief, notice patterns, and point toward new directions.
+                    </p>
 
-          <p>
-            That became one of my biggest learnings: <HighlightedText>don't design away the nuance just because it is hard to model.</HighlightedText> Some human factors should stay human, and sometimes the most trustworthy thing a bot can say is simply, <HighlightedText>"I'm not capable of providing that support."</HighlightedText>
-          </p>
+                    <p>
+                      Now in year of 2026, I see AI as a research tool. I even saw that FigJam has an AI clustering feature.
+                    </p>
 
-          <ArticleHeading3>4. Affinity-cluster the results—but I might choose a different analysis method if I did it again</ArticleHeading3>
+                    <p>
+                      But that conversation with Mai Lee made me think <strong>maybe the point of affinity clustering isn't the cluster itself. Maybe the point is the conversation humans have while clustering.</strong>
+                    </p>
 
-          <p>
-            After the interviews, we (Mai Lee, another co-author, and I) affinity-clustered participants' responses to look for patterns across scenarios.
-          </p>
-
-          <p>
-            About a year later, I was reflecting on this analysis with Mai Lee @Apple Park, Cupertino:
-          </p>
-
-          <p className="italic">
-            <strong>Me:</strong> "Affinity clustering was such a common method I was taught in school for qualitative research. But could it be biased? It's so manual, there is so much data—what if there were some really good insights we all overlooked?"
-          </p>
-
-          <p className="italic">
-            <strong>Mai Lee:</strong> "Yes that every research method has limitations, so understanding those constraints is important."
-          </p>
-
-          <p>
-            But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us <HighlightedText>humans</HighlightedText> debrief, notice patterns, and point toward new directions.
-          </p>
-
-          <p>
-            Now in year of 2026, I see AI as a research tool. I even saw that FigJam has an AI clustering feature.
-          </p>
-
-          <p>
-            But that conversation with Mai Lee made me think <strong>maybe the point of affinity clustering isn't the cluster itself. Maybe the point is the conversation humans have while clustering.</strong>
-          </p>
-
-          <p>
-            If AI can cluster 500 sticky notes in seconds, that was great but I don't necessarily want it to skip the part where researchers argue, remember something a participant said, question a theme, and realize, "wait, maybe this means something else."
-          </p>
+                    <p>
+                      If AI can cluster 500 sticky notes in seconds, that was great but I don't necessarily want it to skip the part where researchers argue, remember something a participant said, question a theme, and realize, "wait, maybe this means something else."
+                    </p>
+                  </>
+                ),
+              },
+            ]}
+          />
 
           <ArticleHeading2 id={sectionId("Reflections")}>To my future self</ArticleHeading2>
 

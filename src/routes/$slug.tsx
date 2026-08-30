@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 
 function BackButton() {
   return (
@@ -124,7 +124,7 @@ function PrototypeComponent() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <div className="mx-auto max-w-4xl px-6 py-12">
-        <TableOfContents />
+        <DynamicIslandTOC />
 
 
         <div className="mb-8">

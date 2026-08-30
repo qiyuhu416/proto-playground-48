@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 
 export const Route = createFileRoute("/hello-humans")({
@@ -25,7 +25,7 @@ function HelloHumansComponent() {
           heroImage="/articles/hello-humans-notebook.jpg"
           heroAlt="Hello humans notebook prototype"
         />
-        <TableOfContents />
+        <DynamicIslandTOC />
 
         <div className="prose prose-neutral max-w-2xl">
 

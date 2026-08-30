@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { WhereNotToUseAI } from "./-sharedContent";
@@ -29,7 +29,7 @@ function PersonalizationComponent() {
         />
 
         <div className="prose prose-neutral max-w-2xl">
-          <TableOfContents />
+          <DynamicIslandTOC />
 
           <h2 id={sectionId("So, what makes person a person?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"So, what makes person a person?"}</h2>
           <p className="mt-4">

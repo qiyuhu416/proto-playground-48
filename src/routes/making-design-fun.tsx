@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";
@@ -32,7 +32,7 @@ function ArticleComponent() {
             I work best when I'm making things I genuinely enjoy, things I'd make even without payment. That's when the best work happens.
           </p>
 
-          <TableOfContents />
+          <DynamicIslandTOC />
 
           <h2 id={sectionId("The philosophy: friction-free creation")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The philosophy: friction-free creation"}</h2>
 

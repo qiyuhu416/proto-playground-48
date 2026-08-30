@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleRefCard } from "./-ArticleRefCard";
@@ -41,7 +41,7 @@ type Economics = {
 };
 
 /* ── Highlighted text renderer ── */
-function HighlightedText({ text, pattern }: { text: string; pattern: string | null }) {
+function HighlightedTextRenderer({ text, pattern }: { text: string; pattern: string | null }) {
   if (!pattern || !text.includes(pattern)) return <>{text}</>;
   const idx = text.indexOf(pattern);
   return (
@@ -141,7 +141,7 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
         }`}>
           {mode === 'leave' && <div className="text-[10px] text-neutral-400 mb-1 uppercase tracking-wider">Field A</div>}
           <p className="text-sm font-mono text-neutral-800 min-h-[20px] leading-relaxed">
-            <HighlightedText text={text} pattern={highlight} />
+            <HighlightedTextRenderer text={text} pattern={highlight} />
             {activeField === 'A' && <span className="border-r-2 border-neutral-700 animate-pulse ml-px"> </span>}
           </p>
         </div>
@@ -259,7 +259,7 @@ function ArticleComponent() {
             <p className="m-0">Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.</p>
           </div>
 
-          <TableOfContents />
+          <DynamicIslandTOC />
 
           <h2 id={sectionId("Designing the relationship")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the relationship"}</h2>
 

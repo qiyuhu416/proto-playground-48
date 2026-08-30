@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";
@@ -29,7 +29,7 @@ function CaseStudyComponent() {
         />
 
         <div className="prose prose-neutral max-w-4xl">
-          <TableOfContents />
+          <DynamicIslandTOC />
 
           <h2 id={sectionId("The Challenge")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The Challenge"}</h2>
           <p>

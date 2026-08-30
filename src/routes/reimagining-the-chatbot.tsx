@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";
@@ -55,7 +55,7 @@ function CollectionComponent() {
           heroAlt="Reimagining the chatbot"
         />
 
-        <TableOfContents />
+        <DynamicIslandTOC />
 
         <div className="prose prose-neutral max-w-2xl">
 

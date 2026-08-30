@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TableOfContents } from "./-TableOfContents";
+import { DynamicIslandTOC } from "./-DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";
@@ -34,7 +34,7 @@ function ResearchComponent() {
             from building them.
           </p>
 
-          <TableOfContents />
+          <DynamicIslandTOC />
 
 
           <h2 id={sectionId("What AI can't do")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What AI can't do"}</h2>
