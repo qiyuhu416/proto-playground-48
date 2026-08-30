@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
@@ -57,9 +57,8 @@ function CollectionComponent() {
 
         <DynamicIslandTOC />
 
-        <div className="prose prose-neutral max-w-2xl">
-
-          <h2 id={sectionId("Context")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Context</h2>
+        <ArticleContent>
+          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
 
           <p>
             Users often don't know what to ask an AI. Yet most AI products still wait inside a chat tab for the user to initiate.
@@ -69,7 +68,7 @@ function CollectionComponent() {
             This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that <HighlightedText>meets users where they are.</HighlightedText>
           </p>
 
-          <h2 id={sectionId("How to think outside the box?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">How to think outside the box?</h2>
+          <ArticleHeading2 id={sectionId("How to think outside the box?")}>How to think outside the box?</ArticleHeading2>
 
           <p>
             The first step of thinking outside the box is to realize where the box is. There is a cool model called "task analysis" that helped me break out "mundane" interaction into detailed steps.
@@ -111,7 +110,7 @@ function CollectionComponent() {
             Once I wrote those assumptions down, the design space became much bigger. Instead of asking <strong>"how do we redesign the chatbot?"</strong>, I could ask: <strong>which part of this interaction flow doesn't have to exist at all?</strong>
           </p>
 
-          <h2 id={sectionId("Explorations")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Explorations</h2>
+          <ArticleHeading2 id={sectionId("Explorations")}>Explorations</ArticleHeading2>
 
           <p>
             So I am sharing this collection, it is less about UI but more about exploring <strong>different relationships between a person and an AI system.</strong>
@@ -179,7 +178,7 @@ function CollectionComponent() {
             </div>
           </div>
 
-          <h2 id={sectionId("So what's next after those concepts?")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">So what's next after those concepts?</h2>
+          <ArticleHeading2 id={sectionId("So what's next after those concepts?")}>So what's next after those concepts?</ArticleHeading2>
 
           <p>
             Prototypes, in my opinion, serve two goals:
@@ -232,7 +231,7 @@ function CollectionComponent() {
             More to come. And hopefully, as the technology changes, we get more room to imagine what those other solutions could be.
           </p>
 
-        </div>
+        </ArticleContent>
 
       </article>
     </div>

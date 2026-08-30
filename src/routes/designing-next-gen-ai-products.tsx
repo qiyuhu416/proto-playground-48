@@ -4,7 +4,7 @@ import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleRefCard } from "./-ArticleRefCard";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 
 export const Route = createFileRoute("/designing-next-gen-ai-products")({
@@ -244,7 +244,9 @@ function ArticleComponent() {
           description="Since when did 'humans' become a frequent word?"
         />
 
-        <div className="prose prose-neutral max-w-3xl">
+        <DynamicIslandTOC />
+
+        <ArticleContent>
           <p>
             Pre-AI, we didn't say "humans" this much, we were just... in it. But once AI entered the room, we started seeing ourselves from the outside.
           </p>
@@ -259,9 +261,7 @@ function ArticleComponent() {
             <p className="m-0">Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.</p>
           </div>
 
-          <DynamicIslandTOC />
-
-          <h2 id={sectionId("Designing the relationship")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the relationship"}</h2>
+          <ArticleHeading2 id={sectionId("Designing the relationship")}>Designing the relationship</ArticleHeading2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
@@ -286,7 +286,7 @@ function ArticleComponent() {
           </p>
 
 
-          <h2 id={sectionId("Designing the feeling")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Designing the feeling"}</h2>
+          <ArticleHeading2 id={sectionId("Designing the feeling")}>Designing the feeling</ArticleHeading2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Human–AI co-writing tool</h3>
 
@@ -420,7 +420,7 @@ function ArticleComponent() {
             We prototyped each option and tested with users. Writers don't want to think about the AI. They just want to feel supported and write better. The "blur event" trigger won because it respected the human's agency.
           </p>
 
-          <h2 id={sectionId("Where to NOT use AI")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Where to NOT use AI"}</h2>
+          <ArticleHeading2 id={sectionId("Where to NOT use AI")}>Where to NOT use AI</ArticleHeading2>
 
           <p>
             Some people like to analyze it from a business perspective (when the cost of failure is high, when human judgment is irreplaceable, etc) but one day I really feel the AI fatigue and just created this table to summarize feeling from my personal experience and what I've heard from others.
@@ -441,7 +441,7 @@ function ArticleComponent() {
             I'd want AI that respects human autonomy. What that means in design could be: suggest but not decide, guide but not tell.
           </p>
 
-          <h2 id={sectionId("Three core lessons")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Three core lessons"}</h2>
+          <ArticleHeading2 id={sectionId("Three core lessons")}>Three core lessons</ArticleHeading2>
 
           <p>
             After years of designing AI products across eldercare, co-writing, and enterprise tooling, three things hold true regardless of context:
@@ -453,9 +453,9 @@ function ArticleComponent() {
             <li><strong>Trust is built in small moments.</strong> Acknowledge, evaluate, show affiliation, reconfirm. The script looks mechanical written down. Experienced in a product, it feels like being understood.</li>
           </ol>
 
-        </div>
+        </ArticleContent>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
+        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-3xl mx-auto px-6">
           <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related experiences</div>
           <ul className="space-y-3 text-sm text-neutral-600">
             <li>Apple — GenAI Prototyper (May 2025 – present)</li>

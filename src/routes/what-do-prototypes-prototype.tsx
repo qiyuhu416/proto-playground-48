@@ -4,7 +4,7 @@ import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleRefCard } from "./-ArticleRefCard";
 import { HELLO_HUMANS } from "./-helloHumansData";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/what-do-prototypes-prototype")({
   head: () => ({
@@ -35,10 +35,9 @@ function ArticleComponent() {
 
         <DynamicIslandTOC />
 
-        <div className="prose prose-neutral max-w-2xl">
-
+        <ArticleContent>
           {/* ── SECTION 1 ── */}
-          <h2 id={sectionId("Prototype = Research mindset")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Prototype = Research mindset"}</h2>
+          <ArticleHeading2 id={sectionId("Prototype = Research mindset")}>Prototype = Research mindset</ArticleHeading2>
 
           <p>
             The word "prototype" might have been automatically associated with a digital phone frame where people can click around. But we could actually expand the scope here: as creation itself becomes easier, prototypes can be any form of experiments used to test "what to create."
@@ -130,7 +129,7 @@ function ArticleComponent() {
           </div>
 
           {/* ── SECTION 2 ── */}
-          <h2 id={sectionId("Prototypers for prototyping")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"Prototypers for prototyping"}</h2>
+          <ArticleHeading2 id={sectionId("Prototypers for prototyping")}>Prototypers for prototyping</ArticleHeading2>
 
           <p>
             Over time, I've noticed I build three distinct types. To <HighlightedText>explore "what-if"s</HighlightedText> — to wonder, haha, and expand the solution space before narrowing it. To <HighlightedText>explain the prototype</HighlightedText> — to get feedback, and see how others interpret what you've built. And to <HighlightedText>let others prototype</HighlightedText> — handing over a foundation others can build on, so the prototype becomes a tool for more prototyping.
@@ -141,7 +140,7 @@ function ArticleComponent() {
           </div>
 
           {/* ── SECTION 3 ── */}
-          <h2 id={sectionId("Not all prototypes need to be software")} className="mt-16 mb-4 text-2xl font-semibold text-neutral-900">{"Not all prototypes need to be software"}</h2>
+          <ArticleHeading2 id={sectionId("Not all prototypes need to be software")}>Not all prototypes need to be software</ArticleHeading2>
 
           <p>
             The best prototypes often aren't software at all. They're spaces, conversations, sketches, and stories.
@@ -202,9 +201,9 @@ function ArticleComponent() {
           </div>
 
 
-        </div>
+        </ArticleContent>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
+        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-3xl mx-auto px-6">
           <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related reading</div>
           <ul className="space-y-3 text-sm text-neutral-600">
 <li><a href="/claude-code-research" className="font-medium hover:underline">My story with Claude Code</a> — How AI can amplify thinking</li>

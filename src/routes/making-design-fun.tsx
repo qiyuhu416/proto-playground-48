@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/making-design-fun")({
   head: () => ({
@@ -27,14 +27,14 @@ function ArticleComponent() {
           description="Caltrain, After Effects, and a stubborn suspicion that everything could be easier. A collection of vibe-coded experiments exploring playful interactions, gesture, and the joy of creation."
         />
 
-        <div className="prose prose-neutral max-w-4xl">
+        <DynamicIslandTOC />
+
+        <ArticleContent>
           <p>
             I work best when I'm making things I genuinely enjoy, things I'd make even without payment. That's when the best work happens.
           </p>
 
-          <DynamicIslandTOC />
-
-          <h2 id={sectionId("The philosophy: friction-free creation")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The philosophy: friction-free creation"}</h2>
+          <ArticleHeading2 id={sectionId("The philosophy: friction-free creation")}>The philosophy: friction-free creation</ArticleHeading2>
 
           <p>
             I had this idea stuck in my head and wanted to make it—a small playful thing just for fun. So I did it, with After Effects. But it took me almost the whole day, learning After Effects from zero just to create that moment.
@@ -48,7 +48,7 @@ function ArticleComponent() {
             <p className="m-0"><strong>The question that drives it all:</strong> Why should making things be hard? Why should there be so much friction between an idea and its realization?</p>
           </div>
 
-          <h2 id={sectionId("Curiosity, not FOMO")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Curiosity, not FOMO"}</h2>
+          <ArticleHeading2 id={sectionId("Curiosity, not FOMO")}>Curiosity, not FOMO</ArticleHeading2>
 
           <p>
             The difference between learning something because it's trendy vs. learning something because you're genuinely curious is everything. FOMO-driven learning feels like obligation. Curiosity feels like haha.
@@ -58,7 +58,7 @@ function ArticleComponent() {
             Every experiment here came from pure curiosity. Not "should I learn this?" but "I have an idea and I want to see it come to life, whatever it takes." The tools are just the means to the end.
           </p>
 
-          <h2 id={sectionId("The experiments")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"The experiments"}</h2>
+          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">Birthday card</h3>
           <p>
@@ -105,7 +105,7 @@ function ArticleComponent() {
             Your browser doesn't support video playback.
           </video></div>
 
-          <h2 id={sectionId("One block of prompts")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"One block of prompts"}</h2>
+          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
 
           <p>
             The best creation tools don't drown you in options. They give you one powerful, focused intention. You think in blocks: your idea → your prompt → your output.
@@ -115,7 +115,7 @@ function ArticleComponent() {
             No fussy settings. No analysis paralysis. No endless tweaking. Just flow. The tool becomes invisible and only the delight remains.
           </p>
 
-          <h2 id={sectionId("What makes design playful")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What makes design playful"}</h2>
+          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
 
           <p>
             Playful design is when you stumble on surprising interactions. A gesture that feels right. An animation that makes you smile. A workflow that feels effortless.
@@ -129,7 +129,7 @@ function ArticleComponent() {
             <p className="m-0"><strong>The core belief:</strong> If I can remove friction, amplify joy, and make creation feel less like work and more like haha, then I've done my job.</p>
           </div>
 
-          <h2 id={sectionId("Why this matters")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Why this matters"}</h2>
+          <ArticleHeading2 id={sectionId("\1")}>\2</ArticleHeading2>
 
           <p>
             In an era where creation tools are becoming more powerful, the question isn't "can I make it?" but "can I make it joyfully?"
@@ -142,9 +142,10 @@ function ArticleComponent() {
           <p>
             These experiments are evidence of that philosophy: small ideas, vibe-coded into existence, with no apologies for taking the scenic route or trying the unconventional approach.
           </p>
-        </div>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
+        </ArticleContent>
+
+        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-4xl mx-auto px-6">
           <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related experiences</div>
           <ul className="space-y-3 text-sm text-neutral-600">
             <li>Apple — GenAI Prototyper (May 2025 – present)</li>
