@@ -50,7 +50,7 @@ function ResearchComponent() {
           </p>
 
           <p>
-            Someone still has to decide: <HighlightedText>enough.</HighlightedText> That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
+            Someone still has to decide: enough. That someone is still the human. Knowing when to stop is a human skill that doesn't have a proxy.
           </p>
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">2. It generates options, not judgments</h3>

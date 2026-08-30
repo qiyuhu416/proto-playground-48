@@ -78,7 +78,7 @@ function ArticleComponent() {
           <ArticleHeading2 id={sectionId("Outcome")}>Outcome</ArticleHeading2>
 
           <p>
-            Just like human-human conversations, human-AI conversational design is not only about <em>what the bot says</em>. It is also about the higher-level interaction flow and the decision logic behind it—what makes the bot <HighlightedText>feel</HighlightedText> trustworthy in the first place.
+            Just like human-human conversations, human-AI conversational design is not only about <em>what the bot says</em>. It is also about the higher-level interaction flow and the decision logic behind it—what makes the bot feel trustworthy in the first place.
           </p>
 
           <ArticleHeading3>1. Building trust is the foundation of showing affiliation—and trust can be scripted</ArticleHeading3>
@@ -284,7 +284,7 @@ from the bot to maintain both trust and safety.`}</pre>
                     </p>
 
                     <p>
-                      But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us <HighlightedText>humans</HighlightedText> debrief, notice patterns, and point toward new directions.
+                      But she also reminded me that the goal of affinity clustering wasn't to directly derive <em>the answer</em>. It was a tool to help us humans debrief, notice patterns, and point toward new directions.
                     </p>
 
                     <p>

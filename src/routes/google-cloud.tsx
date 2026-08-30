@@ -78,29 +78,6 @@ function CaseStudyComponent() {
             Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, <HighlightedText>browsing is messy</HighlightedText>. Startup leaders struggle to find the right solution without clear guidance. The challenge was to <HighlightedText>help customers differentiate between similar offerings</HighlightedText> and discover solutions aligned with their business objectives.
           </p>
 
-          <div className="bg-neutral-900 border border-neutral-700 rounded-xl p-6 my-8">
-            <pre className="text-xs leading-relaxed text-white overflow-x-auto" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`The Discovery Problem:
-
-STARTUP LEADER
-      │
-      ├─→ Goal: "Find the right cloud solution"
-      │
-      ├─→ Challenges:
-      │   • 100+ products to choose from
-      │   • Similar solutions with different pricing
-      │   • Dense documentation
-      │   • Multiple decision factors (cost, integration, capability)
-      │
-      └─→ Current experience: Search → Browse → Document → Compare → Still confused
-
-Our Solution: Contextual AI guidance at each discovery stage
-      │
-      ├─→ Understand what they're building
-      ├─→ Recommend relevant products
-      ├─→ Explain differentiators
-      └─→ Enable confident comparison`}</pre>
-          </div>
-
           <OutcomeSection
             id={sectionId("The Deliverables")}
             title="The Deliverables: 0→1 Prototypes"
