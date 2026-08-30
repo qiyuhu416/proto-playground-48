@@ -3,7 +3,7 @@ import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { WhereNotToUseAI } from "./-sharedContent";
-import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/personalization")({
   head: () => ({
@@ -41,24 +41,42 @@ function PersonalizationComponent() {
           </p>
 
 
-          <ArticleHeading2 id={sectionId("Person & personalization")}>Person & personalization</ArticleHeading2>
-          <p>
-            Out of those conversations, I've also formed my own simplified version of roadmap for the future of personalization: <HighlightedText>For Me, With Me, As Me.</HighlightedText>
-          </p>
+          <OutcomeSection
+            id={sectionId("Person & personalization")}
+            title="Person & personalization"
+            tabs={[
+              {
+                id: "for-me",
+                title: "1. Learn For Me",
+                children: (
+                  <p>
+                    AI should serve my specific goals and context, not generic templates. It understands what I'm trying to accomplish and adapts to my situation, not the reverse.
+                  </p>
+                )
+              },
+              {
+                id: "with-me",
+                title: "2. Stay With Me",
+                children: (
+                  <p>
+                    AI should be a collaborator, not a replacement. I should feel like we're thinking together. The system asks me questions, validates my thinking, and invites my perspective. I have agency and a voice.
+                  </p>
+                )
+              },
+              {
+                id: "as-me",
+                title: "3. Act As Me",
+                children: (
+                  <p>
+                    AI should recognize and respect who I am—my values, my boundaries, my inconsistencies. It doesn't try to optimize me or push me toward what it thinks is best. It accepts that being human means being complicated.
+                  </p>
+                )
+              }
+            ]}
+          />
 
-          <h3 className="text-lg font-semibold mt-8 mb-3">1. Learn For Me </h3>
           <p>
-            AI should serve my specific goals and context, not generic templates. It understands what I'm trying to accomplish and adapts to my situation, not the reverse.
-          </p>
-
-          <h3 className="text-lg font-semibold mt-8 mb-3">2. Stay With Me</h3>
-          <p>
-            AI should be a collaborator, not a replacement. I should feel like we're thinking together. The system asks me questions, validates my thinking, and invites my perspective. I have agency and a voice.
-          </p>
-
-          <h3 className="text-lg font-semibold mt-8 mb-3">3. Act As Me</h3>
-          <p>
-            AI should recognize and respect who I am—my values, my boundaries, my inconsistencies. It doesn't try to optimize me or push me toward what it thinks is best. It accepts that being human means being complicated.
+            Out of those conversations, I've formed my own simplified version of a roadmap for the future of personalization: <HighlightedText>For Me, With Me, As Me.</HighlightedText>
           </p>
 
           <WhereNotToUseAI />
