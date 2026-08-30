@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/making-design-fun")({
   head: () => ({
@@ -58,54 +58,74 @@ function ArticleComponent() {
             Every experiment here came from pure curiosity. Not "should I learn this?" but "I have an idea and I want to see it come to life, whatever it takes." The tools are just the means to the end.
           </p>
 
-          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
+          <OutcomeSection
+            id={sectionId("The experiments")}
+            title="The experiments"
+            tabs={[
+              {
+                id: "birthday",
+                title: "Birthday card",
+                children: (
+                  <>
+                    <p>
+                      A small moment of delight. A reminder that design doesn't need to be grand—sometimes the joy is in the details, the unexpected animation, the gesture that makes you smile.
+                    </p>
+                    <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white mt-4"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                      <source src="/articles/birthday-card.mp4" type="video/mp4" />
+                      Your browser doesn't support video playback.
+                    </video></div>
+                  </>
+                )
+              },
+              {
+                id: "gesture",
+                title: "Hand gesture interactions",
+                children: (
+                  <>
+                    <p>
+                      Exploring how gestures can make technology feel natural and embodied. When interaction becomes intuitive, the tool disappears. Only the delight remains.
+                    </p>
+                    <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white mt-4"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                      <source src="/articles/hand-gesture.mp4" type="video/mp4" />
+                      Your browser doesn't support video playback.
+                    </video></div>
+                  </>
+                )
+              },
+              {
+                id: "voice",
+                title: "Voice interaction",
+                children: (
+                  <>
+                    <p>
+                      Beyond screens. Exploring how voice can become an interface—natural, conversational, human. What does it feel like to talk to a tool that listens?
+                    </p>
+                    <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white mt-4"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                      <source src="/articles/voice.mp4" type="video/mp4" />
+                      Your browser doesn't support video playback.
+                    </video></div>
+                  </>
+                )
+              },
+              {
+                id: "palo-alto",
+                title: "Palo Alto moment",
+                children: (
+                  <>
+                    <p>
+                      A location-based concept. What happens when design meets place? Exploring how context shapes interaction.
+                    </p>
+                    <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white mt-4"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
+                      <source src="/articles/palo-alto.mp4" type="video/mp4" />
+                      Your browser doesn't support video playback.
+                    </video></div>
+                  </>
+                )
+              }
+            ]}
+          />
 
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Birthday card</h3>
-          <p>
-            A small moment of delight. A reminder that design doesn't need to be grand—sometimes the joy is in the details, the unexpected animation, the gesture that makes you smile.
-          </p>
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-            <source src="/articles/birthday-card.mp4" type="video/mp4" />
-            Your browser doesn't support video playback.
-          </video></div>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Hand gesture interactions</h3>
-          <p>
-            Exploring how gestures can make technology feel natural and embodied. When interaction becomes intuitive, the tool disappears. Only the delight remains.
-          </p>
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-            <source src="/articles/hand-gesture.mp4" type="video/mp4" />
-            Your browser doesn't support video playback.
-          </video></div>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Hand interaction exploration</h3>
-          <p>
-            Deep dive into physical gesture. How does the hand move? What makes a gesture feel right? This is vibe-coding in motion—refining until it feels natural.
-          </p>
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-            <source src="/articles/hand-gesture.mp4" type="video/mp4" />
-            Your browser doesn't support video playback.
-          </video></div>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Palo Alto moment</h3>
-          <p>
-            A location-based concept. What happens when design meets place? Exploring how context shapes interaction.
-          </p>
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-            <source src="/articles/palo-alto.mp4" type="video/mp4" />
-            Your browser doesn't support video playback.
-          </video></div>
-
-          <h3 className="mt-8 mb-4 text-lg font-semibold">Voice interaction</h3>
-          <p>
-            Beyond screens. Exploring how voice can become an interface—natural, conversational, human. What does it feel like to talk to a tool that listens?
-          </p>
-          <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white"><video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-            <source src="/articles/voice.mp4" type="video/mp4" />
-            Your browser doesn't support video playback.
-          </video></div>
-
-          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("On creation tools")}>On creation tools</ArticleHeading2>
 
           <p>
             The best creation tools don't drown you in options. They give you one powerful, focused intention. You think in blocks: your idea → your prompt → your output.
@@ -115,7 +135,7 @@ function ArticleComponent() {
             No fussy settings. No analysis paralysis. No endless tweaking. Just flow. The tool becomes invisible and only the delight remains.
           </p>
 
-          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("What makes design playful")}>What makes design playful</ArticleHeading2>
 
           <p>
             Playful design is when you stumble on surprising interactions. A gesture that feels right. An animation that makes you smile. A workflow that feels effortless.
@@ -129,7 +149,7 @@ function ArticleComponent() {
             <p className="m-0"><strong>The core belief:</strong> If I can remove friction, amplify joy, and make creation feel less like work and more like haha, then I've done my job.</p>
           </div>
 
-          <ArticleHeading2 id={sectionId("The experiments")}>The experiments</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("Why this matters")}>Why this matters</ArticleHeading2>
 
           <p>
             In an era where creation tools are becoming more powerful, the question isn't "can I make it?" but "can I make it joyfully?"
