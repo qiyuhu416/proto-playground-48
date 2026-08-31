@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion, useScroll, useTransform, useMotionValueEvent } from "motion/react";
 import { CardIcon } from "./-CardIcon";
 import { TextGradientScroll } from "@/components/TextGradientScroll";
 
@@ -361,16 +362,17 @@ const GAP_TO_PILLAR: Record<GapId, string> = {
   "top":         "04",
 };
 
-function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void }) {
+function HandDrawnDiagram({ onHover, activeOverride }: { onHover?: (gap: GapId | null) => void; activeOverride?: GapId | null }) {
   const [hovered, setHovered] = useState<GapId | null>(null);
-  const enter = (g: GapId) => () => { setHovered(g); onHover(g); };
-  const leave = () => { setHovered(null); onHover(null); };
+  const enter = (g: GapId) => () => { setHovered(g); onHover?.(g); };
+  const leave = () => { setHovered(null); onHover?.(null); };
   const click = (g: GapId) => () => {
     const el = document.getElementById(`pillar-${GAP_TO_PILLAR[g]}`);
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const visible = (gap: GapId) => hovered === gap;
+  const highlighted = hovered ?? activeOverride ?? null;
+  const visible = (gap: GapId) => highlighted === gap;
 
   return (
     <div className="relative block mx-auto w-full max-w-2xl">
@@ -425,11 +427,11 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
           return <path key={gap} d={`M ${otx},${yT} A ${rightRx},${arcRy} 0 0,1 ${otx},${yB}`} {...h} />;
         })}
 
-        {/* Annotations — bigger and handwritten style, red by default, black on hover */}
-        <text x={mex + 30} y={yT - 20} fontSize="56" fontWeight="700" fill={hovered === "top" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
-        <text x={otx + 290} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "others-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
-        <text x={otx - 40} y={yB + 30} fontSize="56" fontWeight="700" fill={hovered === "bottom" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
-        <text x={mex - 170} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "me-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
+        {/* Annotations — bigger and handwritten style, red by default, black when highlighted */}
+        <text x={mex + 30} y={yT - 20} fontSize="56" fontWeight="700" fill={highlighted === "top" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
+        <text x={otx + 290} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={highlighted === "others-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
+        <text x={otx - 40} y={yB + 30} fontSize="56" fontWeight="700" fill={highlighted === "bottom" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
+        <text x={mex - 170} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={highlighted === "me-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
       </svg>
     </div>
   );
@@ -541,13 +543,13 @@ function PillarCarousel({ cards, onCardClick }: { cards: PillarCard[]; onCardCli
   const edgePad = "max(24px, calc((100vw - 72rem) / 2 + 24px))";
 
   return (
-    <div>
+    <div className="w-full">
       {/* Full-bleed scroll — outer clips page scroll, inner scrolls */}
       <div className="overflow-hidden">
         <div
           ref={scrollRef}
           onScroll={updateBounds}
-          className="flex gap-4 overflow-x-auto pb-2"
+          className="flex gap-2 overflow-x-auto pb-2"
           style={{
             paddingLeft: edgePad,
             paddingRight: "24px",
@@ -596,22 +598,17 @@ const SECTION_ICONS: Record<string, string> = {
   "04": "/articles/section-04-icon.png",
 };
 
-function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: (slug: string) => void }) {
-  return (
-    <section
-      id={`pillar-${pillar.number}`}
-      className="pb-16"
-    >
-      {/* Header — constrained to content width */}
-      <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
-        <h2 className="text-2xl font-medium text-neutral-900 mb-2">{pillar.title}</h2>
-        <p className="text-neutral-600 text-sm">{pillar.description}</p>
-      </div>
-
-      {/* Carousel — full bleed to screen edge */}
-      <PillarCarousel cards={pillar.cards} onCardClick={onCardClick} />
-    </section>
-  );
+function PillarSection({
+  pillar,
+  sectionRef,
+}: {
+  pillar: Pillar;
+  sectionRef?: (el: HTMLElement | null) => void;
+}) {
+  // Invisible scroll spacer — provides scroll distance + an IntersectionObserver
+  // target for this pillar. The actual title/diagram/carousel are rendered in the
+  // pinned overlay in Index, which cross-fades between pillars as you scroll.
+  return <section id={`pillar-${pillar.number}`} ref={sectionRef} className="min-h-screen" aria-hidden />;
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -620,7 +617,54 @@ function Index() {
   const [heroGap, setHeroGap] = useState<GapId | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
+  // activeIndex: 0 = the intro paragraph section, 1..4 = PILLARS[0..3], null = neither
+  // (still in the hero, or scrolled past everything into the footer).
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const introRef = useRef<HTMLElement>(null);
+  const pillarRefs = useRef<(HTMLElement | null)[]>([]);
+  const intersectingIndices = useRef<Set<number>>(new Set());
+  const isIntroActive = activeIndex === 0;
+  const activePillar = activeIndex !== null && activeIndex > 0 ? PILLARS[activeIndex - 1] : null;
+
+  // One diagram, always mounted, position: fixed for the whole page. Its scale and
+  // vertical offset are both driven continuously by scroll progress through the hero
+  // (0 = hero fills the screen, 1 = hero fully scrolled past) — no unmount/remount,
+  // no separate "pinned" instance, so there's no seam or hand-off to go out of sync.
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const diagramScale = useTransform(heroProgress, [0, 1], [1, 0.35]);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  useEffect(() => {
+    const update = () => setViewportHeight(window.innerHeight);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  // At rest (progress 0) the diagram sits ~35% down the screen, matching the old
+  // hero layout; by progress 1 it has risen to sit right at the pinned top offset.
+  const PINNED_TOP = 96; // px, matches the `top-24` position used elsewhere
+  const heroRestOffset = Math.max(0, viewportHeight * 0.35 - PINNED_TOP);
+  const diagramY = useTransform(heroProgress, [0, 1], [heroRestOffset, 0]);
+  // Background image + gap tag fade out fast (first quarter of the scroll) so they
+  // don't linger or visibly scroll past — focus stays on the diagram shrinking.
+  const heroImageOpacity = useTransform(heroProgress, [0, 0.25], [0.5, 0]);
+  const heroTagOpacity = useTransform(heroProgress, [0, 0.25], [1, 0]);
+
+  // While scrolling through the intro paragraph section, cycle the diagram's
+  // highlighted segment through all 4 gaps (same order pillars 1-4 will use), so it
+  // keeps reacting to scroll instead of sitting on a blank/unhighlighted diagram.
+  const introOrder: GapId[] = ["others-loop", "bottom", "me-loop", "top"];
+  const [introHighlightGap, setIntroHighlightGap] = useState<GapId>(introOrder[0]);
+  // The intro section is currently hidden (not rendered), so introRef never mounts —
+  // passing target: undefined avoids Framer's "ref not hydrated" warning. Flip this
+  // back to `introRef` when the section is brought back.
+  const introSectionEnabled = false;
+  const { scrollYProgress: introProgress } = useScroll({ target: introSectionEnabled ? introRef : undefined, offset: ["start start", "end start"] });
+  useMotionValueEvent(introProgress, "change", (v) => {
+    const idx = Math.min(introOrder.length - 1, Math.floor(v * introOrder.length));
+    setIntroHighlightGap(introOrder[idx]);
+  });
 
   const findCard = (slug: string): PillarCard | undefined => {
     for (const pillar of PILLARS) {
@@ -629,6 +673,44 @@ function Index() {
     }
     return undefined;
   };
+
+  // Scrollspy: whichever section (intro paragraph, or one of the 4 pillars) currently
+  // crosses the trigger band becomes "active" and drives the pinned content below.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          let idx = -1;
+          if (entry.target === introRef.current) {
+            idx = 0;
+          } else {
+            const pIdx = pillarRefs.current.findIndex((el) => el === entry.target);
+            if (pIdx !== -1) idx = pIdx + 1;
+          }
+          if (idx === -1) return;
+          if (entry.isIntersecting) {
+            intersectingIndices.current.add(idx);
+          } else {
+            intersectingIndices.current.delete(idx);
+          }
+        });
+        // Active = topmost section currently in the trigger band, or null if none are —
+        // this is what makes scrolling back up past the intro (or past the last pillar
+        // into the closing footer) correctly release the pinned overlay again.
+        const active = intersectingIndices.current.size
+          ? Math.min(...intersectingIndices.current)
+          : null;
+        setActiveIndex(active);
+      },
+      // Trigger band sits near the TOP of the viewport (not center) — a section only
+      // goes "active" once the previous one has almost fully scrolled away, so the
+      // outgoing and incoming content never visibly overlap.
+      { rootMargin: "0px 0px -85% 0px", threshold: 0 }
+    );
+    if (introRef.current) observer.observe(introRef.current);
+    pillarRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!selectedCard) {
@@ -699,21 +781,22 @@ function Index() {
       )}
 
       {/* Hero */}
-      <section className="relative w-full min-h-screen flex flex-col items-center">
-        {/* Diagram + Gap tag section — 20% from top, 80vh height */}
-        <div className="mt-[20vh] min-h-[80vh] flex flex-col items-center px-6 gap-6">
-          <img
+      <section ref={heroRef} className="relative w-full min-h-screen flex flex-col items-center">
+        {/* Background image + gap tag stay in normal flow and fade out fast as you
+            scroll. A spacer (matching the diagram's own aspect ratio) preserves the
+            gap between them that the diagram used to fill — the diagram itself is no
+            longer here; it's the single always-fixed element rendered below. */}
+        <div className="mt-[14vh] min-h-[80vh] flex flex-col items-center px-10 gap-24">
+          <motion.img
             src="/articles/hello-stranger.png"
             alt="Hello, stranger!!"
             className="block mx-auto w-full max-w-[300px]"
-            style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+            style={{ mixBlendMode: "multiply", opacity: heroImageOpacity }}
           />
-          <div className="flex justify-center w-full">
-            <HandDrawnDiagram onHover={setHeroGap} />
-          </div>
+          <div className="w-full max-w-2xl" style={{ aspectRatio: "1507 / 572" }} aria-hidden />
 
           {/* Gap tag — shows default or hovered gap tag */}
-          <div className="relative w-full flex justify-center px-6 min-h-[28px]">
+          <motion.div style={{ opacity: heroTagOpacity }} className="relative w-full flex justify-center px-6 min-h-[28px]">
             {heroGap && (
               <p className="tag-style">
                 {HERO_CONTENT[heroGap].tag}
@@ -722,23 +805,84 @@ function Index() {
             {!heroGap && (
               <p className="tag-style">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
             )}
-          </div>
-        </div>
-
-        {/* Paragraph section — always shows default text */}
-        <div className="mx-auto max-w-6xl px-6 py-12 mb-20 text-center min-h-[40vh] flex flex-col items-center justify-center">
-          <TextGradientScroll
-            text={HERO_CONTENT["default"].text}
-            type="letter"
-            textOpacity="soft"
-            className="text-2xl md:text-4xl text-neutral-900 leading-relaxed font-medium justify-center"
-          />
+          </motion.div>
         </div>
       </section>
 
-      {/* 4 Pillar sections */}
-      {PILLARS.map((pillar) => (
-        <PillarSection key={pillar.number} pillar={pillar} onCardClick={setSelectedCard} />
+      {/* Backdrop — spans the full remaining screen below the nav, only visible once the
+          intro paragraph or a pillar is active, masking the invisible scroll-spacer
+          sections behind it. Kept separate from the content below so it can stretch
+          full-height independently. */}
+      <div
+        className="fixed z-30 inset-x-0 bottom-0 bg-background"
+        style={{ top: PINNED_TOP, opacity: activeIndex !== null ? 1 : 0, transition: "opacity 200ms" }}
+      />
+
+      {/* Diagram + intro paragraph / pillar title+carousel — one wrapping div, single
+          always-mounted diagram at the top (never unmounted/swapped), with the intro
+          paragraph or a pillar's title+carousel cross-fading beneath it in the same
+          slot. Nav→diagram, title→carousel, and carousel→bottom-edge spacing all use
+          the same GAP so the whole block reads with one consistent rhythm. */}
+      <div className="fixed z-40 inset-x-0 flex flex-col items-center pb-24" style={{ top: PINNED_TOP }}>
+        <motion.div
+          className="w-full max-w-2xl px-6 origin-top"
+          style={{ y: diagramY, scale: diagramScale, pointerEvents: activeIndex !== null ? "none" : "auto" }}
+        >
+          <HandDrawnDiagram onHover={setHeroGap} activeOverride={isIntroActive ? introHighlightGap : (activePillar?.activeGap ?? null)} />
+        </motion.div>
+
+        <AnimatePresence mode="wait">
+          {isIntroActive && (
+            <motion.div
+              key="intro"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="w-full flex flex-col items-center -mt-16"
+              style={{ pointerEvents: "auto" }}
+            >
+              <div className="max-w-6xl px-6 text-center">
+                <TextGradientScroll
+                  text={HERO_CONTENT["default"].text}
+                  type="letter"
+                  textOpacity="soft"
+                  className="text-2xl md:text-4xl text-neutral-900 leading-relaxed font-medium justify-center"
+                />
+              </div>
+            </motion.div>
+          )}
+          {activePillar && (
+            <motion.div
+              key={activePillar.number}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="w-full flex flex-col items-center -mt-32"
+              style={{ pointerEvents: "auto" }}
+            >
+              <div className="text-center px-6 mb-24">
+                <h2 className="text-lg font-medium text-neutral-900">{activePillar.title}</h2>
+                <p className="text-neutral-600 text-xs">{activePillar.description}</p>
+              </div>
+              <PillarCarousel cards={activePillar.cards} onCardClick={setSelectedCard} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Intro paragraph section — hidden for now (not rendered), so scrolling goes
+          straight from the hero into pillar 1. The section, its ref, and all the
+          cross-fade/highlight logic above are left in place to bring back later. */}
+
+      {/* 4 Pillar sections — invisible scroll spacers, one per pillar, tracked by the observer above */}
+      {PILLARS.map((pillar, i) => (
+        <PillarSection
+          key={pillar.number}
+          pillar={pillar}
+          sectionRef={(el) => { pillarRefs.current[i] = el; }}
+        />
       ))}
 
       <footer className="mt-4 border-t border-neutral-200/60">
