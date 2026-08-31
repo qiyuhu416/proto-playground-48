@@ -25,28 +25,20 @@ export function ArticleHeader({
 
   return (
     <>
-      <div className="mb-16">
-        {meta && (
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">
-            {meta}
-          </span>
-        )}
-        <h1 className="mt-4 text-5xl md:text-6xl font-medium tracking-tight text-neutral-900 leading-tight">
-          {title}
-        </h1>
-        {description && (
-          <p className="mt-6 text-lg text-neutral-600 max-w-3xl">
-            {description}
-          </p>
-        )}
-      </div>
-
       {heroImage && (
         <img
           src={heroImage}
           alt={heroAlt || title}
-          className="w-full h-[60vh] object-cover rounded-2xl mb-16 border border-neutral-200"
+          className="w-screen h-screen object-cover mb-16 -mx-6"
         />
+      )}
+
+      {description && (
+        <div className="mb-16">
+          <p className="text-lg text-neutral-600 max-w-3xl">
+            {description}
+          </p>
+        </div>
       )}
     </>
   );

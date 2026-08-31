@@ -147,6 +147,11 @@ export function DynamicIslandTOC({
     return Math.min(...headings.map((h) => h.level));
   }, [headings]);
 
+  // Hidden for now - component kept for future use
+  if (true) {
+    return <>{children}</>;
+  }
+
   return (
     <>
       {children}

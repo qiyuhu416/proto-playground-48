@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
+import { ArticleLayout } from "@/components/ArticleLayout";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, Bold, OutcomeSection, ContextBox } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
@@ -19,56 +18,60 @@ export const Route = createFileRoute("/reimagining-the-chatbot")({
 });
 
 function CollectionComponent() {
-  const [activeExploration, setActiveExploration] = useState<"select-fill" | "browsing" | "ai-asks">("select-fill");
-
-  const explorations = [
+  const explorationTabs = [
     {
-      id: "select-fill" as const,
+      id: "select-fill",
       title: "AI helps you form the question",
       subtitle: "awareness",
       description: "Can AI reduce the work of prompt-writing without taking away your control?",
-      video: "/articles/chatbot-select-fill.mp4",
+      src: "/articles/chatbot-select-fill.mp4",
+      alt: "AI helps form the question exploration",
+      type: "video" as const,
+      children: null,
     },
     {
-      id: "browsing" as const,
+      id: "browsing",
       title: "Chat lives inside browsing",
       subtitle: "browsing & awareness combined",
       description: "What if collecting context is part of the interaction, rather than something you have to reconstruct afterward?",
-      video: "/articles/chatbot-always-here.mp4",
+      src: "/articles/chatbot-always-here.mp4",
+      alt: "Chat inside browsing exploration",
+      type: "video" as const,
+      children: null,
     },
     {
-      id: "ai-asks" as const,
+      id: "ai-asks",
       title: "AI asks for you",
       subtitle: "comprehend",
       description: "Users don't know what to ask, so why not have AI ask on their behalf?",
-      video: "/articles/ai-ai-interaction.mp4",
+      src: "/articles/ai-ai-interaction.mp4",
+      alt: "AI asks for you exploration",
+      type: "video" as const,
+      children: null,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-2xl px-6 py-12">
-        <ArticleHeader
-          title={ARTICLE_META["reimagining-the-chatbot"].title}
-          meta="Collection · Design System"
-          heroImage="/articles/chatbot-thumb.png"
-          heroAlt="Reimagining the chatbot"
-        />
+    <ArticleLayout>
+      <ArticleHeader
+        title={ARTICLE_META["reimagining-the-chatbot"].title}
+        meta="Collection · Design System"
+        heroImage="/articles/chatbot-thumb.png"
+        heroAlt="Reimagining the chatbot"
+      />
 
-        <DynamicIslandTOC />
+      <ArticleContent>
 
-        <ArticleContent>
-          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
+          <ContextBox
+            summary={
+              <>
+                <p>This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that meets users where they are.</p>
+                <p>Users often don't know what to ask an AI. Yet most AI products still wait inside a chat tab for the user to initiate. This collection explores different relationships between a person and an AI system.</p>
+              </>
+            }
+          />
 
-          <p>
-            Users often don't know what to ask an AI. Yet most AI products still wait inside a chat tab for the user to initiate.
-          </p>
-
-          <p>
-            This collection was inspired by my work at Apple. While I can't directly show the work there because of NDA, I'm sharing some personal explorations around designing AI that <HighlightedText>meets users where they are.</HighlightedText>
-          </p>
-
-          <ArticleHeading2 id={sectionId("How to think outside the box?")}>How to think outside the box?</ArticleHeading2>
+          <ArticleHeading2 id={sectionId("Problem")}>Problem</ArticleHeading2>
 
           <p>
             The first step of thinking outside the box is to realize where the box is. There is a cool model called "task analysis" that helped me break out "mundane" interaction into detailed steps.
@@ -89,11 +92,11 @@ function CollectionComponent() {
           </p>
 
           <ol className="list-decimal pl-5 space-y-2 text-neutral-700 mb-6">
-            <li><strong>Awareness</strong> - User forms the awareness of what to ask - assumption: user knows clearly what to ask</li>
-            <li><strong>Expression</strong> - User the conversation by expressing the question - assumption: user express through typing (or clicking on the prompt buttons)</li>
-            <li><strong>Processing</strong> - User waits for AI to generate response - assumption: waiting is boring</li>
-            <li><strong>Reception</strong> - User realizes the AI finished process</li>
-            <li><strong>Interpretation</strong> - User understands AI response</li>
+            <li><span className="font-bold">Awareness</span> - User forms the awareness of what to ask - assumption: user knows clearly what to ask</li>
+            <li><span className="font-bold">Expression</span> - User the conversation by expressing the question - assumption: user express through typing (or clicking on the prompt buttons)</li>
+            <li><span className="font-bold">Processing</span> - User waits for AI to generate response - assumption: waiting is boring</li>
+            <li><span className="font-bold">Reception</span> - User realizes the AI finished process</li>
+            <li><span className="font-bold">Interpretation</span> - User understands AI response</li>
           </ol>
 
           <img
@@ -107,76 +110,16 @@ function CollectionComponent() {
           </p>
 
           <p>
-            Once I wrote those assumptions down, the design space became much bigger. Instead of asking <strong>"how do we redesign the chatbot?"</strong>, I could ask: <strong>which part of this interaction flow doesn't have to exist at all?</strong>
+            Once I wrote those assumptions down, the design space became much bigger. Instead of asking <Bold>"how do we redesign the chatbot?"</Bold>, I could ask: <Bold>which part of this interaction flow doesn't have to exist at all?</Bold>
           </p>
 
-          <ArticleHeading2 id={sectionId("Explorations")}>Explorations</ArticleHeading2>
-
-          <p>
-            So I am sharing this collection, it is less about UI but more about exploring <strong>different relationships between a person and an AI system.</strong>
-          </p>
-
-          {/* Exploration Tabs */}
-          <div className="my-8">
-            <div className="flex gap-2 mb-6 border-b border-neutral-200">
-              {explorations.map((exp) => (
-                <button
-                  key={exp.id}
-                  onClick={() => setActiveExploration(exp.id)}
-                  className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-                    activeExploration === exp.id
-                      ? "border-neutral-900 text-neutral-900"
-                      : "border-transparent text-neutral-500 hover:text-neutral-700"
-                  }`}
-                >
-                  {exp.title}
-                </button>
-              ))}
-            </div>
-
-            {/* Exploration Content */}
-            <div className="space-y-4">
-              {explorations.map((exp) => (
-                activeExploration === exp.id && (
-                  <div key={exp.id} className="space-y-4">
-                    <div>
-                      <h3 className="text-lg font-semibold text-neutral-900">
-                        {exp.title} <span className="font-normal text-neutral-400">{exp.subtitle}</span>
-                      </h3>
-                      <p className="text-neutral-600 mt-2">
-                        {exp.description}
-                      </p>
-                    </div>
-
-                    <div style={{ height: "60vh" }} className="rounded-xl overflow-hidden border-4 border-neutral-900 bg-white">
-                      <video controls className="w-full h-full object-contain" style={{ backgroundColor: "#fff" }}>
-                        <source src={exp.video} type="video/mp4" />
-                        Your browser doesn't support video playback.
-                      </video>
-                    </div>
-
-                    {exp.id === "select-fill" && (
-                      <p>
-                        Instead of waiting for a complete prompt, I wanted to explore: <strong>Can AI reduce the work of prompt-writing without taking away the user's control over what they actually want to ask?</strong>
-                      </p>
-                    )}
-
-                    {exp.id === "browsing" && (
-                      <p>
-                        The user can select information directly in the browsing window and add it to a <strong>question list</strong> to ask later. Instead of repeatedly copying context into a chatbot, the question can build alongside the browsing process.
-                      </p>
-                    )}
-
-                    {exp.id === "ai-asks" && (
-                      <p>
-                        Learning can happen in 2 ways: active and passive. If understanding is the goal, we don't have to rely on users to ask questions for them to learn. They can also learn by "watching 2 AIs chatting".
-                      </p>
-                    )}
-                  </div>
-                )
-              ))}
-            </div>
-          </div>
+          <OutcomeSection
+            id={sectionId("Explorations")}
+            title="Explorations"
+            tabs={explorationTabs}
+            variant="gallery"
+            aspectRatio={1.78}
+          />
 
           <ArticleHeading2 id={sectionId("So what's next after those concepts?")}>So what's next after those concepts?</ArticleHeading2>
 
@@ -185,8 +128,8 @@ function CollectionComponent() {
           </p>
 
           <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
-            <li><strong>Produce knowledge or principles</strong></li>
-            <li><strong>Be turned into production</strong></li>
+            <li>Produce knowledge or principles</li>
+            <li>Be turned into production</li>
           </ol>
 
           <p>Those goals need different next steps.</p>
@@ -198,7 +141,7 @@ function CollectionComponent() {
           </p>
 
           <p>
-            For example, in scenarios where intrusiveness matters, we need to be careful about <strong>to what extent AI feels proactive versus intrusive in assisted browsing.</strong>
+            For example, in scenarios where intrusiveness matters, we need to be careful about <Bold>to what extent AI feels proactive versus intrusive in assisted browsing.</Bold>
           </p>
 
           <p>
@@ -206,17 +149,17 @@ function CollectionComponent() {
           </p>
 
           <p>
-            The implication was: <strong>don't go with proactivity for now. First, explore better ways to collect contextual data.</strong>
+            The implication was: <Bold>don't go with proactivity for now. First, explore better ways to collect contextual data.</Bold>
           </p>
 
           <p>
-            The interesting design problem became less about making AI proactively pop up, and more about <strong>what information it needs before that behavior feels justified.</strong>
+            The interesting design problem became less about making AI proactively pop up, and more about <Bold>what information it needs before that behavior feels justified.</Bold>
           </p>
 
           <h3 className="mt-12 mb-4 text-lg font-semibold">If the goal = knowledge: look for reusable principles</h3>
 
           <p>
-            There is one design-thinking model I really like: the <strong>analysis–synthesis model</strong>. It taught me not to just look at each concept individually, but to derive common themes across them—and then brainstorm again based on those themes.
+            There is one design-thinking model I really like: the <Bold>analysis–synthesis model</Bold>. It taught me not to just look at each concept individually, but to derive common themes across them—and then brainstorm again based on those themes.
           </p>
 
           <p>
@@ -224,16 +167,14 @@ function CollectionComponent() {
           </p>
 
           <p>
-            Given those are the actual goals, the "chatbot" is probably just the <strong>current interface</strong>—one of many possible solutions.
+            Given those are the actual goals, the "chatbot" is probably just the <Bold>current interface</Bold>—one of many possible solutions.
           </p>
 
           <p>
             More to come. And hopefully, as the technology changes, we get more room to imagine what those other solutions could be.
           </p>
 
-        </ArticleContent>
-
-      </article>
-    </div>
+      </ArticleContent>
+    </ArticleLayout>
   );
 }

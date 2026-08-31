@@ -244,7 +244,6 @@ function ArticleComponent() {
           description="Since when did 'humans' become a frequent word?"
         />
 
-        <DynamicIslandTOC />
 
         <ArticleContent>
           <p>
@@ -448,9 +447,9 @@ function ArticleComponent() {
           </p>
 
           <ol className="list-decimal pl-5 space-y-4 mt-4">
-            <li><strong>The trigger is the relationship.</strong> When AI speaks matters more than what it says. The blur event, not the tick, won the writing tool study—because it respected the human's flow.</li>
-            <li><strong>Hard inferences require human handoff.</strong> The eldercare bot couldn't reason through the "long-term Yes / bad" branch alone. Knowing that limit is a design decision, not a failure.</li>
-            <li><strong>Trust is built in small moments.</strong> Acknowledge, evaluate, show affiliation, reconfirm. The script looks mechanical written down. Experienced in a product, it feels like being understood.</li>
+            <li><span className="font-bold">The trigger is the relationship.</span> When AI speaks matters more than what it says. The blur event, not the tick, won the writing tool study—because it respected the human's flow.</li>
+            <li><span className="font-bold">Hard inferences require human handoff.</span> The eldercare bot couldn't reason through the "long-term Yes / bad" branch alone. Knowing that limit is a design decision, not a failure.</li>
+            <li><span className="font-bold">Trust is built in small moments.</span> Acknowledge, evaluate, show affiliation, reconfirm. The script looks mechanical written down. Experienced in a product, it feels like being understood.</li>
           </ol>
 
         </ArticleContent>

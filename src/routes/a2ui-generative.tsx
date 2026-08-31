@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, Bold } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/a2ui-generative")({
   head: () => ({
@@ -27,11 +27,10 @@ function ResearchComponent() {
           description="AI-driven user interfaces that generate and adapt components based on intent."
         />
 
-        <DynamicIslandTOC />
 
         <ArticleContent>
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <p className="m-0"><strong>Note:</strong> I can't directly show the prototypes I built, but I can share the references and research frameworks I used while exploring A2UI. This is early-stage research—not production-ready, but useful for understanding the space.</p>
+            <p className="m-0"><Bold>Note:</Bold> I can't directly show the prototypes I built, but I can share the references and research frameworks I used while exploring A2UI. This is early-stage research—not production-ready, but useful for understanding the space.</p>
           </div>
 
           <ArticleHeading2 id={sectionId("What is A2UI?")}>What is A2UI?</ArticleHeading2>
@@ -76,10 +75,10 @@ function ResearchComponent() {
           </p>
 
           <ul>
-            <li><strong>Fluidity</strong> — Can the interface morph as the AI's understanding of your goal evolves?</li>
-            <li><strong>Transparency</strong> — Does the AI show its reasoning for why this layout, this grouping, this hierarchy?</li>
-            <li><strong>Control</strong> — Where's the line between AI deciding and you deciding? How do you push back?</li>
-            <li><strong>Consistency</strong> — If every interaction generates a new UI, how does the user build mental models?</li>
+            <li><span className="font-bold">Fluidity</span> — Can the interface morph as the AI's understanding of your goal evolves?</li>
+            <li><span className="font-bold">Transparency</span> — Does the AI show its reasoning for why this layout, this grouping, this hierarchy?</li>
+            <li><span className="font-bold">Control</span> — Where's the line between AI deciding and you deciding? How do you push back?</li>
+            <li><span className="font-bold">Consistency</span> — If every interaction generates a new UI, how does the user build mental models?</li>
           </ul>
 
           <ArticleHeading2 id={sectionId("Research References")}>Research References</ArticleHeading2>
@@ -91,7 +90,7 @@ function ResearchComponent() {
 
           <ArticleHeading2 id={sectionId("The Big Question")}>The Big Question</ArticleHeading2>
           <p>
-            If interfaces can be generated, what's the role of design? The answer: <strong>design moves upstream</strong>. Instead of designing screens, you design the principles that guide generation. You decide: for this role, what matters most? Speed? Exploration? Control? Learning? The AI generates in service of that intention.
+            If interfaces can be generated, what's the role of design? The answer: <Bold>design moves upstream</Bold>. Instead of designing screens, you design the principles that guide generation. You decide: for this role, what matters most? Speed? Exploration? Control? Learning? The AI generates in service of that intention.
           </p>
 
         </ArticleContent>

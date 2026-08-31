@@ -65,6 +65,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-section: var(--section-bg);
 }
 
 :root {
@@ -101,6 +102,7 @@
   --sidebar-accent-foreground: oklch(0 0 0);
   --sidebar-border: oklch(0.92 0.01 0);
   --sidebar-ring: oklch(0 0 0);
+  --section-bg: oklch(0.96 0.004 0);
 }
 
 .dark {
@@ -136,11 +138,16 @@
   --sidebar-accent-foreground: oklch(0.86 0.12 30);
   --sidebar-border: oklch(0.2 0.01 250);
   --sidebar-ring: oklch(0.557 0.2 30);
+  --section-bg: oklch(0.12 0.01 250);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+
+  html {
+    scroll-snap-type: y proximity;
   }
 
   body {
@@ -191,5 +198,14 @@ a[href*="key-you-who.com"][target="_blank"] {
   .tag-style {
     @apply text-sm text-neutral-500 tracking-normal;
   }
+}
+
+img {
+  max-height: 80vh;
+  object-fit: contain;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 

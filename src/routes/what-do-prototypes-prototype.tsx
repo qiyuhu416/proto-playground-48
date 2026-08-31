@@ -33,7 +33,6 @@ function ArticleComponent() {
           heroAlt="What do prototypes prototype"
         />
 
-        <DynamicIslandTOC />
 
         <ArticleContent>
           {/* ── SECTION 1 ── */}

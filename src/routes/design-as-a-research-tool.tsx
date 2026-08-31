@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText, ProcessSection, OutcomeSection } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, ProcessSection, OutcomeSection, ContextBox, Bold } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/design-as-a-research-tool")({
   head: () => ({
@@ -28,23 +28,30 @@ function CaseStudyComponent() {
           heroAlt="Smart Loading Zone interface research"
         />
 
-        <DynamicIslandTOC />
-
         <ArticleContent>
 
-          <ArticleHeading2 id={sectionId("The Challenge")}>The Challenge</ArticleHeading2>
+          <ContextBox
+            summary={
+              <>
+                <p>Pittsburgh's Smart Loading Zones (SLZ) were designed to improve parking efficiency and reduce delivery times. But adoption was stuck. Most drivers either didn't know about them or actively avoided them.</p>
+              </>
+            }
+            team="Research team + stakeholders"
+          />
+
+          <ArticleHeading2 id={sectionId("Problem")}>Problem</ArticleHeading2>
           <p>
-            Pittsburgh's Smart Loading Zones (SLZ) were designed to improve parking efficiency and reduce delivery times. But adoption was stuck. Most drivers either didn't know about them or actively avoided them. The Parking Authority had questions that surveys couldn't answer:
+            The Parking Authority had questions that surveys couldn't answer:
           </p>
           <ul>
             <li>Why were drivers ignoring this service despite its benefits?</li>
             <li>What were the actual barriers to adoption?</li>
             <li>What would actually change driver behavior?</li>
           </ul>
-
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <p className="m-0">Traditional research would ask drivers: "Would you use SLZ?" They'd say yes. But observed behavior told a different story entirely.</p>
           </div>
+
 
           <OutcomeSection
             id={sectionId("Outcome")}
@@ -53,15 +60,16 @@ function CaseStudyComponent() {
               {
                 id: "service-model",
                 title: "Service Model Changes",
+                shortLabel: "Service Model",
                 children: (
                   <>
                     <p>
                       The design research led to concrete changes in how Pittsburgh's SLZ operates:
                     </p>
                     <ul>
-                      <li><strong>Shifted from upfront payment to pay-after-exit</strong> — Removing the barrier to trial</li>
-                      <li><strong>Text-based messaging system</strong> — The fastest way to reach drivers already on the go</li>
-                      <li><strong>Redesigned signage</strong> — Clearer, color-coded, immediately understandable</li>
+                      <li><Bold>Shifted from upfront payment to pay-after-exit</Bold> — Removing the barrier to trial</li>
+                      <li><Bold>Text-based messaging system</Bold> — The fastest way to reach drivers already on the go</li>
+                      <li><Bold>Redesigned signage</Bold> — Clearer, color-coded, immediately understandable</li>
                     </ul>
                   </>
                 )
@@ -69,12 +77,13 @@ function CaseStudyComponent() {
               {
                 id: "results",
                 title: "Measurable Results",
+                shortLabel: "Results",
                 children: (
                   <>
                     <ul>
-                      <li><strong>SUS score of 90.3%</strong> on final service prototype (excellent usability threshold)</li>
-                      <li><strong>Projected 40% increase in SLZ adoption</strong> based on behavioral testing</li>
-                      <li><strong>Reduced support calls</strong> — Clearer signage meant fewer confused drivers</li>
+                      <li><Bold>SUS score of 90.3%</Bold> on final service prototype (excellent usability threshold)</li>
+                      <li><Bold>Projected 40% increase in SLZ adoption</Bold> based on behavioral testing</li>
+                      <li><Bold>Reduced support calls</Bold> — Clearer signage meant fewer confused drivers</li>
                     </ul>
 
                     <img
@@ -89,10 +98,11 @@ function CaseStudyComponent() {
           />
 
           <ProcessSection
-            id={sectionId("My Role & Research Process")}
+            id={sectionId("My Role & Process")}
             items={[
               {
-                title: "1. Understand the Context",
+                title: "Understand the Context",
+                shortLabel: "Understand",
                 children: (
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
@@ -126,9 +136,9 @@ function CaseStudyComponent() {
                     </div>
 
                     <ul>
-                      <li><strong>Desktop research</strong> — Analyzing existing SLZ systems and competitive services</li>
-                      <li><strong>On-site observation</strong> — 10+ hours watching how drivers actually use loading zones (not how we think they should)</li>
-                      <li><strong>Intercept interviews</strong> — 15+ unscripted conversations with delivery drivers, service workers, and regular drivers at actual loading zones</li>
+                      <li><Bold>Desktop research</Bold> — Analyzing existing SLZ systems and competitive services</li>
+                      <li><Bold>On-site observation</Bold> — 10+ hours watching how drivers actually use loading zones (not how we think they should)</li>
+                      <li><Bold>Intercept interviews</Bold> — 15+ unscripted conversations with delivery drivers, service workers, and regular drivers at actual loading zones</li>
                     </ul>
 
                     <p>
@@ -138,20 +148,21 @@ function CaseStudyComponent() {
                 )
               },
               {
-                title: "2. Test Assumptions with Prototypes",
+                title: "Test Assumptions with Prototypes",
+                shortLabel: "Test",
                 children: (
                   <>
                     <p>
                       We built low-fidelity and high-fidelity prototypes of different service models:
                     </p>
                     <ul>
-                      <li><strong>Payment timing:</strong> Upfront registration vs. pay-after-exit</li>
-                      <li><strong>Communication:</strong> Web app vs. text-only vs. phone call</li>
-                      <li><strong>Eligibility signage:</strong> Different visual designs for zone markers</li>
+                      <li><Bold>Payment timing:</Bold> Upfront registration vs. pay-after-exit</li>
+                      <li><Bold>Communication:</Bold> Web app vs. text-only vs. phone call</li>
+                      <li><Bold>Eligibility signage:</Bold> Different visual designs for zone markers</li>
                     </ul>
 
                     <p>
-                      Then we ran <strong>speed dating sessions</strong>—a rapid UX research method where drivers tested multiple concepts in quick succession. The approach tested intentionally unconventional, multimodal concepts without considering business constraints first. This technique enabled quick feedback gathering on multiple prototypes, revealing genuine reactions rather than hypothetical preferences.
+                      Then we ran <Bold>speed dating sessions</Bold>—a rapid UX research method where drivers tested multiple concepts in quick succession. The approach tested intentionally unconventional, multimodal concepts without considering business constraints first. This technique enabled quick feedback gathering on multiple prototypes, revealing genuine reactions rather than hypothetical preferences.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
@@ -164,11 +175,11 @@ function CaseStudyComponent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
                       <div>
                         <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-neutral-200" />
-                        <p className="text-xs text-neutral-500 mt-2"><strong>Physical Kiosk</strong> — get ticket → go on their errands → scan ticket upon return</p>
+                        <p className="text-xs text-neutral-500 mt-2"><Bold>Physical Kiosk</Bold> — get ticket → go on their errands → scan ticket upon return</p>
                       </div>
                       <div>
                         <img src="/articles/slz-digital-artifact.png" alt="Digital Automated System — SMS onboarding and reminders during parking" className="w-full rounded-xl border border-neutral-200" />
-                        <p className="text-xs text-neutral-500 mt-2"><strong>Digital Automated System</strong> — receive onboarding instructions and reminders during parking</p>
+                        <p className="text-xs text-neutral-500 mt-2"><Bold>Digital Automated System</Bold> — receive onboarding instructions and reminders during parking</p>
                       </div>
                     </div>
 
@@ -179,13 +190,14 @@ function CaseStudyComponent() {
                 )
               },
               {
-                title: "3. Validate Findings",
+                title: "Validate Findings",
+                shortLabel: "Validate",
                 children: (
                   <>
                     <ul>
-                      <li><strong>Think-aloud protocol</strong> — Watching drivers interact with prototypes while verbalizing their thoughts</li>
-                      <li><strong>SUS (System Usability Scale) surveys</strong> — Quantifying usability on a standard 0-100 scale</li>
-                      <li><strong>Behavioral metrics</strong> — Tracking what drivers actually did, not just what they said they'd do</li>
+                      <li><Bold>Think-aloud protocol</Bold> — Watching drivers interact with prototypes while verbalizing their thoughts</li>
+                      <li><Bold>SUS (System Usability Scale) surveys</Bold> — Quantifying usability on a standard 0-100 scale</li>
+                      <li><Bold>Behavioral metrics</Bold> — Tracking what drivers actually did, not just what they said they'd do</li>
                     </ul>
 
                     <img
@@ -202,30 +214,30 @@ function CaseStudyComponent() {
           <ArticleHeading2 id={sectionId("What Design Revealed")}>What Design Revealed</ArticleHeading2>
 
           <p>
-            <strong>Survey answer:</strong> "Would you use Smart Loading Zones?" 78% said yes.
+            <Bold>Survey answer:</Bold> "Would you use Smart Loading Zones?" 78% said yes.
           </p>
 
           <p>
-            <strong>Design revealed:</strong> The actual barriers to adoption that surveys miss.
+            <Bold>Design revealed:</Bold> The actual barriers to adoption that surveys miss.
           </p>
 
           <div className="space-y-6 my-8">
             <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
               <h4 className="font-semibold text-neutral-900 mb-2">1. Awareness gap: 60%+ unaware</h4>
               <p className="text-sm text-neutral-600 mb-2">Drivers saw the purple curbs but didn't know what they meant. Signage clarity was the #1 issue.</p>
-              <p className="text-xs text-neutral-500"><strong>Design implication:</strong> Information hierarchy and visibility became critical design requirements.</p>
+              <p className="text-xs text-neutral-500"><Bold>Design implication:</Bold> Information hierarchy and visibility became critical design requirements.</p>
             </div>
 
             <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
               <h4 className="font-semibold text-neutral-900 mb-2">2. Confusion created workarounds: 95% used hazard lights</h4>
               <p className="text-sm text-neutral-600 mb-2">Drivers didn't understand the rules, so they defaulted to the universal signal: hazard lights. This meant they were avoiding the system, not using it.</p>
-              <p className="text-xs text-neutral-500"><strong>Design implication:</strong> Rules must be immediately clear from the visual design alone.</p>
+              <p className="text-xs text-neutral-500"><Bold>Design implication:</Bold> Rules must be immediately clear from the visual design alone.</p>
             </div>
 
             <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
               <h4 className="font-semibold text-neutral-900 mb-2">3. Friction killed adoption: upfront commitment required</h4>
               <p className="text-sm text-neutral-600 mb-2">Drivers avoided unfamiliar services that required upfront registration or payment before they could test them.</p>
-              <p className="text-xs text-neutral-500"><strong>Design implication:</strong> Service model must reduce activation friction—pay after, not before.</p>
+              <p className="text-xs text-neutral-500"><Bold>Design implication:</Bold> Service model must reduce activation friction—pay after, not before.</p>
             </div>
           </div>
 
@@ -238,10 +250,10 @@ function CaseStudyComponent() {
           <p>Throughout the project, we built:</p>
 
           <ul>
-            <li><strong>Empathy maps</strong> — For each driver type (delivery, service, commuter)</li>
-            <li><strong>Journey models</strong> — Mapping the moment-by-moment decision making when approaching a loading zone</li>
-            <li><strong>Connection charts</strong> — Showing how pain points linked to actual adoption barriers</li>
-            <li><strong>Success metrics framework</strong> — Defining what "adoption" actually means behaviorally</li>
+            <li><Bold>Empathy maps</Bold> — For each driver type (delivery, service, commuter)</li>
+            <li><Bold>Journey models</Bold> — Mapping the moment-by-moment decision making when approaching a loading zone</li>
+            <li><Bold>Connection charts</Bold> — Showing how pain points linked to actual adoption barriers</li>
+            <li><Bold>Success metrics framework</Bold> — Defining what "adoption" actually means behaviorally</li>
           </ul>
 
           <img
@@ -271,7 +283,7 @@ function CaseStudyComponent() {
           <ArticleHeading2 id={sectionId("Why Design Was Essential")}>Why Design Was Essential</ArticleHeading2>
 
           <p>
-            Traditional research methods would have confirmed the obvious: drivers want efficient parking. But design as research revealed the non-obvious: <strong>drivers will default to hazard lights rather than learn a new system if the system seems confusing.</strong>
+            Traditional research methods would have confirmed the obvious: drivers want efficient parking. But design as research revealed the non-obvious: <Bold>drivers will default to hazard lights rather than learn a new system if the system seems confusing.</Bold>
           </p>
 
           <p>
@@ -280,7 +292,7 @@ function CaseStudyComponent() {
 
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
             <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
-            <p className="m-0"><strong>Design is a research method because it forces clarity.</strong> When you prototype something, you can't hide behind vague language. "Users want ease of use" is meaningless. But a prototype forces you to specify: Which button? What color? How much text on the sign? That specificity is where insights emerge.</p>
+            <p className="m-0"><Bold>Design is a research method because it forces clarity.</Bold> When you prototype something, you can't hide behind vague language. "Users want ease of use" is meaningless. But a prototype forces you to specify: Which button? What color? How much text on the sign? That specificity is where insights emerge.</p>
           </div>
 
           <p className="mt-12 text-sm text-neutral-600">

@@ -25,7 +25,6 @@ function HelloHumansComponent() {
           heroImage="/articles/hello-humans-notebook.jpg"
           heroAlt="Hello humans notebook prototype"
         />
-        <DynamicIslandTOC />
 
         <div className="prose prose-neutral max-w-2xl">
 

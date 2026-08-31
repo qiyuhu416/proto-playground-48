@@ -1,5 +1,169 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+const DEMOS = [
+  { name: 'Kitkat', id: 'LYpNyvm' },
+  { name: 'Newton', id: 'abzeaWJ' },
+  { name: 'Launch', id: 'rNOqzbN' },
+  { name: 'Birthday', id: 'BaobKOJ' },
+  { name: 'Impossible', id: 'ZjLKGY' },
+  { name: 'Care', id: 'RwPrOoz' },
+  { name: 'Cubes', id: 'QWbRxXb' },
+  { name: 'Elon', id: 'RwWMwvY' },
+  { name: 'Gun', id: 'GRoKOyg' },
+  { name: 'Moon', id: 'NWqemYK' },
+  { name: 'Pokedex', id: 'eYpGQxr' },
+  { name: 'Record', id: 'RwraKYZ' },
+  { name: 'Tcannon', id: 'eYpmBxQ' },
+  { name: 'Cloud', id: 'MWwRKvd' },
+  { name: 'Fireflies', id: 'zYGQYWJ' },
+  { name: 'Train', id: 'eYpdPWa' },
+  { name: 'Pancake', id: 'jJVpWZ' },
+  { name: 'Earth', id: 'aPzVme' },
+  { name: 'Matryoshka', id: 'jOOYMLm' },
+  { name: 'Truck', id: 'MWWowEb' },
+];
+
+const PAGES = 10;
+
+interface SketchProps {
+  idx: number;
+  shuffledDemos: typeof DEMOS;
+}
+
+const Sketch: React.FC<SketchProps> = ({ idx, shuffledDemos }) => {
+  const src = shuffledDemos[idx - 1]?.name;
+  const id = shuffledDemos[idx - 1]?.id;
+
+  return (
+    <a href={`https://codepen.io/jh3y/full/${id}`} target="_blank" rel="noreferrer noopener">
+      <img src={`https://s3-us-west-2.amazonaws.com/s.cdpn.io/605876/${src || 'Book'}-sketch.svg`} alt={src} />
+    </a>
+  );
+};
+
+const BookComponent: React.FC = () => {
+  const [shuffledDemos, setShuffledDemos] = useState<typeof DEMOS>(DEMOS);
+
+  useEffect(() => {
+    // Shuffle only on client to avoid hydration mismatch
+    setShuffledDemos([...DEMOS].sort(() => 0.5 - Math.random()));
+  }, []);
+
+  useEffect(() => {
+    // Load GSAP
+    const loadGSAP = async () => {
+      // Check if GSAP is already loaded
+      if ((window as any).gsap) {
+        initializeAnimations();
+        return;
+      }
+
+      // Load GSAP script
+      const gsapScript = document.createElement('script');
+      gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+      gsapScript.onload = () => {
+        // Load ScrollTrigger after GSAP
+        const scrollScript = document.createElement('script');
+        scrollScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js';
+        scrollScript.onload = () => {
+          initializeAnimations();
+        };
+        document.head.appendChild(scrollScript);
+      };
+      document.head.appendChild(gsapScript);
+    };
+
+    const initializeAnimations = () => {
+      const gsap = (window as any).gsap;
+      const ScrollTrigger = (window as any).ScrollTrigger;
+
+      if (!gsap || !ScrollTrigger) return;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const bookEl = document.querySelector('.book');
+      if (!bookEl) return;
+
+      // Create a timeline that flips pages as user scrolls
+      const pageEls = gsap.utils.toArray('.book__page');
+
+      pageEls.forEach((page: any, index: number) => {
+        if (index === 0) return; // Skip cover
+
+        gsap.to(page, {
+          rotateY: -180,
+          scrollTrigger: {
+            trigger: '.book',
+            start: `top+=${index * 400}px top`,
+            end: `top+=${(index + 1) * 400}px top`,
+            scrub: 1,
+            markers: false,
+          },
+        });
+      });
+    };
+
+    loadGSAP();
+
+    return () => {
+      // Cleanup
+      const gsap = (window as any).gsap;
+      if (gsap?.ticker) {
+        gsap.ticker.remove(() => {});
+      }
+    };
+  }, []);
+
+  const renderPages = () => {
+    const pages = [];
+    for (let p = 0; p < PAGES; p++) {
+      pages.push(
+        <div key={p} className="page book__page" style={{ '--page-index': p + 2 } as React.CSSProperties}>
+          <div className="page__half page__half--front">
+            <Sketch idx={p * 2 + 1} shuffledDemos={shuffledDemos} />
+            <div className="page__number">{p * 2 + 1}</div>
+          </div>
+          <div className="page__half page__half--back">
+            <Sketch idx={p * 2 + 2} shuffledDemos={shuffledDemos} />
+            <div className="page__number">{p * 2 + 2}</div>
+          </div>
+        </div>
+      );
+    }
+    return pages;
+  };
+
+  return (
+    <>
+      <h1>Scroll</h1>
+      <div className="book">
+        <div className="book__spine"></div>
+        <div className="page book__page book__cover book__cover--front" style={{ '--page-index': 1 } as React.CSSProperties}>
+          <div className="page__half page__half--front">
+            <span className="code">
+              {`.set(FOLD,{transformOrigin:"50% 100%",scaleY:0}),set(CLIPS,{transformOrigin:"50% 0"})`}
+            </span>
+          </div>
+          <div className="page__half page__half--back">
+            <div className="book__insert">
+              <img className="logo" src="https://assets.codepen.io/605876/bear-with-cap.svg" alt="Logo" />
+            </div>
+          </div>
+        </div>
+        {renderPages()}
+        <div className="page book__page book__cover book__cover--back" style={{ '--page-index': PAGES + 2 } as React.CSSProperties}>
+          <div className="page__half page__half--front"></div>
+          <div className="page__half page__half--back">
+            <span className="code">
+              {`.set(FOLD,{transformOrigin:"50% 100%",scaleY:0})`}
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export const Route = createFileRoute("/think")({
   head: () => ({
@@ -14,10 +178,119 @@ export const Route = createFileRoute("/think")({
   component: ThinkComponent,
 });
 
+const bookStyles = `
+  .book {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    height: 500px;
+    perspective: 1000px;
+    position: relative;
+  }
+
+  .book__spine {
+    position: absolute;
+    left: 50%;
+    width: 20px;
+    height: 100%;
+    background: #e5e5e5;
+    z-index: 10;
+    transform: translateX(-50%) translateZ(40px);
+  }
+
+  .book__page {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    transform-style: preserve-3d;
+    transform-origin: right center;
+  }
+
+  .book__page.book__cover--back {
+    left: 50%;
+    transform-origin: left center;
+  }
+
+  .page {
+    background: white;
+    border: 1px solid #e5e5e5;
+  }
+
+  .page__half {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    background: white;
+  }
+
+  .page__half img {
+    max-width: 90%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+
+  .page__number {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .book__insert {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+  }
+
+  .code {
+    font-size: 8px;
+    font-family: monospace;
+    line-height: 1.2;
+    color: #666;
+    white-space: pre-wrap;
+    word-break: break-all;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #111;
+  }
+`;
+
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = bookStyles;
+  if (!document.head.querySelector('style[data-book-styles]')) {
+    style.setAttribute('data-book-styles', 'true');
+    document.head.appendChild(style);
+  }
+}
+
 function ThinkComponent() {
   const [quadrantOpen, setQuadrantOpen] = useState(false);
   const [expandedReflections, setExpandedReflections] = useState<Set<number>>(new Set());
   const [reflectionsWithImages, setReflectionsWithImages] = useState<Array<{content: string; date: string; image?: string}>>([]);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -175,6 +448,11 @@ function ThinkComponent() {
 
   return (
     <div className="min-h-screen bg-background text-neutral-900">
+
+      {/* Book Component Section */}
+      <section className="mx-auto max-w-6xl px-6 pt-16 pb-24">
+        <BookComponent />
+      </section>
 
       {/* Frameworks section */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-12">
@@ -339,6 +617,42 @@ function ThinkComponent() {
             <h2 className="text-xl font-semibold text-neutral-900 mb-1">Me · Others · Think · Do</h2>
             <p className="text-sm text-neutral-500 mb-2">A lens for mapping perspective and agency in any situation.</p>
             <p className="text-xs text-neutral-400 mb-8">This is also how I created the 4 tabs for this site: <span className="font-medium text-neutral-600">Work · Play · Think · Listen</span> — me doing, others doing, me reflecting, others reflecting.</p>
+
+            {/* Interactive Quadrant */}
+            <div
+              className="w-full h-64 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-lg mb-6 cursor-crosshair shadow-lg shadow-amber-200/50 ring-2 ring-amber-200/30"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                setMousePos({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
+              }}
+            >
+              <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                {/* Axes */}
+                <line x1="50" y1="0" x2="50" y2="100" stroke="#d1d5db" strokeWidth="0.5"/>
+                <line x1="0" y1="50" x2="100" y2="50" stroke="#d1d5db" strokeWidth="0.5"/>
+
+                {/* Quadrant backgrounds */}
+                <rect x="0" y="0" width="50" height="50" fill="#f3f4f6" opacity="0.5"/>
+                <rect x="50" y="0" width="50" height="50" fill="#f3f4f6" opacity="0.3"/>
+                <rect x="0" y="50" width="50" height="50" fill="#f3f4f6" opacity="0.3"/>
+                <rect x="50" y="50" width="50" height="50" fill="#f3f4f6" opacity="0.5"/>
+
+                {/* Axis dots */}
+                {/* Top (Others · Think) */}
+                <circle cx={mousePos.x} cy="0" r="2" fill="#1f2937" opacity="0.8"/>
+                {/* Bottom (Others · Do) */}
+                <circle cx={mousePos.x} cy="100" r="2" fill="#1f2937" opacity="0.8"/>
+                {/* Left (Me · Think) */}
+                <circle cx="0" cy={mousePos.y} r="2" fill="#1f2937" opacity="0.8"/>
+                {/* Right (Me · Do) */}
+                <circle cx="100" cy={mousePos.y} r="2" fill="#1f2937" opacity="0.8"/>
+
+                {/* Center intersection */}
+                <circle cx="50" cy="50" r="1.5" fill="#9ca3af"/>
+              </svg>
+            </div>
 
             <div className="grid grid-cols-2 gap-px bg-neutral-200 rounded-xl overflow-hidden">
               {/* Think / Me */}

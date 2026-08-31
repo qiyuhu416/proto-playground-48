@@ -7,12 +7,18 @@ All primary articles (in the metrics) are now **aligned** in structure, styling,
 
 ## ✅ Section Order Standardization
 
-All articles now follow:
+All articles now follow this structure:
 ```
-1. Context (article context/problem setup)
-2. Outcome (OutcomeSection with tabs)
-3. Process (ProcessSection with accordion)
-4. Additional sections (frameworks, insights, reflections)
+ArticleHeader (cover image)
+  ↓
+ContextBox (summary + key facts: role, duration, team)
+  ↓
+ArticleContent
+  1. Context heading + full narrative paragraphs
+  2. DynamicIslandTOC
+  3. Outcome (OutcomeSection with tabs)
+  4. Process (ProcessSection with accordion)
+  5. Additional sections (frameworks, insights, reflections)
 ```
 
 ### Verified Articles:
@@ -56,6 +62,50 @@ Fixed:
 
 ---
 
+## 📦 ContextBox Component
+
+**ContextBox** displays at the top of every article (right after cover image) with:
+- Narrative summary paragraph (pulled from full Context section)
+- Bullet points: Role, Duration, Team
+
+```jsx
+<ContextBox
+  summary={<p>Brief summary of what this project was and why it was special.</p>}
+  role="UX Designer, owned all research and design"
+  duration="4 months"
+  team="1 senior designer, 1 UI designer, 1 engineer"
+/>
+```
+
+**Features:**
+- ✅ Styled box with border (neutral-50 background, rounded corners)
+- ✅ Narrative summary + metadata bullet points
+- ✅ Positioned at top of article (right after ArticleHeader)
+- ✅ Quick overview before diving into full Context section
+- ✅ All fields optional (only renders what's provided)
+
+**Styling:**
+- bg-neutral-50 background
+- border-neutral-200 
+- Rounded corners, padding
+- Bullet list for metadata
+
+**Structure in article:**
+```
+ArticleHeader (cover image)
+  ↓
+ContextBox (summary + quick facts)
+  ↓
+ArticleContent
+  ├─ Context section (full narrative)
+  ├─ DynamicIslandTOC
+  ├─ Outcome
+  ├─ Process
+  └─ Additional sections
+```
+
+---
+
 ## 🎨 Variant Approach (Option 2: Template + Variants)
 
 ### Base Template (Strict)
@@ -87,11 +137,12 @@ Used by articles with multiple exploration paths:
 
 | Component | physical-ai | google-cloud | design-as-research-tool | personalization | making-design-fun |
 |-----------|-------------|--------------|-------------------------|-----------------|-------------------|
+| ContextBox | (needs) | (needs) | (needs) | (needs) | (needs) |
 | ArticleContent | ✓ | ✓ | ✓ | ✓ | ✓ |
-| ArticleHeading2 | ✓ | ✓ | ✓ | ✓ | ✓ |
+| DynamicIslandTOC | ✓ | ✓ | ✓ | ✓ | ✓ |
 | OutcomeSection | ✓ (3 tabs) | ✓ (3 tabs) | ✓ (2 tabs) | ✓ (3 tabs) | ✓ (4 tabs) |
 | ProcessSection | ✓ (4 items) | ✓ (4 items) | ✓ (3 items) | — | — |
-| HighlightedText | ✓ | ✓ | ✓ | ✓ | ✓ |
+| HighlightedText | ✓ | ✓ | ✓ | ✓ | — |
 
 ---
 

@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
+import { ArticleLayout } from "@/components/ArticleLayout";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection, ContextBox, Bold } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/physical-ai")({
   head: () => ({
@@ -19,95 +19,73 @@ export const Route = createFileRoute("/physical-ai")({
 
 function ArticleComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-4xl px-6 py-12">
-        <ArticleHeader
+    <ArticleLayout>
+      <ArticleHeader
           title={ARTICLE_META["physical-ai"].title}
           meta="Understanding Behavioral Intent"
           heroImage="/articles/physical-ai-thumb.png"
           heroAlt="Physical AI for service design"
         />
 
-        <DynamicIslandTOC />
-
         <ArticleContent>
 
-          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
+          <ContextBox
+            summary={
+              <>
+                <p>This was a fast-paced, experimental concept design project in partnership with Strange VC and two clients:</p>
+                <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+                  <li>Archetype AI, focused on physical AI</li>
+                  <li>Roche, in healthcare</li>
+                </ol>
+                <p>Archetype AI came with the request to map its multimodal AI capabilities to Roche's healthcare use cases.</p>
+                <p>The team was small—an engineer, a PM, and me. My role was to conduct the research, including creating the service blueprint and analyzing <HighlightedText>when to use AI and when <em>not</em> to use AI</HighlightedText>. The three of us collectively shared ideas and created the final artifacts.</p>
+              </>
+            }
+            role="UX Researcher, conducted research and created service blueprint"
+            team="1 engineer, 1 PM, 1 designer"
+          />
 
-          <p>
-            This was a fast-paced, experimental concept design project in partnership with Strange VC and two clients:
-          </p>
-
-          <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
-            <li><strong>Archetype AI</strong>, focused on physical AI</li>
-            <li><strong>Roche</strong>, in healthcare</li>
-          </ol>
-
-          <p>
-            Archetype AI came with the request to map its multimodal AI capabilities to Roche's healthcare use cases.
-          </p>
-
-          <p>
-            The team was small—an engineer, a PM, and me. My role was to conduct the research, including creating the service blueprint and analyzing <HighlightedText>when to use AI and when <em>not</em> to use AI</HighlightedText>. The three of us collectively shared ideas and created the final artifacts.
-          </p>
-
+          <ArticleHeading2 id={sectionId("Problem")}>Problem</ArticleHeading2>
           <p>
             The problems we wanted to solve were:
           </p>
-
           <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
             <li>Errors in the hospital-to-lab experience, with the goal of minimizing errors and reducing waste.</li>
             <li>How to be technology-driven but not tech-centered: finding the right intervention point to maximize the model's capabilities without forcing the technology into the experience.</li>
           </ol>
 
+
           <OutcomeSection
             id={sectionId("Outcome")}
+            variant="gallery"
+            aspectRatio={2.6}
             tabs={[
               {
                 id: "storyboard",
-                title: "1. Storyboard",
-                children: (
-                  <>
-                    <p>
-                      Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on <HighlightedText>when, where, and why AI should exist in the status quo.</HighlightedText>
-                    </p>
-                    <img
-                      src="/articles/physical-ai-hero.png"
-                      alt="Physical AI healthcare interaction design"
-                      className="w-full rounded-2xl my-6 border border-neutral-200"
-                    />
-                  </>
-                )
+                title: "Storyboard",
+                subtitle: "When, where, and why AI should exist",
+                description: "Storyboards helped stakeholders imagine the role of the system in context. The focus was less on a screen and more on when, where, and why AI should exist in the status quo.",
+                src: "/articles/physical-ai-hero.png",
+                alt: "Physical AI healthcare interaction design",
+                children: null,
               },
               {
                 id: "hardware",
-                title: "2. The Hardware Prototype",
-                children: (
-                  <>
-                    <img
-                      src="/articles/physical-ai-23.png"
-                      alt="Hardware artifacts: base station, tracker base, and tracker module"
-                      className="w-full rounded-2xl my-6 border border-neutral-200"
-                    />
-                    <p className="text-sm text-neutral-500 italic">
-                      Three physical components: The base station (computer vision, laser scanner, thermal monitoring, UI). The tracker base (sensing vial storage). The tracker module (thermometer, GPS, IMU for monitoring samples in transit).
-                    </p>
-                    <p>
-                      The hardware elements are intentionally flexible and light-touch for users. The base station sits on a phlebotomist's desk. The tracker base monitors vial storage. The tracker module deploys into transport containers. All designed to be invisible to the user—present only when needed.
-                    </p>
-                  </>
-                )
+                title: "The Hardware Prototype",
+                subtitle: "Three physical components",
+                description: "Base station (computer vision, laser scanner, thermal monitoring, UI). Tracker base (sensing vial storage). Tracker module (thermometer, GPS, IMU for monitoring samples in transit). All designed to be invisible to the user—present only when needed.",
+                src: "/articles/physical-ai-23.png",
+                alt: "Hardware artifacts: base station, tracker base, and tracker module",
+                children: null,
               },
               {
                 id: "flow",
-                title: "3. The Flow",
-                children: (
-                  <img
-                    src="/articles/physical-ai-24.png"
-                    alt="Proposed user flow with 8 interaction steps"
-                    className="w-full rounded-2xl my-6 border border-neutral-200"
-                  />
-                )
+                title: "The Flow",
+                subtitle: "Proposed user flow",
+                description: "Eight interaction steps designed to guide users through the diagnostic process with minimal friction and maximum clarity.",
+                src: "/articles/physical-ai-24.png",
+                alt: "Proposed user flow with 8 interaction steps",
+                children: null,
               }
             ]}
           />
@@ -117,7 +95,8 @@ function ArticleComponent() {
             id={sectionId("Process")}
             items={[
               {
-                title: "1. Understand the problem",
+                title: "Understand the problem",
+                shortLabel: "Understand",
                 children: (
                   <>
                     <p>
@@ -156,7 +135,8 @@ function ArticleComponent() {
                 )
               },
               {
-                title: "2. Explore whether AI is really needed",
+                title: "Explore whether AI is really needed",
+                shortLabel: "Explore",
                 children: (
                   <>
                     <p>
@@ -182,19 +162,19 @@ function ArticleComponent() {
                       <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
                         <h4 className="text-base font-semibold text-neutral-900 mb-4">Short-term: AI as Assistant</h4>
                         <ul className="space-y-3 text-sm text-neutral-700">
-                          <li><strong>Confirmation:</strong> Compare label info & patient ID</li>
-                          <li><strong>Selection:</strong> Evaluate vial-label match, find correct filling status</li>
-                          <li><strong>Extraction:</strong> Monitor tube filling status, detect incorrect amount</li>
-                          <li><strong>Storage:</strong> Generate summary, identify storage location, notice unusual sample changes</li>
+                          <li><Bold>Confirmation:</Bold> Compare label info & patient ID</li>
+                          <li><Bold>Selection:</Bold> Evaluate vial-label match, find correct filling status</li>
+                          <li><Bold>Extraction:</Bold> Monitor tube filling status, detect incorrect amount</li>
+                          <li><Bold>Storage:</Bold> Generate summary, identify storage location, notice unusual sample changes</li>
                         </ul>
                       </div>
 
                       <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
                         <h4 className="text-base font-semibold text-neutral-900 mb-4">Long-term: AI as Performer</h4>
                         <ul className="space-y-3 text-sm text-neutral-700">
-                          <li><strong>Automation:</strong> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
-                          <li><strong>Integration:</strong> Act on human feedback, refine based on patterns</li>
-                          <li><strong>Reliability:</strong> Reduce human error to near-zero through consistent, tireless execution</li>
+                          <li><Bold>Automation:</Bold> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
+                          <li><Bold>Integration:</Bold> Act on human feedback, refine based on patterns</li>
+                          <li><Bold>Reliability:</Bold> Reduce human error to near-zero through consistent, tireless execution</li>
                         </ul>
                       </div>
                     </div>
@@ -202,11 +182,12 @@ function ArticleComponent() {
                 )
               },
               {
-                title: "3. Map tech capability to the service blueprint",
+                title: "Map tech capability to the service blueprint",
+                shortLabel: "Map",
                 children: (
                   <>
                     <p>
-                      The previous analysis helped me reframe the question into: <strong>where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?</strong>
+                      The previous analysis helped me reframe the question into: <HighlightedText>where does AI create enough efficiency to justify the new uncertainty and coordination cost it introduces?</HighlightedText>
                     </p>
 
                     <p>
@@ -222,7 +203,8 @@ function ArticleComponent() {
                 )
               },
               {
-                title: "4. Understand the limitations",
+                title: "Understand the limitations",
+                shortLabel: "Limitations",
                 children: (
                   <>
                     <p>
@@ -234,10 +216,10 @@ function ArticleComponent() {
                     </p>
 
                     <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
-                      <li><strong>Who is responsible for error correction?</strong></li>
-                      <li><strong>How does one AI error affect the larger service system?</strong></li>
-                      <li><strong>Does AI remove work, or move the work to someone else?</strong></li>
-                      <li><strong>Where should a human stay in the loop even if the model becomes more capable?</strong></li>
+                      <li><HighlightedText>Who is responsible for error correction?</HighlightedText></li>
+                      <li><HighlightedText>How does one AI error affect the larger service system?</HighlightedText></li>
+                      <li><HighlightedText>Does AI remove work, or move the work to someone else?</HighlightedText></li>
+                      <li><HighlightedText>Where should a human stay in the loop even if the model becomes more capable?</HighlightedText></li>
                     </ul>
                   </>
                 )
@@ -245,9 +227,7 @@ function ArticleComponent() {
             ]}
           />
 
-        </ArticleContent>
-
-      </article>
-    </div>
+      </ArticleContent>
+    </ArticleLayout>
   );
 }

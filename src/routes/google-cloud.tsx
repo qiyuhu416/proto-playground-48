@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
+import { ArticleLayout } from "@/components/ArticleLayout";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection } from "@/components/ArticleContent";
-import { ContextMetadata } from "@/components/ContextMetadata";
+import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection, ContextBox } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/google-cloud")({
   head: () => ({
@@ -19,96 +19,84 @@ export const Route = createFileRoute("/google-cloud")({
 });
 
 function CaseStudyComponent() {
-  const deliverables = [
+  const deliverableTabs = [
     {
-      id: "chatbot" as const,
+      id: "chatbot",
       title: "The Chatbot",
       subtitle: "Contextual recommendation",
       description: "Personalized recommendations for product discovery. The chatbot enhanced discoverability by providing real-time, personalized recommendations based on user needs. It guides users through complex solution comparisons without requiring them to navigate multiple pages.",
-      image: "/articles/google-cloud-chatbot.png",
+      src: "/articles/google-cloud-chatbot.png",
       alt: "Google Cloud chatbot interface for product recommendations",
+      children: null,
     },
     {
-      id: "dynamic" as const,
+      id: "dynamic",
       title: "Dynamic UI",
       subtitle: "Personalized experiences",
       description: "Adaptive interface for user journey stages. Dynamic UI adapts based on where users are in their journey—landing, exploring, or comparing solutions. Different interface patterns emerge to support efficient discovery at each stage.",
-      image: "/articles/google-cloud-dynamic.png",
+      src: "/articles/google-cloud-dynamic.png",
       alt: "Dynamic UI adapting to user journey stages",
+      children: null,
     },
     {
-      id: "comparison" as const,
+      id: "comparison",
       title: "Comparison Tool",
       subtitle: "Faster decision making",
       description: "Side-by-side solution evaluation. The comparison tool enables users to evaluate solutions with \"add to compare\" selections. Making the comparison process explicit and transparent improves decision confidence.",
-      image: "/articles/google-cloud-comparison.png",
+      src: "/articles/google-cloud-comparison.png",
       alt: "Side-by-side solution comparison tool",
+      children: null,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-4xl px-6 py-12">
-        <ArticleHeader
+    <ArticleLayout>
+      <ArticleHeader
           title={ARTICLE_META["google-cloud"].title}
           meta="0→1 Product Launch"
           heroImage="/articles/google-cloud-hero.png"
           heroAlt="Google Cloud conversational AI interface"
         />
 
-        <DynamicIslandTOC />
-
         <ArticleContent>
-          <ArticleHeading2 id={sectionId("Context")}>Context</ArticleHeading2>
 
-          <p>
-            Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to <HighlightedText>integrate intelligence to support the browsing experience</HighlightedText>. I researched and designed an 0-1 prototype for startup consumers to <HighlightedText>differentiate between similar offerings on the platform</HighlightedText>. It was launched on Google Cloud in 2024.
-          </p>
-
-          <ContextMetadata
+          <ContextBox
+            summary={
+              <>
+                <p>Back in 2023 Q3, Google Cloud had a static website for their product listing, and they wanted to integrate intelligence to support the browsing experience. I researched and designed an 0-1 prototype for startup consumers to differentiate between similar offerings on the platform. It was launched on Google Cloud in 2024.</p>
+              </>
+            }
+            role="UX Designer, owned all research and the UX design of chatbot interaction"
             duration="4 months"
-            role="UX Designer, owned all research and the UX design of chatbot interaction."
-            deliverables="Figma hi-fi prototypes, Research report"
-            collaboration="1 senior designer, 1 UI designer, 1 engineer"
+            team="1 senior designer, 1 UI designer, 1 engineer"
           />
 
-          <h3 className="mt-12 mb-4 text-lg font-semibold">Embedding AI into the Product Discovery Experience for Startup Customers</h3>
-
+          <ArticleHeading2 id={sectionId("Problem")}>Problem</ArticleHeading2>
           <p>
-            Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, <HighlightedText>browsing is messy</HighlightedText>. Startup leaders struggle to find the right solution without clear guidance. The challenge was to <HighlightedText>help customers differentiate between similar offerings</HighlightedText> and discover solutions aligned with their business objectives.
+            Google Cloud offers 100+ products with different pricing, integrations, and capabilities. However, <HighlightedText>browsing is messy</HighlightedText>. Startup leaders struggle to find the right solution without clear guidance. The challenge was to help customers differentiate between similar offerings and discover solutions aligned with their business objectives.
           </p>
+
+          <DynamicIslandTOC />
 
           <OutcomeSection
             id={sectionId("The Deliverables")}
             title="The Deliverables: 0→1 Prototypes"
-            tabs={deliverables.map((del) => ({
-              id: del.id,
-              title: del.title,
-              subtitle: del.subtitle,
-              children: (
-                <>
-                  <p className="text-neutral-600">
-                    {del.description}
-                  </p>
-                  <img
-                    src={del.image}
-                    alt={del.alt}
-                    className="w-full rounded-2xl my-6 border border-neutral-200"
-                  />
-                </>
-              )
-            }))}
+            tabs={deliverableTabs}
+            variant="tabs"
+            aspectRatio={1.5}
           />
 
-          <p>
+          <p className="mt-12">
             The broader takeaway was that assisted browsing works only when the system earns the right to intervene.
           </p>
 
           <ProcessSection
             id={sectionId("Process")}
+            variant="accordion"
             items={[
               {
-                title: "1. Understand real browsing behavior",
+                title: "Understand real browsing behavior",
+                shortLabel: "Understand",
                 children: (
                   <>
                     <h4 className="mt-6 mb-6 text-base font-semibold">Research Methodology</h4>
@@ -116,7 +104,7 @@ function CaseStudyComponent() {
                     <div className="grid md:grid-cols-3 gap-4 mb-8">
                       <div className="border border-neutral-200 rounded-lg p-5 bg-white">
                         <h5 className="text-sm font-semibold text-neutral-900 mb-3">Semi-Structured Interviews</h5>
-                        <p className="text-xs text-neutral-600 mb-2"><strong>N=8</strong> startup CTOs, CEOs, and Founders</p>
+                        <p className="text-xs text-neutral-600 mb-2">N=8 startup CTOs, CEOs, and Founders</p>
                         <p className="text-xs text-neutral-600">
                           Finding: Leaders evaluate solutions through business fit, integration compatibility, and cost predictability—not feature lists. Users also want to understand WHY an AI recommends something, not just receive the recommendation.
                         </p>
@@ -142,7 +130,8 @@ function CaseStudyComponent() {
                 )
               },
               {
-                title: "2. Translate behavior into intent carefully",
+                title: "Translate behavior into intent carefully",
+                shortLabel: "Translate",
                 children: (
                   <>
                     <p>
@@ -156,7 +145,8 @@ function CaseStudyComponent() {
                 )
               },
               {
-                title: "3. Design the explanation with the assistance",
+                title: "Design the explanation with the assistance",
+                shortLabel: "Design",
                 children: (
                   <p>
                     The AI's reasoning could not stay completely invisible. If the system surfaced a suggestion, the experience needed to help the user understand why it was relevant and what control they still had.
@@ -164,7 +154,8 @@ function CaseStudyComponent() {
                 )
               },
               {
-                title: "4. Treat privacy and scale as design constraints",
+                title: "Treat privacy and scale as design constraints",
+                shortLabel: "Privacy & Scale",
                 children: (
                   <>
                     <p>
@@ -183,16 +174,14 @@ function CaseStudyComponent() {
           <h2 id={sectionId("Impact & Outcomes")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Impact & Outcomes</h2>
 
           <p>
-            <strong>Validated Hypothesis:</strong> Final prototype SUS score = <strong>86.3%</strong> (excellent usability). Confirmed that helping users differentiate between similar solutions is critical to improving adoption.
+            Validated Hypothesis: Final prototype SUS score = <HighlightedText>86.3%</HighlightedText> (excellent usability). Confirmed that <HighlightedText>helping users differentiate between similar solutions is critical to improving adoption.</HighlightedText>
           </p>
 
           <p>
-            <strong>Comprehensive Hand-offs:</strong> Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.
+            Comprehensive Hand-offs: Delivered raw data, interview protocols, coded insights, and ongoing participant connections to support future research and implementation.
           </p>
 
-        </ArticleContent>
-
-      </article>
-    </div>
+      </ArticleContent>
+    </ArticleLayout>
   );
 }

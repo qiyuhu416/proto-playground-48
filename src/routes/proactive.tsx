@@ -3,7 +3,7 @@ import { useState } from "react";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
-import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
+import { ArticleContent, ArticleHeading2, HighlightedText, Bold } from "@/components/ArticleContent";
 
 export const Route = createFileRoute("/proactive")({
   head: () => ({
@@ -246,11 +246,10 @@ function ProactiveComponent() {
           description="Using prototypes as testing tools to validate assumptions and iterate with stakeholders in real-time."
         />
 
-        <DynamicIslandTOC />
 
         <ArticleContent>
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <p className="m-0"><strong>Note:</strong> This project is under NDA. What I can say is that the most valuable moment was when a stakeholder said mid-meeting "wait, what if we changed this?" That shift from critique to co-creation is what this prototype was built for.
+            <p className="m-0"><Bold>Note:</Bold> This project is under NDA. What I can say is that the most valuable moment was when a stakeholder said mid-meeting "wait, what if we changed this?" That shift from critique to co-creation is what this prototype was built for.
             </p>
           </div>
 
@@ -274,9 +273,9 @@ function ProactiveComponent() {
             Each trigger type encodes a different belief about when AI should interrupt:
           </p>
           <ul>
-            <li><strong>Behavioral</strong> — How many signals are enough? At 2 views the AI feels presumptuous; at 5 it may have missed its moment. The threshold is a decision about trust.</li>
-            <li><strong>Idle</strong> — How long is too long to wait? 5 seconds feels intrusive; 30 might lose the user. The window defines the AI's sense of urgency.</li>
-            <li><strong>Contextual</strong> — How confident does the system need to be? Low confidence risks noise; high confidence risks silence. The threshold shapes the AI's personality.</li>
+            <li><span className="font-bold">Behavioral</span> — How many signals are enough? At 2 views the AI feels presumptuous; at 5 it may have missed its moment. The threshold is a decision about trust.</li>
+            <li><span className="font-bold">Idle</span> — How long is too long to wait? 5 seconds feels intrusive; 30 might lose the user. The window defines the AI's sense of urgency.</li>
+            <li><span className="font-bold">Contextual</span> — How confident does the system need to be? Low confidence risks noise; high confidence risks silence. The threshold shapes the AI's personality.</li>
           </ul>
 
           <ArticleHeading2 id={sectionId("The takeaway")}>The takeaway</ArticleHeading2>

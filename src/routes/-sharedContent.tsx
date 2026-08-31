@@ -1,7 +1,7 @@
 // Shared content components for cross-article reuse
 // Update these once, and all articles using them automatically reflect the changes
 
-import { HighlightedText } from "@/components/ArticleContent";
+import { HighlightedText, Bold } from "@/components/ArticleContent";
 
 export const DesigningTheRelationship = () => (
   <>
@@ -19,7 +19,7 @@ export const DesigningTheRelationship = () => (
 
     <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
       <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-4">Key insight</div>
-      <p className="m-0"><strong>Trust is scripted.</strong> Trust is usually built through small interactions. Each step a bot takes is a design decision that either builds or breaks trust.</p>
+      <p className="m-0"><Bold>Trust is scripted.</Bold> Trust is usually built through small interactions. Each step a bot takes is a design decision that either builds or breaks trust.</p>
     </div>
 
     <p>
@@ -27,16 +27,16 @@ export const DesigningTheRelationship = () => (
     </p>
 
     <div className="bg-neutral-100 rounded-lg p-6 my-8 text-sm font-mono text-neutral-700 overflow-x-auto">
-      <div className="mb-4"><strong>1 · Acknowledge the instruction</strong></div>
+      <div className="mb-4 font-bold">1 · Acknowledge the instruction</div>
       <div className="ml-4 mb-4 text-neutral-600">"I understand you want to [elder's instruction]"<br/>"I notice a conflict between your goal, your caregiver's goal, and the potential outcome."<br/>→ name the conflict openly</div>
 
-      <div className="mb-4"><strong>2 · Evaluate the outcome</strong></div>
+      <div className="mb-4 font-bold">2 · Evaluate the outcome</div>
       <div className="ml-4 mb-4 text-neutral-600">"From our past interactions, I know you value privacy."<br/>→ derive what the system should optimize for<br/>"If I follow your instruction, your caregiver may make decisions that impact your independence."</div>
 
-      <div className="mb-4"><strong>3 · Show affiliation behavior</strong></div>
+      <div className="mb-4 font-bold">3 · Show affiliation behavior</div>
       <div className="ml-4 mb-4 text-neutral-600">"I'm programmed to work for you, to maximize your welfare."<br/>"I support you to [your goal], and I've always tried to do what's best for you."<br/>→ eliminate conflicts of interest by design</div>
 
-      <div><strong>4 · Ask to reconfirm</strong></div>
+      <div className="font-bold">4 · Ask to reconfirm</div>
       <div className="ml-4 text-neutral-600">"Are you sure about [your original instruction]?"<br/>→ get explicit consent for the edge case</div>
     </div>
 
@@ -54,7 +54,7 @@ export const DesigningTheRelationship = () => (
     </p>
 
     <p>
-      The conclusion: <strong>In high-stakes scenarios, "I am not capable of doing this alone" is the most honest and trustworthy thing an AI can say.</strong>
+      The conclusion: <Bold>In high-stakes scenarios, "I am not capable of doing this alone" is the most honest and trustworthy thing an AI can say.</Bold>
     </p>
   </>
 );
@@ -101,27 +101,27 @@ export const DesigningTheFeel = () => (
       <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
         <h4 className="font-semibold text-neutral-900 mb-2">Tick (every 1 second)</h4>
         <p className="text-sm text-neutral-600 mb-2">AI judges every keystroke. There's always an eye on you.</p>
-        <p className="text-xs text-neutral-500"><strong>Economics:</strong> ~60 calls/min, $0.08/min, ~$53/month per user</p>
-        <p className="text-xs text-neutral-500 mt-1"><strong>Feeling:</strong> Constant correction feels like surveillance. Users report: "I was just about to fix that."</p>
+        <p className="text-xs text-neutral-500"><Bold>Economics:</Bold> ~60 calls/min, $0.08/min, ~$53/month per user</p>
+        <p className="text-xs text-neutral-500 mt-1"><Bold>Feeling:</Bold> Constant correction feels like surveillance. Users report: "I was just about to fix that."</p>
       </div>
 
       <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
         <h4 className="font-semibold text-neutral-900 mb-2">Pause (after 2 seconds of pause)</h4>
         <p className="text-sm text-neutral-600 mb-2">AI mistakes your pause for a finished thought.</p>
-        <p className="text-xs text-neutral-500"><strong>Economics:</strong> ~4-8 calls/min, $0.015/min, ~$10/month per user</p>
-        <p className="text-xs text-neutral-500 mt-1"><strong>Feeling:</strong> Interrupts thinking mid-flow. Users report: "I'm thinking, don't interrupt me."</p>
+        <p className="text-xs text-neutral-500"><Bold>Economics:</Bold> ~4-8 calls/min, $0.015/min, ~$10/month per user</p>
+        <p className="text-xs text-neutral-500 mt-1"><Bold>Feeling:</Bold> Interrupts thinking mid-flow. Users report: "I'm thinking, don't interrupt me."</p>
       </div>
 
       <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
         <h4 className="font-semibold text-neutral-900 mb-2">Blur event (when you leave the field)</h4>
         <p className="text-sm text-neutral-600 mb-2">AI stays quiet while you write, then speaks when you move to the next field.</p>
-        <p className="text-xs text-neutral-500"><strong>Economics:</strong> ~1-3 calls/min, $0.018/min, ~$12/month per user</p>
-        <p className="text-xs text-neutral-500 mt-1"><strong>Feeling:</strong> Respectful partnership. Users report: "The tool felt like it was supporting me, not watching me."</p>
+        <p className="text-xs text-neutral-500"><Bold>Economics:</Bold> ~1-3 calls/min, $0.018/min, ~$12/month per user</p>
+        <p className="text-xs text-neutral-500 mt-1"><Bold>Feeling:</Bold> Respectful partnership. Users report: "The tool felt like it was supporting me, not watching me."</p>
       </div>
     </div>
 
     <p>
-      The insight: <strong>Different triggers create different relationships.</strong> Is the AI leading? Waiting? Watching? Interrupting? The trigger mechanism is the most important UX decision you make.
+      The insight: <Bold>Different triggers create different relationships.</Bold> Is the AI leading? Waiting? Watching? Interrupting? The trigger mechanism is the most important UX decision you make.
     </p>
 
     <p>
@@ -146,7 +146,7 @@ export const WhereNotToUseAI = () => (
 
     <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
       <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
-      <p className="m-0">Great AI product design knows its boundaries. It's not about pushing the edges of what's possible—it's about <strong>honoring what matters most.</strong></p>
+      <p className="m-0">Great AI product design knows its boundaries. It's not about pushing the edges of what's possible—it's about <Bold>honoring what matters most.</Bold></p>
     </div>
   </>
 );
@@ -163,7 +163,7 @@ export const ForOthersToPrototype = () => (
     </div>
 
     <p>
-      <strong>Purpose:</strong> To enable. To hand over control. To let others build on your foundation.
+      <Bold>Purpose:</Bold> To enable. To hand over control. To let others build on your foundation.
     </p>
 
     <p>

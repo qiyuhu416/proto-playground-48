@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useScroll, useMotionValueEvent } from "motion/react";
 import { CardIcon } from "./-CardIcon";
 import { TextGradientScroll } from "@/components/TextGradientScroll";
 import { NavbarWrapper } from "./-NavbarWrapper";
@@ -418,6 +419,7 @@ function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => void })
           return <path key={gap} d={`M ${otx},${yT} A ${rightRx},${arcRy} 0 0,1 ${otx},${yB}`} {...h} />;
         })}
 
+
         {/* Annotations — bigger and handwritten style, red by default, black on hover */}
         <text x={mex + 30} y={yT - 20} fontSize="56" fontWeight="700" fill={hovered === "top" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
         <text x={otx + 290} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "others-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
@@ -633,6 +635,61 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hLineFixed, setHLineFixed] = useState({ top: 0, opacity: 0 });
+  const [vLineFixed, setVLineFixed] = useState({ left: 0, opacity: 0 });
+  const [matrixContentVisible, setMatrixContentVisible] = useState(true);
+  const { scrollY } = useScroll();
+  const [dotPositions, setDotPositions] = useState({
+    topLeft: { x: 40, y: 40 },
+    leftAxis: { x: 40, y: 0 },
+    bottomAxis: { x: 40, y: 0 },
+    bottomRight: { x: 0, y: 0 }
+  });
+  const [isInCornerTrigger, setIsInCornerTrigger] = useState(false);
+
+  // Track scroll: both axis lines climb/slide to the 40px edge spacing, then
+  // STAY pinned there (fixed to viewport) for the full height of the next section.
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const EDGE = 40;
+    const VH = window.innerHeight;
+    const VW = window.innerWidth;
+    const matrixTopDoc = latest + rect.top; // constant document-space position of matrix top
+    const scrolledPast = latest - matrixTopDoc; // 0 once matrix exactly fills the viewport
+    const dwell = VH * 0.35; // grace period: user can rest here before the transition engages
+    const climbDistance = VH * 0.5;
+    const pinnedDistance = VH; // matches next section's h-screen height
+    const effectivePast = Math.max(0, scrolledPast - dwell);
+
+    let t = 0;
+    let opacity = 0;
+    if (effectivePast <= 0) {
+      t = 0;
+      opacity = 0;
+    } else if (effectivePast <= climbDistance) {
+      t = effectivePast / climbDistance;
+      opacity = 1;
+    } else if (effectivePast <= climbDistance + pinnedDistance) {
+      t = 1;
+      opacity = 1;
+    } else {
+      t = 1;
+      opacity = 0;
+    }
+
+    // Hide everything in the matrix except the two lines while transitioning/pinned
+    setMatrixContentVisible(effectivePast <= 0);
+
+    // Horizontal line: bottom of screen → 40px from top
+    const hTop = (VH - EDGE) + t * (EDGE - (VH - EDGE));
+    setHLineFixed({ top: hTop, opacity });
+
+    // Vertical line: left edge (40px) → right edge (40px from right)
+    const vLeft = EDGE + t * ((VW - EDGE) - EDGE);
+    setVLineFixed({ left: vLeft, opacity });
+  });
 
   useEffect(() => {
     const updateSize = () => {
@@ -654,7 +711,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   const plotHeight = containerSize.height - margin * 2;
 
   return (
-    <section className="bg-white border-t border-neutral-200/40">
+    <section className="bg-white border-t border-neutral-200/40 snap-start">
 
       <div
         ref={containerRef}
@@ -663,10 +720,68 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
         onMouseMove={(e) => {
           const rect = containerRef.current?.getBoundingClientRect();
           if (rect) {
-            setCursorPos({
-              x: e.clientX - rect.left,
-              y: e.clientY - rect.top,
-            });
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const margin = 40;
+            const gap = 40;
+            const moveStrength = 0.08; // Slower easing (lower = slower). Adjust this value to tune speed
+
+            setCursorPos({ x, y });
+
+            // Default dot positions
+            const defaultDots = {
+              topLeft: { x: margin, y: margin },
+              leftAxis: { x: margin, y: containerSize.height - margin - gap },
+              bottomAxis: { x: margin + gap, y: containerSize.height - margin },
+              bottomRight: { x: containerSize.width - margin, y: containerSize.height - margin }
+            };
+
+            // Check corner trigger areas
+            const isInBottomLeftCorner = x < margin && y > (containerSize.height - margin);
+            const isInBottomRightCorner = x > (containerSize.width - margin) && y > (containerSize.height - margin);
+            const isInTopLeftCorner = x < margin && y < margin;
+            const isInTopRightCorner = x > (containerSize.width - margin) && y < margin;
+            const inAnyCorner = isInBottomLeftCorner || isInBottomRightCorner || isInTopLeftCorner || isInTopRightCorner;
+
+            setIsInCornerTrigger(inAnyCorner);
+
+            const newDots = { ...defaultDots };
+
+            // Responsive shift amount based on screen size (10% of smaller dimension)
+            const shiftAmount = Math.min(containerSize.width, containerSize.height) * 0.8;
+
+            if (isInBottomLeftCorner) {
+              const centerY = containerSize.height - margin;
+              const centerX = margin;
+              // All dots move away from center with equal shift on both axes
+              newDots.topLeft.y += (centerY + shiftAmount - newDots.topLeft.y) * moveStrength;
+              newDots.leftAxis.y += (centerY + shiftAmount - newDots.leftAxis.y) * moveStrength;
+              newDots.bottomAxis.x += (centerX - shiftAmount - newDots.bottomAxis.x) * moveStrength;
+              newDots.bottomRight.x += (centerX - shiftAmount - newDots.bottomRight.x) * moveStrength;
+            } else if (isInBottomRightCorner) {
+              const centerX2 = containerSize.width - margin;
+              const centerY = containerSize.height - margin;
+              newDots.topLeft.y += (centerY + shiftAmount - newDots.topLeft.y) * moveStrength;
+              newDots.leftAxis.y += (centerY + shiftAmount - newDots.leftAxis.y) * moveStrength;
+              newDots.bottomAxis.x += (centerX2 + shiftAmount - newDots.bottomAxis.x) * moveStrength;
+              newDots.bottomRight.x += (centerX2 + shiftAmount - newDots.bottomRight.x) * moveStrength;
+            } else if (isInTopLeftCorner) {
+              const centerY2 = margin;
+              const centerX = margin;
+              newDots.topLeft.y += (centerY2 - shiftAmount - newDots.topLeft.y) * moveStrength;
+              newDots.leftAxis.y += (containerSize.height - margin + shiftAmount - newDots.leftAxis.y) * moveStrength;
+              newDots.bottomAxis.x += (centerX - shiftAmount - newDots.bottomAxis.x) * moveStrength;
+              newDots.bottomRight.x += (centerX - shiftAmount - newDots.bottomRight.x) * moveStrength;
+            } else if (isInTopRightCorner) {
+              const centerX2 = containerSize.width - margin;
+              const centerY2 = margin;
+              newDots.topLeft.y += (centerY2 - shiftAmount - newDots.topLeft.y) * moveStrength;
+              newDots.leftAxis.y += (containerSize.height - margin + shiftAmount - newDots.leftAxis.y) * moveStrength;
+              newDots.bottomAxis.x += (centerX2 + shiftAmount - newDots.bottomAxis.x) * moveStrength;
+              newDots.bottomRight.x += (centerX2 + shiftAmount - newDots.bottomRight.x) * moveStrength;
+            }
+
+            setDotPositions(newDots);
           }
         }}
       >
@@ -674,33 +789,36 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
           <svg
             viewBox={`0 0 ${containerSize.width} ${containerSize.height}`}
             className="w-full h-full absolute inset-0"
-            style={{ overflow: "visible", pointerEvents: "none" }}
+            style={{
+              overflow: "visible",
+              pointerEvents: "none",
+              opacity: matrixContentVisible ? 1 : 0,
+              transition: "opacity 200ms",
+            }}
           >
-            {/* Axes extended to page edges (SELF and PRODUCTION directions only) */}
-            {(() => {
-              return (
-                <>
-                  {/* X-axis: extends from left edge to FUTURE CONCEPTS dot */}
-                  <line
-                    x1={0}
-                    y1={containerSize.height - margin}
-                    x2={containerSize.width - margin}
-                    y2={containerSize.height - margin}
-                    stroke="#808080"
-                    strokeWidth="1.5"
-                  />
-                  {/* Y-axis: extends from OTHERS dot to bottom edge */}
-                  <line
-                    x1={margin}
-                    y1={margin}
-                    x2={margin}
-                    y2={containerSize.height}
-                    stroke="#808080"
-                    strokeWidth="1.5"
-                  />
-                </>
-              );
-            })()}
+
+            {/* Resting axis lines - visible before scroll transition begins */}
+            <line
+              x1={margin}
+              y1={dotPositions.topLeft.y}
+              x2={margin}
+              y2={containerSize.height}
+              stroke="#808080"
+              strokeWidth="1.5"
+              style={{ transition: "y1 800ms ease-out" }}
+            />
+            <line
+              x1={0}
+              y1={containerSize.height - margin}
+              x2={dotPositions.bottomRight.x}
+              y2={containerSize.height - margin}
+              stroke="#808080"
+              strokeWidth="1.5"
+              style={{ transition: "x2 800ms ease-out" }}
+            />
+
+            {/* Trigger area - bottom-left corner */}
+            <rect x={0} y={containerSize.height - margin} width={margin} height={margin} fill="#000000" opacity="0.3" />
 
             {/* Axis labels */}
             <text
@@ -752,15 +870,14 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               SELF
             </text>
 
-            {/* Axis corner dots */}
+            {/* Axis corner dots - animated */}
             {(() => {
-              const gap = 40;
               return (
                 <>
-                  <circle cx={margin} cy={margin} r="6" fill="#d32f2f" />
-                  <circle cx={margin} cy={containerSize.height - margin - gap} r="6" fill="#d32f2f" />
-                  <circle cx={margin + gap} cy={containerSize.height - margin} r="6" fill="#d32f2f" />
-                  <circle cx={containerSize.width - margin} cy={containerSize.height - margin} r="6" fill="#d32f2f" />
+                  <circle cx={dotPositions.topLeft.x} cy={dotPositions.topLeft.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
+                  <circle cx={dotPositions.leftAxis.x} cy={dotPositions.leftAxis.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
+                  <circle cx={dotPositions.bottomAxis.x} cy={dotPositions.bottomAxis.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
+                  <circle cx={dotPositions.bottomRight.x} cy={dotPositions.bottomRight.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
                 </>
               );
             })()}
@@ -828,40 +945,75 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
           </svg>
         )}
 
-        {/* Article pills */}
-        {MATRIX_ARTICLES.map((article) => {
-          const x = margin + article.x * plotWidth;
-          const y = containerSize.height - margin - article.y * plotHeight;
+        {/* Article pills - hidden while the axis lines are transitioning/pinned */}
+        <div
+          style={{
+            opacity: matrixContentVisible ? 1 : 0,
+            pointerEvents: matrixContentVisible ? "auto" : "none",
+            transition: "opacity 200ms",
+          }}
+        >
+          {MATRIX_ARTICLES.map((article) => {
+            const x = margin + article.x * plotWidth;
+            const y = containerSize.height - margin - article.y * plotHeight;
 
-          const distance = Math.sqrt(
-            Math.pow(cursorPos.x - x, 2) + Math.pow(cursorPos.y - y, 2)
-          );
-          const maxDistance = 200;
-          const scale = Math.max(1, 1 + (maxDistance - distance) / maxDistance * 0.15);
+            const distance = Math.sqrt(
+              Math.pow(cursorPos.x - x, 2) + Math.pow(cursorPos.y - y, 2)
+            );
+            const maxDistance = 200;
+            const scale = Math.max(1, 1 + (maxDistance - distance) / maxDistance * 0.15);
 
-          return (
-            <button
-              key={article.slug}
-              onClick={() => onCardClick(article.slug)}
-              onMouseEnter={() => setHoveredSlug(article.slug)}
-              onMouseLeave={() => setHoveredSlug(null)}
-              style={{
-                position: "absolute",
-                left: `${(x / containerSize.width) * 100}%`,
-                top: `${(y / containerSize.height) * 100}%`,
-                transform: `translate(-50%, -50%) scale(${scale})`,
-                transition: "transform 80ms ease-out",
-              }}
-              className="px-6 py-4 bg-transparent text-neutral-900 text-sm font-medium rounded-2xl hover:bg-neutral-50 transition-all hover:shadow-lg cursor-pointer border-2 border-neutral-900 flex flex-col items-center gap-1"
-            >
-              <div>{article.title}</div>
-              {article.company && (
-                <div className="text-neutral-500 text-xs">{article.company}</div>
-              )}
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={article.slug}
+                onClick={() => onCardClick(article.slug)}
+                onMouseEnter={() => setHoveredSlug(article.slug)}
+                onMouseLeave={() => setHoveredSlug(null)}
+                style={{
+                  position: "absolute",
+                  left: `${(x / containerSize.width) * 100}%`,
+                  top: `${(y / containerSize.height) * 100}%`,
+                  transform: `translate(-50%, -50%) scale(${scale})`,
+                  transition: "transform 80ms ease-out, opacity 80ms ease-out",
+                  opacity: isInCornerTrigger ? 0.3 : 1,
+                }}
+                className="px-6 py-4 bg-transparent text-neutral-900 text-sm font-medium rounded-2xl hover:bg-neutral-50 transition-all hover:shadow-lg cursor-pointer border-2 border-neutral-900 flex flex-col items-center gap-1"
+              >
+                <div>{article.title}</div>
+                {article.company && (
+                  <div className="text-neutral-500 text-xs">{article.company}</div>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Horizontal line: climbs from the bottom of the screen, then stays fixed
+          40px from the top of the viewport for the duration of the next section */}
+      <div
+        className="fixed left-0 w-full h-px bg-neutral-400 pointer-events-none z-30"
+        style={{ top: hLineFixed.top, opacity: hLineFixed.opacity }}
+      />
+
+      {/* Vertical line: slides from the left edge to 40px from the right edge, then stays
+          fixed there, spanning the full viewport height for the duration of the next section */}
+      <div
+        className="fixed top-0 h-screen w-px bg-neutral-400 pointer-events-none z-30"
+        style={{ left: vLineFixed.left, opacity: vLineFixed.opacity }}
+      />
+
+      {/* Lower-left area tracked between the two lines - always solid black while they're active */}
+      <div
+        className="fixed left-0 bg-black pointer-events-none z-20"
+        style={{
+          top: hLineFixed.top,
+          width: vLineFixed.left,
+          height: `calc(100vh - ${hLineFixed.top}px)`,
+          opacity: hLineFixed.opacity,
+        }}
+      />
+
     </section>
   );
 }
@@ -1025,6 +1177,15 @@ function Index() {
 
       {/* 2D Matrix */}
       <ArticlesMatrix onCardClick={handleCardClick} />
+
+      {/* New Section - the matrix's axis lines (rendered by ArticlesMatrix as fixed overlays) land and pin here */}
+      <section className="relative w-full h-screen px-6 snap-start">
+        <div className="mx-auto max-w-6xl h-full">
+          <div className="h-full flex items-center justify-center text-center">
+            <p className="text-neutral-400">Coming soon</p>
+          </div>
+        </div>
+      </section>
 
       {/* 4 Pillar sections */}
       {PILLARS.map((pillar) => (
