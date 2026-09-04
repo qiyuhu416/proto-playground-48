@@ -7,6 +7,8 @@ import { TextGradientScroll } from "@/components/TextGradientScroll";
 import { NavbarWrapper } from "./-NavbarWrapper";
 import { HeroScrollAnimation } from "@/components/HeroScrollAnimation";
 import { TextHighlighter } from "@/components/TextHighlighter";
+import { REFLECTIONS } from "@/data/reflections";
+import { FlippableBook } from "@/components/FlippableBook";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -619,18 +621,20 @@ interface MatrixArticle {
   y: number;
   pillarTheme?: string;
   workType?: string;
+  thumbnail?: string;
 }
 
 const MATRIX_ARTICLES: MatrixArticle[] = [
-  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research" },
-  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design" },
-  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design" },
-  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.20, y: 0.75, pillarTheme: "DESIGN AI'S MIND", workType: "Product Launch" },
-  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50, pillarTheme: "DESIGN AI'S MIND", workType: "Service Design" },
-  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.10, y: 0.35, pillarTheme: "EXPRESS YOURSELF", workType: "0-1 Launch" },
+  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
+  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
+  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.20, y: 0.75, pillarTheme: "DESIGN AI'S MIND", workType: "Product Launch", thumbnail: "/articles/google-cloud-hero.png" },
+  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50, pillarTheme: "DESIGN AI'S MIND", workType: "Service Design", thumbnail: "/articles/physical-ai-thumb.png" },
+  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.10, y: 0.35, pillarTheme: "EXPRESS YOURSELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
 ];
 
 function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }) {
+  const navigate = useNavigate();
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -646,6 +650,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     bottomRight: { x: 0, y: 0 }
   });
   const [isInCornerTrigger, setIsInCornerTrigger] = useState(false);
+  const [boxPinned, setBoxPinned] = useState(false);
 
   // Track scroll: both axis lines climb/slide to the 40px edge spacing, then
   // STAY pinned there (fixed to viewport) for the full height of the next section.
@@ -658,16 +663,17 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     const VW = window.innerWidth;
     const matrixTopDoc = latest + rect.top; // constant document-space position of matrix top
     const scrolledPast = latest - matrixTopDoc; // 0 once matrix exactly fills the viewport
-    const dwell = VH * 0.35; // grace period: user can rest here before the transition engages
+    const dwell = VH * 0.05; // tiny grace period — line starts reacting almost immediately,
+    // even during a small "peek" scroll that scroll-snap will pull back from
     const climbDistance = VH * 0.5;
     const pinnedDistance = VH; // matches next section's h-screen height
     const effectivePast = Math.max(0, scrolledPast - dwell);
 
     let t = 0;
-    let opacity = 0;
+    let opacity = 1;
     if (effectivePast <= 0) {
       t = 0;
-      opacity = 0;
+      opacity = 1;
     } else if (effectivePast <= climbDistance) {
       t = effectivePast / climbDistance;
       opacity = 1;
@@ -681,6 +687,10 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
 
     // Hide everything in the matrix except the two lines while transitioning/pinned
     setMatrixContentVisible(effectivePast <= 0);
+
+    // True only once the lines have fully reached the corner and are holding there —
+    // this is when the black area is at full size and safe to show real content in.
+    setBoxPinned(effectivePast > climbDistance && effectivePast <= climbDistance + pinnedDistance);
 
     // Horizontal line: bottom of screen → 40px from top
     const hTop = (VH - EDGE) + t * (EDGE - (VH - EDGE));
@@ -796,26 +806,6 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               transition: "opacity 200ms",
             }}
           >
-
-            {/* Resting axis lines - visible before scroll transition begins */}
-            <line
-              x1={margin}
-              y1={dotPositions.topLeft.y}
-              x2={margin}
-              y2={containerSize.height}
-              stroke="#808080"
-              strokeWidth="1.5"
-              style={{ transition: "y1 800ms ease-out" }}
-            />
-            <line
-              x1={0}
-              y1={containerSize.height - margin}
-              x2={dotPositions.bottomRight.x}
-              y2={containerSize.height - margin}
-              stroke="#808080"
-              strokeWidth="1.5"
-              style={{ transition: "x2 800ms ease-out" }}
-            />
 
             {/* Trigger area - bottom-left corner */}
             <rect x={0} y={containerSize.height - margin} width={margin} height={margin} fill="#000000" opacity="0.3" />
@@ -953,7 +943,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
             transition: "opacity 200ms",
           }}
         >
-          {MATRIX_ARTICLES.map((article) => {
+          {MATRIX_ARTICLES.map((article, index) => {
             const x = margin + article.x * plotWidth;
             const y = containerSize.height - margin - article.y * plotHeight;
 
@@ -977,12 +967,23 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                   transition: "transform 80ms ease-out, opacity 80ms ease-out",
                   opacity: isInCornerTrigger ? 0.3 : 1,
                 }}
-                className="px-6 py-4 bg-transparent text-neutral-900 text-sm font-medium rounded-2xl hover:bg-neutral-50 transition-all hover:shadow-lg cursor-pointer border-2 border-neutral-900 flex flex-col items-center gap-1"
+                className="bg-transparent border-0 cursor-pointer text-left flex flex-col items-start gap-3 w-32"
               >
-                <div>{article.title}</div>
-                {article.company && (
-                  <div className="text-neutral-500 text-xs">{article.company}</div>
-                )}
+                <div className="w-28 h-28 rounded-3xl bg-neutral-100 transition-shadow hover:shadow-md flex items-center justify-center p-4">
+                  {article.thumbnail && (
+                    <img
+                      src={article.thumbnail}
+                      alt={article.title}
+                      className="w-full h-full object-contain bg-transparent"
+                    />
+                  )}
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-neutral-900">{article.title}</div>
+                  {article.company && (
+                    <div className="text-neutral-500 text-xs mt-0.5">{article.company}</div>
+                  )}
+                </div>
               </button>
             );
           })}
@@ -1003,16 +1004,67 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
         style={{ left: vLineFixed.left, opacity: vLineFixed.opacity }}
       />
 
-      {/* Lower-left area tracked between the two lines - always solid black while they're active */}
-      <div
-        className="fixed left-0 bg-black pointer-events-none z-20"
+      {/* Reflection section: the lower-left area tracked between the two lines.
+          Solid black while active, holds real content once fully pinned into the corner.
+          Capped at 100vh — never scrolls the page; overflow content expands in-place via "Read more". */}
+      <section
+        aria-label="Reflection"
+        className="fixed left-0 bg-black text-white z-20 overflow-hidden"
         style={{
           top: hLineFixed.top,
           width: vLineFixed.left,
           height: `calc(100vh - ${hLineFixed.top}px)`,
+          maxHeight: "100vh",
           opacity: hLineFixed.opacity,
+          pointerEvents: boxPinned ? "auto" : "none",
         }}
-      />
+      >
+        <div
+          className="h-full max-h-screen flex flex-col p-8 md:p-12 transition-opacity duration-500"
+          style={{ opacity: boxPinned ? 1 : 0 }}
+        >
+          <h2 className="text-2xl md:text-3xl font-medium mb-6 shrink-0">Reflection</h2>
+
+          <div className="relative flex-1 min-h-0 overflow-y-auto">
+            <div className="flex flex-col items-center gap-4 mb-10">
+              <FlippableBook />
+              <button
+                onClick={() => navigate({ to: "/reflection-notes" })}
+                className="shrink-0 text-sm font-medium border border-neutral-700 rounded-full px-5 py-2.5 text-white hover:bg-white hover:text-black transition-colors"
+              >
+                Read my journals
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[...REFLECTIONS]
+                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                .slice(0, 4)
+                .map((r, idx) => {
+                  const words = r.content.split(/\s+/);
+                  const title = words.slice(0, 7).join(" ") + (words.length > 7 ? "…" : "");
+                  const rest = words.length > 7 ? words.slice(7).join(" ") : "";
+                  const preview = rest.length > 100 ? rest.slice(0, 100) + "…" : rest;
+
+                  return (
+                    <div key={idx} className="border border-neutral-800 rounded-lg p-3 bg-neutral-950 flex flex-col gap-2">
+                      {r.image && (
+                        <img
+                          src={r.image}
+                          alt="Reflection"
+                          className="w-full h-24 object-cover rounded-md border border-neutral-800"
+                        />
+                      )}
+                      <div className="text-[10px] text-neutral-500 font-medium">{r.date}</div>
+                      <div className="text-white text-xs font-medium leading-snug">{title}</div>
+                      {preview && <p className="text-neutral-400 text-xs leading-relaxed">{preview}</p>}
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
+      </section>
 
     </section>
   );

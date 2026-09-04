@@ -26,6 +26,7 @@ import { Route as PersonalizationRouteImport } from './routes/personalization'
 import { Route as PhysicalAiRouteImport } from './routes/physical-ai'
 import { Route as ProactiveRouteImport } from './routes/proactive'
 import { Route as ProductLaunchFrom01RouteImport } from './routes/product-launch-from-0-1'
+import { Route as ReflectionNotesRouteImport } from './routes/reflection-notes'
 import { Route as ReimaginingTheChatbotRouteImport } from './routes/reimagining-the-chatbot'
 import { Route as ThinkRouteImport } from './routes/think'
 import { Route as WhatDoPrototypesPrototypeRouteImport } from './routes/what-do-prototypes-prototype'
@@ -117,6 +118,11 @@ const ProductLaunchFrom01Route = ProductLaunchFrom01RouteImport.update({
   path: '/product-launch-from-0-1',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReflectionNotesRoute = ReflectionNotesRouteImport.update({
+  id: '/reflection-notes',
+  path: '/reflection-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReimaginingTheChatbotRoute = ReimaginingTheChatbotRouteImport.update({
   id: '/reimagining-the-chatbot',
   path: '/reimagining-the-chatbot',
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/physical-ai': typeof PhysicalAiRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
+  '/reflection-notes': typeof ReflectionNotesRoute
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
   '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/physical-ai': typeof PhysicalAiRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
+  '/reflection-notes': typeof ReflectionNotesRoute
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
   '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/physical-ai': typeof PhysicalAiRoute
   '/proactive': typeof ProactiveRoute
   '/product-launch-from-0-1': typeof ProductLaunchFrom01Route
+  '/reflection-notes': typeof ReflectionNotesRoute
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
   '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/physical-ai'
     | '/proactive'
     | '/product-launch-from-0-1'
+    | '/reflection-notes'
     | '/reimagining-the-chatbot'
     | '/think'
     | '/what-do-prototypes-prototype'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/physical-ai'
     | '/proactive'
     | '/product-launch-from-0-1'
+    | '/reflection-notes'
     | '/reimagining-the-chatbot'
     | '/think'
     | '/what-do-prototypes-prototype'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/physical-ai'
     | '/proactive'
     | '/product-launch-from-0-1'
+    | '/reflection-notes'
     | '/reimagining-the-chatbot'
     | '/think'
     | '/what-do-prototypes-prototype'
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   PhysicalAiRoute: typeof PhysicalAiRoute
   ProactiveRoute: typeof ProactiveRoute
   ProductLaunchFrom01Route: typeof ProductLaunchFrom01Route
+  ReflectionNotesRoute: typeof ReflectionNotesRoute
   ReimaginingTheChatbotRoute: typeof ReimaginingTheChatbotRoute
   ThinkRoute: typeof ThinkRoute
   WhatDoPrototypesPrototypeRoute: typeof WhatDoPrototypesPrototypeRoute
@@ -414,6 +427,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductLaunchFrom01RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reflection-notes': {
+      id: '/reflection-notes'
+      path: '/reflection-notes'
+      fullPath: '/reflection-notes'
+      preLoaderRoute: typeof ReflectionNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reimagining-the-chatbot': {
       id: '/reimagining-the-chatbot'
       path: '/reimagining-the-chatbot'
@@ -457,6 +477,7 @@ const rootRouteChildren: RootRouteChildren = {
   PhysicalAiRoute: PhysicalAiRoute,
   ProactiveRoute: ProactiveRoute,
   ProductLaunchFrom01Route: ProductLaunchFrom01Route,
+  ReflectionNotesRoute: ReflectionNotesRoute,
   ReimaginingTheChatbotRoute: ReimaginingTheChatbotRoute,
   ThinkRoute: ThinkRoute,
   WhatDoPrototypesPrototypeRoute: WhatDoPrototypesPrototypeRoute,
