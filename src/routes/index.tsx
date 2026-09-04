@@ -597,7 +597,7 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
   return (
     <section
       id={`pillar-${pillar.number}`}
-      className="pb-16"
+      className="pb-16 snap-start"
     >
       {/* Header — constrained to content width */}
       <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
@@ -639,8 +639,8 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [hLineFixed, setHLineFixed] = useState({ top: 0, opacity: 0 });
-  const [vLineFixed, setVLineFixed] = useState({ left: 0, opacity: 0 });
+  const [hLineFixed, setHLineFixed] = useState({ top: 0, left: 0, width: 0, opacity: 0 });
+  const [vLineFixed, setVLineFixed] = useState({ left: 0, top: 0, height: 0, opacity: 0 });
   const [matrixContentVisible, setMatrixContentVisible] = useState(true);
   const { scrollY } = useScroll();
   const [dotPositions, setDotPositions] = useState({
@@ -651,6 +651,9 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   });
   const [isInCornerTrigger, setIsInCornerTrigger] = useState(false);
   const [boxPinned, setBoxPinned] = useState(false);
+  // Reflection box's own opacity, separate from the lines' — must stay 0 during the
+  // landing-page phase even though the lines themselves are opacity:1 there.
+  const [reflectionOpacity, setReflectionOpacity] = useState(0);
 
   // Track scroll: both axis lines climb/slide to the 40px edge spacing, then
   // STAY pinned there (fixed to viewport) for the full height of the next section.
@@ -662,6 +665,31 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     const VH = window.innerHeight;
     const VW = window.innerWidth;
     const matrixTopDoc = latest + rect.top; // constant document-space position of matrix top
+
+    // Phase 0 — still on the landing (hero) page, above the matrix. The line
+    // interpolates from dead-center (top of page) to the matrix's corner resting
+    // position, reaching the corner exactly as the matrix arrives — same continuous,
+    // always-the-same-element approach as the climb/pin phases below. It also grows
+    // from a short 20px seed (centered) up to its full viewport-spanning length,
+    // gradually, in step with scroll — independently interpolating the segment's
+    // start-edge and length keeps its center fixed, so it reads as growing outward.
+    const SEED = 20;
+    if (latest < matrixTopDoc) {
+      const heroProgress = matrixTopDoc > 0 ? Math.min(1, Math.max(0, latest / matrixTopDoc)) : 1;
+      const hTop = VH / 2 + heroProgress * ((VH - EDGE) - VH / 2);
+      const vLeft = VW / 2 + heroProgress * (EDGE - VW / 2);
+      const hWidth = SEED + heroProgress * (VW - SEED);
+      const hLeft = (VW / 2 - SEED / 2) + heroProgress * (0 - (VW / 2 - SEED / 2));
+      const vHeight = SEED + heroProgress * (VH - SEED);
+      const vTop = (VH / 2 - SEED / 2) + heroProgress * (0 - (VH / 2 - SEED / 2));
+      setHLineFixed({ top: hTop, left: hLeft, width: hWidth, opacity: 1 });
+      setVLineFixed({ left: vLeft, top: vTop, height: vHeight, opacity: 1 });
+      setMatrixContentVisible(true);
+      setBoxPinned(false);
+      setReflectionOpacity(0); // never show the black Reflection box on the landing page
+      return;
+    }
+
     const scrolledPast = latest - matrixTopDoc; // 0 once matrix exactly fills the viewport
     const dwell = VH * 0.05; // tiny grace period — line starts reacting almost immediately,
     // even during a small "peek" scroll that scroll-snap will pull back from
@@ -691,15 +719,27 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     // True only once the lines have fully reached the corner and are holding there —
     // this is when the black area is at full size and safe to show real content in.
     setBoxPinned(effectivePast > climbDistance && effectivePast <= climbDistance + pinnedDistance);
+    setReflectionOpacity(opacity);
 
-    // Horizontal line: bottom of screen → 40px from top
+    // Horizontal line: bottom of screen → 40px from top; full width by this phase
     const hTop = (VH - EDGE) + t * (EDGE - (VH - EDGE));
-    setHLineFixed({ top: hTop, opacity });
+    setHLineFixed({ top: hTop, left: 0, width: VW, opacity });
 
-    // Vertical line: left edge (40px) → right edge (40px from right)
+    // Vertical line: left edge (40px) → right edge (40px from right); full height by this phase
     const vLeft = EDGE + t * ((VW - EDGE) - EDGE);
-    setVLineFixed({ left: vLeft, opacity });
+    setVLineFixed({ left: vLeft, top: 0, height: VH, opacity });
   });
+
+  // Initial paint (before the first scroll event fires) should already show the
+  // lines centered and at the 20px seed length — matching Phase 0 above at
+  // heroProgress = 0 — instead of the useState defaults with opacity/width 0.
+  useEffect(() => {
+    const SEED = 20;
+    const VH = window.innerHeight;
+    const VW = window.innerWidth;
+    setHLineFixed({ top: VH / 2, left: VW / 2 - SEED / 2, width: SEED, opacity: 1 });
+    setVLineFixed({ left: VW / 2, top: VH / 2 - SEED / 2, height: SEED, opacity: 1 });
+  }, []);
 
   useEffect(() => {
     const updateSize = () => {
@@ -715,6 +755,22 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
+
+  // Initial paint should show the axis dots at their correct resting positions once
+  // the container size is known — not the useState() placeholder zeros, which
+  // otherwise stick around (dots bunched near the top-left) until the first mouse
+  // move over the matrix triggers the real calculation in onMouseMove below.
+  useEffect(() => {
+    if (containerSize.width === 0) return;
+    const margin = 40;
+    const gap = 40;
+    setDotPositions({
+      topLeft: { x: margin, y: margin },
+      leftAxis: { x: margin, y: containerSize.height - margin - gap },
+      bottomAxis: { x: margin + gap, y: containerSize.height - margin },
+      bottomRight: { x: containerSize.width - margin, y: containerSize.height - margin },
+    });
+  }, [containerSize.width, containerSize.height]);
 
   const margin = 40;
   const plotWidth = containerSize.width - margin * 2;
@@ -806,9 +862,6 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               transition: "opacity 200ms",
             }}
           >
-
-            {/* Trigger area - bottom-left corner */}
-            <rect x={0} y={containerSize.height - margin} width={margin} height={margin} fill="#000000" opacity="0.3" />
 
             {/* Axis labels */}
             <text
@@ -990,18 +1043,20 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
         </div>
       </div>
 
-      {/* Horizontal line: climbs from the bottom of the screen, then stays fixed
+      {/* Horizontal line: starts as a 20px centered seed on the landing page, grows to
+          full width while climbing from the bottom of the screen, then stays fixed
           40px from the top of the viewport for the duration of the next section */}
       <div
-        className="fixed left-0 w-full h-px bg-neutral-400 pointer-events-none z-30"
-        style={{ top: hLineFixed.top, opacity: hLineFixed.opacity }}
+        className="fixed h-px bg-neutral-400 pointer-events-none z-30"
+        style={{ top: hLineFixed.top, left: hLineFixed.left, width: hLineFixed.width, opacity: hLineFixed.opacity }}
       />
 
-      {/* Vertical line: slides from the left edge to 40px from the right edge, then stays
-          fixed there, spanning the full viewport height for the duration of the next section */}
+      {/* Vertical line: starts as a 20px centered seed on the landing page, grows to
+          full height while sliding from the left edge to 40px from the right edge,
+          then stays fixed there for the duration of the next section */}
       <div
-        className="fixed top-0 h-screen w-px bg-neutral-400 pointer-events-none z-30"
-        style={{ left: vLineFixed.left, opacity: vLineFixed.opacity }}
+        className="fixed w-px bg-neutral-400 pointer-events-none z-30"
+        style={{ left: vLineFixed.left, top: vLineFixed.top, height: vLineFixed.height, opacity: vLineFixed.opacity }}
       />
 
       {/* Reflection section: the lower-left area tracked between the two lines.
@@ -1015,7 +1070,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
           width: vLineFixed.left,
           height: `calc(100vh - ${hLineFixed.top}px)`,
           maxHeight: "100vh",
-          opacity: hLineFixed.opacity,
+          opacity: reflectionOpacity,
           pointerEvents: boxPinned ? "auto" : "none",
         }}
       >
@@ -1188,7 +1243,7 @@ function Index() {
       )}
 
       {/* Hero section - diagram + paragraph with expandable diagram */}
-      <section className={`relative w-full flex flex-col gap-0 transition-all duration-300 pt-[30vh] ${diagramExpanded ? 'min-h-auto' : 'min-h-screen'}`}>
+      <section className={`relative w-full flex flex-col gap-0 transition-all duration-300 pt-[30vh] snap-start ${diagramExpanded ? 'min-h-auto' : 'min-h-screen'}`}>
         {/* Diagram section - expandable */}
         <div
           onClick={() => setDiagramExpanded(!diagramExpanded)}
