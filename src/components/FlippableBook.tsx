@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { REFLECTIONS } from "@/data/reflections";
 
 const FBK_STYLES = `
@@ -31,10 +31,6 @@ const FBK_STYLES = `
     display: flex;
     transform-style: preserve-3d;
     transform-origin: right center;
-  }
-  .fbk-page.fbk-back-half {
-    left: 50%;
-    transform-origin: left center;
   }
   .fbk-half {
     position: absolute;
@@ -98,39 +94,58 @@ const FBK_STYLES = `
   }
 `;
 
-const PAGE_COUNT = 4; // 2 reflections per page → 8 entries shown
-const TOTAL_FLIPPABLE = PAGE_COUNT + 1; // content pages + back cover
+const PAGE_COUNT = 4; // 2 reflections per content leaf → 8 entries shown
+// Leaves, in flip order: [0] front cover, [1..PAGE_COUNT] content, [PAGE_COUNT+1] back cover.
+const TOTAL_LEAVES = PAGE_COUNT + 2;
 
-// z-index bands: unflipped pages < front cover < flipped pages < flipped back cover,
-// so a freshly flipped page always lands unambiguously above the cover.
-const UNFLIPPED_Z = TOTAL_FLIPPABLE; // pages resting, unflipped: descending by index
-const COVER_Z = UNFLIPPED_Z + 1;
-const FLIPPED_Z_BASE = COVER_Z + 1; // flipped pages: ascending by index from here
-const BACK_COVER_FLIPPED_Z = FLIPPED_Z_BASE + PAGE_COUNT;
+type Leaf = {
+  frontLabel?: string;
+  frontContent?: string;
+  frontImage?: string;
+  frontPageNumber?: number;
+  backLabel?: string;
+  backContent?: string;
+  backImage?: string;
+  backPageNumber?: number;
+  isCoverFace?: boolean; // front is the book's title cover
+};
 
 export function FlippableBook() {
   const [flipped, setFlipped] = useState(0);
-  const [gsapReady, setGsapReady] = useState(false);
-  const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const backCoverRef = useRef<HTMLDivElement | null>(null);
+  const leafRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const entries = REFLECTIONS.slice(0, PAGE_COUNT * 2);
 
+  const leaves: Leaf[] = [
+    { isCoverFace: true }, // leaf 0: front cover
+    ...Array.from({ length: PAGE_COUNT }, (_, contentIdx) => {
+      const front = entries[contentIdx * 2];
+      const back = entries[contentIdx * 2 + 1];
+      return {
+        frontLabel: front?.date,
+        frontContent: front?.content,
+        frontImage: front?.image,
+        frontPageNumber: contentIdx * 2 + 1,
+        backLabel: back?.date,
+        backContent: back?.content,
+        backImage: back?.image,
+        backPageNumber: contentIdx * 2 + 2,
+      };
+    }),
+    {}, // last leaf: back cover, both faces blank
+  ];
+
   // Load GSAP once (no ScrollTrigger needed — flips are click-driven)
   useEffect(() => {
-    if ((window as any).gsap) {
-      setGsapReady(true);
-      return;
-    }
+    if ((window as any).gsap) return;
     const script = document.createElement("script");
     script.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
-    script.onload = () => setGsapReady(true);
     document.head.appendChild(script);
   }, []);
 
-  const animatePage = (index: number, open: boolean) => {
+  const animateLeaf = (index: number, open: boolean) => {
     const gsap = (window as any).gsap;
-    const el = index === TOTAL_FLIPPABLE - 1 ? backCoverRef.current : pageRefs.current[index];
+    const el = leafRefs.current[index];
     if (!gsap || !el) return;
     gsap.to(el, {
       rotateY: open ? -180 : 0,
@@ -140,14 +155,14 @@ export function FlippableBook() {
   };
 
   const next = () => {
-    if (flipped >= TOTAL_FLIPPABLE) return;
-    animatePage(flipped, true);
+    if (flipped >= TOTAL_LEAVES) return;
+    animateLeaf(flipped, true);
     setFlipped((f) => f + 1);
   };
 
   const prev = () => {
     if (flipped <= 0) return;
-    animatePage(flipped - 1, false);
+    animateLeaf(flipped - 1, false);
     setFlipped((f) => f - 1);
   };
 
@@ -158,73 +173,53 @@ export function FlippableBook() {
         <div className="fbk-book">
           <div className="fbk-spine" />
 
-          {/* Front cover — static, never flips */}
-          <div className="fbk-page" style={{ zIndex: COVER_Z }}>
-            <div className="fbk-half fbk-half--cover">
-              <div className="fbk-cover-title">My Journal</div>
-            </div>
-            <div className="fbk-half fbk-half--cover fbk-half--back" />
-          </div>
+          {leaves.map((leaf, i) => {
+            // Already-flipped leaves stack with the most recently flipped on top
+            // (visible on the right); not-yet-flipped leaves stack with the next
+            // one up on top (visible on the left) — so both sides update as you
+            // flip through, since flipping one leaf away reveals the one beneath it.
+            const zIndex = i < flipped ? TOTAL_LEAVES + i : TOTAL_LEAVES - i;
 
-          {entries.reduce<ReactNode[]>((acc, _, i) => {
-            if (i % 2 !== 0) return acc;
-            const pageIdx = i / 2; // 0-based content page index
-            const front = entries[i];
-            const back = entries[i + 1];
-
-            // Already-flipped pages stack with the most recently flipped on top;
-            // not-yet-flipped pages stack with the next one to flip on top.
-            const zIndex = pageIdx < flipped
-              ? FLIPPED_Z_BASE + pageIdx
-              : UNFLIPPED_Z - pageIdx;
-
-            acc.push(
+            return (
               <div
-                key={pageIdx}
-                ref={(el) => { pageRefs.current[pageIdx] = el; }}
+                key={i}
+                ref={(el) => { leafRefs.current[i] = el; }}
                 className="fbk-page"
                 style={{ zIndex }}
               >
-                <div className="fbk-half">
-                  {front && (
-                    <>
-                      <div className="fbk-date">{front.date}</div>
-                      {front.image ? (
-                        <img src={front.image} alt="" className="fbk-image" />
-                      ) : (
-                        <p className="fbk-content">{front.content}</p>
-                      )}
-                      <div className="fbk-page-number">{pageIdx * 2 + 1}</div>
-                    </>
+                <div className={`fbk-half ${leaf.isCoverFace ? "fbk-half--cover" : ""}`}>
+                  {leaf.isCoverFace ? (
+                    <div className="fbk-cover-title">My Journal</div>
+                  ) : (
+                    leaf.frontContent !== undefined && (
+                      <>
+                        <div className="fbk-date">{leaf.frontLabel}</div>
+                        {leaf.frontImage ? (
+                          <img src={leaf.frontImage} alt="" className="fbk-image" />
+                        ) : (
+                          <p className="fbk-content">{leaf.frontContent}</p>
+                        )}
+                        <div className="fbk-page-number">{leaf.frontPageNumber}</div>
+                      </>
+                    )
                   )}
                 </div>
-                <div className="fbk-half fbk-half--back">
-                  {back && (
+                <div className={`fbk-half fbk-half--back ${leaf.isCoverFace ? "fbk-half--cover" : ""}`}>
+                  {leaf.backContent !== undefined && (
                     <>
-                      <div className="fbk-date">{back.date}</div>
-                      {back.image ? (
-                        <img src={back.image} alt="" className="fbk-image" />
+                      <div className="fbk-date">{leaf.backLabel}</div>
+                      {leaf.backImage ? (
+                        <img src={leaf.backImage} alt="" className="fbk-image" />
                       ) : (
-                        <p className="fbk-content">{back.content}</p>
+                        <p className="fbk-content">{leaf.backContent}</p>
                       )}
-                      <div className="fbk-page-number">{pageIdx * 2 + 2}</div>
+                      <div className="fbk-page-number">{leaf.backPageNumber}</div>
                     </>
                   )}
                 </div>
               </div>
             );
-            return acc;
-          }, [])}
-
-          {/* Back cover */}
-          <div
-            ref={backCoverRef}
-            className="fbk-page fbk-back-half"
-            style={{ zIndex: flipped >= TOTAL_FLIPPABLE ? BACK_COVER_FLIPPED_Z : 1 }}
-          >
-            <div className="fbk-half fbk-half--cover" />
-            <div className="fbk-half fbk-half--cover fbk-half--back" />
-          </div>
+          })}
         </div>
       </div>
 
@@ -238,7 +233,7 @@ export function FlippableBook() {
         </button>
         <button
           onClick={next}
-          disabled={flipped >= TOTAL_FLIPPABLE}
+          disabled={flipped >= TOTAL_LEAVES}
           className="text-xs text-neutral-400 hover:text-white disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors"
         >
           Next →

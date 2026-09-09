@@ -7,7 +7,6 @@ import { TextGradientScroll } from "@/components/TextGradientScroll";
 import { NavbarWrapper } from "./-NavbarWrapper";
 import { HeroScrollAnimation } from "@/components/HeroScrollAnimation";
 import { TextHighlighter } from "@/components/TextHighlighter";
-import { REFLECTIONS } from "@/data/reflections";
 import { FlippableBook } from "@/components/FlippableBook";
 
 export const Route = createFileRoute("/")({
@@ -628,9 +627,9 @@ const MATRIX_ARTICLES: MatrixArticle[] = [
   { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
   { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
   { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
-  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.20, y: 0.75, pillarTheme: "DESIGN AI'S MIND", workType: "Product Launch", thumbnail: "/articles/google-cloud-hero.png" },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.28, y: 0.75, pillarTheme: "DESIGN AI'S MIND", workType: "Product Launch", thumbnail: "/articles/google-cloud-hero.png" },
   { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50, pillarTheme: "DESIGN AI'S MIND", workType: "Service Design", thumbnail: "/articles/physical-ai-thumb.png" },
-  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.10, y: 0.35, pillarTheme: "EXPRESS YOURSELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
+  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.18, y: 0.35, pillarTheme: "EXPRESS YOURSELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
 ];
 
 function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }) {
@@ -654,6 +653,8 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   // Reflection box's own opacity, separate from the lines' — must stay 0 during the
   // landing-page phase even though the lines themselves are opacity:1 there.
   const [reflectionOpacity, setReflectionOpacity] = useState(0);
+  // Lines are thick on the hero/landing page, thinner everywhere past it.
+  const [lineThick, setLineThick] = useState(true);
 
   // Track scroll: both axis lines climb/slide to the 40px edge spacing, then
   // STAY pinned there (fixed to viewport) for the full height of the next section.
@@ -666,27 +667,45 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     const VW = window.innerWidth;
     const matrixTopDoc = latest + rect.top; // constant document-space position of matrix top
 
-    // Phase 0 — still on the landing (hero) page, above the matrix. The line
-    // interpolates from dead-center (top of page) to the matrix's corner resting
-    // position, reaching the corner exactly as the matrix arrives — same continuous,
-    // always-the-same-element approach as the climb/pin phases below. It also grows
-    // from a short 20px seed (centered) up to its full viewport-spanning length,
-    // gradually, in step with scroll — independently interpolating the segment's
-    // start-edge and length keeps its center fixed, so it reads as growing outward.
+    // Phase 0 — still on the landing (hero) page, above the matrix. The lines sit at
+    // the SAME position as the matrix's own resting axis lines (vertical inset from
+    // the left, horizontal inset from the bottom) from the very start — position
+    // never moves in this phase. Only their LENGTH grows, from a short 20px "L"
+    // bracket up to the matrix's full viewport-spanning length, anchored so the
+    // vertical line's bottom edge and the horizontal line's left edge stay fixed
+    // (matching where they land once fully grown), reading as extending outward
+    // from the corner rather than growing from a center point.
     const SEED = 20;
+    // Hero corner uses the SAME margin (EDGE) as the next section's own resting
+    // lines. Both ends of each line interpolate continuously here — the "anchor"
+    // end (h-line's left, v-line's bottom) is NOT held fixed at the EDGE inset;
+    // it also travels, all the way out to the true edge (0 / VH) by the time
+    // heroProgress reaches 1. That's what makes this land EXACTLY on the climb
+    // phase's own starting values (left:0,width:VW / top:0,height:VH) below, with
+    // no snap at the boundary — both lines still pass through the fixed reference
+    // point (EDGE, VH-EDGE) throughout, so they keep reading as one connected corner.
+    const cornerX = EDGE;
+    const cornerY = VH - EDGE;
     if (latest < matrixTopDoc) {
       const heroProgress = matrixTopDoc > 0 ? Math.min(1, Math.max(0, latest / matrixTopDoc)) : 1;
-      const hTop = VH / 2 + heroProgress * ((VH - EDGE) - VH / 2);
-      const vLeft = VW / 2 + heroProgress * (EDGE - VW / 2);
-      const hWidth = SEED + heroProgress * (VW - SEED);
-      const hLeft = (VW / 2 - SEED / 2) + heroProgress * (0 - (VW / 2 - SEED / 2));
-      const vHeight = SEED + heroProgress * (VH - SEED);
-      const vTop = (VH / 2 - SEED / 2) + heroProgress * (0 - (VH / 2 - SEED / 2));
-      setHLineFixed({ top: hTop, left: hLeft, width: hWidth, opacity: 1 });
-      setVLineFixed({ left: vLeft, top: vTop, height: vHeight, opacity: 1 });
-      setMatrixContentVisible(true);
+      const hRight = (cornerX + SEED) + heroProgress * (VW - (cornerX + SEED));
+      const hLeft = cornerX * (1 - heroProgress); // travels from EDGE all the way to 0
+      const vBottom = cornerY + heroProgress * (VH - cornerY); // travels from cornerY to VH
+      const vTop = (cornerY - SEED) * (1 - heroProgress); // travels from (cornerY-SEED) to 0
+      setHLineFixed({ top: cornerY, left: hLeft, width: hRight - hLeft, opacity: 1 });
+      setVLineFixed({ left: cornerX, top: vTop, height: vBottom - vTop, opacity: 1 });
+      // Dots/labels/cards only reveal once the lines have essentially finished
+      // growing — not from the very start of the hero scroll — so the reveal
+      // reads as an ordered sequence (lines, then dots, then cards) instead of
+      // everything appearing at once while the lines are still tiny seeds.
+      setMatrixContentVisible(heroProgress >= 0.97);
       setBoxPinned(false);
       setReflectionOpacity(0); // never show the black Reflection box on the landing page
+      // Thin out as the matrix visually finishes arriving, rather than waiting for
+      // heroProgress to hit exactly 1 — scroll-snap can rest a hair short of that
+      // exact pixel, which would otherwise leave the line looking thick even though
+      // the matrix page already looks fully settled.
+      setLineThick(heroProgress < 0.97);
       return;
     }
 
@@ -694,51 +713,104 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     const dwell = VH * 0.05; // tiny grace period — line starts reacting almost immediately,
     // even during a small "peek" scroll that scroll-snap will pull back from
     const climbDistance = VH * 0.5;
-    const pinnedDistance = VH; // matches next section's h-screen height
-    const effectivePast = Math.max(0, scrolledPast - dwell);
 
-    let t = 0;
-    let opacity = 1;
-    if (effectivePast <= 0) {
-      t = 0;
-      opacity = 1;
-    } else if (effectivePast <= climbDistance) {
-      t = effectivePast / climbDistance;
-      opacity = 1;
-    } else if (effectivePast <= climbDistance + pinnedDistance) {
-      t = 1;
-      opacity = 1;
-    } else {
-      t = 1;
-      opacity = 0;
+    // Section checkpoints as ABSOLUTE scrolledPast positions (exact multiples of VH),
+    // not chained offsets — this guarantees the hold aligns with Reflection actually
+    // filling the screen, and the retreat finishes exactly when Overview ends,
+    // regardless of how long the climb itself takes.
+    const reflectionStart = VH * 1; // Matrix fully scrolled away, Reflection fills screen
+    const reflectionEnd = VH * 2;   // Reflection fully scrolled away, Overview fills screen
+    const overviewEnd = VH * 3;     // Overview fully scrolled away, Pillar 1 begins
+
+    // Climb: same as before, happens within the Matrix's own tail-end scroll. The
+    // black tracked area (between the two lines) grows and fades in right alongside
+    // the lines here — visible expanding as you scroll, not just appearing once held.
+    if (scrolledPast <= dwell + climbDistance) {
+      const effectivePast = Math.max(0, scrolledPast - dwell);
+      const t = climbDistance > 0 ? Math.min(1, effectivePast / climbDistance) : 1;
+      setMatrixContentVisible(effectivePast <= 0);
+      setBoxPinned(false);
+      setReflectionOpacity(t);
+      const hTop = (VH - EDGE) + t * (EDGE - (VH - EDGE));
+      setHLineFixed({ top: hTop, left: 0, width: VW, opacity: 1 });
+      const vLeft = EDGE + t * ((VW - EDGE) - EDGE);
+      setVLineFixed({ left: vLeft, top: 0, height: VH, opacity: 1 });
+      setLineThick(false);
+      return;
     }
 
-    // Hide everything in the matrix except the two lines while transitioning/pinned
-    setMatrixContentVisible(effectivePast <= 0);
+    // Gap between climb finishing and Reflection visually arriving: lines already
+    // sit fully pinned at the corner, black area fully grown (opacity 1, matching
+    // where the climb just left it) — only the FlippableBook/notes content itself
+    // (gated separately by boxPinned) waits to fade in until Reflection arrives.
+    // Strictly-less-than here (not <=) matters: scroll-snap settles you at EXACTLY
+    // scrolledPast === reflectionStart, which must already count as "arrived" (the
+    // held/visible phase below), not still "waiting" — otherwise snapping to this
+    // section leaves you stuck seeing a blank card forever.
+    if (scrolledPast < reflectionStart) {
+      setMatrixContentVisible(false);
+      setBoxPinned(false);
+      setReflectionOpacity(1);
+      setHLineFixed({ top: EDGE, left: 0, width: VW, opacity: 1 });
+      setVLineFixed({ left: VW - EDGE, top: 0, height: VH, opacity: 1 });
+      setLineThick(false);
+      return;
+    }
 
-    // True only once the lines have fully reached the corner and are holding there —
-    // this is when the black area is at full size and safe to show real content in.
-    setBoxPinned(effectivePast > climbDistance && effectivePast <= climbDistance + pinnedDistance);
-    setReflectionOpacity(opacity);
+    // Held through Reflection's own full-screen window.
+    if (scrolledPast <= reflectionEnd) {
+      setMatrixContentVisible(false);
+      setBoxPinned(true);
+      setReflectionOpacity(1);
+      setHLineFixed({ top: EDGE, left: 0, width: VW, opacity: 1 });
+      setVLineFixed({ left: VW - EDGE, top: 0, height: VH, opacity: 1 });
+      setLineThick(false);
+      return;
+    }
 
-    // Horizontal line: bottom of screen → 40px from top; full width by this phase
-    const hTop = (VH - EDGE) + t * (EDGE - (VH - EDGE));
-    setHLineFixed({ top: hTop, left: 0, width: VW, opacity });
+    // Retreat, spanning exactly Overview's own full-screen window — finishes exactly
+    // when Overview ends. Target is dead-center (VH/2, VW/2), not the Hero's
+    // bottom-left landing position — this section's own resting state.
+    if (scrolledPast <= overviewEnd) {
+      const progress = (scrolledPast - reflectionEnd) / (overviewEnd - reflectionEnd);
+      const back = 1 - progress; // 1 = still at corner, 0 = fully back at center
+      // Pinned position is top (horizontal) / right (vertical) — so the retreat moves
+      // the horizontal line DOWN and the vertical line LEFT, back to center.
+      const hTopFinal = EDGE + (1 - back) * (VH / 2 - EDGE); // EDGE (back=1) -> VH/2 (back=0)
+      const vLeftFinal = (VW - EDGE) + (1 - back) * (VW / 2 - (VW - EDGE)); // VW-EDGE (back=1) -> VW/2 (back=0)
+      const hWidth = SEED + back * (VW - SEED);
+      const hLeft = VW / 2 - hWidth / 2; // centered horizontally around VW/2, not left-anchored
+      const vHeight = SEED + back * (VH - SEED);
+      const vTop = VH / 2 - vHeight / 2; // centered vertically around VH/2, not bottom-anchored
 
-    // Vertical line: left edge (40px) → right edge (40px from right); full height by this phase
-    const vLeft = EDGE + t * ((VW - EDGE) - EDGE);
-    setVLineFixed({ left: vLeft, top: 0, height: VH, opacity });
+      setMatrixContentVisible(false);
+      setBoxPinned(false);
+      setReflectionOpacity(back);
+      setHLineFixed({ top: hTopFinal, left: hLeft, width: hWidth, opacity: 1 });
+      setVLineFixed({ left: vLeftFinal, top: vTop, height: vHeight, opacity: 1 });
+      setLineThick(false);
+      return;
+    }
+
+    // Past Overview — fully released, nothing left showing.
+    setMatrixContentVisible(false);
+    setBoxPinned(false);
+    setReflectionOpacity(0);
+    setLineThick(false);
+    setHLineFixed((s) => ({ ...s, opacity: 0 }));
+    setVLineFixed((s) => ({ ...s, opacity: 0 }));
   });
 
   // Initial paint (before the first scroll event fires) should already show the
-  // lines centered and at the 20px seed length — matching Phase 0 above at
-  // heroProgress = 0 — instead of the useState defaults with opacity/width 0.
+  // lines at the matrix's resting corner position, at the 20px seed length —
+  // matching Phase 0 above at heroProgress = 0 — instead of the useState defaults
+  // with opacity/width 0.
   useEffect(() => {
+    const EDGE = 40;
     const SEED = 20;
     const VH = window.innerHeight;
-    const VW = window.innerWidth;
-    setHLineFixed({ top: VH / 2, left: VW / 2 - SEED / 2, width: SEED, opacity: 1 });
-    setVLineFixed({ left: VW / 2, top: VH / 2 - SEED / 2, height: SEED, opacity: 1 });
+    setHLineFixed({ top: VH - EDGE, left: EDGE, width: SEED, opacity: 1 });
+    setVLineFixed({ left: EDGE, top: VH - EDGE - SEED, height: SEED, opacity: 1 });
   }, []);
 
   useEffect(() => {
@@ -913,18 +985,6 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               SELF
             </text>
 
-            {/* Axis corner dots - animated */}
-            {(() => {
-              return (
-                <>
-                  <circle cx={dotPositions.topLeft.x} cy={dotPositions.topLeft.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
-                  <circle cx={dotPositions.leftAxis.x} cy={dotPositions.leftAxis.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
-                  <circle cx={dotPositions.bottomAxis.x} cy={dotPositions.bottomAxis.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
-                  <circle cx={dotPositions.bottomRight.x} cy={dotPositions.bottomRight.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
-                </>
-              );
-            })()}
-
             {/* Cursor tracking lines - color changes on button hover */}
             <line
               x1={cursorPos.x}
@@ -988,12 +1048,14 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
           </svg>
         )}
 
-        {/* Article pills - hidden while the axis lines are transitioning/pinned */}
+        {/* Article pills - hidden while the axis lines are transitioning/pinned.
+            Delayed relative to the dots' own fade-in (below), so the reveal reads
+            as an ordered sequence: lines finish -> dots appear -> cards appear. */}
         <div
           style={{
             opacity: matrixContentVisible ? 1 : 0,
             pointerEvents: matrixContentVisible ? "auto" : "none",
-            transition: "opacity 200ms",
+            transition: matrixContentVisible ? "opacity 250ms 250ms" : "opacity 150ms",
           }}
         >
           {MATRIX_ARTICLES.map((article, index) => {
@@ -1041,81 +1103,102 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
             );
           })}
         </div>
+
+        {/* Axis corner dots — separate layer, rendered after the article pills so it
+            always paints on top of them, and above the fixed gray axis lines (z-30). */}
+        {containerSize.width > 0 && (
+          <svg
+            viewBox={`0 0 ${containerSize.width} ${containerSize.height}`}
+            className="w-full h-full absolute inset-0 z-40"
+            style={{
+              overflow: "visible",
+              pointerEvents: "none",
+              opacity: matrixContentVisible ? 1 : 0,
+              transition: "opacity 200ms",
+            }}
+          >
+            <circle cx={dotPositions.topLeft.x} cy={dotPositions.topLeft.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
+            <circle cx={dotPositions.leftAxis.x} cy={dotPositions.leftAxis.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
+            <circle cx={dotPositions.bottomAxis.x} cy={dotPositions.bottomAxis.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
+            <circle cx={dotPositions.bottomRight.x} cy={dotPositions.bottomRight.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
+          </svg>
+        )}
       </div>
 
       {/* Horizontal line: starts as a 20px centered seed on the landing page, grows to
           full width while climbing from the bottom of the screen, then stays fixed
           40px from the top of the viewport for the duration of the next section */}
       <div
-        className="fixed h-px bg-neutral-400 pointer-events-none z-30"
-        style={{ top: hLineFixed.top, left: hLineFixed.left, width: hLineFixed.width, opacity: hLineFixed.opacity }}
+        className="fixed bg-neutral-400 pointer-events-none z-30 transition-[height] duration-300"
+        style={{
+          top: hLineFixed.top,
+          left: hLineFixed.left,
+          width: hLineFixed.width,
+          height: lineThick ? 2 : 1,
+          opacity: hLineFixed.opacity,
+        }}
       />
 
       {/* Vertical line: starts as a 20px centered seed on the landing page, grows to
           full height while sliding from the left edge to 40px from the right edge,
           then stays fixed there for the duration of the next section */}
       <div
-        className="fixed w-px bg-neutral-400 pointer-events-none z-30"
-        style={{ left: vLineFixed.left, top: vLineFixed.top, height: vLineFixed.height, opacity: vLineFixed.opacity }}
+        className="fixed bg-neutral-400 pointer-events-none z-30 transition-[width] duration-300"
+        style={{
+          left: vLineFixed.left,
+          top: vLineFixed.top,
+          height: vLineFixed.height,
+          width: lineThick ? 2 : 1,
+          opacity: vLineFixed.opacity,
+        }}
       />
 
-      {/* Reflection section: the lower-left area tracked between the two lines.
-          Solid black while active, holds real content once fully pinned into the corner.
-          Capped at 100vh — never scrolls the page; overflow content expands in-place via "Read more". */}
+      {/* Reflection section: tracked between the two lines for positioning, but the
+          black background only wraps the actual content (FlippableBook + article
+          list) instead of filling the whole tracked area — no empty black void. */}
       <section
         aria-label="Reflection"
-        className="fixed left-0 bg-black text-white z-20 overflow-hidden"
+        className="fixed left-0 flex items-center justify-center z-20 overflow-hidden pointer-events-none"
         style={{
           top: hLineFixed.top,
           width: vLineFixed.left,
           height: `calc(100vh - ${hLineFixed.top}px)`,
           maxHeight: "100vh",
           opacity: reflectionOpacity,
-          pointerEvents: boxPinned ? "auto" : "none",
         }}
       >
         <div
-          className="h-full max-h-screen flex flex-col p-8 md:p-12 transition-opacity duration-500"
-          style={{ opacity: boxPinned ? 1 : 0 }}
+          className="bg-black text-white rounded-2xl p-8 md:p-12 transition-opacity duration-500"
+          style={{ opacity: boxPinned ? 1 : 0, pointerEvents: boxPinned ? "auto" : "none" }}
         >
-          <h2 className="text-2xl md:text-3xl font-medium mb-6 shrink-0">Reflection</h2>
-
-          <div className="relative flex-1 min-h-0 overflow-y-auto">
-            <div className="flex flex-col items-center gap-4 mb-10">
+          <div className="relative overflow-y-auto max-h-full flex items-center justify-center">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
               <FlippableBook />
-              <button
-                onClick={() => navigate({ to: "/reflection-notes" })}
-                className="shrink-0 text-sm font-medium border border-neutral-700 rounded-full px-5 py-2.5 text-white hover:bg-white hover:text-black transition-colors"
-              >
-                Read my journals
-              </button>
-            </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[...REFLECTIONS]
-                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                .slice(0, 4)
-                .map((r, idx) => {
-                  const words = r.content.split(/\s+/);
-                  const title = words.slice(0, 7).join(" ") + (words.length > 7 ? "…" : "");
-                  const rest = words.length > 7 ? words.slice(7).join(" ") : "";
-                  const preview = rest.length > 100 ? rest.slice(0, 100) + "…" : rest;
-
-                  return (
-                    <div key={idx} className="border border-neutral-800 rounded-lg p-3 bg-neutral-950 flex flex-col gap-2">
-                      {r.image && (
-                        <img
-                          src={r.image}
-                          alt="Reflection"
-                          className="w-full h-24 object-cover rounded-md border border-neutral-800"
-                        />
-                      )}
-                      <div className="text-[10px] text-neutral-500 font-medium">{r.date}</div>
-                      <div className="text-white text-xs font-medium leading-snug">{title}</div>
-                      {preview && <p className="text-neutral-400 text-xs leading-relaxed">{preview}</p>}
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col items-start justify-between gap-4 h-[296px]">
+                <div className="flex flex-col items-start gap-4">
+                  {[
+                    { slug: "making-design-fun", title: "How to make design fun" },
+                    { slug: "reimagining-the-chatbot", title: "How to think outside the box" },
+                    { slug: "hello-humans", title: "Human-human interaction prototypes" },
+                    { slug: "what-do-prototypes-prototype", title: "What do prototypes prototype" },
+                  ].map((a) => (
+                    <button
+                      key={a.slug}
+                      onClick={() => onCardClick(a.slug)}
+                      className="text-white text-sm md:text-base font-medium text-left hover:underline transition-colors"
+                    >
+                      {a.title}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => navigate({ to: "/reflection-notes" })}
+                  className="shrink-0 text-sm font-medium border border-neutral-700 rounded-full px-5 py-2.5 text-white hover:bg-white hover:text-black transition-colors"
+                >
+                  Read my journals
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1130,7 +1213,6 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
 function Index() {
   const navigate = useNavigate();
   const [heroGap, setHeroGap] = useState<GapId | null>(null);
-  const [diagramExpanded, setDiagramExpanded] = useState(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [isFull, setIsFull] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -1242,42 +1324,32 @@ function Index() {
         </>
       )}
 
-      {/* Hero section - diagram + paragraph with expandable diagram */}
-      <section className={`relative w-full flex flex-col gap-0 transition-all duration-300 pt-[30vh] snap-start ${diagramExpanded ? 'min-h-auto' : 'min-h-screen'}`}>
-        {/* Diagram section - expandable */}
-        <div
-          onClick={() => setDiagramExpanded(!diagramExpanded)}
-          className={`flex flex-col items-center justify-center px-6 gap-0 bg-background cursor-pointer transition-all duration-300 ${
-            diagramExpanded ? 'h-auto py-8' : 'flex-none h-32 sm:h-40 md:h-48 lg:h-56 py-0'
-          }`}
-        >
-          {diagramExpanded && (
-            <img
-              src="/articles/hello-stranger.png"
-              alt="Hello, stranger!!"
-              className="block mx-auto w-full max-w-[120px] h-auto mb-4"
-              style={{ mixBlendMode: "multiply", opacity: 0.5 }}
-            />
-          )}
-          <div className={`flex justify-center w-full transition-transform duration-300 ${diagramExpanded ? 'scale-75 origin-top' : 'scale-50 origin-top -my-6'}`}>
+      {/* Hero section - diagram + paragraph, always expanded, fixed to one viewport height */}
+      <section className="relative w-full flex flex-col gap-0 pt-[30vh] snap-start min-h-screen">
+        <div className="flex flex-col items-center justify-center px-6 gap-0 bg-background h-auto py-8">
+          <img
+            src="/articles/hello-stranger.png"
+            alt="Hello, stranger!!"
+            className="block mx-auto w-full max-w-[120px] h-auto mb-4"
+            style={{ mixBlendMode: "multiply", opacity: 0.5 }}
+          />
+          <div className="flex justify-center w-full scale-75 origin-top">
             <HandDrawnDiagram onHover={setHeroGap} />
           </div>
-          {diagramExpanded && (
-            <div className="relative w-full flex justify-center px-6 min-h-[20px] mt-4">
-              {heroGap && (
-                <p className="tag-style text-sm">
-                  {HERO_CONTENT[heroGap].tag}
-                </p>
-              )}
-              {!heroGap && (
-                <p className="tag-style text-xs">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
-              )}
-            </div>
-          )}
+          <div className="relative w-full flex justify-center px-6 min-h-[20px] mt-4">
+            {heroGap && (
+              <p className="tag-style text-sm">
+                {HERO_CONTENT[heroGap].tag}
+              </p>
+            )}
+            {!heroGap && (
+              <p className="tag-style text-xs">in human-human interaction, 1 != 2 != 3 != 4 != 1</p>
+            )}
+          </div>
         </div>
 
         {/* Paragraph section - flexible height */}
-        <div className={`flex flex-col items-center justify-center overflow-hidden w-full transition-all duration-300 ${diagramExpanded ? 'flex-[3]' : 'flex-[4]'}`}>
+        <div className="flex flex-col items-center justify-center overflow-hidden w-full flex-[3]">
           <HeroScrollAnimation />
         </div>
       </section>
@@ -1285,19 +1357,25 @@ function Index() {
       {/* 2D Matrix */}
       <ArticlesMatrix onCardClick={handleCardClick} />
 
-      {/* New Section - the matrix's axis lines (rendered by ArticlesMatrix as fixed overlays) land and pin here */}
-      <section className="relative w-full h-screen px-6 snap-start">
-        <div className="mx-auto max-w-6xl h-full">
-          <div className="h-full flex items-center justify-center text-center">
-            <p className="text-neutral-400">Coming soon</p>
-          </div>
-        </div>
-      </section>
+      {/* Reflection spacer - the matrix's axis lines (rendered by ArticlesMatrix as fixed
+          overlays) land and pin here; the real Reflection content overlays on top of
+          this section, so it stays empty itself.
+          snap-start: phases are aligned to exact section-height (VH) checkpoints
+          instead of chained offsets, so each animated phase spans a full section's
+          worth of scroll — proximity-snap only nudges near boundaries and doesn't
+          skip over the animation. */}
+      <section aria-label="Reflection" className="relative w-full h-screen px-6 snap-start" />
 
-      {/* 4 Pillar sections */}
+      {/* Overview section - empty, red background. This is where the lines retreat
+          back to the centered landing-page state as you scroll through it. Last
+          content section before the footer. */}
+      <section aria-label="Overview" className="relative w-full h-screen px-6 snap-start bg-red-500" />
+
+      {/* 4 Pillar sections - hidden for now; Overview is the last section.
       {PILLARS.map((pillar) => (
         <PillarSection key={pillar.number} pillar={pillar} onCardClick={handleCardClick} />
       ))}
+      */}
 
       <footer className="mt-4 border-t border-neutral-200/60">
         <p className="mx-auto max-w-6xl px-6 py-8 text-center text-xs text-neutral-400">

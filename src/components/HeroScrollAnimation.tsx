@@ -1,5 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 
+function usePastLanding() {
+  const [pastLanding, setPastLanding] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setPastLanding(window.scrollY > window.innerHeight * 0.5);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  return pastLanding;
+}
+
 // ===== TUNABLE CONFIGURATION =====
 // Adjust these values to customize the animation behavior
 
@@ -48,6 +61,7 @@ export function HeroScrollAnimation() {
   const section1Ref = useRef<HTMLDivElement>(null);
   const section2Ref = useRef<HTMLDivElement>(null);
   const [animationProgress, setAnimationProgress] = useState(0);
+  const pastLanding = usePastLanding();
   const [dots, setDots] = useState<DotState[]>([
     { id: "self", label: "Self", startX: 0, startY: 0 },
     { id: "others", label: "Others", startX: 0, startY: 0 },
@@ -180,15 +194,18 @@ export function HeroScrollAnimation() {
 
   return (
     <div ref={containerRef} className="w-full">
-      {/* SECTION 1: Diagram + Paragraph (OBSERVED) - natural height */}
+      {/* SECTION 1: Diagram + Paragraph (OBSERVED) - now pinned to the top-right corner
+          of the landing page, right-aligned, fading out once you scroll past it (the
+          navbar badge fades in to take over that same corner at that point). */}
       <div
         ref={section1Ref}
-        className="relative w-full mx-auto max-w-6xl flex flex-col items-center gap-8 px-6 pt-8 pb-12"
+        className="fixed top-6 right-6 z-40 w-full max-w-xs md:max-w-sm transition-opacity duration-300 pointer-events-none"
+        style={{ opacity: pastLanding ? 0 : 1 }}
       >
         <div
-          className="w-full text-center"
+          className="w-full text-right"
         >
-          <p className="text-3xl md:text-5xl text-neutral-900 leading-relaxed font-medium">
+          <p className="text-sm md:text-base text-neutral-900 leading-snug font-medium">
             Qiyu is exploring future technology for humans to understand{" "}
             <span className="relative">
               Self

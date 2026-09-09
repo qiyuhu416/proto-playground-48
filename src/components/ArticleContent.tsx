@@ -97,7 +97,7 @@ interface ProcessSectionProps {
   variant?: "tabs" | "accordion";
 }
 
-export const ProcessSection = ({ id, items, variant = "tabs" }: ProcessSectionProps) => {
+export const ProcessSection = ({ id, items, variant = "accordion" }: ProcessSectionProps) => {
   if (variant === "accordion") {
     return (
       <>
