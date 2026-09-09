@@ -97,6 +97,9 @@ const FBK_STYLES = `
 const PAGE_COUNT = 4; // 2 reflections per content leaf → 8 entries shown
 // Leaves, in flip order: [0] front cover, [1..PAGE_COUNT] content, [PAGE_COUNT+1] back cover.
 const TOTAL_LEAVES = PAGE_COUNT + 2;
+// Book opens by default to the spread showing entries[3] (right) / entries[4] (left) —
+// i.e. cover + the first 2 content leaves already flipped.
+const DEFAULT_FLIPPED = 3;
 
 type Leaf = {
   frontLabel?: string;
@@ -111,7 +114,8 @@ type Leaf = {
 };
 
 export function FlippableBook() {
-  const [flipped, setFlipped] = useState(0);
+  const [flipped, setFlipped] = useState(DEFAULT_FLIPPED);
+  const [gsapReady, setGsapReady] = useState(false);
   const leafRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const entries = REFLECTIONS.slice(0, PAGE_COUNT * 2);
@@ -137,11 +141,26 @@ export function FlippableBook() {
 
   // Load GSAP once (no ScrollTrigger needed — flips are click-driven)
   useEffect(() => {
-    if ((window as any).gsap) return;
+    if ((window as any).gsap) {
+      setGsapReady(true);
+      return;
+    }
     const script = document.createElement("script");
     script.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+    script.onload = () => setGsapReady(true);
     document.head.appendChild(script);
   }, []);
+
+  // Apply the default open-to spread instantly (no animation) once GSAP is ready —
+  // this is a one-time initial pose, distinct from the click-driven animateLeaf below.
+  useEffect(() => {
+    if (!gsapReady) return;
+    const gsap = (window as any).gsap;
+    leafRefs.current.forEach((el, i) => {
+      if (!el) return;
+      gsap.set(el, { rotateY: i < DEFAULT_FLIPPED ? -180 : 0 });
+    });
+  }, [gsapReady]);
 
   const animateLeaf = (index: number, open: boolean) => {
     const gsap = (window as any).gsap;

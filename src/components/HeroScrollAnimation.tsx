@@ -206,7 +206,7 @@ export function HeroScrollAnimation() {
           className="w-full text-right"
         >
           <p className="text-sm md:text-base text-neutral-900 leading-snug font-medium">
-            Qiyu is exploring future technology for humans to understand{" "}
+            Qiyu is exploring the future of human-AI interaction to understand{" "}
             <span className="relative">
               Self
               <span
