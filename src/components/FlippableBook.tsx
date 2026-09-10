@@ -246,14 +246,14 @@ export function FlippableBook() {
         <button
           onClick={prev}
           disabled={flipped === 0}
-          className="text-xs text-neutral-400 hover:text-white disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors"
+          className="text-xs text-neutral-400 hover:text-white disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors cursor-pointer disabled:cursor-not-allowed"
         >
           ← Prev
         </button>
         <button
           onClick={next}
           disabled={flipped >= TOTAL_LEAVES}
-          className="text-xs text-neutral-400 hover:text-white disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors"
+          className="text-xs text-neutral-400 hover:text-white disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors cursor-pointer disabled:cursor-not-allowed"
         >
           Next →
         </button>

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useRef, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { useScroll, useMotionValueEvent } from "motion/react";
 import { CardIcon } from "./-CardIcon";
 import { TextGradientScroll } from "@/components/TextGradientScroll";
@@ -596,7 +596,7 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
   return (
     <section
       id={`pillar-${pillar.number}`}
-      className="pb-16 snap-start"
+      className="pb-16 snap-start [scroll-snap-stop:always]"
     >
       {/* Header — constrained to content width */}
       <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
@@ -649,16 +649,30 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     bottomRight: { x: 0, y: 0 }
   });
   const [isInCornerTrigger, setIsInCornerTrigger] = useState(false);
+  // One stable random reveal delay per card, computed once — gives the cards a
+  // scattered "pop in at slightly different times" feel instead of fading in as
+  // one uniform block. Stable across re-renders so it doesn't re-randomize on
+  // every cursor move (which also re-renders this component for the scale effect).
+  const cardRevealDelays = useMemo(
+    () => MATRIX_ARTICLES.map(() => Math.random() * 350),
+    []
+  );
   const [boxPinned, setBoxPinned] = useState(false);
   // Reflection box's own opacity, separate from the lines' — must stay 0 during the
   // landing-page phase even though the lines themselves are opacity:1 there.
   const [reflectionOpacity, setReflectionOpacity] = useState(0);
   // Lines are thick on the hero/landing page, thinner everywhere past it.
   const [lineThick, setLineThick] = useState(true);
-  // Black background on the OUTER tracked area — on during climb/gap/held (the
-  // approach into and full stay on Reflection). Off during retreat/Overview so
-  // the area doesn't reappear as a black rectangle over the Overview section.
-  const [trackBg, setTrackBg] = useState(false);
+  // Tracked area's color, as a continuous 0-1 value instead of a boolean — 0 is
+  // grey (resting on the matrix, not yet climbing), 1 is fully black (held on
+  // Reflection). Same technique as the line lengths: a progress number driven by
+  // scroll, not an on/off flag, so the color can gradient smoothly instead of
+  // snapping between two fixed states.
+  const [trackColor, setTrackColor] = useState(0);
+  // End-dot opacity: 0 everywhere except the retreat -> Overview stretch, where it
+  // fades in as the lines shrink down to the small centered cross, and stays fully
+  // visible once landed there — same continuous-progress pattern as trackColor.
+  const [endDotOpacity, setEndDotOpacity] = useState(0);
 
   // Track scroll: both axis lines climb/slide to the 40px edge spacing, then
   // STAY pinned there (fixed to viewport) for the full height of the next section.
@@ -679,7 +693,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     // vertical line's bottom edge and the horizontal line's left edge stay fixed
     // (matching where they land once fully grown), reading as extending outward
     // from the corner rather than growing from a center point.
-    const SEED = 20;
+    const SEED = 36;
     // Hero corner uses the SAME margin (EDGE) as the next section's own resting
     // lines. Both ends of each line interpolate continuously here — the "anchor"
     // end (h-line's left, v-line's bottom) is NOT held fixed at the EDGE inset;
@@ -707,8 +721,12 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
       // everything appearing at once while the lines are still tiny seeds.
       setMatrixContentVisible(heroProgress >= 0.97);
       setBoxPinned(false);
-      setTrackBg(true);
-      setReflectionOpacity(0); // never show the black Reflection box on the landing page
+      setTrackColor(0); // grey — resting on the matrix, haven't started climbing yet
+      setEndDotOpacity(0);
+      // Corner area stays fully invisible on the landing page itself — only turns on
+      // (grey) once you've actually arrived at the matrix (same threshold as
+      // matrixContentVisible above), not during the earlier pure-hero scroll.
+      setReflectionOpacity(heroProgress >= 0.97 ? 1 : 0);
       // Thin out as the matrix visually finishes arriving, rather than waiting for
       // heroProgress to hit exactly 1 — scroll-snap can rest a hair short of that
       // exact pixel, which would otherwise leave the line looking thick even though
@@ -726,20 +744,30 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     // not chained offsets — this guarantees the hold aligns with Reflection actually
     // filling the screen, and the retreat finishes exactly when Overview ends,
     // regardless of how long the climb itself takes.
-    const reflectionStart = VH * 1; // Matrix fully scrolled away, Reflection fills screen
     const reflectionEnd = VH * 2;   // Reflection fully scrolled away, Overview fills screen
     const overviewEnd = VH * 3;     // Overview fully scrolled away, Pillar 1 begins
 
     // Climb: same as before, happens within the Matrix's own tail-end scroll. The
-    // black tracked area (between the two lines) grows and fades in right alongside
-    // the lines here — visible expanding as you scroll, not just appearing once held.
-    if (scrolledPast <= dwell + climbDistance) {
+    // tracked area (between the two lines) was already visible as grey back on the
+    // matrix — here it grows in SIZE (bounded by the lines, which are moving) and
+    // darkens grey->black via trackColor, right alongside the lines.
+    // The mid-anchor marker below is positioned in CSS (`70vh`), while this boundary
+    // is computed in JS (window.innerHeight px) — two independent unit systems that
+    // both target the same nominal pixel but can disagree by a sub-pixel amount, and
+    // browsers don't always settle a snap point identically from both scroll
+    // directions. A strict "<" at the exact nominal value isn't enough — depending on
+    // direction, the real rest position can land a hair on either side of it. SNAP_EPSILON
+    // gives a few pixels of safety margin so the boundary is already crossed by the
+    // time you actually arrive, regardless of which side you approach from.
+    const SNAP_EPSILON = 4;
+    if (scrolledPast < dwell + climbDistance - SNAP_EPSILON) {
       const effectivePast = Math.max(0, scrolledPast - dwell);
       const t = climbDistance > 0 ? Math.min(1, effectivePast / climbDistance) : 1;
       setMatrixContentVisible(effectivePast <= 0);
       setBoxPinned(false);
-      setTrackBg(true);
-      setReflectionOpacity(t);
+      setTrackColor(t); // grey -> black across the climb — the darkening IS the growth cue now
+      setEndDotOpacity(0);
+      setReflectionOpacity(1); // stays fully visible throughout — only color animates here
       const hTop = (VH - EDGE) + t * (EDGE - (VH - EDGE));
       setHLineFixed({ top: hTop, left: 0, width: VW, opacity: 1 });
       const vLeft = EDGE + t * ((VW - EDGE) - EDGE);
@@ -748,35 +776,19 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
       return;
     }
 
-    // Gap between climb finishing and Reflection visually arriving: lines already
-    // sit fully pinned at the corner, black area fully grown (opacity 1, matching
-    // where the climb just left it) — only the FlippableBook/notes content itself
-    // (gated separately by boxPinned) waits to fade in until Reflection arrives.
-    // Strictly-less-than here (not <=) matters: scroll-snap settles you at EXACTLY
-    // scrolledPast === reflectionStart, which must already count as "arrived" (the
-    // held/visible phase below), not still "waiting" — otherwise snapping to this
-    // section leaves you stuck seeing a blank card forever.
-    if (scrolledPast < reflectionStart) {
-      setMatrixContentVisible(false);
-      setBoxPinned(false);
-      setTrackBg(true);
-      setReflectionOpacity(1);
-      setHLineFixed({ top: EDGE, left: 0, width: VW, opacity: 1 });
-      setVLineFixed({ left: VW - EDGE, top: 0, height: VH, opacity: 1 });
-      setLineThick(false);
-      return;
-    }
-
-    // Held through most of Reflection's own full-screen window — static, fully
-    // pinned. Retreat (below) only kicks in during the tail retreatDistance of
-    // this window, so the line finishes moving to center BEFORE Overview fully
-    // fills the screen, then sits still for the entirety of the Overview scroll.
+    // Held: content appears the instant the climb finishes (no separate empty
+    // "gap" phase waiting for Reflection's own section to start) and stays static
+    // through the rest of Reflection's window. Retreat (below) only kicks in
+    // during the tail retreatDistance of this window, so the line finishes moving
+    // to center BEFORE Overview fully fills the screen, then sits still for the
+    // entirety of the Overview scroll.
     const retreatDistance = VH * 0.5; // mirrors climbDistance
     const retreatStart = reflectionEnd - retreatDistance;
     if (scrolledPast < retreatStart) {
       setMatrixContentVisible(false);
       setBoxPinned(true);
-      setTrackBg(true);
+      setTrackColor(1); // fully black — held on Reflection
+      setEndDotOpacity(0);
       setReflectionOpacity(1);
       setHLineFixed({ top: EDGE, left: 0, width: VW, opacity: 1 });
       setVLineFixed({ left: VW - EDGE, top: 0, height: VH, opacity: 1 });
@@ -793,16 +805,17 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
       const back = 1 - progress; // 1 = still at corner, 0 = fully back at center
       // Pinned position is top (horizontal) / right (vertical) — so the retreat moves
       // the horizontal line DOWN and the vertical line LEFT, back to center.
-      const hTopFinal = EDGE + (1 - back) * (VH / 2 - EDGE); // EDGE (back=1) -> VH/2 (back=0)
+      const hTopFinal = EDGE + (1 - back) * (VH * 0.4 - EDGE); // EDGE (back=1) -> 40% down (back=0)
       const vLeftFinal = (VW - EDGE) + (1 - back) * (VW / 2 - (VW - EDGE)); // VW-EDGE (back=1) -> VW/2 (back=0)
       const hWidth = SEED + back * (VW - SEED);
       const hLeft = VW / 2 - hWidth / 2; // centered horizontally around VW/2, not left-anchored
       const vHeight = SEED + back * (VH - SEED);
-      const vTop = VH / 2 - vHeight / 2; // centered vertically around VH/2, not bottom-anchored
+      const vTop = VH * 0.4 - vHeight / 2; // centered vertically around the same 40% crossing point
 
       setMatrixContentVisible(false);
       setBoxPinned(false);
-      setTrackBg(false);
+      setTrackColor(back); // mirrors climb: black -> grey as it fades out
+      setEndDotOpacity(1 - back); // fades in as the lines shrink toward the centered cross
       setReflectionOpacity(back);
       setHLineFixed({ top: hTopFinal, left: hLeft, width: hWidth, opacity: 1 });
       setVLineFixed({ left: vLeftFinal, top: vTop, height: vHeight, opacity: 1 });
@@ -815,10 +828,11 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     if (scrolledPast <= overviewEnd) {
       setMatrixContentVisible(false);
       setBoxPinned(false);
-      setTrackBg(false);
+      setTrackColor(0);
+      setEndDotOpacity(1); // landed — dots fully visible at the ends of the small cross
       setReflectionOpacity(0);
-      setHLineFixed({ top: VH / 2, left: VW / 2 - SEED / 2, width: SEED, opacity: 1 });
-      setVLineFixed({ left: VW / 2, top: VH / 2 - SEED / 2, height: SEED, opacity: 1 });
+      setHLineFixed({ top: VH * 0.4, left: VW / 2 - SEED / 2, width: SEED, opacity: 1 });
+      setVLineFixed({ left: VW / 2, top: VH * 0.4 - SEED / 2, height: SEED, opacity: 1 });
       setLineThick(false);
       return;
     }
@@ -826,7 +840,8 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
     // Past Overview — fully released, nothing left showing.
     setMatrixContentVisible(false);
     setBoxPinned(false);
-    setTrackBg(false);
+    setTrackColor(0);
+    setEndDotOpacity(0);
     setReflectionOpacity(0);
     setLineThick(false);
     setHLineFixed((s) => ({ ...s, opacity: 0 }));
@@ -839,7 +854,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   // with opacity/width 0.
   useEffect(() => {
     const EDGE = 40;
-    const SEED = 20;
+    const SEED = 36;
     const VH = window.innerHeight;
     setHLineFixed({ top: VH - EDGE, left: EDGE, width: SEED, opacity: 1 });
     setVLineFixed({ left: EDGE, top: VH - EDGE - SEED, height: SEED, opacity: 1 });
@@ -881,12 +896,32 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
   const plotHeight = containerSize.height - margin * 2;
 
   return (
-    <section className="bg-white border-t border-neutral-200/40 snap-start">
+    <section className="bg-white border-t border-neutral-200/40 snap-start [scroll-snap-stop:always]">
 
       <div
         ref={containerRef}
         className="w-full relative"
-        style={{ height: "100vh" }}
+        style={{ height: "100vh", cursor: isInCornerTrigger ? "pointer" : "default" }}
+        onClick={(e) => {
+          const rect = containerRef.current?.getBoundingClientRect();
+          if (!rect) return;
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const margin = 40;
+          const inCorner =
+            (x < margin || x > containerSize.width - margin) &&
+            (y < margin || y > containerSize.height - margin);
+          if (!inCorner) return;
+
+          // Jump to right where the climb finishes and Reflection is fully held —
+          // same dwell/climbDistance values the scroll handler below uses, so this
+          // lands exactly where scrolling there normally would.
+          const VH = window.innerHeight;
+          const matrixTopDoc = window.scrollY + rect.top;
+          const dwell = VH * 0.05;
+          const climbDistance = VH * 0.65;
+          window.scrollTo({ top: matrixTopDoc + dwell + climbDistance, behavior: "smooth" });
+        }}
         onMouseMove={(e) => {
           const rect = containerRef.current?.getBoundingClientRect();
           if (rect) {
@@ -957,12 +992,15 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
       >
         {/* Intermediate scroll-snap anchor at the climb's end (dwell + climbDistance =
             0.7VH into this section) — without this, the only anchors bounding the
-            climb/gap animation are this section's own top and Reflection's top, a
-            full 1VH apart. With mandatory snap, that turns any scroll past the
-            midpoint into a full commit into Reflection. This marker gives scrolling
-            a real place to land partway through, so leaving takes two deliberate
-            pushes instead of one. */}
-        <div className="absolute left-0 w-px h-px snap-start pointer-events-none" style={{ top: "70vh" }} />
+            climb animation are this section's own top and Reflection's top, a full
+            1VH apart. With mandatory snap, that turns any scroll past the midpoint
+            into a full commit into Reflection. This marker gives scrolling a real
+            place to land partway through, so leaving takes two deliberate pushes
+            instead of one. It lands exactly where boxPinned flips true (see the
+            scroll handler above — the "held" phase starts right when climb ends),
+            so this anchor always rests on the content-visible state, never a blank
+            transitional one. */}
+        <div className="absolute left-0 w-px h-px snap-start [scroll-snap-stop:always] pointer-events-none" style={{ top: "70vh" }} />
         {containerSize.width > 0 && (
           <svg
             viewBox={`0 0 ${containerSize.width} ${containerSize.height}`}
@@ -1089,13 +1127,14 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
         )}
 
         {/* Article pills - hidden while the axis lines are transitioning/pinned.
-            Delayed relative to the dots' own fade-in (below), so the reveal reads
-            as an ordered sequence: lines finish -> dots appear -> cards appear. */}
+            Each card fades in on its own stable random delay (cardRevealDelays),
+            on top of a shared base delay after the dots appear — so the reveal
+            reads as lines finish -> dots appear -> cards pop in scattered, not
+            all cards fading in as one uniform block. Pointer events gate at the
+            group level (instant, no need to stagger interactivity). */}
         <div
           style={{
-            opacity: matrixContentVisible ? 1 : 0,
             pointerEvents: matrixContentVisible ? "auto" : "none",
-            transition: matrixContentVisible ? "opacity 250ms 250ms" : "opacity 150ms",
           }}
         >
           {MATRIX_ARTICLES.map((article, index) => {
@@ -1107,17 +1146,26 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
             );
             const maxDistance = 200;
             const scale = Math.max(1, 1 + (maxDistance - distance) / maxDistance * 0.15);
+            const revealDelay = 250 + cardRevealDelays[index];
 
             return (
-              <button
+              <div
                 key={article.slug}
-                onClick={() => onCardClick(article.slug)}
-                onMouseEnter={() => setHoveredSlug(article.slug)}
-                onMouseLeave={() => setHoveredSlug(null)}
                 style={{
                   position: "absolute",
                   left: `${(x / containerSize.width) * 100}%`,
                   top: `${(y / containerSize.height) * 100}%`,
+                  opacity: matrixContentVisible ? 1 : 0,
+                  transition: matrixContentVisible
+                    ? `opacity 300ms ${revealDelay}ms`
+                    : "opacity 150ms",
+                }}
+              >
+              <button
+                onClick={() => onCardClick(article.slug)}
+                onMouseEnter={() => setHoveredSlug(article.slug)}
+                onMouseLeave={() => setHoveredSlug(null)}
+                style={{
                   transform: `translate(-50%, -50%) scale(${scale})`,
                   transition: "transform 80ms ease-out, opacity 80ms ease-out",
                   opacity: isInCornerTrigger ? 0.3 : 1,
@@ -1140,6 +1188,7 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                   )}
                 </div>
               </button>
+              </div>
             );
           })}
         </div>
@@ -1157,10 +1206,10 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
               transition: "opacity 200ms",
             }}
           >
-            <circle cx={dotPositions.topLeft.x} cy={dotPositions.topLeft.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
-            <circle cx={dotPositions.leftAxis.x} cy={dotPositions.leftAxis.y} r="6" fill="#d32f2f" style={{ transition: "cy 800ms ease-out" }} />
-            <circle cx={dotPositions.bottomAxis.x} cy={dotPositions.bottomAxis.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
-            <circle cx={dotPositions.bottomRight.x} cy={dotPositions.bottomRight.y} r="6" fill="#d32f2f" style={{ transition: "cx 800ms ease-out" }} />
+            <circle cx={dotPositions.topLeft.x} cy={dotPositions.topLeft.y} r="6" fill="#f87171" style={{ transition: "cy 800ms ease-out" }} />
+            <circle cx={dotPositions.leftAxis.x} cy={dotPositions.leftAxis.y} r="6" fill="#f87171" style={{ transition: "cy 800ms ease-out" }} />
+            <circle cx={dotPositions.bottomAxis.x} cy={dotPositions.bottomAxis.y} r="6" fill="#f87171" style={{ transition: "cx 800ms ease-out" }} />
+            <circle cx={dotPositions.bottomRight.x} cy={dotPositions.bottomRight.y} r="6" fill="#f87171" style={{ transition: "cx 800ms ease-out" }} />
           </svg>
         )}
       </div>
@@ -1193,20 +1242,49 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
         }}
       />
 
-      {/* Reflection section: tracked between the two lines for positioning. The whole
-          tracked area is black (trackBg) through climb/gap/held — growing in as you
-          approach, staying filled while Reflection is held — then turns off during
-          retreat so it doesn't reappear as a black rectangle over Overview. */}
+      {/* 4 red end-dots, one at each tip of the small centered cross — fade in as
+          the lines shrink down during retreat, staying visible once landed on
+          Overview. Positioned from the SAME hLineFixed/vLineFixed the lines use,
+          so they always sit exactly at the current endpoints, whatever those are. */}
+      {(() => {
+        const halfThickness = (lineThick ? 2 : 1) / 2;
+        const dots = [
+          { x: hLineFixed.left, y: hLineFixed.top + halfThickness }, // h-line left end
+          { x: hLineFixed.left + hLineFixed.width, y: hLineFixed.top + halfThickness }, // h-line right end
+          { x: vLineFixed.left + halfThickness, y: vLineFixed.top }, // v-line top end
+          { x: vLineFixed.left + halfThickness, y: vLineFixed.top + vLineFixed.height }, // v-line bottom end
+        ];
+        return dots.map((d, i) => (
+          <div
+            key={i}
+            className="fixed rounded-full bg-red-400 pointer-events-none z-40"
+            style={{
+              left: d.x,
+              top: d.y,
+              width: 10,
+              height: 10,
+              transform: "translate(-50%, -50%)",
+              opacity: endDotOpacity,
+            }}
+          />
+        ));
+      })()}
+
+      {/* Reflection section: tracked between the two lines for positioning. The
+          tracked area's color gradients from grey (resting on the matrix) to black
+          (held on Reflection) continuously with trackColor — no CSS transition here,
+          since the color is already driven frame-by-frame by scroll position; a
+          transition would just make it lag behind where the scroll actually is. */}
       <section
         aria-label="Reflection"
-        className="fixed left-0 flex items-center justify-center z-20 overflow-hidden pointer-events-none transition-colors duration-300"
+        className="fixed left-0 flex items-center justify-center z-20 overflow-hidden pointer-events-none"
         style={{
           top: hLineFixed.top,
           width: vLineFixed.left,
           height: `calc(100vh - ${hLineFixed.top}px)`,
           maxHeight: "100vh",
           opacity: reflectionOpacity,
-          backgroundColor: trackBg ? "black" : "transparent",
+          backgroundColor: `rgb(${Math.round(163 * (1 - trackColor))}, ${Math.round(163 * (1 - trackColor))}, ${Math.round(163 * (1 - trackColor))})`,
         }}
       >
         <div
@@ -1227,16 +1305,16 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                     <button
                       key={a.slug}
                       onClick={() => onCardClick(a.slug)}
-                      className="group flex items-center gap-2 text-white text-sm md:text-base font-medium text-left hover:underline transition-colors"
+                      className="group flex items-center gap-2 text-white text-sm md:text-base font-medium text-left transition-colors cursor-pointer"
                     >
                       {a.title}
-                      <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                      <ArrowUpRight className="size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                     </button>
                   ))}
                 </div>
                 <button
                   onClick={() => navigate({ to: "/reflection-notes" })}
-                  className="shrink-0 text-sm font-medium border border-neutral-700 rounded-full px-5 py-2.5 text-white hover:bg-white hover:text-black transition-colors"
+                  className="shrink-0 text-sm font-medium border border-neutral-700 rounded-full px-5 py-2.5 text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
                 >
                   Read my journals
                 </button>
@@ -1373,7 +1451,7 @@ function Index() {
       )}
 
       {/* Hero section - diagram + paragraph, always expanded, fixed to one viewport height */}
-      <section className="relative w-full flex flex-col gap-0 pt-[30vh] snap-start min-h-screen">
+      <section className="relative w-full flex flex-col gap-0 pt-[30vh] snap-start [scroll-snap-stop:always] min-h-screen">
         <div className="flex flex-col items-center justify-center px-6 gap-0 bg-background h-auto py-8">
           <img
             src="/articles/hello-stranger.png"
@@ -1412,13 +1490,13 @@ function Index() {
           instead of chained offsets, so each animated phase spans a full section's
           worth of scroll — proximity-snap only nudges near boundaries and doesn't
           skip over the animation. */}
-      <section aria-label="Reflection" className="relative w-full h-screen px-6 snap-start" />
+      <section aria-label="Reflection" className="relative w-full h-screen px-6 snap-start [scroll-snap-stop:always]" />
 
       {/* Overview section - same background as the landing/Hero section. This is
           where the lines retreat back to the centered state as you scroll through
           it. Last content section before the footer. A closing line sits just
           below where the lines converge at true center. */}
-      <section aria-label="Overview" className="relative w-full h-screen px-6 snap-start bg-background overflow-hidden">
+      <section aria-label="Overview" className="relative w-full h-screen px-6 snap-start [scroll-snap-stop:always] bg-background overflow-hidden">
         <p className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-12 text-center text-sm md:text-base text-neutral-500 whitespace-nowrap">
           Thank you for viewing my site. But{" "}
           <a
