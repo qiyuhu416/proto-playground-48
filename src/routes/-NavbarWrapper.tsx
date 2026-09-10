@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-const MATRIX_TEXT = 'Qiyu is prototyping the HCI "what-if" for Apple';
-const REFLECTION_TEXT = "Qiyu is learning what is overthinking";
-const OVERVIEW_TEXT = "Qiyu would rather meet you than the site";
+const MATRIX_TEXT = 'Prototyping @Apple the “what-ifs” of HCI';
+const REFLECTION_TEXT = "Thinking... what is overthinking";
+const OVERVIEW_TEXT = "Hello! I'd rather meet you than the site";
 
 export function NavbarWrapper() {
   const [pastLanding, setPastLanding] = useState(false);
@@ -51,7 +51,7 @@ export function NavbarWrapper() {
           {MATRIX_TEXT}
         </span>
 
-        <span className="col-start-1 row-start-1 flex items-center justify-between whitespace-nowrap group-hover:invisible">
+        <span className="col-start-1 row-start-1 flex items-center gap-1.5 whitespace-nowrap group-hover:invisible">
           <span className="size-1.5 shrink-0 rounded-full bg-emerald-400" />
           {badgeText}
         </span>
