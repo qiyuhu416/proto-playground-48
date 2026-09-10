@@ -624,12 +624,12 @@ interface MatrixArticle {
 }
 
 const MATRIX_ARTICLES: MatrixArticle[] = [
-  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.68, y: 0.40, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
-  { slug: "designing-for-conversations-that-earn-trust", title: "Conversational Design & AI Affiliation", company: "AI caring", x: 0.85, y: 0.15, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
-  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.75, y: 0.65, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
-  { slug: "google-cloud", title: "Assisted Browsing", company: "Launched @Google", x: 0.28, y: 0.75, pillarTheme: "DESIGN AI'S MIND", workType: "Product Launch", thumbnail: "/articles/google-cloud-hero.png" },
-  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.55, y: 0.50, pillarTheme: "DESIGN AI'S MIND", workType: "Service Design", thumbnail: "/articles/physical-ai-thumb.png" },
-  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.18, y: 0.35, pillarTheme: "EXPRESS YOURSELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
+  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.55, y: 0.50, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
+  { slug: "designing-for-conversations-that-earn-trust", title: "AI Trust & Affiliation", company: "AI Caring Inst.", x: 0.85, y: 0.20, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
+  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.80, y: 0.72, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Google", x: 0.28, y: 0.75, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Feature Launch", thumbnail: "/articles/google-cloud-hero.png" },
+  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.68, y: 0.40, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Service Design", thumbnail: "/articles/physical-ai-thumb.png" },
+  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.18, y: 0.35, pillarTheme: "EXPRESS ONESELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
 ];
 
 function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }) {
@@ -1170,9 +1170,9 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                   transition: "transform 80ms ease-out, opacity 80ms ease-out",
                   opacity: isInCornerTrigger ? 0.3 : 1,
                 }}
-                className="bg-transparent border-0 cursor-pointer text-left flex flex-col items-start gap-3 w-32"
+                className="bg-transparent border-0 cursor-pointer text-left flex flex-col items-start gap-3 w-[clamp(128px,10vw,168px)]"
               >
-                <div className="w-28 h-28 rounded-3xl bg-neutral-100 transition-shadow hover:shadow-md flex items-center justify-center p-4">
+                <div className="w-full aspect-square rounded-3xl bg-neutral-100 transition-shadow hover:shadow-md flex items-center justify-center p-4">
                   {article.thumbnail && (
                     <img
                       src={article.thumbnail}
@@ -1284,11 +1284,13 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
           height: `calc(100vh - ${hLineFixed.top}px)`,
           maxHeight: "100vh",
           opacity: reflectionOpacity,
-          backgroundColor: `rgb(${Math.round(163 * (1 - trackColor))}, ${Math.round(163 * (1 - trackColor))}, ${Math.round(163 * (1 - trackColor))})`,
+          // Fades from grey (163) down to #0a0a0a (10) — not pure black (0) — at
+          // full trackColor, matching the near-black used elsewhere on the site.
+          backgroundColor: `rgb(${Math.round(10 + 153 * (1 - trackColor))}, ${Math.round(10 + 153 * (1 - trackColor))}, ${Math.round(10 + 153 * (1 - trackColor))})`,
         }}
       >
         <div
-          className="bg-black text-white rounded-2xl p-8 md:p-12 transition-opacity duration-500"
+          className="bg-neutral-950 text-white rounded-2xl p-8 md:p-12 transition-opacity duration-500"
           style={{ opacity: boxPinned ? 1 : 0, pointerEvents: boxPinned ? "auto" : "none" }}
         >
           <div className="relative overflow-y-auto max-h-full flex items-center justify-center">
@@ -1299,12 +1301,12 @@ function ArticlesMatrix({ onCardClick }: { onCardClick: (slug: string) => void }
                 <div className="flex flex-col items-start gap-4">
                   {[
                     { slug: "what-do-prototypes-prototype", title: "What do prototypes prototype?" },
-                    { slug: "hello-humans", title: "Hello Humans" },
+                    { slug: "hello-humans", title: "Hello Humans", externalLink: "https://calendly.com/qiyuhu/new-meeting" },
                     { slug: "designing-next-gen-ai-products", title: "Designing Next-Gen AI Products" },
                   ].map((a) => (
                     <button
                       key={a.slug}
-                      onClick={() => onCardClick(a.slug)}
+                      onClick={() => a.externalLink ? window.open(a.externalLink, "_blank", "noopener,noreferrer") : onCardClick(a.slug)}
                       className="group flex items-center gap-2 text-white text-sm md:text-base font-medium text-left transition-colors cursor-pointer"
                     >
                       {a.title}

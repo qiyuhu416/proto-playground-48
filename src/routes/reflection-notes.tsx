@@ -33,17 +33,17 @@ function ReflectionNotesPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900">
+    <div className="min-h-screen bg-neutral-950 text-white">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition-colors mb-8"
+          className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
         </button>
 
-        <h1 className="text-3xl md:text-4xl font-medium mb-10 text-neutral-900">Reflection Notes</h1>
+        <h1 className="text-3xl md:text-4xl font-medium mb-10" style={{ color: "#ffffff" }}>Reflection Notes</h1>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {sorted.map((r, idx) => {
@@ -57,22 +57,22 @@ function ReflectionNotesPage() {
               <div
                 key={idx}
                 onClick={() => toggle(idx)}
-                className="border border-neutral-200 rounded-lg p-3 bg-white hover:shadow-md transition-shadow flex flex-col gap-2 cursor-pointer"
+                className="border border-neutral-700 rounded-lg p-3 bg-neutral-900 hover:border-neutral-500 transition-colors flex flex-col gap-2 cursor-pointer"
               >
                 {r.image && (
                   <img
                     src={r.image}
                     alt="Reflection"
-                    className="w-full h-24 object-cover rounded-md border border-neutral-200"
+                    className="w-full h-24 object-cover rounded-md border border-neutral-700"
                   />
                 )}
                 <div className="text-[10px] text-neutral-500 font-medium">{r.date}</div>
-                <div className="text-neutral-900 text-xs font-medium leading-snug">{title}</div>
-                <p className="text-neutral-600 text-xs leading-relaxed">
+                <div className="text-white text-xs font-medium leading-snug">{title}</div>
+                <p className="text-neutral-400 text-xs leading-relaxed">
                   {isExpanded ? r.content : preview}
                 </p>
                 {rest.length > 100 && (
-                  <span className="text-[10px] text-neutral-400 self-start">
+                  <span className="text-[10px] text-neutral-500 self-start">
                     {isExpanded ? "Show less" : "Read more"}
                   </span>
                 )}
