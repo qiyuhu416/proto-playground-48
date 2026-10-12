@@ -6,6 +6,9 @@ const MATRIX_TEXT = 'Prototyping @Apple the “what-ifs” of HCI';
 const REFLECTION_TEXT = "Thinking... what is overthinking";
 const OVERVIEW_TEXT = "Hello! I'd rather meet you than the site";
 
+// Hidden for now (not deleted) — flip back to false to bring the badge back.
+const HIDDEN = true;
+
 export function NavbarWrapper() {
   const [pastLanding, setPastLanding] = useState(false);
   const [badgeText, setBadgeText] = useState(MATRIX_TEXT);
@@ -30,6 +33,8 @@ export function NavbarWrapper() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (HIDDEN) return null;
 
   return (
     <div
