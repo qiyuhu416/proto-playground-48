@@ -1,12 +1,11 @@
 import { useRef, useState } from "react";
-import type { DestinationCard, QuadrantId } from "@/data/quadrantCards";
+import { AXIS_LABELS, BRACKET, EDGE, SUB_LABEL_PERP_GAP, type DestinationCard, type QuadrantId } from "@/data/quadrantCards";
 
-// Shared destination content for both ways of reaching a quadrant: clicking a
-// card from the full matrix (QuadrantNav) and auto-advancing via scroll
-// (QuadrantScrollSequence). Same cards, same cursor-tracking crosshair, same
-// bracket-end dots — the only difference between the two paths is whether a
-// "← Back" control makes sense (click path has somewhere to go back to;
-// scroll path doesn't, so it omits `onBack`).
+// Destination content shared by every quadrant reached from QuadrantSection's
+// single scroll sequence, however you got there (clicking a matrix card, or
+// scrolling down into it) — same cards, same cursor-tracking crosshair, same
+// bracket-end dots, same axis labels. No back control — scrolling up is how
+// you return to the matrix, consistently across every quadrant.
 export function QuadrantDestinationView({
   quadrant,
   cards,
@@ -17,7 +16,6 @@ export function QuadrantDestinationView({
   hLine,
   vLine,
   onCardClick,
-  onBack,
 }: {
   quadrant: QuadrantId;
   cards: DestinationCard[];
@@ -28,7 +26,6 @@ export function QuadrantDestinationView({
   hLine: { top: number; left: number; width: number };
   vLine: { left: number; top: number; height: number };
   onCardClick: (slug: string) => void;
-  onBack?: () => void;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -43,6 +40,26 @@ export function QuadrantDestinationView({
   const vOnLeft = vLine.left < W / 2;
   const hOnTop = hLine.top < H / 2;
 
+  // Sub-label: not a static word sitting at a fixed point on the line — it's
+  // a marker that rides along with the cursor-tracking line, always showing
+  // right where that line currently crosses the axis, so it reads as "the
+  // cursor's position on this axis" rather than a caption. Which of the two
+  // end-words to show (e.g. OTHERS vs SELF) is whichever one the cursor is
+  // currently nearer to. A small SUB_LABEL_PERP_GAP nudge keeps it beside the
+  // line rather than directly on top of it.
+  const axisLabels = AXIS_LABELS[quadrant];
+  const vSubX = vOnLeft ? vLine.left - SUB_LABEL_PERP_GAP : vLine.left + SUB_LABEL_PERP_GAP;
+  const hSubY = hOnTop ? hLine.top - SUB_LABEL_PERP_GAP : hLine.top + SUB_LABEL_PERP_GAP;
+  const vSubLabel = axisLabels && (cursorPos.y < H / 2 ? axisLabels.top : axisLabels.bottom);
+  const hSubLabel = axisLabels && (cursorPos.x < W / 2 ? axisLabels.left : axisLabels.right);
+
+  // Only 2 of the line's 4 ends have an active top-level label (QuadrantSection's
+  // Qiyu/Others/Think/Do) — the quadrant's own corner, opposite its bracket. The
+  // other 2 ends are unanchored (the line runs past them to the true screen edge,
+  // per hLineFor/vLineFor), so they get no dot here either.
+  const activeHSide = BRACKET[quadrant].hTop === "top" ? "bottom" : "top";
+  const activeVSide = BRACKET[quadrant].vSide === "left" ? "right" : "left";
+
   return (
     <div
       ref={rootRef}
@@ -54,8 +71,8 @@ export function QuadrantDestinationView({
     >
       {W > 0 && (
         <svg className="absolute inset-0 pointer-events-none" viewBox={`0 0 ${W} ${H}`}>
-          <line x1={cursorPos.x} y1={0} x2={cursorPos.x} y2={H} stroke={hoveredCard ? "#d32f2f" : "#d8d8d8"} strokeWidth="1" opacity={hoveredCard ? 0.6 : 0.4} />
-          <line x1={0} y1={cursorPos.y} x2={W} y2={cursorPos.y} stroke={hoveredCard ? "#d32f2f" : "#d8d8d8"} strokeWidth="1" opacity={hoveredCard ? 0.6 : 0.4} />
+          <line x1={cursorPos.x} y1={EDGE} x2={cursorPos.x} y2={H - EDGE} stroke={hoveredCard ? "#d32f2f" : "#d8d8d8"} strokeWidth="1" opacity={hoveredCard ? 0.6 : 0.4} />
+          <line x1={EDGE} y1={cursorPos.y} x2={W - EDGE} y2={cursorPos.y} stroke={hoveredCard ? "#d32f2f" : "#d8d8d8"} strokeWidth="1" opacity={hoveredCard ? 0.6 : 0.4} />
           <rect x={cursorPos.x - 4} y={cursorPos.y - 4} width="8" height="8" fill={hoveredCard ? "#d32f2f" : "#ff9800"} />
 
           {hovered?.yAxisLabel && (
@@ -86,17 +103,8 @@ export function QuadrantDestinationView({
         </svg>
       )}
 
-      {onBack && (
-        <button
-          onClick={onBack}
-          className="absolute top-6 left-6 text-sm text-neutral-500 hover:text-neutral-900 transition-colors cursor-pointer"
-        >
-          ← Back
-        </button>
-      )}
-
       {quadrant === "work" && (
-        <div className="absolute top-6 right-6 flex items-center rounded-full bg-neutral-100 p-1 text-sm">
+        <div className="absolute flex items-center rounded-full bg-neutral-100 p-1 text-sm" style={{ top: EDGE, right: EDGE }}>
           <button
             onClick={() => setWorkTab("others")}
             className={`px-4 py-1.5 rounded-full transition-colors cursor-pointer ${workTab === "others" ? "bg-neutral-800 text-white" : "text-neutral-600"}`}
@@ -143,12 +151,11 @@ export function QuadrantDestinationView({
         </div>
       ))}
 
-      {/* 4 small red dots at the bracket lines' outer ends. */}
+      {/* Dots only at the 2 labeled ends (matching the active top-level
+          label) — the other 2 ends have no label and no dot. */}
       {[
-        { x: hLine.left, y: hLine.top },
-        { x: hLine.left + hLine.width, y: hLine.top },
-        { x: vLine.left, y: vLine.top },
-        { x: vLine.left, y: vLine.top + vLine.height },
+        { x: activeVSide === "left" ? hLine.left : hLine.left + hLine.width, y: hLine.top },
+        { x: vLine.left, y: activeHSide === "top" ? vLine.top : vLine.top + vLine.height },
       ].map((d, i) => (
         <div
           key={i}
@@ -156,6 +163,27 @@ export function QuadrantDestinationView({
           style={{ left: d.x, top: d.y, width: 10, height: 10, transform: "translate(-50%, -50%)" }}
         />
       ))}
+
+      {/* Cursor-position markers on each axis — ride along with the cursor-
+          tracking lines above, right at their intersection with this
+          quadrant's two bracket lines, so each reads as "where the cursor
+          currently is" on that axis rather than a fixed caption. */}
+      {vSubLabel && (
+        <span
+          className="absolute text-[10px] font-medium uppercase tracking-wide text-neutral-400 whitespace-nowrap pointer-events-none"
+          style={{ left: vSubX, top: cursorPos.y, writingMode: "vertical-rl", transform: "translate(-50%, -50%) rotate(180deg)" }}
+        >
+          {vSubLabel}
+        </span>
+      )}
+      {hSubLabel && (
+        <span
+          className="absolute text-[10px] font-medium uppercase tracking-wide text-neutral-400 whitespace-nowrap pointer-events-none"
+          style={{ left: cursorPos.x, top: hSubY, transform: "translate(-50%, -50%)" }}
+        >
+          {hSubLabel}
+        </span>
+      )}
     </div>
   );
 }

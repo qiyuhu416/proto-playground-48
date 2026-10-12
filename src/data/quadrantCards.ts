@@ -1,9 +1,25 @@
-// Shared between QuadrantNav (click-to-zoom, instant) and QuadrantScrollSequence
-// (scroll-driven auto-advance) — both render the same destination content via two
-// different interaction mechanisms, so the data lives here once instead of being
-// hand-authored twice.
+// Card/bracket/axis data for QuadrantSection's destination stops — kept here
+// once instead of hand-authored per stop.
 
 export type QuadrantId = "work" | "hhi" | "help-others" | "reflection";
+
+// Shared layout constants so every page aligns to the same margin, instead of
+// each component picking its own arbitrary number:
+// - EDGE: distance from the true page edge to the bracket line/dot — content
+//   that reads as "main content" (paragraphs, tab toggles) sits flush against
+//   this same margin, starting at EDGE and growing inward. Top-level labels
+//   (Qiyu/Others/Think/Do) sit right at this same corner point, next to the
+//   dot — they ARE the line's label, not a separate edge-centered element.
+// - SUB_LABEL_ALONG_GAP: per-quadrant sub-labels (OTHERS/SELF/etc.) don't
+//   compete with the top-level label for that same corner — instead they
+//   slide this far *along* the line, away from the corner, reading beside
+//   the line as it runs toward the middle of the screen.
+// - SUB_LABEL_PERP_GAP: a small nudge perpendicular to the line (toward the
+//   true edge), just enough that the sub-label sits beside the line rather
+//   than directly on top of it.
+export const EDGE = 40;
+export const SUB_LABEL_ALONG_GAP = 72;
+export const SUB_LABEL_PERP_GAP = 10;
 
 // Which corner the two lines bracket into for each quadrant, mirroring the visual
 // language already built for the original work matrix (bottom-left) and the
@@ -15,6 +31,17 @@ export const BRACKET: Record<QuadrantId, { hTop: "top" | "bottom"; vSide: "left"
   hhi: { hTop: "top", vSide: "right" },             // lower-left quadrant -> top-right bracket
   "help-others": { hTop: "top", vSide: "left" },    // lower-right quadrant -> top-left bracket
   reflection: { hTop: "bottom", vSide: "right" },   // upper-left quadrant -> bottom-right bracket
+};
+
+// Static axis-end labels for each destination view (always visible, unlike
+// yAxisLabel/xAxisLabel on DestinationCard below which only show on hover).
+// "work"'s pair is the original copy from the old single-view matrix; the
+// other three are placeholders — swap the words here when there's real copy.
+export const AXIS_LABELS: Record<QuadrantId, { top: string; bottom: string; left: string; right: string }> = {
+  work: { top: "OTHERS", bottom: "SELF", left: "PRODUCTION", right: "FUTURE CONCEPTS" },
+  hhi: { top: "DIGITAL", bottom: "PHYSICAL", left: "IMPROMPTU", right: "DESIGNED" },
+  "help-others": { top: "COMMUNITY", bottom: "INDIVIDUAL", left: "ONLINE", right: "IN-PERSON" },
+  reflection: { top: "PRIVATE", bottom: "SHARED", left: "PAST", right: "PRESENT" },
 };
 
 export interface DestinationCard {

@@ -3,8 +3,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CardIcon } from "./-CardIcon";
 import { NavbarWrapper } from "./-NavbarWrapper";
-import { QuadrantNav } from "@/components/QuadrantNav";
-import { QuadrantScrollSequence } from "@/components/QuadrantScrollSequence";
+import { QuadrantSection } from "@/components/QuadrantSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -682,15 +681,12 @@ function Index() {
     <div className="min-h-screen bg-background text-neutral-900">
       <NavbarWrapper />
 
-      {/* Front door: zoomed-in hero (hand-drawn diagram + paragraph, framed as the
-          upper-left quadrant) that scroll-zooms out into the full 2x2 matrix.
-          Clicking any quadrant card zooms in-place, independent of scroll position. */}
-      <QuadrantNav onCardClick={handleCardClick} workArticles={MATRIX_ARTICLES} />
-
-      {/* Scrolling past the matrix (without clicking) auto-advances through the
-          same 4 destinations in a fixed order, ending at the Overview "thank you"
-          stop — a separate scroll-driven mechanism from QuadrantNav's clicks. */}
-      <QuadrantScrollSequence onCardClick={handleCardClick} workArticles={MATRIX_ARTICLES} />
+      {/* Front door: one continuous sequence — zoomed-in hero -> full matrix ->
+          reflection -> work -> hhi -> help others grow -> overview. Clicking a
+          card jumps straight to it with a direct line transition; scrolling up
+          from there returns to the matrix, scrolling down continues through the
+          rest of the sequence — both reached through the same component/state. */}
+      <QuadrantSection onCardClick={handleCardClick} workArticles={MATRIX_ARTICLES} />
 
       {/* Card Modal */}
       {selectedCard && card && !card.externalLink && (
