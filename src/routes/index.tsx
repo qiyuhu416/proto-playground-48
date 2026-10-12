@@ -8,6 +8,7 @@ import { NavbarWrapper } from "./-NavbarWrapper";
 import { HeroScrollAnimation } from "@/components/HeroScrollAnimation";
 import { TextHighlighter } from "@/components/TextHighlighter";
 import { FlippableBook } from "@/components/FlippableBook";
+import { QuadrantNav } from "@/components/QuadrantNav";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -612,7 +613,7 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
 
 // ── 2D Articles Matrix ────────────────────────────────────────────────────────
 
-interface MatrixArticle {
+export interface MatrixArticle {
   slug: string;
   title: string;
   company?: string;
@@ -623,7 +624,7 @@ interface MatrixArticle {
   thumbnail?: string;
 }
 
-const MATRIX_ARTICLES: MatrixArticle[] = [
+export const MATRIX_ARTICLES: MatrixArticle[] = [
   { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.55, y: 0.50, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
   { slug: "designing-for-conversations-that-earn-trust", title: "AI Trust & Affiliation", company: "AI Caring Inst.", x: 0.85, y: 0.20, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
   { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.80, y: 0.72, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
@@ -1384,6 +1385,11 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-neutral-900">
       <NavbarWrapper />
+
+      {/* New quadrant-grid landing page. Everything below it (hero diagram, work
+          matrix, Reflection, Overview, Fun Stuff) is untouched and still reachable
+          by scrolling — this is purely additive. */}
+      <QuadrantNav onCardClick={handleCardClick} workArticles={MATRIX_ARTICLES} />
 
       {/* Card Modal */}
       {selectedCard && card && !card.externalLink && (
