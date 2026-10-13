@@ -1,5 +1,15 @@
-import { useRef, useState } from "react";
-import { AXIS_LABELS, BRACKET, EDGE, SUB_LABEL_PERP_GAP, type DestinationCard, type QuadrantId } from "@/data/quadrantCards";
+import { useEffect, useRef, useState } from "react";
+import {
+  AXIS_LABELS,
+  BRACKET,
+  EDGE,
+  SUB_LABEL_PERP_GAP,
+  CARDS_BASE_DELAY_MS,
+  CARD_DURATION_MS,
+  CARD_STAGGER_MAX_MS,
+  type DestinationCard,
+  type QuadrantId,
+} from "@/data/quadrantCards";
 
 // Destination content shared by every quadrant reached from QuadrantSection's
 // single scroll sequence, however you got there (clicking a matrix card, or
@@ -120,36 +130,13 @@ export function QuadrantDestinationView({
         </div>
       )}
 
-      {cards.map((card) => (
-        <div
-          key={card.title}
-          className="absolute"
-          style={{ left: `${card.x * 100}%`, top: `${card.y * 100}%`, transform: "translate(-50%, -50%)" }}
-        >
-          <button
-            onClick={() => {
-              if (card.onClick) card.onClick();
-              else if (card.slug) onCardClick(card.slug);
-            }}
-            onMouseEnter={() => setHoveredCard(card.title)}
-            onMouseLeave={() => setHoveredCard(null)}
-            disabled={card.comingSoon}
-            className={`bg-transparent border-0 text-left flex flex-col items-start gap-3 w-[clamp(128px,10vw,168px)] ${card.comingSoon ? "cursor-default opacity-50" : "cursor-pointer"}`}
-          >
-            <span className="w-full aspect-square rounded-3xl bg-neutral-100 transition-shadow hover:shadow-md flex items-center justify-center p-4">
-              {card.comingSoon ? (
-                <span className="text-[10px] uppercase tracking-widest text-neutral-400">Coming soon</span>
-              ) : card.thumbnail ? (
-                <img src={card.thumbnail} alt={card.title} className="w-full h-full object-contain bg-transparent" />
-              ) : null}
-            </span>
-            <span>
-              <span className="block text-sm font-semibold text-neutral-900">{card.title}</span>
-              {card.subtitle && <span className="block text-neutral-500 text-xs mt-0.5">{card.subtitle}</span>}
-            </span>
-          </button>
-        </div>
-      ))}
+      {/* Keyed so React treats it as a brand-new instance whenever the card
+          SET actually changes (a new quadrant, or "work"'s tab toggle) — a
+          freshly-mounted DOM node can't CSS-transition from a value it never
+          had, so DestinationCards needs a true remount (not just new props)
+          to replay its "just arrived" entrance on every switch, not only the
+          very first time this view mounts. */}
+      <DestinationCards key={`${quadrant}:${workTab}`} cards={cards} onCardClick={onCardClick} setHoveredCard={setHoveredCard} />
 
       {/* Dots only at the 2 labeled ends (matching the active top-level
           label) — the other 2 ends have no label and no dot. */}
@@ -185,5 +172,73 @@ export function QuadrantDestinationView({
         </span>
       )}
     </div>
+  );
+}
+
+// Split out so it can be remounted fresh (via `key`) on every quadrant/tab
+// switch — see the comment at its call site above for why that's necessary.
+function DestinationCards({
+  cards,
+  onCardClick,
+  setHoveredCard,
+}: {
+  cards: DestinationCard[];
+  onCardClick: (slug: string) => void;
+  setHoveredCard: (title: string | null) => void;
+}) {
+  // Lazy initializer runs once per mount, i.e. once per remount of this
+  // component — a fresh random stagger order each time you arrive here.
+  const [cardDelays] = useState(() => cards.map(() => Math.random() * CARD_STAGGER_MAX_MS));
+  // Starts false so the very first paint has every card at opacity 0;
+  // flipping to true a frame later (not within the same paint) is what
+  // gives the browser an actual 0 -> 1 change to animate, rather than a
+  // value that was already 1 from the first frame onward (which CSS
+  // transitions can't animate — there's no "before" to transition from).
+  const [entered, setEntered] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  return (
+    <>
+      {cards.map((card, i) => (
+        <div
+          key={card.title}
+          className="absolute transition-opacity"
+          style={{
+            left: `${card.x * 100}%`,
+            top: `${card.y * 100}%`,
+            transform: "translate(-50%, -50%)",
+            opacity: entered ? 1 : 0,
+            transitionDuration: `${CARD_DURATION_MS}ms`,
+            transitionDelay: `${CARDS_BASE_DELAY_MS + cardDelays[i]}ms`,
+          }}
+        >
+          <button
+            onClick={() => {
+              if (card.onClick) card.onClick();
+              else if (card.slug) onCardClick(card.slug);
+            }}
+            onMouseEnter={() => setHoveredCard(card.title)}
+            onMouseLeave={() => setHoveredCard(null)}
+            disabled={card.comingSoon}
+            className={`bg-transparent border-0 text-left flex flex-col items-start gap-3 w-[clamp(128px,10vw,168px)] ${card.comingSoon ? "cursor-default opacity-50" : "cursor-pointer"}`}
+          >
+            <span className="w-full aspect-square rounded-3xl bg-neutral-100 transition-shadow hover:shadow-md flex items-center justify-center p-4">
+              {card.comingSoon ? (
+                <span className="text-[10px] uppercase tracking-widest text-neutral-400">Coming soon</span>
+              ) : card.thumbnail ? (
+                <img src={card.thumbnail} alt={card.title} className="w-full h-full object-contain bg-transparent" />
+              ) : null}
+            </span>
+            <span>
+              <span className="block text-sm font-semibold text-neutral-900">{card.title}</span>
+              {card.subtitle && <span className="block text-neutral-500 text-xs mt-0.5">{card.subtitle}</span>}
+            </span>
+          </button>
+        </div>
+      ))}
+    </>
   );
 }

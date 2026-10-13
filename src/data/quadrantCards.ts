@@ -21,6 +21,26 @@ export const EDGE = 40;
 export const SUB_LABEL_ALONG_GAP = 72;
 export const SUB_LABEL_PERP_GAP = 10;
 
+// Per-stop entrance choreography: the line finishes moving (LINE_DURATION_MS,
+// matching QuadrantSection's own line-transition duration) before the
+// top-level Qiyu/Others/Think/Do label starts fading in; cards wait for the
+// label to finish too, then each fades in on its own randomized delay within
+// CARD_STAGGER_MAX_MS of CARDS_BASE_DELAY_MS — so with more than one card
+// they visibly arrive in a scattered, non-simultaneous order each time.
+export const LINE_DURATION_MS = 700;
+export const LABEL_DELAY_MS = LINE_DURATION_MS;
+export const LABEL_DURATION_MS = 250;
+export const CARDS_BASE_DELAY_MS = LABEL_DELAY_MS + LABEL_DURATION_MS;
+export const CARD_DURATION_MS = 300;
+export const CARD_STAGGER_MAX_MS = 250;
+// The worst-case total time for a stop's whole entrance (line + label + the
+// last-staggered card) to finish settling. QuadrantSection's scroll lock uses
+// this — not just LINE_DURATION_MS — so the next wheel gesture can't advance
+// past a stop until everything in it has actually finished appearing; locking
+// only for the line's own duration let people scroll on while cards were
+// still popping in, which read as the section getting skipped.
+export const FULL_SETTLE_MS = CARDS_BASE_DELAY_MS + CARD_DURATION_MS + CARD_STAGGER_MAX_MS;
+
 // Which corner the two lines bracket into for each quadrant, mirroring the visual
 // language already built for the original work matrix (bottom-left) and the
 // Reflection section's held state (top-right) — plus top-left and bottom-right
