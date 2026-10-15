@@ -41,6 +41,15 @@ export const CARD_STAGGER_MAX_MS = 250;
 // still popping in, which read as the section getting skipped.
 export const FULL_SETTLE_MS = CARDS_BASE_DELAY_MS + CARD_DURATION_MS + CARD_STAGGER_MAX_MS;
 
+// Exit choreography is the mirror image of the entrance above, but faster and
+// undelayed: once you start scrolling away from a stop, its cards shouldn't
+// still be sitting there fully visible while the line is already moving to
+// the next one — they should start disappearing immediately, each on its own
+// short randomized stagger (scattered order, same idea as the entrance, just
+// compressed) rather than all vanishing in lockstep.
+export const EXIT_DURATION_MS = 200;
+export const EXIT_STAGGER_MAX_MS = 150;
+
 // Which corner the two lines bracket into for each quadrant, mirroring the visual
 // language already built for the original work matrix (bottom-left) and the
 // Reflection section's held state (top-right) — plus top-left and bottom-right

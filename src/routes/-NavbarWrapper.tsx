@@ -6,8 +6,8 @@ const MATRIX_TEXT = 'Prototyping @Apple the “what-ifs” of HCI';
 const REFLECTION_TEXT = "Thinking... what is overthinking";
 const OVERVIEW_TEXT = "Hello! I'd rather meet you than the site";
 
-// Hidden for now (not deleted) — flip back to false to bring the badge back.
-const HIDDEN = true;
+// Hidden for now (not deleted) — flip back to true to hide the badge again.
+const HIDDEN = false;
 
 export function NavbarWrapper() {
   const [pastLanding, setPastLanding] = useState(false);
@@ -38,7 +38,7 @@ export function NavbarWrapper() {
 
   return (
     <div
-      className="fixed top-16 right-16 z-40 transition-opacity duration-300"
+      className="fixed bottom-16 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300"
       style={{ opacity: pastLanding ? 1 : 0, pointerEvents: pastLanding ? "auto" : "none" }}
     >
       <a

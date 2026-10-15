@@ -11,6 +11,8 @@ import {
   CARDS_BASE_DELAY_MS,
   CARD_DURATION_MS,
   CARD_STAGGER_MAX_MS,
+  EXIT_DURATION_MS,
+  EXIT_STAGGER_MAX_MS,
   FULL_SETTLE_MS,
   SELF_UNDERSTANDING_CARDS,
   getHhiCards,
@@ -88,6 +90,34 @@ function vLineFor(stop: Stop, W: number, H: number) {
   const top = activeHSide === "top" ? EDGE : 0;
   const bottom = activeHSide === "top" ? H : H - EDGE;
   return { left, top, height: bottom - top };
+}
+
+// Tracks a value's previous render so direction-aware choreography (below)
+// can tell "this is appearing" apart from "this is disappearing" — a single
+// CSS `transition` declaration can't apply a different delay/duration
+// depending on which direction the value is moving, so anything that needs
+// an asymmetric enter/leave (labels, matrix cards, the diagram) reads this
+// instead of the value alone.
+function usePrevious<T>(value: T) {
+  const ref = useRef(value);
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
+function useEntering(value: number) {
+  return value > usePrevious(value);
+}
+
+// A top-level label needs an asymmetric transition: delayed when it's
+// APPEARING (wait for the line to settle, per LABEL_DELAY_MS), but immediate
+// when it's DISAPPEARING (the old section's label shouldn't still be sitting
+// there while the line is already moving away toward the next stop).
+function useLabelTransition(opacity: number) {
+  const entering = useEntering(opacity);
+  const base = `left ${TRANSITION_MS}ms ease-out, top ${TRANSITION_MS}ms ease-out, opacity ${LABEL_DURATION_MS}ms ease-out`;
+  return entering ? `${base} ${LABEL_DELAY_MS}ms` : base;
 }
 
 export function QuadrantSection({
@@ -176,6 +206,13 @@ export function QuadrantSection({
   }, [heldStop]);
   const matrixCardDelays = useMemo(
     () => Array.from({ length: 4 }, () => Math.random() * CARD_STAGGER_MAX_MS),
+    [matrixCardSeed],
+  );
+  // Same idea, re-rolled on the same visit, but for the reverse direction —
+  // scattering the order the cards disappear in when scrolling away, rather
+  // than reusing the entrance order.
+  const matrixCardExitDelays = useMemo(
+    () => Array.from({ length: 4 }, () => Math.random() * EXIT_STAGGER_MAX_MS),
     [matrixCardSeed],
   );
 
@@ -322,8 +359,32 @@ export function QuadrantSection({
   // teleport). Opacity alone gets the LABEL_DELAY_MS/LABEL_DURATION_MS pair,
   // so a newly-appearing label doesn't start fading in until its position
   // has already finished settling — it just appears where it belongs,
-  // instead of visibly sliding into place while also fading in.
-  const labelTransition = `left ${TRANSITION_MS}ms ease-out, top ${TRANSITION_MS}ms ease-out, opacity ${LABEL_DURATION_MS}ms ease-out ${LABEL_DELAY_MS}ms`;
+  // instead of visibly sliding into place while also fading in. Each label
+  // gets its OWN transition (not a shared one) because useLabelTransition
+  // needs to track each one's direction (appearing vs disappearing)
+  // independently — see useLabelTransition above for why that matters.
+  const qiyuTransition = useLabelTransition(qiyuOpacity);
+  const othersTransition = useLabelTransition(othersOpacity);
+  const thinkTransition = useLabelTransition(thinkOpacity);
+  const doTransition = useLabelTransition(doOpacity);
+
+  // Direction for the matrix's own sub-labels/cards: true while matrixOpacity
+  // is rising (arriving at "center"), false while it's falling (leaving it
+  // for anywhere else) — drives the same asymmetric fast-exit treatment as
+  // useLabelTransition above, just for a plain number instead of a transition
+  // string, since the 4 cards each need their own per-item exit stagger too.
+  const matrixEntering = useEntering(matrixOpacity);
+
+  // The diagram only ever visibly morphs (grows/shrinks between its hero size
+  // and the Reflection Notes card size) when BOTH ends of a transition are
+  // hero or center — any step that starts or ends on a destination stop
+  // should just have the diagram snap straight to wherever it belongs and
+  // fade, not visibly grow back to hero size while the line is mid-move to
+  // an unrelated stop (e.g. leaving center for "work").
+  const prevHeldStop = usePrevious(heldStop);
+  const diagramMorphing =
+    (heldStop === "hero" || heldStop === "center") && (prevHeldStop === "hero" || prevHeldStop === "center");
+  const diagramEntering = useEntering(heroOpacity + matrixOpacity);
 
   return (
     <div ref={outerRef} className="relative w-full" style={{ height: `${TOTAL_VH * 100}vh` }}>
@@ -381,16 +442,18 @@ export function QuadrantSection({
             with the rest once another stop is active. */}
         <button
           onClick={() => jumpTo("reflection")}
-          className="absolute flex flex-col items-center gap-3 bg-transparent border-0 cursor-pointer -translate-x-1/2 -translate-y-1/2 transition-all"
+          className="absolute flex flex-col items-center gap-3 bg-transparent border-0 cursor-pointer -translate-x-1/2 -translate-y-1/2"
           style={{
-            transitionDuration: `${TRANSITION_MS}ms`,
+            transition: diagramMorphing
+              ? `left ${TRANSITION_MS}ms ease-out, top ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`
+              : `opacity ${diagramEntering ? TRANSITION_MS : EXIT_DURATION_MS}ms ease-out`,
             left: matrixOpacity ? W * 0.28 : W / 2,
             top: matrixOpacity ? H * 0.2 : H * 0.42,
             opacity: heroOpacity + matrixOpacity,
             pointerEvents: matrixOpacity >= 0.5 ? "auto" : "none",
           }}
         >
-          <div className="transition-all" style={{ transitionDuration: `${TRANSITION_MS}ms`, width: matrixOpacity ? 112 : 420 }}>
+          <div style={{ transition: diagramMorphing ? `width ${TRANSITION_MS}ms ease-out` : "none", width: matrixOpacity ? 112 : 420 }}>
             <HandDrawnDiagram onHover={setHeroGap} />
           </div>
           {/* Tag (hero) and card label (matrix) stacked on the same spot, crossfading — not laid out as separate flex rows, so neither affects the other's position as it fades. */}
@@ -418,19 +481,19 @@ export function QuadrantSection({
             line has finished moving (LABEL_DELAY_MS = the line's own
             duration), with its own short, snappy fade (LABEL_DURATION_MS) —
             cards (below) wait for this to finish before they start. */}
-        <div className="absolute flex flex-col items-center gap-1.5" style={{ transition: labelTransition, left: topLabelVX, top: EDGE, transform: "translate(-50%, -100%)", opacity: qiyuOpacity, pointerEvents: "none" }}>
+        <div className="absolute flex flex-col items-center gap-1.5" style={{ transition: qiyuTransition, left: topLabelVX, top: EDGE, transform: "translate(-50%, -100%)", opacity: qiyuOpacity, pointerEvents: "none" }}>
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Qiyu</span>
           <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
         </div>
-        <div className="absolute flex flex-col items-center gap-1.5" style={{ transition: labelTransition, left: topLabelVX, top: H - EDGE, transform: "translateX(-50%)", opacity: othersOpacity, pointerEvents: "none" }}>
+        <div className="absolute flex flex-col items-center gap-1.5" style={{ transition: othersTransition, left: topLabelVX, top: H - EDGE, transform: "translateX(-50%)", opacity: othersOpacity, pointerEvents: "none" }}>
           <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Others</span>
         </div>
-        <div className="absolute flex items-center gap-2" style={{ transition: labelTransition, left: EDGE, top: topLabelHY, transform: "translate(-100%, -50%)", opacity: thinkOpacity, pointerEvents: "none" }}>
+        <div className="absolute flex items-center gap-2" style={{ transition: thinkTransition, left: EDGE, top: topLabelHY, transform: "translate(-100%, -50%)", opacity: thinkOpacity, pointerEvents: "none" }}>
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>Think</span>
           <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
         </div>
-        <div className="absolute flex items-center gap-2" style={{ transition: labelTransition, left: W - EDGE, top: topLabelHY, transform: "translateY(-50%)", opacity: doOpacity, pointerEvents: "none" }}>
+        <div className="absolute flex items-center gap-2" style={{ transition: doTransition, left: W - EDGE, top: topLabelHY, transform: "translateY(-50%)", opacity: doOpacity, pointerEvents: "none" }}>
           <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>Do</span>
         </div>
@@ -440,19 +503,25 @@ export function QuadrantSection({
             from here naturally continues the sequence. The wrapper itself no
             longer carries the fade (each child manages its own opacity now)
             — it just gates pointer-events once the matrix is mostly visible.
-            The 4 small gray sub-axis labels fade in together, unstaggered;
-            each quadrant card fades in on its own randomized delay within
-            CARD_STAGGER_MAX_MS of CARDS_BASE_DELAY_MS (after the top-level
-            labels above finish), so they visibly arrive in scattered order
-            rather than all at once. */}
+            Entrance: the 4 small gray sub-axis labels fade in together,
+            unstaggered; each quadrant card fades in on its own randomized
+            delay within CARD_STAGGER_MAX_MS of CARDS_BASE_DELAY_MS (after the
+            top-level labels above finish), so they visibly arrive in
+            scattered order rather than all at once. Exit (matrixEntering
+            false — scrolling away from "center"): no delay and a much
+            shorter duration, so everything here starts disappearing the
+            instant the line starts moving instead of still sitting fully
+            visible throughout its move — the cards use their own separate
+            exit stagger (matrixCardExitDelays) so they vanish in a different
+            scattered order than they arrived in. */}
         <div
           className="absolute inset-0"
           style={{ pointerEvents: matrixOpacity >= 0.5 ? "auto" : "none" }}
         >
-          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${TRANSITION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(-108%, -140%)" }}>Understand myself</div>
-          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${TRANSITION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(12%, -140%)" }}>Help myself grow</div>
-          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${TRANSITION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(-104%, 40%)" }}>Understand Others</div>
-          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${TRANSITION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(12%, 40%)" }}>Help Others grow</div>
+          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${matrixEntering ? TRANSITION_MS : EXIT_DURATION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(-108%, -140%)" }}>Understand myself</div>
+          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${matrixEntering ? TRANSITION_MS : EXIT_DURATION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(12%, -140%)" }}>Help myself grow</div>
+          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${matrixEntering ? TRANSITION_MS : EXIT_DURATION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(-104%, 40%)" }}>Understand Others</div>
+          <div className="absolute text-xs text-neutral-400 transition-opacity" style={{ transitionDuration: `${matrixEntering ? TRANSITION_MS : EXIT_DURATION_MS}ms`, opacity: matrixOpacity, left: "50%", top: "50%", transform: "translate(12%, 40%)" }}>Help Others grow</div>
 
           {/* "Reflection Notes" is not in this list — the morphing diagram
               element above already becomes that card once the matrix is
@@ -472,8 +541,10 @@ export function QuadrantSection({
                 left: c.left,
                 top: c.top,
                 opacity: matrixOpacity,
-                transitionDuration: `${CARD_DURATION_MS}ms`,
-                transitionDelay: `${CARDS_BASE_DELAY_MS + matrixCardDelays[i]}ms`,
+                transitionDuration: `${matrixEntering ? CARD_DURATION_MS : EXIT_DURATION_MS}ms`,
+                transitionDelay: matrixEntering
+                  ? `${CARDS_BASE_DELAY_MS + matrixCardDelays[i]}ms`
+                  : `${matrixCardExitDelays[i]}ms`,
               }}
             >
               <span className="w-28 h-28 rounded-3xl bg-neutral-200 transition-colors hover:bg-neutral-300" />

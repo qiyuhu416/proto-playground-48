@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   AXIS_LABELS,
-  BRACKET,
   EDGE,
   SUB_LABEL_PERP_GAP,
   CARDS_BASE_DELAY_MS,
@@ -62,13 +61,6 @@ export function QuadrantDestinationView({
   const hSubY = hOnTop ? hLine.top - SUB_LABEL_PERP_GAP : hLine.top + SUB_LABEL_PERP_GAP;
   const vSubLabel = axisLabels && (cursorPos.y < H / 2 ? axisLabels.top : axisLabels.bottom);
   const hSubLabel = axisLabels && (cursorPos.x < W / 2 ? axisLabels.left : axisLabels.right);
-
-  // Only 2 of the line's 4 ends have an active top-level label (QuadrantSection's
-  // Qiyu/Others/Think/Do) — the quadrant's own corner, opposite its bracket. The
-  // other 2 ends are unanchored (the line runs past them to the true screen edge,
-  // per hLineFor/vLineFor), so they get no dot here either.
-  const activeHSide = BRACKET[quadrant].hTop === "top" ? "bottom" : "top";
-  const activeVSide = BRACKET[quadrant].vSide === "left" ? "right" : "left";
 
   return (
     <div
@@ -137,19 +129,6 @@ export function QuadrantDestinationView({
           to replay its "just arrived" entrance on every switch, not only the
           very first time this view mounts. */}
       <DestinationCards key={`${quadrant}:${workTab}`} cards={cards} onCardClick={onCardClick} setHoveredCard={setHoveredCard} />
-
-      {/* Dots only at the 2 labeled ends (matching the active top-level
-          label) — the other 2 ends have no label and no dot. */}
-      {[
-        { x: activeVSide === "left" ? hLine.left : hLine.left + hLine.width, y: hLine.top },
-        { x: vLine.left, y: activeHSide === "top" ? vLine.top : vLine.top + vLine.height },
-      ].map((d, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-red-400 pointer-events-none"
-          style={{ left: d.x, top: d.y, width: 10, height: 10, transform: "translate(-50%, -50%)" }}
-        />
-      ))}
 
       {/* Cursor-position markers on each axis — ride along with the cursor-
           tracking lines above, right at their intersection with this
