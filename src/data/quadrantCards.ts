@@ -3,6 +3,22 @@
 
 export type QuadrantId = "work" | "hhi" | "help-others" | "reflection";
 
+// Cursor-proximity "grow" effect, ported from the original work matrix
+// (commit adb5b2d) and shared by every card grid in this system — the
+// matrix's own 4 quadrant-selector cards (QuadrantSection) and each
+// destination's cards (QuadrantDestinationView). A card scales up slightly
+// as the cursor nears its center, linearly falling back to 1x once the
+// cursor is CARD_GROW_MAX_DISTANCE away or further — reads as the cards
+// "paying attention" to the cursor, not a hover-only on/off state.
+export const CARD_GROW_MAX_DISTANCE = 200;
+export const CARD_GROW_MAX_SCALE = 0.15;
+export const CARD_GROW_DURATION_MS = 80;
+
+export function cardGrowScale(cursorPos: { x: number; y: number }, cardX: number, cardY: number) {
+  const distance = Math.hypot(cursorPos.x - cardX, cursorPos.y - cardY);
+  return Math.max(1, 1 + ((CARD_GROW_MAX_DISTANCE - distance) / CARD_GROW_MAX_DISTANCE) * CARD_GROW_MAX_SCALE);
+}
+
 // Shared layout constants so every page aligns to the same margin, instead of
 // each component picking its own arbitrary number:
 // - EDGE: distance from the true page edge to the bracket line/dot — content
@@ -34,11 +50,9 @@ export const CARDS_BASE_DELAY_MS = LABEL_DELAY_MS + LABEL_DURATION_MS;
 export const CARD_DURATION_MS = 300;
 export const CARD_STAGGER_MAX_MS = 250;
 // The worst-case total time for a stop's whole entrance (line + label + the
-// last-staggered card) to finish settling. QuadrantSection's scroll lock uses
-// this — not just LINE_DURATION_MS — so the next wheel gesture can't advance
-// past a stop until everything in it has actually finished appearing; locking
-// only for the line's own duration let people scroll on while cards were
-// still popping in, which read as the section getting skipped.
+// last-staggered card) to finish settling. QuadrantSection's click-jump uses
+// this to know how long to keep its CSS-animated override active before
+// silently handing control back to continuous scroll-tracking.
 export const FULL_SETTLE_MS = CARDS_BASE_DELAY_MS + CARD_DURATION_MS + CARD_STAGGER_MAX_MS;
 
 // Exit choreography is the mirror image of the entrance above, but faster and
@@ -61,6 +75,28 @@ export const BRACKET: Record<QuadrantId, { hTop: "top" | "bottom"; vSide: "left"
   "help-others": { hTop: "top", vSide: "left" },    // lower-right quadrant -> top-left bracket
   reflection: { hTop: "bottom", vSide: "right" },   // upper-left quadrant -> bottom-right bracket
 };
+
+// Per-quadrant identity color — muted, desaturated pastels chosen to sit
+// quietly alongside the site's white background and red-400 accent dots
+// rather than compete with them. Used two ways: as a solid-ish thumbnail
+// fill on the matrix's quadrant-selector cards, and as a low-opacity wash
+// behind that quadrant's own destination content (kept translucent there
+// deliberately — a fully opaque fill would fight with thumbnails/icons
+// drawn on top of it and risks contrast problems; a light wash reads as
+// "this quadrant has a color" without obscuring anything). "reflection"
+// stays a plain neutral gray rather than a hue, matching its more muted,
+// journal-like content.
+export const QUADRANT_COLOR: Record<QuadrantId, string> = {
+  work: "#dcc3c3", // dusty rose
+  hhi: "#cfdccb", // soft sage
+  "help-others": "#ccd6ea", // soft periwinkle
+  reflection: "#d4d4d4", // neutral gray
+};
+// "tech for self-understanding" is its own matrix card but shares the
+// "work" destination (same QuadrantId, just the Self tab) — it needs a
+// thumbnail color distinct from "work"'s own card, but has no destination
+// background of its own to match.
+export const TECH_SELF_COLOR = "#cdc5be"; // warm taupe
 
 // Static axis-end labels for each destination view (always visible, unlike
 // yAxisLabel/xAxisLabel on DestinationCard below which only show on hover).

@@ -6,15 +6,19 @@ import {
   CARDS_BASE_DELAY_MS,
   CARD_DURATION_MS,
   CARD_STAGGER_MAX_MS,
+  cardGrowScale,
+  CARD_GROW_DURATION_MS,
   type DestinationCard,
   type QuadrantId,
 } from "@/data/quadrantCards";
+import { ReflectionNotesCarousel } from "@/components/ReflectionNotesCarousel";
 
 // Destination content shared by every quadrant reached from QuadrantSection's
 // single scroll sequence, however you got there (clicking a matrix card, or
 // scrolling down into it) — same cards, same cursor-tracking crosshair, same
-// bracket-end dots, same axis labels. No back control — scrolling up is how
-// you return to the matrix, consistently across every quadrant.
+// bracket-end dots, same axis labels. Scrolling up returns to the matrix;
+// clicking anywhere on the open background (not on a card or the tab toggle)
+// does the same thing instantly, via onBackgroundClick below.
 export function QuadrantDestinationView({
   quadrant,
   cards,
@@ -25,6 +29,8 @@ export function QuadrantDestinationView({
   hLine,
   vLine,
   onCardClick,
+  onBackgroundClick,
+  contentRect,
 }: {
   quadrant: QuadrantId;
   cards: DestinationCard[];
@@ -35,7 +41,10 @@ export function QuadrantDestinationView({
   hLine: { top: number; left: number; width: number };
   vLine: { left: number; top: number; height: number };
   onCardClick: (slug: string) => void;
+  onBackgroundClick: () => void;
+  contentRect: { top: number; left: number; width: number; height: number } | null;
 }) {
+  const isReflection = quadrant === "reflection";
   const rootRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -65,13 +74,21 @@ export function QuadrantDestinationView({
   return (
     <div
       ref={rootRef}
-      className="absolute inset-0"
+      className="absolute inset-0 cursor-pointer"
       onMouseMove={(e) => {
         const rect = rootRef.current?.getBoundingClientRect();
         if (rect) setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       }}
+      onClick={(e) => {
+        // Only the open background, not a card/button/etc. nested inside it —
+        // those are separate elements, so a click landing on one of THEM
+        // never has this root div as its exact target, only as an ancestor.
+        if (e.target === e.currentTarget) onBackgroundClick();
+      }}
     >
-      {W > 0 && (
+      {/* No cursor-tracking crosshair over the reflection notes — it reads as
+          clutter over something meant to be read, not pointed at. */}
+      {W > 0 && !isReflection && (
         <svg className="absolute inset-0 pointer-events-none" viewBox={`0 0 ${W} ${H}`}>
           <line x1={cursorPos.x} y1={EDGE} x2={cursorPos.x} y2={H - EDGE} stroke={hoveredCard ? "#d32f2f" : "#d8d8d8"} strokeWidth="1" opacity={hoveredCard ? 0.6 : 0.4} />
           <line x1={EDGE} y1={cursorPos.y} x2={W - EDGE} y2={cursorPos.y} stroke={hoveredCard ? "#d32f2f" : "#d8d8d8"} strokeWidth="1" opacity={hoveredCard ? 0.6 : 0.4} />
@@ -122,19 +139,25 @@ export function QuadrantDestinationView({
         </div>
       )}
 
-      {/* Keyed so React treats it as a brand-new instance whenever the card
+      {/* Reflection notes are shown directly here, no extra click-through to
+          a separate route — everything else still gets the usual card grid.
+          Keyed so React treats it as a brand-new instance whenever the card
           SET actually changes (a new quadrant, or "work"'s tab toggle) — a
           freshly-mounted DOM node can't CSS-transition from a value it never
           had, so DestinationCards needs a true remount (not just new props)
           to replay its "just arrived" entrance on every switch, not only the
           very first time this view mounts. */}
-      <DestinationCards key={`${quadrant}:${workTab}`} cards={cards} onCardClick={onCardClick} setHoveredCard={setHoveredCard} />
+      {isReflection ? (
+        contentRect && <ReflectionNotesCarousel rect={contentRect} />
+      ) : (
+        <DestinationCards key={`${quadrant}:${workTab}`} cards={cards} onCardClick={onCardClick} setHoveredCard={setHoveredCard} cursorPos={cursorPos} W={W} H={H} />
+      )}
 
       {/* Cursor-position markers on each axis — ride along with the cursor-
           tracking lines above, right at their intersection with this
           quadrant's two bracket lines, so each reads as "where the cursor
           currently is" on that axis rather than a fixed caption. */}
-      {vSubLabel && (
+      {!isReflection && vSubLabel && (
         <span
           className="absolute text-[10px] font-medium uppercase tracking-wide text-neutral-400 whitespace-nowrap pointer-events-none"
           style={{ left: vSubX, top: cursorPos.y, writingMode: "vertical-rl", transform: "translate(-50%, -50%) rotate(180deg)" }}
@@ -142,7 +165,7 @@ export function QuadrantDestinationView({
           {vSubLabel}
         </span>
       )}
-      {hSubLabel && (
+      {!isReflection && hSubLabel && (
         <span
           className="absolute text-[10px] font-medium uppercase tracking-wide text-neutral-400 whitespace-nowrap pointer-events-none"
           style={{ left: cursorPos.x, top: hSubY, transform: "translate(-50%, -50%)" }}
@@ -160,10 +183,16 @@ function DestinationCards({
   cards,
   onCardClick,
   setHoveredCard,
+  cursorPos,
+  W,
+  H,
 }: {
   cards: DestinationCard[];
   onCardClick: (slug: string) => void;
   setHoveredCard: (title: string | null) => void;
+  cursorPos: { x: number; y: number };
+  W: number;
+  H: number;
 }) {
   // Lazy initializer runs once per mount, i.e. once per remount of this
   // component — a fresh random stagger order each time you arrive here.
@@ -181,17 +210,18 @@ function DestinationCards({
 
   return (
     <>
-      {cards.map((card, i) => (
+      {cards.map((card, i) => {
+        const scale = cardGrowScale(cursorPos, card.x * W, card.y * H);
+        return (
         <div
           key={card.title}
-          className="absolute transition-opacity"
+          className="absolute"
           style={{
             left: `${card.x * 100}%`,
             top: `${card.y * 100}%`,
-            transform: "translate(-50%, -50%)",
+            transform: `translate(-50%, -50%) scale(${scale})`,
             opacity: entered ? 1 : 0,
-            transitionDuration: `${CARD_DURATION_MS}ms`,
-            transitionDelay: `${CARDS_BASE_DELAY_MS + cardDelays[i]}ms`,
+            transition: `opacity ${CARD_DURATION_MS}ms ${CARDS_BASE_DELAY_MS + cardDelays[i]}ms, transform ${CARD_GROW_DURATION_MS}ms ease-out`,
           }}
         >
           <button
@@ -217,7 +247,8 @@ function DestinationCards({
             </span>
           </button>
         </div>
-      ))}
+        );
+      })}
     </>
   );
 }
