@@ -32,3 +32,8 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+
+# Local scratch / tool output — never part of the deployed app
+articles-export/
+public/fun-stuff/
+*.bak
