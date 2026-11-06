@@ -5,11 +5,16 @@ import { ArrowUpRight } from "lucide-react";
 // QuadrantSection (which only ever needs OVERVIEW_TEXT, for the inline badge
 // at the Overview stop) both read the same strings instead of each keeping
 // their own copy.
-export const MATRIX_TEXT = 'Prototyping @Apple the “what-ifs” of HCI';
+export const MATRIX_TEXT = 'Currently Prototyping @Apple AILabs';
 export const REFLECTION_TEXT = "Thinking... what is overthinking";
 export const OVERVIEW_TEXT = "Hello! I'd rather meet you than the site";
-export const HHI_TEXT = "Prototyping ways to befriend strangers";
-export const HELP_OTHERS_TEXT = "Finding small ways to help others grow";
+export const HHI_TEXT = "Since when does 'humans' become a word?";
+export const HELP_OTHERS_TEXT = "Yoyo";
+// "tech for self-understanding" is its own matrix card but shares the
+// "work" quadrant/stop with "work" (same destination, different tab) — this
+// text is only ever shown on that card's own hover preview in the matrix,
+// never by NavbarWrapper (which only varies by stop, not by tab).
+export const SELF_UNDERSTANDING_TEXT = "Subject=Qiyu (N=1)";
 
 // The LinkedIn pill itself, shared by two call sites: NavbarWrapper (fixed
 // to the bottom of the viewport, everywhere the badge normally lives) and
@@ -26,14 +31,14 @@ export function LinkedInBadge({ text }: { text: string }) {
       style={{ cursor: "pointer" }}
       className="group grid items-center overflow-hidden rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-900 shadow-sm transition-colors duration-300 hover:border-transparent hover:bg-neutral-900 hover:text-white"
     >
-      {/* Invisible sizer, always present, never shown — permanently pins the grid
-          column's width to the longest possible text (the matrix line), so the
-          badge never resizes no matter which text or hover state is showing. */}
-      <span aria-hidden className="invisible col-start-1 row-start-1 flex items-center gap-1.5 whitespace-nowrap">
-        <span className="size-1.5 shrink-0 rounded-full" />
-        {MATRIX_TEXT}
-      </span>
-
+      {/* No fixed-width sizer anymore — the badge now sizes to whichever
+          `text` it's actually showing (the grid column still naturally
+          accounts for both this layer and the hover-reveal layer below, so
+          hovering to reveal "Qiyu's LinkedIn" never clips). Every call site
+          positions this with `right` (not `left`), so as the width changes
+          per text, the badge grows/shrinks from its left edge while its
+          right edge — and everything else "right aligned" means here —
+          stays fixed in place. */}
       <span className="col-start-1 row-start-1 flex items-center gap-1.5 whitespace-nowrap group-hover:invisible">
         <span className="size-1.5 shrink-0 rounded-full bg-emerald-400" />
         {text}

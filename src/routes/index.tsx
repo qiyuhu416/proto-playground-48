@@ -686,7 +686,7 @@ function Index() {
               </p>
             )}
             {!heroGap && (
-              <p className="tag-style text-sm">when "others = AI", how to design the line 2 to guide humans see the unknowns?</p>
+              <p className="tag-style text-sm">when "others = AI", how to design line 2 to guide humans see the unknowns?</p>
             )}
           </div>
         </div>

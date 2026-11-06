@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import type { MatrixArticle } from "@/routes/index";
 import { QuadrantDestinationView } from "@/components/QuadrantDestinationView";
-import { LinkedInBadge, OVERVIEW_TEXT } from "@/components/LinkedInBadge";
+import { LinkedInBadge, OVERVIEW_TEXT, MATRIX_TEXT, SELF_UNDERSTANDING_TEXT, HHI_TEXT, HELP_OTHERS_TEXT, REFLECTION_TEXT } from "@/components/LinkedInBadge";
 import { CursorCrosshairMarks } from "@/components/CursorCrosshair";
 import { CardModal } from "@/components/CardModal";
 import {
@@ -106,6 +106,16 @@ const BADGE_OFF_Y = 112;
 // file comment for why the other 3 quadrants (plus "overview") are
 // click-only instead.
 const SCROLL_STOPS: Stop[] = ["work", "center"];
+// How much extra scroll (in vh) to reserve AFTER the last real stop
+// ("center") settles, before this section releases and whatever comes next
+// on the page (the footer) becomes reachable — a small grace margin so
+// scroll-snap has room to settle exactly on "center" without instantly
+// starting to fade out on the slightest overshoot, NOT a full extra
+// viewport height. The wrapper's reserved height and `pastEnd` below both
+// key off this — without it, there's a full extra 100vh of totally static,
+// un-snapped scroll between "center" settling and the footer actually
+// appearing, which reads as the footer being unreachable/missing entirely.
+const RELEASE_DWELL_VH = 20;
 
 // On the matrix ("center"), all 4 top-level labels are active, so both ends
 // of each line stop at EDGE — dot-to-dot, never past either labeled dot. But
@@ -325,10 +335,11 @@ export function QuadrantSection({
   // the override just stays set until the next `jumpTo` replaces it.
   const [clickTarget, setClickTarget] = useState<Stop | null>(null);
   const heldStop: Stop = clickTarget ?? SCROLL_STOPS[Math.round(scrollProgress)];
-  // Once scrolled past the whole sequence's reserved height, this section's
+  // Once scrolled past the last stop's own settle point plus its dwell
+  // margin (RELEASE_DWELL_VH, not a whole extra stop-length), this section's
   // otherwise-always-fixed content should get completely out of the way
   // rather than keep floating over whatever comes next on the page.
-  const pastEnd = viewportH > 0 && scrolledPast > SCROLL_STOPS.length * viewportH;
+  const pastEnd = viewportH > 0 && scrolledPast > (SCROLL_STOPS.length - 1) * viewportH + (RELEASE_DWELL_VH / 100) * viewportH;
   // On this branch, this component's own document position starts partway
   // down the page (after Hero above it), not at scroll 0 like on fun-stuff —
   // so real scroll can be legitimately BEFORE this component's own top
@@ -663,8 +674,21 @@ export function QuadrantSection({
       ? "bottom-left"
       : "bottom-right";
 
+  // The 5 matrix cards — a named list (not inline in the JSX below) so the
+  // hover-preview badge section can look up the currently-hovered card's own
+  // badgeText from the SAME data the grid itself renders from, instead of
+  // re-deriving it by matching title strings a second time somewhere else.
+  const matrixCards = [
+    { title: "Work", x: 0.57, y: 0.17, onClick: () => jumpTo("work", "others"), thumbnail: "/articles/work-icon.jpg", badgeText: MATRIX_TEXT },
+    { title: "Tech for self-understanding", x: 0.77, y: 0.23, onClick: () => jumpTo("work", "self"), thumbnail: "/articles/self-understanding-icon.jpg", badgeText: SELF_UNDERSTANDING_TEXT },
+    { title: "Human-Human Interaction experiments", x: 0.28, y: 0.68, onClick: () => jumpTo("hhi"), thumbnail: "/articles/hhi-icon.jpg", badgeText: HHI_TEXT },
+    { title: "Life as a prototype", x: 0.68, y: 0.65, onClick: () => jumpTo("help-others"), thumbnail: "/articles/help-others-icon.jpg", badgeText: HELP_OTHERS_TEXT },
+    { title: "Reflection Notes", x: 0.28, y: 0.2, onClick: () => jumpTo("reflection"), thumbnail: "/articles/reflection-notes-icon.jpg", badgeText: REFLECTION_TEXT },
+  ];
+  const hoveredMatrixCardBadgeText = matrixCards.find((c) => c.title === matrixHoveredCard)?.badgeText;
+
   return (
-    <div ref={outerRef} className="relative w-full" style={{ height: `${SCROLL_STOPS.length * 100}vh` }}>
+    <div ref={outerRef} className="relative w-full" style={{ height: `${(SCROLL_STOPS.length - 1) * 100 + RELEASE_DWELL_VH}vh` }}>
       {/* Scroll-snap anchors — one per SCROLL_STOPS entry, at its exact
           checkpoint (an exact multiple of one viewport height into this
           component). Together with the global `scroll-snap-type: y
@@ -815,9 +839,16 @@ export function QuadrantSection({
               arrow signals "forward, into this quadrant" (the whole quadrant
               is clickable, see the wrapper's onClick above) — the mirror
               image of the destination pages' up-LEFT back-arrow, which means
-              the opposite: "back, to the matrix". */}
+              the opposite: "back, to the matrix". Hidden the moment a
+              specific CARD is hovered — the LinkedIn badge below takes over
+              as the cursor's stand-in then, instead of showing both at once.
+              z-50: this renders BEFORE the cards below in the JSX, so
+              without an explicit z-index it painted underneath them by
+              default DOM stacking order — right on top of a card is exactly
+              where the cursor tends to be while hovering it, so that read as
+              the pill vanishing behind whichever card you were pointing at. */}
           <div
-            className="absolute flex items-center gap-1.5 rounded-full bg-neutral-900 text-white text-xs font-medium px-3 py-1.5 whitespace-nowrap pointer-events-none"
+            className="absolute z-50 flex items-center gap-1.5 rounded-full bg-neutral-900 text-white text-xs font-medium px-3 py-1.5 whitespace-nowrap pointer-events-none"
             style={{
               left: matrixCursorPos.x,
               top: matrixCursorPos.y,
@@ -825,12 +856,35 @@ export function QuadrantSection({
               // Same matrixCursorActive gate as the crosshair above — stays
               // invisible at the stale (0,0) default until a real mouse
               // move gives it an actual position to show.
-              opacity: matrixCursorActive ? matrixOpacity : 0,
+              opacity: matrixCursorActive && !matrixHoveredCard ? matrixOpacity : 0,
               transition: `opacity ${matrixEntering ? TRANSITION_MS : EXIT_DURATION_MS}ms`,
             }}
           >
             {QUADRANT_LABEL[cursorQuadrant]}
             <ArrowUpRight className="size-3.5 shrink-0" />
+          </div>
+
+          {/* Replaces the cursor pill above while a specific card is
+              hovered: the actual LinkedIn badge, acting as the cursor itself
+              (tracking matrixCursorPos, same as the dark pill it replaces)
+              rather than resting at its eventual BADGE_POSITION yet — that
+              fixed top-right settle only happens once you've actually
+              clicked into the quadrant, at which point NavbarWrapper takes
+              over and shows this same badge there (BADGE_POSITION). Each
+              card's own text via matrixCards' badgeText, looked up through
+              hoveredMatrixCardBadgeText above. Same z-50 fix as the dark
+              pill above, for the same reason. */}
+          <div
+            className="absolute z-50 transition-opacity pointer-events-none"
+            style={{
+              left: matrixCursorPos.x,
+              top: matrixCursorPos.y,
+              transform: "translate(-50%, -50%)",
+              opacity: hoveredMatrixCardBadgeText ? matrixOpacity : 0,
+              transitionDuration: `${CROSS_HOVER_MS}ms`,
+            }}
+          >
+            {hoveredMatrixCardBadgeText && <LinkedInBadge text={hoveredMatrixCardBadgeText} />}
           </div>
 
           {/* All 5 matrix cards, each with a hand-drawn icon in its
@@ -843,13 +897,7 @@ export function QuadrantSection({
               cursor-proximity scale technique as the original work matrix
               and the destination cards below — see
               CARD_GROW_MAX_DISTANCE/CARD_GROW_MAX_SCALE). */}
-          {[
-            { title: "Work", x: 0.57, y: 0.17, onClick: () => jumpTo("work", "others"), thumbnail: "/articles/work-icon.jpg" },
-            { title: "Tech for self-understanding", x: 0.77, y: 0.23, onClick: () => jumpTo("work", "self"), thumbnail: "/articles/self-understanding-icon.jpg" },
-            { title: "Human-Human Interaction experiments", x: 0.28, y: 0.68, onClick: () => jumpTo("hhi"), thumbnail: "/articles/hhi-icon.jpg" },
-            { title: "Life as prototypes", x: 0.68, y: 0.65, onClick: () => jumpTo("help-others"), thumbnail: "/articles/help-others-icon.jpg" },
-            { title: "Reflection Notes", x: 0.28, y: 0.2, onClick: () => jumpTo("reflection"), thumbnail: "/articles/reflection-notes-icon.jpg" },
-          ].map((c, i) => {
+          {matrixCards.map((c, i) => {
             const scale = cardGrowScale(matrixCursorPos, c.x * W, c.y * H);
             return (
               <button
