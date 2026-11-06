@@ -106,16 +106,6 @@ const BADGE_OFF_Y = 112;
 // file comment for why the other 3 quadrants (plus "overview") are
 // click-only instead.
 const SCROLL_STOPS: Stop[] = ["work", "center"];
-// How much extra scroll (in vh) to reserve AFTER the last real stop
-// ("center") settles, before this section releases and whatever comes next
-// on the page (the footer) becomes reachable — a small grace margin so
-// scroll-snap has room to settle exactly on "center" without instantly
-// starting to fade out on the slightest overshoot, NOT a full extra
-// viewport height. The wrapper's reserved height and `pastEnd` below both
-// key off this — without it, there's a full extra 100vh of totally static,
-// un-snapped scroll between "center" settling and the footer actually
-// appearing, which reads as the footer being unreachable/missing entirely.
-const RELEASE_DWELL_VH = 20;
 
 // On the matrix ("center"), all 4 top-level labels are active, so both ends
 // of each line stop at EDGE — dot-to-dot, never past either labeled dot. But
@@ -335,11 +325,10 @@ export function QuadrantSection({
   // the override just stays set until the next `jumpTo` replaces it.
   const [clickTarget, setClickTarget] = useState<Stop | null>(null);
   const heldStop: Stop = clickTarget ?? SCROLL_STOPS[Math.round(scrollProgress)];
-  // Once scrolled past the last stop's own settle point plus its dwell
-  // margin (RELEASE_DWELL_VH, not a whole extra stop-length), this section's
+  // Once scrolled past the whole sequence's reserved height, this section's
   // otherwise-always-fixed content should get completely out of the way
   // rather than keep floating over whatever comes next on the page.
-  const pastEnd = viewportH > 0 && scrolledPast > (SCROLL_STOPS.length - 1) * viewportH + (RELEASE_DWELL_VH / 100) * viewportH;
+  const pastEnd = viewportH > 0 && scrolledPast > SCROLL_STOPS.length * viewportH;
   // On this branch, this component's own document position starts partway
   // down the page (after Hero above it), not at scroll 0 like on fun-stuff —
   // so real scroll can be legitimately BEFORE this component's own top
@@ -688,7 +677,7 @@ export function QuadrantSection({
   const hoveredMatrixCardBadgeText = matrixCards.find((c) => c.title === matrixHoveredCard)?.badgeText;
 
   return (
-    <div ref={outerRef} className="relative w-full" style={{ height: `${(SCROLL_STOPS.length - 1) * 100 + RELEASE_DWELL_VH}vh` }}>
+    <div ref={outerRef} className="relative w-full" style={{ height: `${SCROLL_STOPS.length * 100}vh` }}>
       {/* Scroll-snap anchors — one per SCROLL_STOPS entry, at its exact
           checkpoint (an exact multiple of one viewport height into this
           component). Together with the global `scroll-snap-type: y

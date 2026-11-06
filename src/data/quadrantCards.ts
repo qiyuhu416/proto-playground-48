@@ -43,10 +43,12 @@ export const SUB_LABEL_PERP_GAP = 10;
 // (once actually in that quadrant) read this SAME constant, so the preview
 // shows the badge settling exactly where it'll actually end up, and neither
 // call site can drift out of sync with the other by hand-tuning its own
-// copy of these numbers. Top-right corner, vertically centered at EDGE from
-// the top — the same distance the lower bracket line sits from the bottom
-// edge, mirrored.
-export const BADGE_POSITION = { top: EDGE, right: EDGE, transform: "translateY(-50%)" } as const;
+// copy of these numbers. Top-right corner, but inset further than EDGE on
+// both sides — lower than the bracket line's own top margin and further in
+// from the right edge than the matching bottom-left inset — so the badge
+// reads as its own element floating near the corner rather than flush
+// against it.
+export const BADGE_POSITION = { top: EDGE + 40, right: EDGE + 24, transform: "translateY(-50%)" } as const;
 
 // Per-stop entrance choreography: the line finishes moving (LINE_DURATION_MS,
 // matching QuadrantSection's own line-transition duration) before the

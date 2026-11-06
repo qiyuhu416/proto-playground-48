@@ -11,13 +11,13 @@ export function NavbarWrapper() {
   const [badgeText, setBadgeText] = useState(MATRIX_TEXT);
 
   useEffect(() => {
-    const handleScroll = () => {
-      // QuadrantSection stamps its current stop onto its own root section as
-      // a data attribute (`data-held-stop`) — reading that instead of
-      // separate per-section aria-label queries, since the whole sequence
-      // (hero/center/work/hhi/help-others/reflection/overview) now lives in
-      // one unified component, not separate scroll-choreographed sections.
-      const quadrantSection = document.querySelector('[aria-label="Quadrant Section"]');
+    // QuadrantSection stamps its current stop onto its own root section as
+    // a data attribute (`data-held-stop`) — reading that instead of
+    // separate per-section aria-label queries, since the whole sequence
+    // (hero/center/work/hhi/help-others/reflection/overview) now lives in
+    // one unified component, not separate scroll-choreographed sections.
+    const quadrantSection = document.querySelector('[aria-label="Quadrant Section"]');
+    const update = () => {
       const heldStop = quadrantSection?.getAttribute("data-held-stop");
       // Hidden outright on the full matrix (the one stop where it would
       // otherwise float over the busiest part of the page) and on Overview,
@@ -35,9 +35,21 @@ export function NavbarWrapper() {
           : MATRIX_TEXT,
       );
     };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    // A `scroll` listener alone misses HHI/help-others/reflection — those
+    // are click-only stops (QuadrantSection's own jumpTo never moves real
+    // scroll for them, see its own top-of-file comment), so clicking into
+    // one changes data-held-stop with NO scroll event to catch it. Watching
+    // the attribute directly covers both cases — scroll-driven (work <->
+    // center) and click-driven (everything else) — instead of only the
+    // former.
+    const observer = new MutationObserver(update);
+    if (quadrantSection) observer.observe(quadrantSection, { attributes: true, attributeFilter: ["data-held-stop"] });
+    return () => {
+      window.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
   }, []);
 
   if (HIDDEN) return null;

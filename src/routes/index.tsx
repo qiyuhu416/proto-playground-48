@@ -627,7 +627,7 @@ export const MATRIX_ARTICLES: MatrixArticle[] = [
   { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.55, y: 0.50, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
   { slug: "designing-for-conversations-that-earn-trust", title: "AI Trust & Affiliation", company: "AI Caring Inst.", x: 0.85, y: 0.20, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
   { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.80, y: 0.72, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
-  { slug: "google-cloud", title: "Assisted Browsing", company: "Google", x: 0.28, y: 0.75, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Feature Launch", thumbnail: "/articles/google-cloud-hero.png" },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Google", x: 0.3, y: 0.7, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Feature Launch", thumbnail: "/articles/google-cloud-hero.png" },
   { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.68, y: 0.40, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Service Design", thumbnail: "/articles/physical-ai-thumb.png" },
   { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.18, y: 0.35, pillarTheme: "EXPRESS ONESELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
 ];

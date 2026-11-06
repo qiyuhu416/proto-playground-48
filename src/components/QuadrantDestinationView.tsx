@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   AXIS_LABELS,
   EDGE,
+  BADGE_POSITION,
   SUB_LABEL_PERP_GAP,
   DESTINATION_CARD_BASE_DELAY_MS,
   CARD_DURATION_MS,
@@ -128,11 +129,12 @@ export function QuadrantDestinationView({
       )}
 
       {quadrant === "work" && (
-        // Centered — swapped with NavbarWrapper's own badge, which moves to
+        // Centered — swapped with NavbarWrapper's own badge, which sits in
         // the right corner for this one quadrant (see NavbarWrapper.tsx).
-        // Vertically centered at EDGE from the top, mirroring the lower
-        // bracket line's own EDGE distance from the bottom.
-        <div className="absolute flex items-center rounded-full bg-neutral-100 p-1 text-sm" style={{ top: EDGE, left: "50%", transform: "translate(-50%, -50%)" }}>
+        // Reads `top` straight off BADGE_POSITION (not its own copy of the
+        // number) so the two always land on the exact same vertical line,
+        // however that shared value changes.
+        <div className="absolute flex items-center rounded-full bg-neutral-100 p-1 text-sm" style={{ top: BADGE_POSITION.top, left: "50%", transform: "translate(-50%, -50%)" }}>
           <button
             onClick={() => setWorkTab("others")}
             className={`px-4 py-1.5 rounded-full transition-colors cursor-pointer ${workTab === "others" ? "bg-neutral-800 text-white" : "text-neutral-600"}`}
