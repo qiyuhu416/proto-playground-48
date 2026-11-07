@@ -215,7 +215,7 @@ export function QuadrantDestinationView({
           to replay its "just arrived" entrance on every switch, not only the
           very first time this view mounts. */}
       {isReflection ? (
-        contentRect && <ReflectionNotesCarousel rect={contentRect} tab={reflectionTab} setHoveredCard={setHoveredCard} onBackgroundClick={onBackgroundClick} onDescriptionCard={onDescriptionCard} />
+        contentRect && <ReflectionNotesCarousel rect={contentRect} pageWidth={W} tab={reflectionTab} setHoveredCard={setHoveredCard} onBackgroundClick={onBackgroundClick} onDescriptionCard={onDescriptionCard} />
       ) : (
         <DestinationCards key={`${quadrant}:${workTab}`} cards={cards} onCardClick={onCardClick} onDescriptionCard={onDescriptionCard} setHoveredCard={setHoveredCard} cursorPos={cursorPos} W={W} H={H} cardDelays={cardDelays} />
       )}

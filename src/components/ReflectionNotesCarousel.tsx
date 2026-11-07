@@ -16,12 +16,23 @@ const TOTAL_PAGES = Math.ceil(SORTED.length / PAGE_SIZE);
 
 export function ReflectionNotesCarousel({
   rect,
+  pageWidth,
   tab,
   setHoveredCard,
   onBackgroundClick,
   onDescriptionCard,
 }: {
   rect: { top: number; left: number; width: number; height: number };
+  // The reflection quadrant's own contentRect (`rect`) is bracket-bounded —
+  // for this particular quadrant that boundary sits well short of the true
+  // right edge of the page, so `rect` itself is NOT centered on the page.
+  // Symmetric padding within `rect` alone would just center content inside
+  // that off-center box. `pageWidth` (QuadrantSection's own full measured
+  // width, same coordinate space as `rect` — both ultimately anchored off
+  // the fixed-positioned Quadrant Section root) lets the padding below be
+  // computed asymmetrically instead, landing the content on the PAGE's true
+  // center rather than `rect`'s.
+  pageWidth: number;
   // Owned by QuadrantDestinationView (not local state here) so the toggle
   // itself can be positioned up there, on the same line as the badge/work
   // tab (BADGE_POSITION.top) instead of flowing inside this component's own
@@ -36,21 +47,27 @@ export function ReflectionNotesCarousel({
   const [page, setPage] = useState(0);
   const items = SORTED.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
 
+  // Content keeps the same ~70%-of-rect width as before; only WHERE that
+  // width sits within `rect` changes — its left edge is placed so the
+  // content block itself is centered on the full page, not on `rect`.
+  const contentWidth = rect.width * 0.7;
+  const contentLeftOnPage = pageWidth / 2 - contentWidth / 2;
+  const paddingLeft = Math.max(0, contentLeftOnPage - rect.left);
+  const paddingRight = Math.max(0, rect.width - paddingLeft - contentWidth);
+
   return (
     <div
       className="absolute flex flex-col gap-4"
       style={{
         ...rect,
-        // Left/right padding scales with the quadrant's own width (~15% a
-        // side) instead of a fixed pixel value — on a wide quadrant that
-        // used to let the card grid run almost edge to edge, reading as
-        // cramped against the bracket lines; this leaves a real margin
-        // whatever the quadrant's actual width ends up being. The outer div
-        // itself still spans the FULL contentRect (unchanged) so that
-        // margin stays genuine open background — clicking there still goes
+        // See paddingLeft/paddingRight above — asymmetric on purpose, so the
+        // content lands at the page's true center rather than `rect`'s own
+        // (off-center, bracket-bounded) center. The outer div itself still
+        // spans the FULL contentRect (unchanged) so the margin on either
+        // side stays genuine open background — clicking there still goes
         // back to the matrix (see onClick below).
-        paddingLeft: rect.width * 0.15,
-        paddingRight: rect.width * 0.15,
+        paddingLeft,
+        paddingRight,
         paddingTop: 88,
         paddingBottom: 28,
       }}
@@ -77,7 +94,7 @@ export function ReflectionNotesCarousel({
           own e.currentTarget — same bug the outer root's check alone can't
           catch, needing the identical check at this level too. */}
       <div
-        className={tab === "journal" ? "flex-1 flex items-center justify-center min-h-0" : "flex-1 grid grid-cols-3 justify-center gap-3 min-h-0"}
+        className={tab === "journal" ? "flex-1 flex items-center justify-center min-h-0" : "flex-1 grid grid-cols-3 content-center justify-center gap-3 min-h-0 max-h-[50vh]"}
         onClick={(e) => {
           if (e.target === e.currentTarget) onBackgroundClick();
         }}
@@ -90,6 +107,11 @@ export function ReflectionNotesCarousel({
           // sit in a CSS grid, not freely-positioned x/y coordinates, so a
           // hover-triggered scale is the natural fit here instead.
           const id = `reflection-${page}-${i}`;
+          // No separate title field on a reflection — derived the same way
+          // the standalone /reflection-notes page already does (first 7
+          // words of content), so both read consistently.
+          const words = note.content.split(/\s+/);
+          const title = words.slice(0, 7).join(" ") + (words.length > 7 ? "…" : "");
           return (
             <div
               key={id}
@@ -97,17 +119,31 @@ export function ReflectionNotesCarousel({
               onMouseLeave={() => setHoveredCard(null)}
               onClick={() => onDescriptionCard({ title: note.date, description: note.content, thumbnail: note.image, x: 0, y: 0 })}
               // Fixed height (not content-sized) so every card — whether it
-              // has an image and 3 lines of text or just one short line —
-              // reads as the same size, instead of each row (and even each
-              // card within a row) being only as tall as its own content
-              // needed.
-              className="w-full h-48 rounded-2xl bg-white/70 border border-neutral-200/70 p-4 flex flex-col gap-2 overflow-hidden transition-transform duration-150 hover:scale-105 cursor-pointer"
+              // has an image or not — reads as the same size, instead of
+              // each one being only as tall as its own content needed. No
+              // text visible at rest — this is meant to read as a wall of
+              // images at a glance; the title only appears as a hover
+              // overlay, and the full text lives in the modal after a click.
+              className="group relative w-full h-48 rounded-2xl bg-neutral-100 border border-neutral-200/70 overflow-hidden transition-transform duration-150 hover:scale-105 cursor-pointer"
             >
-              {note.image && (
-                <img src={note.image} alt="" className="w-full h-24 object-cover rounded-lg flex-shrink-0" />
+              {note.image ? (
+                <>
+                  <img src={note.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  {/* Dark overlay + bottom-aligned title, hidden until
+                      hover — only for image cards, since a text-only card
+                      (below) already shows its text directly, with nothing
+                      extra worth revealing on hover. */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-150" />
+                  <div className="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                    <p className="text-white text-sm font-medium leading-snug line-clamp-2">{title}</p>
+                  </div>
+                </>
+              ) : (
+                <div className="absolute inset-0 flex flex-col gap-2 p-4">
+                  <div className="text-[10px] text-neutral-500 font-medium flex-shrink-0">{note.date}</div>
+                  <p className="text-neutral-700 text-xs leading-snug line-clamp-4">{note.content}</p>
+                </div>
               )}
-              <div className="text-[10px] text-neutral-500 font-medium flex-shrink-0">{note.date}</div>
-              <p className="text-neutral-700 text-xs leading-snug line-clamp-3">{note.content}</p>
             </div>
           );
         })}

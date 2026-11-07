@@ -5,6 +5,32 @@ export interface Reflection {
 }
 
 export const REFLECTIONS: Reflection[] = [
+  // TODO: placeholder text — swap for the real write-up on each of these.
+  {
+    content: "A lil template I use when sketching out an idea: what's the definition of the problem I'm trying to solve, then test-sketch the solution.",
+    date: "Nov 7, 2026",
+    image: "/articles/reflection-15.jpg",
+  },
+  {
+    content: "Mental model for how prototyping becomes knowledge — a person makes a prototype, the prototype branches into knowledge, then that knowledge loops back to the person who keeps refining the prototype.",
+    date: "Nov 7, 2026",
+    image: "/articles/reflection-16.jpg",
+  },
+  {
+    content: "A loop forming around AI: a crowd of people feed into it, it branches into 'super intelligence' and 'super bias', then loops back around. Still thinking about which one wins.",
+    date: "Nov 7, 2026",
+    image: "/articles/reflection-17.jpg",
+  },
+  {
+    content: "Mapping how different 'model knowledge' bubbles relate to each other and to the world — still a question mark how exactly they connect.",
+    date: "Nov 7, 2026",
+    image: "/articles/reflection-19.jpg",
+  },
+  {
+    content: "Sketching where knowledge actually comes from — school, interaction, perception/mindset — and zooming out to the unknowns surrounding it.",
+    date: "Nov 7, 2026",
+    image: "/articles/reflection-20.jpg",
+  },
   {
     content: "yes v random but plz enjoy my triangle and designer and happy first Monday of the week.",
     date: "Aug 24, 2026",
