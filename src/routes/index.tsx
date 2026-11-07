@@ -379,23 +379,47 @@ export function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => 
       />
 
       {/* Segment overlays — shown on hover OR when selected */}
-      {(Object.entries(SEGMENTS) as [GapId, SegmentDef][]).map(([gap, s]) => (
-        <img
-          key={gap}
-          src={s.src}
-          alt=""
-          aria-hidden
-          className="absolute pointer-events-none"
-          style={{
-            left:    `${(s.x1 / DIAGRAM_W * 100).toFixed(2)}%`,
-            top:     `${(s.y1 / DIAGRAM_H * 100).toFixed(2)}%`,
-            width:   `${((s.x2 - s.x1) / DIAGRAM_W * 100).toFixed(2)}%`,
-            height:  `${((s.y2 - s.y1) / DIAGRAM_H * 100).toFixed(2)}%`,
-            opacity: visible(gap) ? 1 : 0,
-            transition: "opacity 160ms",
-          }}
-        />
-      ))}
+      {(Object.entries(SEGMENTS) as [GapId, SegmentDef][]).map(([gap, s]) => {
+        const rect = {
+          left:    `${(s.x1 / DIAGRAM_W * 100).toFixed(2)}%`,
+          top:     `${(s.y1 / DIAGRAM_H * 100).toFixed(2)}%`,
+          width:   `${((s.x2 - s.x1) / DIAGRAM_W * 100).toFixed(2)}%`,
+          height:  `${((s.y2 - s.y1) / DIAGRAM_H * 100).toFixed(2)}%`,
+        };
+        return (
+          <div key={gap} className="absolute pointer-events-none" style={rect}>
+            {/* "2" (others-loop) is red at rest, same as its own number label —
+                the source PNG is black ink, so a mask (not a filter/hue guess)
+                lets this div's own background-color (bg-red-400) supply the
+                color regardless of the ink's real shade. */}
+            {gap === "others-loop" && (
+              <div
+                className="absolute inset-0 bg-red-400"
+                style={{
+                  WebkitMaskImage: `url(${s.src})`,
+                  maskImage: `url(${s.src})`,
+                  WebkitMaskSize: "100% 100%",
+                  maskSize: "100% 100%",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  opacity: visible(gap) ? 0 : 1,
+                  transition: "opacity 160ms",
+                }}
+              />
+            )}
+            <img
+              src={s.src}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 w-full h-full"
+              style={{
+                opacity: visible(gap) ? 1 : 0,
+                transition: "opacity 160ms",
+              }}
+            />
+          </div>
+        );
+      })}
 
       {/* SVG hit areas + annotations */}
       <svg
@@ -668,7 +692,7 @@ function Index() {
       )}
 
       {/* Hero section - diagram + paragraph, always expanded, fixed to one viewport height */}
-      <section className="relative w-full flex flex-col gap-0 pt-[30vh] snap-start [scroll-snap-stop:always] min-h-screen">
+      <section className="relative w-full flex flex-col gap-0 pt-[20vh] snap-start [scroll-snap-stop:always] min-h-screen">
         <div className="flex flex-col items-center justify-center px-6 gap-0 bg-background h-auto py-8">
           <img
             src="/articles/hello-stranger.png"
@@ -686,7 +710,7 @@ function Index() {
               </p>
             )}
             {!heroGap && (
-              <p className="tag-style text-sm">when "others = AI", how to design line 2 to guide humans see the unknowns?</p>
+              <p className="tag-style text-sm">when "others = AI", how to design  <b>line 2 </b>to guide humans see the unknowns?</p>
             )}
           </div>
         </div>

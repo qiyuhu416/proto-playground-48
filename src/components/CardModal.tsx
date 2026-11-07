@@ -76,7 +76,7 @@ export function CardModal({
           {/* Scrollable content */}
           <div className="flex-1 w-full">
             {description ? (
-              <div className={`max-w-xl mx-auto px-6 pb-8 flex flex-col gap-5 ${image ? "pt-8" : "pt-[14%]"}`}>
+              <div className={`max-w-xl mx-auto px-6 pb-8 flex flex-col gap-8 ${image ? "pt-8" : "pt-[14%]"}`}>
                 {image && <img src={image} alt={title} className="w-full rounded-xl" />}
                 {/* Same body-copy treatment real project pages use
                     (ArticleContent.tsx: text-base md:text-lg leading-8
