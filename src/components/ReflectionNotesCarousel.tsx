@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { REFLECTIONS } from "@/data/reflections";
 import type { DestinationCard } from "@/data/quadrantCards";
+import { FlippableBook } from "@/components/FlippableBook";
 
 // All of /reflection-notes' content, shown directly inside the matrix's
 // "reflection" destination instead of behind an extra click-through to that
@@ -15,11 +16,17 @@ const TOTAL_PAGES = Math.ceil(SORTED.length / PAGE_SIZE);
 
 export function ReflectionNotesCarousel({
   rect,
+  tab,
   setHoveredCard,
   onBackgroundClick,
   onDescriptionCard,
 }: {
   rect: { top: number; left: number; width: number; height: number };
+  // Owned by QuadrantDestinationView (not local state here) so the toggle
+  // itself can be positioned up there, on the same line as the badge/work
+  // tab (BADGE_POSITION.top) instead of flowing inside this component's own
+  // padded content area.
+  tab: "journal" | "list";
   setHoveredCard: (title: string | null) => void;
   onBackgroundClick: () => void;
   // Same CardModal every other card on the site opens (description/image
@@ -70,12 +77,13 @@ export function ReflectionNotesCarousel({
           own e.currentTarget — same bug the outer root's check alone can't
           catch, needing the identical check at this level too. */}
       <div
-        className="flex-1 grid grid-cols-3 grid-rows-2 gap-3 min-h-0"
+        className={tab === "journal" ? "flex-1 flex items-center justify-center min-h-0" : "flex-1 grid grid-cols-3 justify-center gap-3 min-h-0"}
         onClick={(e) => {
           if (e.target === e.currentTarget) onBackgroundClick();
         }}
       >
-        {items.map((note, i) => {
+        {tab === "journal" && <FlippableBook />}
+        {tab === "list" && items.map((note, i) => {
           // Same hover-reacts-and-activates-the-crosshair idea as every other
           // quadrant's cards, just via plain CSS :hover rather than the
           // cursor-proximity distance math (cardGrowScale) those use — these
@@ -93,7 +101,7 @@ export function ReflectionNotesCarousel({
               // reads as the same size, instead of each row (and even each
               // card within a row) being only as tall as its own content
               // needed.
-              className="w-full h-64 rounded-2xl bg-white/70 border border-neutral-200/70 p-4 flex flex-col gap-2 overflow-hidden transition-transform duration-150 hover:scale-105 cursor-pointer"
+              className="w-full h-48 rounded-2xl bg-white/70 border border-neutral-200/70 p-4 flex flex-col gap-2 overflow-hidden transition-transform duration-150 hover:scale-105 cursor-pointer"
             >
               {note.image && (
                 <img src={note.image} alt="" className="w-full h-24 object-cover rounded-lg flex-shrink-0" />
@@ -108,7 +116,7 @@ export function ReflectionNotesCarousel({
       {/* Page controls — same arrow-button language as the Pillar carousels
           elsewhere on the site, plus a simple "page X of Y" indicator since
           there are too many pages for dots to read well. */}
-      {TOTAL_PAGES > 1 && (
+      {tab === "list" && TOTAL_PAGES > 1 && (
         <div className="flex items-center justify-center gap-3 flex-shrink-0">
           <button
             onClick={() => setPage((p) => Math.max(0, p - 1))}

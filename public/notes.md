@@ -6,7 +6,7 @@ hi all yes v random but plz enjoy my triangle and designer and happy first Monda
 “Omakase” is such a creative service design concept that balances unpredictability & delightfulness So what if we applied that to leadership presentations
 
 3w
-If you tap on the 3-dot button here in a post, you’ll see an option called “report AI slop”
+If you tap on the 3-dot button in a LinkedIn post, you’ll see an option called “report AI slop”
 Tech & humanity 是两个抱在一起向前滚的球
 
 

@@ -6,7 +6,7 @@ export interface Reflection {
 
 export const REFLECTIONS: Reflection[] = [
   {
-    content: "hi all yes v random but plz enjoy my triangle and designer and happy first Monday of the week.",
+    content: "yes v random but plz enjoy my triangle and designer and happy first Monday of the week.",
     date: "Aug 24, 2026",
     image: "/articles/reflection-02.png",
   },
@@ -15,7 +15,7 @@ export const REFLECTIONS: Reflection[] = [
     date: "Aug 19, 2026",
   },
   {
-    content: "If you tap on the 3-dot button here in a post, you'll see an option called 'report AI slop'. Tech & humanity 是两个抱在一起向前滚的球",
+    content: "If you tap on the 3-dot button in a LinkedIn post, you'll see an option called 'report AI slop'. Tech & humanity 是两个抱在一起向前滚的球",
     date: "Aug 5, 2026",
   },
   {
@@ -29,7 +29,7 @@ export const REFLECTIONS: Reflection[] = [
     image: "/articles/reflection-04.png",
   },
   {
-    content: "Hi all, wanna hear folks' thoughts on 'how to find a good problem to answer' for new emerging AI concepts (like GenUI/harness/…). My painpoint is that there is so much to explore, but not all questions are worth the time researching. Some might be temporary issues that may not become issues as models get better; some might not even be 'design problems'. E.g. designers may not be able to explore the 'unpredictability side of GenUI' as the UI templates won't fully address tech limitations. Maybe to explore the use case? Scenario? When error tolerance is low?",
+    content: "How to find a good problem to answer for new emerging AI concepts (like GenUI/harness/…)? My painpoint is that there is so much to explore, but not all questions are worth the time researching. Some might be temporary issues that may not become issues as models get better; some might not even be 'design problems'. E.g. designers may not be able to explore the 'unpredictability side of GenUI' as the UI templates won't fully address tech limitations. Maybe to explore the use case? Scenario? When error tolerance is low?",
     date: "Jul 26, 2026",
   },
   {

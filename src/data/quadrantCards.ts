@@ -154,7 +154,8 @@ export const SELF_UNDERSTANDING_CARDS: DestinationCard[] = [
     title: "Affinity Clustering Wall",
     x: 0.52, y: 0.6,
     thumbnail: "/articles/affinity-clustering-wall-thumb.png",
-    externalLink: "https://www.linkedin.com/feed/update/urn:li:activity:7515069508798189569/",
+    description:
+      "“Knowing what u want” is a question that needs more analysis than i thought. I tried many tech/ non-tech ways, way more to learn.\n\nMy current approach is sticking notes on the wall next to my desk to jot down thoughts and do affinity clustering.\n\n• columns = emotions (happy/proud/sad…)\n• rows = senses (hear/do/think…), \nso each cell is like “what I hear that makes me happy.”\n\nBeen doing this for a month, not sure if there is a better way. Issue is using too many sticky notes and might miss the ones I stick elsewhere. If it's a design question, I'd love to hear how folks figure it out..",
   },
   {
     title: "/question-me",

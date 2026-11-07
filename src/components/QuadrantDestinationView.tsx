@@ -53,6 +53,29 @@ export function QuadrantDestinationView({
   const rootRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [reflectionTab, setReflectionTab] = useState<"journal" | "list">("journal");
+  // One rule, derived from whatever's actually under the cursor's own
+  // resolved CSS `cursor` value (see onMouseMove below) — not wired up per
+  // element/quadrant. True whenever that resolves to anything other than
+  // this root's own baseline `cursor-none` (plain `pointer` on a card/tab,
+  // or a real `cursor: url(...)` like the per-domain external-link pills) —
+  // that element's own cursor IS the visible "clickable" status at that
+  // point, so the crosshair's fallback marker gets out of the way instead of
+  // sitting redundantly next to it; the two tracking lines still go red,
+  // which is the status-change signal everywhere else on screen. Anything
+  // that becomes clickable later (a new tab, a new card kind) gets this for
+  // free, as long as its own cursor is set the normal way — no new branch
+  // needed here.
+  const [clickableHover, setClickableHover] = useState(false);
+  // The LinkedIn badge (NavbarWrapper) is fixed outside this component's own
+  // DOM subtree, so hovering it never fires this view's own mouse handlers —
+  // it broadcasts via this custom event instead, same idea as data-held-stop
+  // elsewhere in this system.
+  useEffect(() => {
+    const onBadgeHover = (e: Event) => setClickableHover((e as CustomEvent<boolean>).detail);
+    window.addEventListener("qy:badge-hover", onBadgeHover);
+    return () => window.removeEventListener("qy:badge-hover", onBadgeHover);
+  }, []);
 
   const hovered = hoveredCard ? cards.find((c) => c.title === hoveredCard) : undefined;
   // Anchor hover labels to whichever edge this quadrant's bracket actually
@@ -83,7 +106,13 @@ export function QuadrantDestinationView({
       onMouseMove={(e) => {
         const rect = rootRef.current?.getBoundingClientRect();
         if (rect) setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+        // General rule, not a per-element one: read whatever `cursor` the
+        // hovered element actually resolves to (its own, or inherited from
+        // an ancestor) rather than asking "is this a card/button/tab/badge".
+        const cursor = getComputedStyle(e.target as Element).cursor;
+        setClickableHover(cursor === "pointer" || cursor.includes("url("));
       }}
+      onMouseLeave={() => setClickableHover(false)}
       onClick={(e) => {
         // Only the open background, not a card/button/etc. nested inside it —
         // those are separate elements, so a click landing on one of THEM
@@ -98,7 +127,7 @@ export function QuadrantDestinationView({
           (cursor-none on the root above, with nothing drawn to replace it). */}
       {W > 0 && (
         <svg className="absolute inset-0 pointer-events-none" viewBox={`0 0 ${W} ${H}`}>
-          <CursorCrosshairMarks cursorPos={cursorPos} W={W} H={H} edge={EDGE} active={!!hoveredCard} />
+          <CursorCrosshairMarks cursorPos={cursorPos} W={W} H={H} edge={EDGE} active={clickableHover} showMarker={!clickableHover} />
 
           {hovered?.yAxisLabel && (
             <text
@@ -150,6 +179,33 @@ export function QuadrantDestinationView({
         </div>
       )}
 
+      {isReflection && (
+        // Same spot/style as the "work" quadrant's tab toggle above — reads
+        // BADGE_POSITION.top directly so both land on the exact same
+        // vertical line as the badge, whichever quadrant you're in.
+        // z-20: ReflectionNotesCarousel's own root div spans this whole
+        // quadrant's contentRect (which starts above this toggle's position,
+        // only clearing it via inner padding-top) and is rendered after this
+        // toggle in the DOM — without an explicit z-index, that later,
+        // visually-transparent div would stack on top and swallow clicks
+        // meant for these buttons (most noticeable on "List", since "journal"
+        // is already the default tab).
+        <div className="absolute z-20 flex items-center rounded-full bg-neutral-100 p-1 text-sm" style={{ top: BADGE_POSITION.top, left: "50%", transform: "translate(-50%, -50%)" }}>
+          <button
+            onClick={() => setReflectionTab("journal")}
+            className={`px-4 py-1.5 rounded-full transition-colors cursor-pointer ${reflectionTab === "journal" ? "bg-neutral-800 text-white" : "text-neutral-600"}`}
+          >
+            Journal
+          </button>
+          <button
+            onClick={() => setReflectionTab("list")}
+            className={`px-4 py-1.5 rounded-full transition-colors cursor-pointer ${reflectionTab === "list" ? "bg-neutral-800 text-white" : "text-neutral-600"}`}
+          >
+            List
+          </button>
+        </div>
+      )}
+
       {/* Reflection notes are shown directly here, no extra click-through to
           a separate route — everything else still gets the usual card grid.
           Keyed so React treats it as a brand-new instance whenever the card
@@ -159,7 +215,7 @@ export function QuadrantDestinationView({
           to replay its "just arrived" entrance on every switch, not only the
           very first time this view mounts. */}
       {isReflection ? (
-        contentRect && <ReflectionNotesCarousel rect={contentRect} setHoveredCard={setHoveredCard} onBackgroundClick={onBackgroundClick} onDescriptionCard={onDescriptionCard} />
+        contentRect && <ReflectionNotesCarousel rect={contentRect} tab={reflectionTab} setHoveredCard={setHoveredCard} onBackgroundClick={onBackgroundClick} onDescriptionCard={onDescriptionCard} />
       ) : (
         <DestinationCards key={`${quadrant}:${workTab}`} cards={cards} onCardClick={onCardClick} onDescriptionCard={onDescriptionCard} setHoveredCard={setHoveredCard} cursorPos={cursorPos} W={W} H={H} cardDelays={cardDelays} />
       )}

@@ -90,7 +90,7 @@ const QUADRANT_BG_GAP = 24;
 // that same growth the rest of the way out to the full matrix, since both
 // are driven by the same per-line transition at that point (see below).
 const CROSS_HOVER_MS = 150;
-const LINE_THICKNESS = 1.5;
+const LINE_THICKNESS = 2;
 // How far toward "center"'s full geometry hovering grows the cross — 0 =
 // stays put, 1 = would be fully grown (that full distance is reserved for
 // an actual click, so this stays a small nudge, not a real preview).
@@ -669,10 +669,10 @@ export function QuadrantSection({
   // re-deriving it by matching title strings a second time somewhere else.
   const matrixCards = [
     { title: "Work", x: 0.57, y: 0.17, onClick: () => jumpTo("work", "others"), thumbnail: "/articles/work-icon.jpg", badgeText: MATRIX_TEXT },
-    { title: "Tech for self-understanding", x: 0.77, y: 0.23, onClick: () => jumpTo("work", "self"), thumbnail: "/articles/self-understanding-icon.jpg", badgeText: SELF_UNDERSTANDING_TEXT },
-    { title: "Human-Human Interaction experiments", x: 0.28, y: 0.68, onClick: () => jumpTo("hhi"), thumbnail: "/articles/hhi-icon.jpg", badgeText: HHI_TEXT },
-    { title: "Life as a prototype", x: 0.68, y: 0.65, onClick: () => jumpTo("help-others"), thumbnail: "/articles/help-others-icon.jpg", badgeText: HELP_OTHERS_TEXT },
-    { title: "Reflection Notes", x: 0.28, y: 0.2, onClick: () => jumpTo("reflection"), thumbnail: "/articles/reflection-notes-icon.jpg", badgeText: REFLECTION_TEXT },
+    { title: "Tech for Self-understanding", x: 0.77, y: 0.23, onClick: () => jumpTo("work", "self"), thumbnail: "/articles/self-understanding-icon.jpg", badgeText: SELF_UNDERSTANDING_TEXT },
+    { title: "Human-Human Interaction Prototypes", x: 0.28, y: 0.68, onClick: () => jumpTo("hhi"), thumbnail: "/articles/hhi-icon.jpg", badgeText: HHI_TEXT },
+    { title: "Life as UX Design", x: 0.68, y: 0.65, onClick: () => jumpTo("help-others"), thumbnail: "/articles/help-others-icon.jpg", badgeText: HELP_OTHERS_TEXT },
+    { title: "Mental Models", x: 0.28, y: 0.2, onClick: () => jumpTo("reflection"), thumbnail: "/articles/reflection-notes-icon.jpg", badgeText: REFLECTION_TEXT },
   ];
   const hoveredMatrixCardBadgeText = matrixCards.find((c) => c.title === matrixHoveredCard)?.badgeText;
 

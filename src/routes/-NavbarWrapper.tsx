@@ -61,6 +61,14 @@ export function NavbarWrapper() {
       // preview on the matrix grid (QuadrantSection) — so the badge never
       // moves between "previewing" and "actually here."
       style={{ ...BADGE_POSITION, opacity: pastLanding ? 1 : 0, pointerEvents: pastLanding ? "auto" : "none" }}
+      // This badge is fixed outside the quadrant views' own DOM subtree, so
+      // hovering it never fires their mousemove/mouseenter handlers
+      // directly — broadcast instead, the same way data-held-stop signals
+      // state across that same boundary. QuadrantDestinationView listens for
+      // this to hide its cursor-tracking arrow marker while this badge's own
+      // LinkedIn-branded cursor (styles.css) is the one actually showing.
+      onMouseEnter={() => window.dispatchEvent(new CustomEvent("qy:badge-hover", { detail: true }))}
+      onMouseLeave={() => window.dispatchEvent(new CustomEvent("qy:badge-hover", { detail: false }))}
     >
       <LinkedInBadge text={badgeText} />
     </div>

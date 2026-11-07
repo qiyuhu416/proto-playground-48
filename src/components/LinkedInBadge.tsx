@@ -29,7 +29,12 @@ export function LinkedInBadge({ text }: { text: string }) {
       target="_blank"
       rel="noopener noreferrer"
       style={{ cursor: "pointer" }}
-      className="group relative grid items-center overflow-hidden rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-900 shadow-sm transition-colors duration-300 hover:border-transparent hover:bg-neutral-900 hover:text-white"
+      // hover:min-w-[220px] — since the hover layer below is `absolute` (see
+      // comment above it), its content can't grow this pill on its own, so
+      // on short resting texts the hover content would get crushed by
+      // `justify-between`. 220px is sized to fit both hover-layer halves
+      // with >=8px between "Key-You fyi" and "Qiyu's LinkedIn".
+      className="group relative grid items-center overflow-hidden rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-900 shadow-sm transition-colors duration-300 hover:min-w-[220px] hover:border-transparent hover:bg-neutral-900 hover:text-white"
     >
       {/* No fixed-width sizer anymore — the badge sizes to whichever `text`
           it's actually showing. The hover-reveal layer below is `absolute`
