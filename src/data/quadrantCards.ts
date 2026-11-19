@@ -193,46 +193,6 @@ export interface DestinationCard {
 }
 
 export const SELF_UNDERSTANDING_CARDS: DestinationCard[] = [
-  {
-    title: "Call Out the Elephant in the Room",
-    subtitle: "For Surfacing Misalignment",
-    x: 0.84, y: 0.45,
-    yAxisLabel: "N(human) = 2",
-    xAxisLabel: "DISCOMFORT LEVEL: 90%",
-    // The reveal screen is the card's thumbnail; the modal still opens on the demo video
-    // (video takes precedence over the thumbnail there).
-    thumbnail: "/articles/between-us-reveal-gap.jpg",
-    video: "/articles/between-us-demo.mp4",
-    description:
-      "This one's basically me trying to stop assuming I know what the person across from me actually wants.\n\nSo I built a tiny iOS prototype with Samar: an LLM generates a believable, neutral weekly scenario — not an abstract feeling, something specific like \"Samar has several tight deadlines and doesn't know how late he'll need to work.\" Then the phone splits in half, face-to-face. I pick what I'd feel good RECEIVING. Samar, on his own half, picks what he could disDISCOMFORTably DO. Not predicting each other — just answering honestly about ourselves. Neither of us sees the other's answer until we both lock in.\n\nThen it just... reveals. No score, no right/wrong, no \"you're 73% compatible\" nonsense — just both answers stated plainly, side by side. Turns out most relationship friction isn't disagreement, it's two people confidently assuming something about each other and never actually saying it out loud.\n\nStill very much a prototype (Samar's own entry flow isn't even built yet), but even this rough version made us talk about things we'd been quietly assuming for months.\n\nHere's exactly how it works, screen by screen — both the LLM side (what's generating the scenario) and the two-person side (what it actually feels like to use):",
-    gallery: [
-      {
-        src: "/articles/between-us-LLM-starting-point.jpg",
-        caption:
-          "LLM side, starting point: a blank \"What's on your mind?\" prompt. There's a toggle to fall back to saved local scenarios instead of a live model call — useful for reviewing the UX without waiting on generation — plus a log of past conversations underneath.",
-      },
-      {
-        src: "/articles/between-us-given-context.jpg",
-        caption:
-          "The LLM turns that into a believable, neutral weekly premise instead of an abstract feeling — a specific, swipeable situation we're both reacting to, not a vague prompt either of us has to interpret from scratch.",
-      },
-      {
-        src: "/articles/between-us-set-expectations.jpg",
-        caption:
-          "User side, before anyone picks anything: the app states the actual rule out loud — Qiyu chooses what she'd feel good receiving, Samar chooses what he could disDISCOMFORTably do. The point isn't to match. It's to see where we already meet, and where we might need to talk.",
-      },
-      {
-        src: "/articles/between-us-compare-options.jpg",
-        caption:
-          "The face-to-face mechanic — the top half is upside-down on purpose, so it reads right-side-up for whoever's sitting across the table. Same underlying scenario, but the LLM rewords and reorders the options differently per person, so neither of us can just glance over and copy the other's visible list.",
-      },
-      {
-        src: "/articles/between-us-reveal-gap.jpg",
-        caption:
-          "The reveal, side by side, no score: \"Qiyu would feel good with → Name the next update\" vs. \"Samar could disDISCOMFORTably do → Respond after Qiyu asks.\" That's the actual gap — I want proactive updates, his disDISCOMFORT zone is reactive-only. Nothing to fix here, just something to talk about now that it's a sentence instead of a feeling.",
-      },
-    ],
-  },
   // {
   //   title: "Throw It at the Wall",
   //   x: 0.52, y: 0.6,
