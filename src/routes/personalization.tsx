@@ -1,3 +1,4 @@
+import { ArticleLayout } from "@/components/ArticleLayout";
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
@@ -20,8 +21,7 @@ export const Route = createFileRoute("/personalization")({
 
 function PersonalizationComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-4xl px-6 py-12">
+    <ArticleLayout>
         <ArticleHeader
           title={ARTICLE_META["personalization"].title}
           meta="Research"
@@ -97,7 +97,6 @@ function PersonalizationComponent() {
           </p>
 
         </ArticleContent>
-      </article>
-    </div>
+      </ArticleLayout>
   );
 }

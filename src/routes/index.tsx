@@ -9,6 +9,7 @@ import { TextHighlighter } from "@/components/TextHighlighter";
 import { CardModal } from "@/components/CardModal";
 import { QuadrantSection } from "@/components/QuadrantSection";
 
+import { Eyebrow } from "@/components/system";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -66,7 +67,7 @@ const PILLARS: Pillar[] = [
   {
     number: "01",
     subtitle: "",
-    title: "How to understand others' mind?",
+    title: "How to Understand Others' Mind?",
     description: "Understanding others is another black box.",
     gapLeft: "Assumption",
     gapRight: "Understanding",
@@ -74,14 +75,14 @@ const PILLARS: Pillar[] = [
     cards: [
       {
         slug: "design-as-a-research-tool",
-        title: "Research through Design",
+        title: "Research Through Design",
         meta: "User-centered service design",
         accent: "bg-gradient-to-br from-teal-100 to-cyan-200",
         thumbnail: "/articles/design-as-research-tool-thumb.png",
       },
       {
         slug: "what-do-prototypes-prototype",
-        title: "What do prototypes prototype?",
+        title: "What Do Prototypes Prototype?",
         meta: "Solve the right problem",
         accent: "bg-gradient-to-br from-amber-100 to-orange-200",
         thumbnail: "/articles/prototype-triangle-thumb.svg",
@@ -90,23 +91,23 @@ const PILLARS: Pillar[] = [
       },
       {
         slug: "meet-stranger",
-        title: "Meet the stranger challenge",
+        title: "Meet the Stranger Challenge",
         meta: "Connection · Open-ended",
         accent: "bg-gradient-to-br from-rose-100 to-pink-200",
         thumbnail: "/articles/meet-stranger-calendly.png",
       },
       {
         slug: "hello-humans",
-        title: "Hello humans prototype",
+        title: "Hello Humans Prototype",
         meta: "Very personal prototype",
         accent: "bg-gradient-to-br from-purple-100 to-pink-200",
         thumbnail: "/articles/hello-humans-notebook.jpg",
       },
       {
         slug: "oh-man",
-        title: "Oh man",
+        title: "Oh Man",
         meta: "Very personal prototype",
-        accent: "bg-neutral-100",
+        accent: "bg-muted",
         comingSoon: true,
       },
     ],
@@ -114,7 +115,7 @@ const PILLARS: Pillar[] = [
   {
     number: "02",
     subtitle: "",
-    title: "How might we design AI's mind?",
+    title: "How Might We Design AI's Mind?",
     description: "AI that knows when humans need what",
     gapLeft: "Intent",
     gapRight: "Expression",
@@ -122,7 +123,7 @@ const PILLARS: Pillar[] = [
     cards: [
       {
         slug: "designing-for-conversations-that-earn-trust",
-        title: "Conversational Design for trust",
+        title: "Conversational Design for Trust",
         meta: "Bot for multi-stakeholder eldercare",
         accent: "bg-gradient-to-br from-green-100 to-emerald-200",
         thumbnail: "/articles/conversation-trust-icon.svg",
@@ -130,23 +131,23 @@ const PILLARS: Pillar[] = [
       },
       {
         slug: "reimagining-the-chatbot",
-        title: "The chatbot beyond a tab?",
+        title: "The Chatbot Beyond a Tab?",
         meta: "Exploring interface paradigms",
         accent: "bg-gradient-to-br from-violet-100 to-purple-200",
         thumbnail: "/articles/chatbot-thumb.png",
       },
       {
         slug: "google-cloud",
-        title: "Launching AI for assisted browsing",
+        title: "Launching AI for Assisted Browsing",
         meta: "0-1 for Google",
         accent: "bg-gradient-to-br from-blue-100 to-cyan-200",
         thumbnail: "/articles/google-cloud-hero.png",
       },
       {
         slug: "physical-ai",
-        title: "Physical AI for service design",
+        title: "Physical AI for Service Design",
         meta: "Understanding behavioral intent",
-        accent: "bg-gradient-to-br from-slate-100 to-gray-200",
+        accent: "bg-gradient-to-br from-muted to-border",
         thumbnail: "/articles/physical-ai-thumb.png",
       },
     ],
@@ -154,7 +155,7 @@ const PILLARS: Pillar[] = [
   {
     number: "03",
     subtitle: "",
-    title: "How might we know the real self?",
+    title: "How Might We Know the Real Self?",
     description: "Tech-assisted self augmentation",
     gapLeft: "Unknown",
     gapRight: "Aware",
@@ -162,30 +163,30 @@ const PILLARS: Pillar[] = [
     cards: [
       {
         slug: "claude-code-research",
-        title: "How Claude shapes my thinking",
+        title: "How Claude Shapes My Thinking",
         meta: "AI workflow",
-        accent: "bg-neutral-100",
+        accent: "bg-muted",
         comingSoon: true,
       },
       {
         slug: "personalization",
-        title: "Personalization? What is a Person?",
+        title: "Personalization? What Is a Person?",
         meta: "Thoughts about the vision",
-        accent: "bg-neutral-100",
+        accent: "bg-muted",
         comingSoon: true,
       },
       {
         slug: "aios",
-        title: "AIOS to see my unknown-unknowns",
+        title: "AIOS to See My Unknown-Unknowns",
         meta: "Self-discovery",
-        accent: "bg-neutral-100",
+        accent: "bg-muted",
         comingSoon: true,
       },
       {
         slug: "ai-journaling",
-        title: "AI-assisted journaling",
+        title: "AI-Assisted Journaling",
         meta: "Self-discovery through reflection",
-        accent: "bg-neutral-100",
+        accent: "bg-muted",
         comingSoon: true,
       },
     ],
@@ -193,7 +194,7 @@ const PILLARS: Pillar[] = [
   {
     number: "04",
     subtitle: "",
-    title: "Is there another way to express yourself?",
+    title: "Is There Another Way to Express Yourself?",
     description: "Text is never the only way.",
     gapLeft: "Intent",
     gapRight: "Expression",
@@ -201,7 +202,7 @@ const PILLARS: Pillar[] = [
     cards: [
       {
         slug: "product-launch-from-0-1",
-        title: "Product launch from 0–1",
+        title: "Product Launch from 0–1",
         meta: "Changing through Creating",
         accent: "bg-gradient-to-br from-pink-100 to-red-200",
         thumbnail: "/articles/product-launch-thumb.png",
@@ -209,7 +210,7 @@ const PILLARS: Pillar[] = [
       },
       {
         slug: "hand-gesture-interactions",
-        title: "Hand gesture interactions",
+        title: "Hand Gesture Interactions",
         meta: "Physical expression",
         accent: "bg-gradient-to-br from-sky-100 to-blue-200",
         videoPreview: "/articles/hand-gesture.mp4",
@@ -217,7 +218,7 @@ const PILLARS: Pillar[] = [
       },
       {
         slug: "voice-interaction",
-        title: "Voice interaction",
+        title: "Voice Interaction",
         meta: "Vocal expression",
         accent: "bg-gradient-to-br from-violet-100 to-purple-200",
         videoPreview: "/articles/voice.mp4",
@@ -225,7 +226,7 @@ const PILLARS: Pillar[] = [
       },
       {
         slug: "palo-alto-moment",
-        title: "Palo Alto moment",
+        title: "Palo Alto Moment",
         meta: "Just for fun",
         accent: "bg-gradient-to-br from-amber-100 to-orange-200",
         videoPreview: "/articles/palo-alto.mp4",
@@ -233,7 +234,7 @@ const PILLARS: Pillar[] = [
       },
       {
         slug: "birthday-card",
-        title: "Birthday card",
+        title: "Birthday Card",
         meta: "Motion · Delight",
         accent: "bg-gradient-to-br from-yellow-100 to-amber-200",
         videoPreview: "/articles/birthday-card.mp4",
@@ -252,14 +253,14 @@ function InteractionDiagram({ active }: { active: GapId }) {
   const yT = cy - arcR;     // 42
   const yB = cy + arcR;     // 194
 
-  const base = { stroke: "#d8d8d8", strokeWidth: 1.5, fill: "none" } as const;
-  const hi   = { stroke: "#171717", strokeWidth: 2,   fill: "none" } as const;
+  const base = { stroke: "var(--border-strong)", strokeWidth: 1.5, fill: "none" } as const;
+  const hi   = { stroke: "var(--foreground)", strokeWidth: 2,   fill: "none" } as const;
   const on   = (gap: GapId) => gap === active ? hi : base;
   const lf   = (gap: GapId) => gap === active ? "#404040" : "#c0c0c0";
 
   const tip = (pts: string, gap: GapId) => (
     <polyline points={pts} fill="none"
-      stroke={gap === active ? "#171717" : "#d8d8d8"}
+      stroke={gap === active ? "var(--foreground)" : "var(--border-strong)"}
       strokeWidth={gap === active ? 2 : 1.5} />
   );
 
@@ -290,12 +291,12 @@ function InteractionDiagram({ active }: { active: GapId }) {
       {tip(`${mex-6},${yT+7} ${mex},${yT} ${mex+6},${yT+7}`, "me-loop")}
 
       {/* ── CIRCLES ── */}
-      <circle cx={mex} cy={cy} r={r} stroke="#d0d0d0" strokeWidth="1.5" />
-      <text x={mex} y={cy+4} textAnchor="middle" fontSize="12" fill="#737373"
+      <circle cx={mex} cy={cy} r={r} stroke="var(--border-strong)" strokeWidth="1.5" />
+      <text x={mex} y={cy+4} textAnchor="middle" fontSize="12" fill="var(--subtle-foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">ME</text>
 
-      <circle cx={otx} cy={cy} r={r} stroke="#d0d0d0" strokeWidth="1.5" />
-      <text x={otx} y={cy+4} textAnchor="middle" fontSize="12" fill="#737373"
+      <circle cx={otx} cy={cy} r={r} stroke="var(--border-strong)" strokeWidth="1.5" />
+      <text x={otx} y={cy+4} textAnchor="middle" fontSize="12" fill="var(--subtle-foreground)"
         fontFamily="ui-sans-serif, system-ui, sans-serif" fontWeight="500">OTHERS</text>
 
       {/* ── LABELS ── */}
@@ -329,8 +330,8 @@ const HERO_CONTENT: Record<"default" | GapId, { tag: string; text: string }> = {
   "default":      { tag: "", text: "Qiyu designs technology that brings people together, prototyping new ways for humans, AI, and each other to interact." },
   "top":          { tag: "What one does or says", text: "There's always a gap between what we mean internally and how it actually lands in the world. Design bridges this through careful attention to expression, clarity, and presence." },
   "bottom":       { tag: "What others do or say",     text: "Understanding what others mean is a black box. Design minimizes the gap between what is said and what is actually understood through thoughtful communication patterns." },
-  "me-loop":      { tag: "How one interprets what others do or say", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
-  "others-loop":  { tag: "How others interpret what one does or says",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
+  "me-loop":      { tag: "How one make sense of others", text: "Who we become is constantly shaped by how we interact with others. Every interaction leaves a trace, reshaping our identity, beliefs, and sense of self." },
+  "others-loop":  { tag: "How others make sense of one",   text: "Understanding others feels impossible, like a black box. But maybe that's where meaningful design happens—honoring what we cannot fully know, while creating space for genuine connection." },
 };
 
 type SegmentDef = { src: string; x1: number; y1: number; x2: number; y2: number };
@@ -446,10 +447,10 @@ export function HandDrawnDiagram({ onHover }: { onHover: (gap: GapId | null) => 
 
 
         {/* Annotations — bigger and handwritten style, red by default, black on hover */}
-        <text x={mex + 30} y={yT - 20} fontSize="56" fontWeight="700" fill={hovered === "top" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
-        <text x={otx + 290} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "others-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
-        <text x={otx - 40} y={yB + 30} fontSize="56" fontWeight="700" fill={hovered === "bottom" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
-        <text x={mex - 170} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "me-loop" ? "#171717" : "#d32f2f"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
+        <text x={mex + 30} y={yT - 20} fontSize="56" fontWeight="700" fill={hovered === "top" ? "var(--foreground)" : "var(--destructive)"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>1</text>
+        <text x={otx + 290} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "others-loop" ? "var(--foreground)" : "var(--destructive)"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>2</text>
+        <text x={otx - 40} y={yB + 30} fontSize="56" fontWeight="700" fill={hovered === "bottom" ? "var(--foreground)" : "var(--destructive)"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>3</text>
+        <text x={mex - 170} y={yT + yB / 2} fontSize="56" fontWeight="700" fill={hovered === "me-loop" ? "var(--foreground)" : "var(--destructive)"} fontFamily="Caveat, cursive" style={{ transition: "fill 160ms" }}>4</text>
       </svg>
     </div>
   );
@@ -488,12 +489,12 @@ function CardItem({ card, onCardClick }: { card: PillarCard; onCardClick?: (slug
       {...(wrapperProps as any)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`group relative w-[340px] flex-shrink-0 rounded-2xl bg-white p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] transition-all block text-left border-0 cursor-pointer ${card.comingSoon ? "cursor-default opacity-40" : "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"}`}
+      className={`group relative w-[340px] flex-shrink-0 rounded-2xl bg-card p-3 shadow-sm transition-all block text-left border-0 cursor-pointer ${card.comingSoon ? "cursor-default opacity-40" : "hover:-translate-y-0.5 hover:shadow-md"}`}
     >
       {/* Visual */}
-      <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-white">
+      <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-card">
         {card.comingSoon ? (
-          <span className="text-[10px] uppercase tracking-widest text-neutral-400">Coming soon</span>
+          <Eyebrow size="2xs">Coming soon</Eyebrow>
         ) : card.thumbnail ? (
           <img
             src={card.thumbnail}
@@ -522,10 +523,10 @@ function CardItem({ card, onCardClick }: { card: PillarCard; onCardClick?: (slug
       {/* Text */}
       <div className="flex items-start justify-between gap-4 px-2 pb-2 pt-4">
         <div className="min-w-0">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-500">
+          <div className="flex items-center gap-1.5 text-xs text-subtle-foreground">
             <span>{card.meta}</span>
           </div>
-          <h3 className="mt-1 text-[15px] font-medium text-neutral-900">
+          <h3 className="mt-1 text-base font-medium text-foreground">
             {card.title}
           </h3>
         </div>
@@ -590,7 +591,7 @@ function PillarCarousel({ cards, onCardClick }: { cards: PillarCard[]; onCardCli
           onClick={() => scrollBy("left")}
           disabled={atStart}
           aria-label="Previous"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 disabled:opacity-25 transition-all"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-muted/50 disabled:opacity-25 transition-all"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -598,7 +599,7 @@ function PillarCarousel({ cards, onCardClick }: { cards: PillarCard[]; onCardCli
           onClick={() => scrollBy("right")}
           disabled={atEnd}
           aria-label="Next"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 disabled:opacity-25 transition-all"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-muted/50 disabled:opacity-25 transition-all"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -624,8 +625,8 @@ function PillarSection({ pillar, onCardClick }: { pillar: Pillar; onCardClick?: 
     >
       {/* Header — constrained to content width */}
       <div className="mx-auto max-w-6xl px-6 pt-14 mb-10">
-        <h2 className="text-2xl font-medium text-neutral-900 mb-2">{pillar.title}</h2>
-        <p className="text-neutral-600 text-sm">{pillar.description}</p>
+        <h2 className="text-2xl font-semibold text-foreground mb-2">{pillar.title}</h2>
+        <p className="text-muted-foreground text-sm">{pillar.description}</p>
       </div>
 
       {/* Carousel — full bleed to screen edge */}
@@ -648,17 +649,16 @@ export interface MatrixArticle {
 }
 
 export const MATRIX_ARTICLES: MatrixArticle[] = [
-  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.55, y: 0.50, pillarTheme: "UNDERSTAND OTHERS' MIND", workType: "Design Research", thumbnail: "/articles/design-as-research-tool-thumb.png" },
-  { slug: "designing-for-conversations-that-earn-trust", title: "AI Trust & Affiliation", company: "AI Caring Inst.", x: 0.85, y: 0.20, pillarTheme: "DESIGN AI'S MIND", workType: "Conversational Design", thumbnail: "/articles/conversation-trust-icon.svg" },
-  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.80, y: 0.72, pillarTheme: "DESIGN AI'S MIND", workType: "Interface Design", thumbnail: "/articles/chatbot-thumb.png" },
-  { slug: "google-cloud", title: "Assisted Browsing", company: "Google", x: 0.3, y: 0.7, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Feature Launch", thumbnail: "/articles/google-cloud-hero.png" },
-  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.68, y: 0.40, pillarTheme: "DESIGN AI'S RESPONSE", workType: "Service Design", thumbnail: "/articles/physical-ai-thumb.png" },
-  { slug: "product-launch-from-0-1", title: "0-1 E-Commerce App", company: "Meetfood", x: 0.18, y: 0.35, pillarTheme: "EXPRESS ONESELF", workType: "0-1 Launch", thumbnail: "/articles/product-launch-thumb.png" },
+  { slug: "design-as-a-research-tool", title: "Service Design", company: "Pittsburgh Parking Authority", x: 0.70, y: 0.60, pillarTheme: "Perception", workType: "Paper prototypes", thumbnail: "/articles/design-as-research-tool-thumb.png" },
+  { slug: "reimagining-the-chatbot", title: "Reimagine Chatbot", company: "Apple", x: 0.50, y: 0.37, pillarTheme: "Expression", workType: "Functional prototypes", thumbnail: "/articles/chatbot-thumb.png" },
+  { slug: "google-cloud", title: "Assisted Browsing", company: "Google", x: 0.36, y: 0.50, pillarTheme: "Comprehension", workType: "launched", thumbnail: "/articles/google-cloud-hero.png" },
+  { slug: "physical-ai", title: "Physical AI", company: "Archetype AI", x: 0.88, y: 0.68, pillarTheme: "sensing", workType: "mockup & storyboards", thumbnail: "/articles/physical-ai-thumb.png" },
+  { slug: "product-launch-from-0-1", title: "0-1 Food Community", company: "Meetfood", x: 0.15, y: 0.25, pillarTheme: "Connection", workType: "launched", thumbnail: "/articles/product-launch-thumb.png" },
 ];
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-function Index() {
+export function Index() {
   const navigate = useNavigate();
   const [heroGap, setHeroGap] = useState<GapId | null>(null);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
@@ -683,7 +683,7 @@ function Index() {
   const card = selectedCard ? findCard(selectedCard) : undefined;
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
+    <div className="min-h-screen bg-background text-foreground">
       <NavbarWrapper />
 
       {/* Card Modal */}
@@ -710,7 +710,7 @@ function Index() {
               </p>
             )}
             {!heroGap && (
-              <p className="tag-style text-sm">when "others = AI", how to design  <b>line 2 </b>to guide humans see the unknowns?</p>
+              <p className="tag-style text-sm">when "others = AI", let's <b>break line 2</b></p>
             )}
           </div>
         </div>
@@ -735,8 +735,8 @@ function Index() {
       ))}
       */}
 
-      <footer className="mt-4 border-t border-neutral-200/60">
-        <p className="mx-auto max-w-6xl px-6 py-8 text-center text-xs text-neutral-400">
+      <footer className="mt-4 border-t border-border/60">
+        <p className="mx-auto max-w-6xl px-6 py-8 text-center text-xs text-subtle-foreground">
           © 2026 — sketched with fountain pen & paper
         </p>
       </footer>

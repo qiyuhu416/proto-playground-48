@@ -17,17 +17,17 @@ export function AccordionItem({ title, children, defaultOpen = false }: Accordio
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-neutral-200 last:border-b-0">
+    <div className="border-b border-border last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 px-0 text-left hover:text-neutral-600 transition-colors"
+        className="w-full flex items-center justify-between py-4 px-0 text-left hover:text-muted-foreground transition-colors"
       >
-        <span className="text-lg font-medium text-neutral-900">{title}</span>
+        <span className="text-lg font-semibold text-foreground">{title}</span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <ChevronDown className="h-5 w-5 text-neutral-400" />
+          <ChevronDown className="h-5 w-5 text-subtle-foreground" />
         </motion.div>
       </button>
 
@@ -40,7 +40,7 @@ export function AccordionItem({ title, children, defaultOpen = false }: Accordio
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-4 text-neutral-900 [&>p]:mb-4 [&>ul]:mb-4 [&>ol]:mb-4">
+            <div className="pb-4 text-foreground [&>p]:mb-4 [&>ul]:mb-4 [&>ol]:mb-4">
               {children}
             </div>
           </motion.div>

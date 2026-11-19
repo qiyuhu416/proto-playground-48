@@ -2,9 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 
+import { Eyebrow, Media } from "@/components/system";
+import { ArticleLayout } from "@/components/ArticleLayout";
 function BackButton() {
   return (
-    <a href="/" className="xl:hidden inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-neutral-900 mb-8">
+    <a href="/" className="xl:hidden inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">
       <ArrowLeft className="h-4 w-4" />
       Back
     </a>
@@ -112,7 +114,7 @@ function PrototypeComponent() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-neutral-900 mb-4">Not found</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-4">Not found</h1>
           <a href="/" className="text-primary hover:underline">
             Back to portfolio
           </a>
@@ -122,51 +124,42 @@ function PrototypeComponent() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <div className="mx-auto max-w-4xl px-6 py-12">
+    <ArticleLayout>
         <DynamicIslandTOC />
 
 
         <div className="mb-8">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">{proto.category}</span>
-          <h1 className="mt-3 text-4xl font-medium tracking-tight text-neutral-900">{proto.title}</h1>
-          <p className="mt-4 text-base text-neutral-600">{proto.description}</p>
+          <Eyebrow>{proto.category}</Eyebrow>
+          <h1 className="mt-3 text-4xl font-medium tracking-tight text-foreground">{proto.title}</h1>
+          <p className="mt-4 text-base text-muted-foreground">{proto.description}</p>
         </div>
 
-        <div className="rounded-2xl overflow-hidden bg-white border-4 border-neutral-900" style={{ height: "60vh" }}>
-          {proto.mediaType === "video" ? (
-            <video
-              src={`${proto.media}#t=0.001`}
-              controls
-              preload="metadata"
-              className="w-full h-full object-contain"
-              style={{ backgroundColor: "#fff" }}
-            />
-          ) : (
-            <img src={proto.media} alt={proto.title} className="w-full h-full object-cover" />
-          )}
-        </div>
+        <Media
+          width="wide"
+          type={proto.mediaType === "video" ? "video" : "image"}
+          src={proto.mediaType === "video" ? `${proto.media}#t=0.001` : proto.media}
+          alt={proto.title}
+        />
 
         <div className="mt-12 max-w-2xl">
-          <h2 id="about" className="text-2xl font-medium text-neutral-900 mb-4">About this prototype</h2>
-          <p className="text-neutral-600 mb-4">
+          <h2 id="about" className="text-2xl font-semibold text-foreground mb-4">About this prototype</h2>
+          <p className="text-muted-foreground mb-4">
             This is an interactive exploration of a design concept. The prototype above demonstrates the
             interaction, animation, and user experience of the idea in motion.
           </p>
-          <p className="text-neutral-600 mb-4">
+          <p className="text-muted-foreground mb-4">
             The design decisions shown here are informed by research into how users interact with AI, what
             makes interactions feel natural, and how to communicate system capabilities clearly.
           </p>
 
-          <h2 id="insights" className="text-lg font-medium text-neutral-900 mt-8 mb-3">Key design insights</h2>
-          <ul className="space-y-2 text-sm text-neutral-600">
+          <h2 id="insights" className="text-lg font-semibold text-foreground mt-8 mb-3">Key design insights</h2>
+          <ul className="space-y-2 text-sm text-muted-foreground">
             <li>• Gesture recognition makes AI interactions feel more intuitive</li>
             <li>• Clear feedback loops reduce uncertainty in human-AI collaboration</li>
             <li>• Visual representation of AI reasoning builds trust and understanding</li>
             <li>• Respectful disagreement preserves human agency in the workflow</li>
           </ul>
         </div>
-      </div>
-    </div>
+    </ArticleLayout>
   );
 }

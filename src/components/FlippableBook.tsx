@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type Ref } from "react";
 import { REFLECTIONS, type Reflection } from "@/data/reflections";
 
 const FBK_STYLES = `
@@ -59,15 +59,22 @@ const FBK_STYLES = `
     background-color: #0a0a0a;
   }
   .fbk-date {
+    /* Anchored to the page's own corner (same technique as .fbk-page-number
+       below) instead of flowing inline above the content — as a flex child
+       it drifted up/down with however tall the rest of that page's content
+       was (a short caption vs. a tall image), landing at a different height
+       page to page. Fixed position reads consistently everywhere. */
+    position: absolute;
+    top: 10px;
+    left: 14px;
     font-size: 12px;
     color: #737373;
-    margin-bottom: 8px;
-    align-self: flex-start;
   }
   .fbk-content {
     font-size: 13px;
     color: #262626;
     line-height: 1.6;
+    white-space: pre-line;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 10;
@@ -110,7 +117,11 @@ const ENTRIES = [...REFLECTIONS].reverse();
 // shift onto the back position before placing [image, text].
 type Face =
   | { kind: "blank" }
-  | { kind: "text"; entry: Reflection; label: string; content: string }
+  // showLabel is false for the text half of an image+text pair — the date
+  // already appears on the paired image page right next to it (same
+  // spread), so repeating it on both pages of the same entry is redundant.
+  // Still true for a text-only entry's own (only) page.
+  | { kind: "text"; entry: Reflection; label: string; content: string; showLabel: boolean }
   | { kind: "image"; entry: Reflection; label: string; image: string };
 
 function buildFaces(entries: Reflection[]): Face[] {
@@ -119,9 +130,9 @@ function buildFaces(entries: Reflection[]): Face[] {
     if (entry.image) {
       if (faces.length % 2 === 0) faces.push({ kind: "blank" });
       faces.push({ kind: "image", entry, label: entry.date, image: entry.image });
-      faces.push({ kind: "text", entry, label: entry.date, content: entry.content });
+      faces.push({ kind: "text", entry, label: entry.date, content: entry.content, showLabel: false });
     } else {
-      faces.push({ kind: "text", entry, label: entry.date, content: entry.content });
+      faces.push({ kind: "text", entry, label: entry.date, content: entry.content, showLabel: true });
     }
   }
   return faces;
@@ -136,7 +147,7 @@ const TOTAL_LEAVES = PAGE_COUNT + 2;
 // DEFAULT_OPEN_LEFT_PAGE + 1 on the right) — left-page numbers are always
 // even (backPageNumber = contentIdx*2 + 2), so leafIndex = page/2, and that
 // leaf needs to already be flipped (+1) to show its back as the left page.
-const DEFAULT_OPEN_LEFT_PAGE = 10;
+const DEFAULT_OPEN_LEFT_PAGE =44;
 const DEFAULT_FLIPPED = DEFAULT_OPEN_LEFT_PAGE / 2 + 1;
 
 type Leaf = {
@@ -149,9 +160,10 @@ type Leaf = {
 
 function FaceContent({ face, pageNumber }: { face: Face | undefined; pageNumber: number | undefined }) {
   if (!face || face.kind === "blank") return null;
+  const showLabel = face.kind === "image" || face.showLabel;
   return (
     <>
-      <div className="fbk-date">{face.label}</div>
+      {showLabel && <div className="fbk-date">{face.label}</div>}
       {face.kind === "image" ? (
         <img src={face.image} alt="" className="fbk-image" />
       ) : (
@@ -162,7 +174,7 @@ function FaceContent({ face, pageNumber }: { face: Face | undefined; pageNumber:
   );
 }
 
-export function FlippableBook() {
+export function FlippableBook({ frameRef }: { frameRef?: Ref<HTMLDivElement> } = {}) {
   const [flipped, setFlipped] = useState(DEFAULT_FLIPPED);
   const [gsapReady, setGsapReady] = useState(false);
   const leafRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -227,7 +239,7 @@ export function FlippableBook() {
   return (
     <div className="flex flex-col items-center gap-3">
       <style>{FBK_STYLES}</style>
-      <div className="fbk-frame">
+      <div className="fbk-frame" ref={frameRef}>
         <div className="fbk-book">
           <div className="fbk-spine" />
 
@@ -274,14 +286,14 @@ export function FlippableBook() {
         <button
           onClick={prev}
           disabled={flipped === 0}
-          className="text-xs text-neutral-400 hover:text-black disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors cursor-pointer disabled:cursor-not-allowed"
+          className="text-xs text-subtle-foreground hover:text-black disabled:opacity-30 disabled:hover:text-subtle-foreground transition-colors cursor-pointer disabled:cursor-not-allowed"
         >
           ← Prev
         </button>
         <button
           onClick={next}
           disabled={flipped >= TOTAL_LEAVES}
-          className="text-xs text-neutral-400 hover:text-black disabled:opacity-30 disabled:hover:text-neutral-400 transition-colors cursor-pointer disabled:cursor-not-allowed"
+          className="text-xs text-subtle-foreground hover:text-black disabled:opacity-30 disabled:hover:text-subtle-foreground transition-colors cursor-pointer disabled:cursor-not-allowed"
         >
           Next →
         </button>

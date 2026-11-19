@@ -4,6 +4,7 @@ import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleContent, ArticleHeading2, HighlightedText, Bold } from "@/components/ArticleContent";
 
+import { Eyebrow, Panel } from "@/components/system";
 export const Route = createFileRoute("/a2ui-generative")({
   head: () => ({
     meta: [
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/a2ui-generative")({
 
 function ResearchComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
+    <div className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-2xl px-6 py-12">
         <ArticleHeader
           title={ARTICLE_META["a2ui-generative"].title}
@@ -29,7 +30,7 @@ function ResearchComponent() {
 
 
         <ArticleContent>
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+          <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
             <p className="m-0"><Bold>Note:</Bold> I can't directly show the prototypes I built, but I can share the references and research frameworks I used while exploring A2UI. This is early-stage research—not production-ready, but useful for understanding the space.</p>
           </div>
 
@@ -48,25 +49,25 @@ function ResearchComponent() {
           </p>
 
           <div className="space-y-4 my-8">
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Researcher Role</h4>
-              <p className="text-sm text-neutral-600">How might an AI generate interfaces optimized for exploration and hypothesis testing? What components matter when discovery is the goal?</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">Researcher Role</h4>
+              <p className="text-sm text-muted-foreground">How might an AI generate interfaces optimized for exploration and hypothesis testing? What components matter when discovery is the goal?</p>
+            </Panel>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Decision-Maker Role</h4>
-              <p className="text-sm text-neutral-600">What would an interface look like designed for quick judgment and trade-off evaluation? How does AI prioritize information density vs. clarity?</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">Decision-Maker Role</h4>
+              <p className="text-sm text-muted-foreground">What would an interface look like designed for quick judgment and trade-off evaluation? How does AI prioritize information density vs. clarity?</p>
+            </Panel>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Executor Role</h4>
-              <p className="text-sm text-neutral-600">How does AI design for action and efficiency? What components reduce friction for users just trying to get something done?</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">Executor Role</h4>
+              <p className="text-sm text-muted-foreground">How does AI design for action and efficiency? What components reduce friction for users just trying to get something done?</p>
+            </Panel>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">Learner Role</h4>
-              <p className="text-sm text-neutral-600">How does generative UI explain itself? What if the interface adapted to teach as it generates, scaffolding understanding alongside functionality?</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">Learner Role</h4>
+              <p className="text-sm text-muted-foreground">How does generative UI explain itself? What if the interface adapted to teach as it generates, scaffolding understanding alongside functionality?</p>
+            </Panel>
           </div>
 
           <ArticleHeading2 id={sectionId("Interaction Patterns")}>Interaction Patterns</ArticleHeading2>
@@ -95,9 +96,9 @@ function ResearchComponent() {
 
         </ArticleContent>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-3xl mx-auto px-6">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Explore</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
+        <div className="mt-20 border-t border-border pt-10 max-w-3xl mx-auto px-6">
+          <Eyebrow as="div" className="mb-6">Explore</Eyebrow>
+          <ul className="space-y-3 text-sm text-muted-foreground">
             <li>How component generation is changing interface design</li>
             <li>The role of AI in scaling design systems</li>
             <li>Balancing automation with human control</li>

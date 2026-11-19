@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Carousel, Media, ModalLayout, Section } from "@/components/system";
 
 // The modal every card click in the quadrant system opens into. One
 // component, not duplicated per place a card can be clicked, so a future
@@ -15,12 +16,22 @@ export function CardModal({
   slug,
   description,
   image,
+  video,
+  gallery,
   onClose,
 }: {
   title: string;
   slug?: string;
   description?: string;
   image?: string;
+  // Shown instead of `image` when both are set — autoplay/loop/muted so it
+  // reads like an animated screenshot rather than something you have to hit
+  // play on; `controls` still lets you pause/scrub if you want to.
+  video?: string;
+  // Rendered after the description text — a captioned walkthrough for a
+  // multi-step flow, each screenshot with its own line underneath instead
+  // of one image/video trying to carry the whole explanation.
+  gallery?: { src: string; caption: string }[];
   onClose: () => void;
 }) {
   const [isFull, setIsFull] = useState(false);
@@ -56,14 +67,14 @@ export function CardModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Scrollable container with a white background */}
-        <div className="w-full h-full overflow-y-auto flex flex-col bg-white" style={{ overscrollBehavior: "contain" }}>
+        <div className="w-full h-full overflow-y-auto flex flex-col bg-card" style={{ overscrollBehavior: "contain" }}>
           {/* Sticky header */}
-          <header className="sticky top-0 z-10 bg-white border-b border-neutral-200/50 px-4 py-3">
+          <header className="sticky top-0 z-10 bg-card border-b border-border/50 px-4 py-3">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-sm font-medium text-neutral-900 truncate">{title}</h2>
+              <h2 className="text-sm font-medium text-foreground truncate">{title}</h2>
               <button
                 onClick={onClose}
-                className="p-2 cursor-pointer rounded-full bg-transparent hover:bg-neutral-100 text-neutral-500 hover:text-neutral-900 transition-colors"
+                className="p-2 cursor-pointer rounded-full bg-transparent hover:bg-muted text-subtle-foreground hover:text-foreground transition-colors"
                 title="Close"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -76,20 +87,33 @@ export function CardModal({
           {/* Scrollable content */}
           <div className="flex-1 w-full">
             {description ? (
-              <div className={`max-w-xl mx-auto px-6 pb-8 flex flex-col gap-8 ${image ? "pt-8" : "pt-[14%]"}`}>
-                {image && <img src={image} alt={title} className="w-full rounded-xl" />}
-                {/* Same body-copy treatment real project pages use
-                    (ArticleContent.tsx: text-base md:text-lg leading-8
-                    text-neutral-900) — this used to be a smaller, lighter
-                    text-sm/text-neutral-700, reading as noticeably different
-                    from a project's own body text even though both actually
-                    render in the same inherited font (Inter; the real
-                    pages' own "font-overusedGrotesk"/"font-calendas" classes
-                    have no matching theme definition anywhere in the
-                    codebase, so they're inert — size/leading/color were the
-                    real mismatch, not the typeface itself). */}
-                <p className="whitespace-break-spaces text-base md:text-lg leading-8 text-neutral-900">{description}</p>
-              </div>
+              // Same ModalLayout a project page uses, just fed inline instead of
+              // through an iframe — so both modes look identical.
+              <ModalLayout short>
+                <Section>
+                  {(video || image) && (
+                    <Media
+                      className="mb-8"
+                      src={video ?? image ?? ""}
+                      type={video ? "video" : "image"}
+                      animated={!!video}
+                      alt={title}
+                    />
+                  )}
+                  {description.split(/\n\n+/).map((paragraph, i) => (
+                    <p key={i} className="whitespace-pre-line">{paragraph}</p>
+                  ))}
+                  {gallery && gallery.length > 0 && (
+                    <Carousel
+                      label={`${title} screens`}
+                      slides={gallery.map((item, i) => ({
+                        id: String(i),
+                        content: <Media src={item.src} alt={item.caption} caption={item.caption} />,
+                      }))}
+                    />
+                  )}
+                </Section>
+              </ModalLayout>
             ) : (
               <iframe
                 ref={iframeRef}

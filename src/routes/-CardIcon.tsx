@@ -20,7 +20,7 @@ export function CardIcon({ hasVideo }: { hasVideo: boolean }) {
   return (
     <span
       className={[
-        "absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm transition-opacity text-neutral-700",
+        "absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-card/90 shadow-sm transition-opacity text-muted-foreground",
         hasVideo ? "opacity-100" : "opacity-0 group-hover:opacity-100",
       ].join(" ")}
     >

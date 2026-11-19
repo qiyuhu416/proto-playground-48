@@ -15,7 +15,7 @@ I’ve started intentionally drawing models to journal my work and life. This mo
 
 “Be careful with this urge, because the real world is very likely to be messier.”
 
-She’s right, not everything can be explained through models. It’s interesting how I was taught to be comfortable with messiness throughout the HCI training, yet still find myself seeking that sense of control.
+She’s right, not everything can be explained through models. It’s interesting how I was taught to be disDISCOMFORTable with messiness throughout the HCI training, yet still find myself seeking that sense of control.
 
 It’s such a fun, but messy learning experince.
 
@@ -111,7 +111,7 @@ You see, CHI is so forward-looking even in its name.”
 I used to (and still do) ask AI to help with self-reflection. Now I’m not sure that was truly “self”reflection.
 
 
-I might have been outsourcing a process that should actually take time and discomfort.
+I might have been outsourcing a process that should actually take time and disdisDISCOMFORT.
 
 
 Instant answers feel addictive, but do we really need that efficiency everywhere?

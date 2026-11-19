@@ -27,8 +27,8 @@ export const ArticleContentWide = ({
   <div className="mx-auto px-6 md:px-8 py-12 md:py-16">
     <div
       className={cn(
-        "mx-auto font-overusedGrotesk text-lg leading-8 text-neutral-900",
-        "[&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-[0.3em]",
+        "mx-auto font-overusedGrotesk text-lg leading-8 text-foreground",
+        "[&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-highlight",
         "[&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline",
         maxWidth
       )}
@@ -54,9 +54,9 @@ export const ArticleContentCompact = ({
   <div className="mx-auto px-6 md:px-8 py-12 md:py-16">
     <div
       className={cn(
-        "mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-neutral-900",
+        "mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-foreground",
         paragraphSpacing,
-        "[&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-[0.3em]",
+        "[&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-highlight",
         "[&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline"
       )}
     >
@@ -80,7 +80,7 @@ export const ArticleContentNarrative = ({
 }: ArticleContentNarrativeProps) => (
   <div className="mx-auto px-6 md:px-8 py-12 md:py-16">
     <div
-      className="mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-neutral-900 [&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-[0.3em] [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline [&>em]:italic [&>em]:text-neutral-600"
+      className="mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-foreground [&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-highlight [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline [&>em]:italic [&>em]:text-muted-foreground"
     >
       {children}
     </div>
@@ -103,10 +103,10 @@ export const ArticleHeading2Variant = ({
   variant = "default"
 }: ArticleHeading2VariantProps) => {
   const variants = {
-    default: "text-3xl font-medium mt-20 mb-8 font-calendas tracking-tight text-neutral-900",
-    emphasized: "text-3xl font-bold mt-20 mb-8 font-calendas tracking-tight text-neutral-900 border-l-4 border-neutral-300 pl-4",
-    subtle: "text-2xl font-medium mt-16 mb-6 font-calendas tracking-tight text-neutral-600",
-    large: "text-4xl font-medium mt-24 mb-10 font-calendas tracking-tight text-neutral-900"
+    default: "text-3xl font-medium mt-20 mb-8 font-calendas tracking-tight text-foreground",
+    emphasized: "text-3xl font-bold mt-20 mb-8 font-calendas tracking-tight text-foreground border-l-4 border-neutral-300 pl-4",
+    subtle: "text-2xl font-semibold mt-16 mb-6 font-calendas tracking-tight text-muted-foreground",
+    large: "text-4xl font-medium mt-24 mb-10 font-calendas tracking-tight text-foreground"
   };
 
   return (
@@ -134,10 +134,10 @@ export const ArticleHeading3Variant = ({
   number
 }: ArticleHeading3VariantProps) => {
   const variants = {
-    default: "text-2xl font-medium mt-12 mb-6 font-overusedGrotesk text-neutral-900",
-    highlighted: "text-2xl font-medium mt-12 mb-6 font-overusedGrotesk text-neutral-900 bg-neutral-50 p-4 rounded-lg border-l-4 border-neutral-300",
-    numbered: "text-2xl font-medium mt-12 mb-6 font-overusedGrotesk text-neutral-900 flex items-center gap-3 before:content-[attr(data-number)] before:w-8 before:h-8 before:bg-neutral-900 before:text-white before:rounded-full before:flex before:items-center before:justify-center before:text-sm before:font-bold",
-    subtle: "text-lg font-medium mt-8 mb-4 font-overusedGrotesk text-neutral-600 uppercase tracking-wide"
+    default: "text-2xl font-semibold mt-12 mb-6 font-overusedGrotesk text-foreground",
+    highlighted: "text-2xl font-semibold mt-12 mb-6 font-overusedGrotesk text-foreground bg-neutral-50 p-4 rounded-lg border-l-4 border-neutral-300",
+    numbered: "text-2xl font-semibold mt-12 mb-6 font-overusedGrotesk text-foreground flex items-center gap-3 before:content-[attr(data-number)] before:w-8 before:h-8 before:bg-foreground before:text-white before:rounded-full before:flex before:items-center before:justify-center before:text-sm before:font-bold",
+    subtle: "text-lg font-medium mt-8 mb-4 font-overusedGrotesk text-muted-foreground uppercase tracking-wide"
   };
 
   return (
@@ -184,11 +184,11 @@ export const ArticleContentCustom = ({
         font,
         fontSize,
         lineHeight,
-        "text-neutral-900",
+        "text-foreground",
         `[&>p]:${paragraphSpacing}`,
         `[&_strong]:bg-[${highlightColor}]`,
         `[&_strong]:${highlightOpacity}`,
-        "[&_strong]:rounded-[0.3em] [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline"
+        "[&_strong]:rounded-highlight [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline"
       )}
       style={{
         "--highlight-color": highlightColor

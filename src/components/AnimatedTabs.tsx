@@ -27,7 +27,7 @@ const AnimatedTabs = ({
 
   return (
     <div className={cn("w-full flex flex-col gap-y-4", className)}>
-      <div className="sticky top-0 z-20 flex gap-2 flex-wrap py-4 -mx-6 px-6 bg-background border-b border-neutral-200">
+      <div className="sticky top-0 z-20 flex gap-2 flex-wrap py-4 -mx-6 px-6 bg-background border-b border-border">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -39,14 +39,14 @@ const AnimatedTabs = ({
             {activeTab === tab.id && (
               <motion.div
                 layoutId="active-tab"
-                className="absolute inset-0 bg-white shadow-sm border border-neutral-300 !rounded-lg"
+                className="absolute inset-0 bg-card shadow-sm border border-border-strong !rounded-lg"
                 transition={{ type: "spring", duration: 0.3 }}
               />
             )}
             <span
               className={cn(
                 "relative z-10",
-                activeTab === tab.id ? "text-neutral-900" : "text-neutral-600"
+                activeTab === tab.id ? "text-foreground" : "text-muted-foreground"
               )}
             >
               {tab.label}
@@ -55,7 +55,7 @@ const AnimatedTabs = ({
         ))}
       </div>
 
-      <div className="text-neutral-900 rounded-xl min-h-60 bg-neutral-50">
+      <div className="text-foreground rounded-xl min-h-60 bg-muted/50">
         {tabs.map(
           (tab) =>
             activeTab === tab.id && (

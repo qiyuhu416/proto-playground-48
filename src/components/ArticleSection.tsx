@@ -11,7 +11,7 @@ interface ArticleSectionProps {
 export const ArticleSection = ({ title, id, children, description }: ArticleSectionProps) => (
   <section>
     <ArticleHeading2 id={id}>{title}</ArticleHeading2>
-    {description && <p className="text-neutral-600 mb-6">{description}</p>}
+    {description && <p className="text-muted-foreground mb-6">{description}</p>}
     {children}
   </section>
 );

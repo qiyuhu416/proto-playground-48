@@ -205,10 +205,10 @@ export function HeroScrollAnimation() {
         <div
           className="w-full text-right"
         >
-          <p className="text-sm md:text-base text-neutral-900 leading-snug font-medium">
-            Qiyu is exploring the future of human-AI interaction to understand{" "}
+          <p className="text-sm md:text-base text-foreground leading-snug font-medium">
+          {" "}
             <span className="relative">
-              Self
+              Qiyu prototypes
               <span
                 data-dot-id="self"
                 className="inline-block w-3 h-3 bg-red-400 rounded-full ml-2 mb-1"
@@ -217,31 +217,32 @@ export function HeroScrollAnimation() {
             </span>
             {" "}
             <span className="relative">
-              Others
+            AI that thinks outside the human box
               <span
                 data-dot-id="others"
                 className="inline-block w-3 h-3 bg-red-400 rounded-full ml-2 mb-1"
                 style={{ display: "inline-block", verticalAlign: "middle" }}
               />
             </span>
-            {" "}through{" "}
+            {" "} 
             <span className="relative">
-              Products
+              so we can see what we are not capable of 
               <span
                 data-dot-id="products"
                 className="inline-block w-3 h-3 bg-red-400 rounded-full ml-2 mb-1"
                 style={{ display: "inline-block", verticalAlign: "middle" }}
               />
             </span>
-            {" "}and{" "}
+            {" "} 
             <span className="relative">
-              Prototypes
+            question what we take for granted
               <span
-                data-dot-id="futures"
+                data-dot-id="products"
                 className="inline-block w-3 h-3 bg-red-400 rounded-full ml-2 mb-1"
                 style={{ display: "inline-block", verticalAlign: "middle" }}
               />
             </span>
+            {" "}and understand one another better{" "}
           </p>
         </div>
       </div>
@@ -262,7 +263,7 @@ export function HeroScrollAnimation() {
           return (
             <>
               <div
-                className="absolute text-xs text-neutral-400 pointer-events-none"
+                className="absolute text-xs text-subtle-foreground pointer-events-none"
                 style={{
                   left: `${selfPos.x - 30}px`,
                   top: `${selfPos.y - 20}px`,
@@ -273,7 +274,7 @@ export function HeroScrollAnimation() {
               </div>
 
               <div
-                className="absolute text-xs text-neutral-400 pointer-events-none"
+                className="absolute text-xs text-subtle-foreground pointer-events-none"
                 style={{
                   left: `${othersPos.x - 30}px`,
                   top: `${othersPos.y + 10}px`,
@@ -284,7 +285,7 @@ export function HeroScrollAnimation() {
               </div>
 
               <div
-                className="absolute text-xs text-neutral-400 pointer-events-none text-center"
+                className="absolute text-xs text-subtle-foreground pointer-events-none text-center"
                 style={{
                   left: `${productsPos.x}px`,
                   top: `${productsPos.y + 15}px`,
@@ -296,7 +297,7 @@ export function HeroScrollAnimation() {
               </div>
 
               <div
-                className="absolute text-xs text-neutral-400 pointer-events-none text-center"
+                className="absolute text-xs text-subtle-foreground pointer-events-none text-center"
                 style={{
                   left: `${futuresPos.x}px`,
                   top: `${futuresPos.y + 15}px`,
@@ -304,7 +305,7 @@ export function HeroScrollAnimation() {
                   opacity: axisOpacity,
                 }}
               >
-                FUTURE CONCEPTS
+                Physical CONCEPTS
               </div>
             </>
           );
@@ -337,7 +338,7 @@ export function HeroScrollAnimation() {
                   y1={selfPos.y}
                   x2={othersPos.x}
                   y2={othersPos.y}
-                  stroke="#d4d4d4"
+                  stroke="var(--border-strong)"
                   strokeWidth="1"
                 />
 
@@ -347,7 +348,7 @@ export function HeroScrollAnimation() {
                   y1={productsPos.y}
                   x2={futuresPos.x}
                   y2={futuresPos.y}
-                  stroke="#d4d4d4"
+                  stroke="var(--border-strong)"
                   strokeWidth="1"
                 />
               </>

@@ -6,9 +6,9 @@ import { ArrowUpRight } from "lucide-react";
 // at the Overview stop) both read the same strings instead of each keeping
 // their own copy.
 export const MATRIX_TEXT = 'Currently Prototyping @Apple AILabs';
-export const REFLECTION_TEXT = "Thinking... what is overthinking";
+export const REFLECTION_TEXT = "Thinking... what is overthinking?";
 export const OVERVIEW_TEXT = "Hello! I'd rather meet you than the site";
-export const HHI_TEXT = "Since when does 'humans' become a word?";
+export const HHI_TEXT = "To break and rebuild my mental models";
 export const HELP_OTHERS_TEXT = "Yoyo";
 // "tech for self-understanding" is its own matrix card but shares the
 // "work" quadrant/stop with "work" (same destination, different tab) — this
@@ -34,7 +34,7 @@ export function LinkedInBadge({ text }: { text: string }) {
       // on short resting texts the hover content would get crushed by
       // `justify-between`. 220px is sized to fit both hover-layer halves
       // with >=8px between "Key-You fyi" and "Qiyu's LinkedIn".
-      className="group relative grid items-center overflow-hidden rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-900 shadow-sm transition-colors duration-300 hover:min-w-[220px] hover:border-transparent hover:bg-neutral-900 hover:text-white"
+      className="group relative grid items-center overflow-hidden rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground shadow-sm transition-colors duration-300 hover:min-w-[220px] hover:border-transparent hover:bg-foreground hover:text-white"
     >
       {/* No fixed-width sizer anymore — the badge sizes to whichever `text`
           it's actually showing. The hover-reveal layer below is `absolute`
@@ -51,7 +51,7 @@ export function LinkedInBadge({ text }: { text: string }) {
       </span>
 
       <span className="invisible absolute inset-0 flex items-center justify-between whitespace-nowrap px-3 group-hover:visible">
-        <span className="text-[11px] text-neutral-400">
+        <span className="text-xs text-neutral-400">
           🔑🫵 Key-You fyi
         </span>
         <span className="flex items-center gap-1">

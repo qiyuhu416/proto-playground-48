@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { Eyebrow } from "@/components/system";
 interface CirclePosition {
   id: string;
   label: string;
@@ -108,26 +109,26 @@ export function HeroWithCircles() {
     <div ref={containerRef} className="relative w-full">
       {/* Text content */}
       <div className="mx-auto max-w-4xl px-6 py-12 mb-20">
-        <div className="text-2xl md:text-4xl text-neutral-900 leading-relaxed font-medium space-y-4">
+        <div className="text-2xl md:text-4xl text-foreground leading-relaxed font-semibold space-y-4">
           <p>
             I create{" "}
             <span className="inline-flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-neutral-900"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-foreground"></span>
               <span className="font-semibold">designs for self</span>
             </span>
             —how people know themselves through technology. I build systems that facilitate{" "}
             <span className="inline-flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-neutral-900"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-foreground"></span>
               <span className="font-semibold">understanding others</span>
             </span>
             —empathy across stakeholders. I ship{" "}
             <span className="inline-flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-neutral-900"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-foreground"></span>
               <span className="font-semibold">products</span>
             </span>{" "}
             that solve real problems at scale. And I explore{" "}
             <span className="inline-flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-neutral-900"></span>
+              <span className="inline-block w-2 h-2 rounded-full bg-foreground"></span>
               <span className="font-semibold">future concepts</span>
             </span>
             —prototypes that question what's possible.
@@ -148,7 +149,7 @@ export function HeroWithCircles() {
             y1="20"
             x2="50"
             y2="80"
-            stroke="#d4d4d4"
+            stroke="var(--border-strong)"
             strokeWidth="0.5"
             opacity={Math.max(0, animProgress - 0.5) * 2}
           />
@@ -157,7 +158,7 @@ export function HeroWithCircles() {
             y1="50"
             x2="80"
             y2="50"
-            stroke="#d4d4d4"
+            stroke="var(--border-strong)"
             strokeWidth="0.5"
             opacity={Math.max(0, animProgress - 0.5) * 2}
           />
@@ -172,7 +173,7 @@ export function HeroWithCircles() {
                   cy={pos.y}
                   r="4"
                   fill="currentColor"
-                  className="text-neutral-900"
+                  className="text-foreground"
                   opacity={0.8}
                 />
                 {/* Labels (only show when expanded) */}
@@ -196,24 +197,24 @@ export function HeroWithCircles() {
       {/* Quadrant labels */}
       <div className="relative w-full h-40 mb-12">
         <div className="absolute top-0 left-1/4 -translate-x-1/2 text-center">
-          <p className="text-xs uppercase tracking-widest text-neutral-400">
+          <Eyebrow as="p" className="text-neutral-400">
             Understanding Self
-          </p>
+          </Eyebrow>
         </div>
         <div className="absolute top-0 right-1/4 translate-x-1/2 text-center">
-          <p className="text-xs uppercase tracking-widest text-neutral-400">
+          <Eyebrow as="p" className="text-neutral-400">
             Understanding Others
-          </p>
+          </Eyebrow>
         </div>
         <div className="absolute bottom-0 left-1/4 -translate-x-1/2 text-center">
-          <p className="text-xs uppercase tracking-widest text-neutral-400">
+          <Eyebrow as="p" className="text-neutral-400">
             Prototyping
-          </p>
+          </Eyebrow>
         </div>
         <div className="absolute bottom-0 right-1/4 translate-x-1/2 text-center">
-          <p className="text-xs uppercase tracking-widest text-neutral-400">
+          <Eyebrow as="p" className="text-neutral-400">
             Exploring
-          </p>
+          </Eyebrow>
         </div>
       </div>
     </div>

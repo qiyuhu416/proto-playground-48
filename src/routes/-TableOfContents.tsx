@@ -36,7 +36,7 @@ export function TableOfContents() {
   return (
     <nav className="not-prose hidden xl:flex flex-col gap-4 fixed left-8 bottom-20 w-52 max-h-[30vh] overflow-auto">
       {items.length > 0 && (
-        <ul className="space-y-1 text-xs pr-4 border-l border-neutral-200 pl-1">
+        <ul className="space-y-1 text-xs pr-4 border-l border-border pl-1">
           {items.map((item) => (
             <li key={item.id}>
               <a
@@ -47,8 +47,8 @@ export function TableOfContents() {
                 }}
                 className={`no-underline block py-1 transition-all border-l-2 pl-3 -ml-px ${
                   activeId === item.id
-                    ? "text-neutral-900 font-medium border-neutral-900"
-                    : "text-neutral-400 hover:text-neutral-700 border-transparent"
+                    ? "text-foreground font-medium border-foreground"
+                    : "text-subtle-foreground hover:text-muted-foreground border-transparent"
                 }`}
               >
                 {item.title}
