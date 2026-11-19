@@ -5,6 +5,7 @@ import { ArticleLayout } from "@/components/ArticleLayout";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ContextBox } from "@/components/ArticleContent";
 
+import { Eyebrow } from "@/components/system";
 export const Route = createFileRoute("/making-design-fun")({
   head: () => ({
     meta: [
@@ -44,7 +45,7 @@ function ArticleComponent() {
           <p>
             That's when I fell in love with vibe-coding. Once you have some ideas and a smart tool to help bring them to life, that feeling is addictive. The friction between idea and reality disappears.
           </p>
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+          <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
             <p className="m-0">The question that drives it all: Why should making things be hard? Why should there be so much friction between an idea and its realization?</p>
           </div>
           <p>
@@ -58,7 +59,6 @@ function ArticleComponent() {
           <OutcomeSection
             id={sectionId("The experiments")}
             title="The experiments"
-            variant="gallery"
             aspectRatio={1.78}
             tabs={[
               {
@@ -124,7 +124,7 @@ function ArticleComponent() {
             These aren't accidents. They're moments of careful thinking disguised as haha. The designer sweated over the details—the easing curve, the timing, the haptic feedback—so the user could experience pure delight.
           </p>
 
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+          <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
             <p className="m-0">The core belief: If I can remove friction, amplify joy, and make creation feel less like work and more like haha, then I've done my job.</p>
           </div>
 
@@ -144,9 +144,9 @@ function ArticleComponent() {
 
         </ArticleContent>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-4xl mx-auto px-6">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related experiences</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
+        <div className="mt-20 border-t border-border pt-10 max-w-4xl mx-auto px-6">
+          <Eyebrow as="div" className="mb-6">Related experiences</Eyebrow>
+          <ul className="space-y-3 text-sm text-muted-foreground">
             <li>Apple — GenAI Prototyper (May 2025 – present)</li>
             <li>Meetfood — Founding Product Designer (Mar 2021 – Dec 2022)</li>
             <li>Cornell — Physical Computing & Interaction Design (Jan 2023 – May 2023)</li>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
+import { Eyebrow } from "@/components/system";
 export const Route = createFileRoute("/listen")({
   head: () => ({
     meta: [
@@ -291,10 +292,10 @@ function ListenComponent() {
   const hoveredNode = INITIAL_NODES.find(n => n.id === hoveredId);
 
   return (
-    <div className="min-h-screen bg-neutral-900 text-white">
+    <div className="min-h-screen bg-foreground text-white">
       <section className="mx-auto max-w-6xl px-6 pt-12">
         <div className="mb-6">
-          <h1 className="text-4xl font-medium mb-3">Listen</h1>
+          <h1 className="text-4xl font-medium mb-3 tracking-tight">Listen</h1>
         </div>
 
         <div className="rounded-2xl overflow-hidden border border-neutral-800">
@@ -305,7 +306,7 @@ function ListenComponent() {
         <div className="mt-3 h-8 flex items-center px-1">
           {hoveredNode?.type === "synthesis" ? (
             <div className="flex items-baseline gap-2.5">
-              <span className="text-xs text-emerald-600 uppercase tracking-wider shrink-0">Value</span>
+              <Eyebrow className="text-emerald-600 shrink-0">Value</Eyebrow>
               <span className="text-sm text-emerald-300">{hoveredNode.fullLabel}</span>
             </div>
           ) : (

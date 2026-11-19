@@ -50,7 +50,7 @@ export const GridOverlay = () => {
             y1={0}
             x2={margin + i * gridSize}
             y2={height}
-            stroke="#d0d0d0"
+            stroke="var(--border-strong)"
             strokeWidth="0.5"
             opacity="0.3"
           />
@@ -66,17 +66,17 @@ export const GridOverlay = () => {
             y1={margin + i * gridSize}
             x2={width}
             y2={margin + i * gridSize}
-            stroke="#d0d0d0"
+            stroke="var(--border-strong)"
             strokeWidth="0.5"
             opacity="0.3"
           />
         ))}
 
         {/* Margin border lines */}
-        <line x1={margin} y1={0} x2={margin} y2={height} stroke="#a0a0a0" strokeWidth="1" opacity="0.5" />
-        <line x1={width - margin} y1={0} x2={width - margin} y2={height} stroke="#a0a0a0" strokeWidth="1" opacity="0.5" />
-        <line x1={0} y1={margin} x2={width} y2={margin} stroke="#a0a0a0" strokeWidth="1" opacity="0.5" />
-        <line x1={0} y1={height - margin} x2={width} y2={height - margin} stroke="#a0a0a0" strokeWidth="1" opacity="0.5" />
+        <line x1={margin} y1={0} x2={margin} y2={height} stroke="var(--faint-foreground)" strokeWidth="1" opacity="0.5" />
+        <line x1={width - margin} y1={0} x2={width - margin} y2={height} stroke="var(--faint-foreground)" strokeWidth="1" opacity="0.5" />
+        <line x1={0} y1={margin} x2={width} y2={margin} stroke="var(--faint-foreground)" strokeWidth="1" opacity="0.5" />
+        <line x1={0} y1={height - margin} x2={width} y2={height - margin} stroke="var(--faint-foreground)" strokeWidth="1" opacity="0.5" />
       </svg>
     </div>
   );

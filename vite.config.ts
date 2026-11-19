@@ -12,6 +12,16 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Forwarded straight into viteReact() (the config package instantiates it,
+  // not us — see the comment above). Adds styled-jsx's own Babel transform
+  // so `<style jsx>` blocks compile, needed for QuadrantDestinationView's
+  // spinning-quote card to use the literal shadcn Button/style-jsx code it
+  // was built from instead of a Tailwind-only reimplementation.
+  react: {
+    babel: {
+      plugins: ["styled-jsx/babel"],
+    },
+  },
   vite: {
     server: {
       port: 3001,

@@ -3,6 +3,7 @@ import { ArticleHeader } from "./-ArticleHeader";
 import { ArticleLayout } from "@/components/ArticleLayout";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleContent, ArticleHeading2, Bold, OutcomeSection, ContextBox } from "@/components/ArticleContent";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 
 export const Route = createFileRoute("/reimagining-the-chatbot")({
   head: () => ({
@@ -52,7 +53,7 @@ function CollectionComponent() {
   ];
 
   return (
-    <ArticleLayout>
+    <ArticleLayout cover>
       <ArticleHeader
         title={ARTICLE_META["reimagining-the-chatbot"].title}
         meta="Collection · Design System"
@@ -80,10 +81,10 @@ function CollectionComponent() {
           <img
             src="/articles/task-analysis-flow.png"
             alt="Six-step task analysis flow for asking a question"
-            className="w-full rounded-2xl my-6 border border-neutral-200"
+            className="w-full rounded-2xl my-6 border border-border"
           />
 
-          <p className="text-sm text-neutral-500 italic mb-6">
+          <p className="text-sm text-subtle-foreground italic mb-6">
             A user's interaction with a chatbot involves six distinct steps—each with its own friction points and assumptions.
           </p>
 
@@ -91,7 +92,7 @@ function CollectionComponent() {
             I saw there are a lot of assumptions hidden in this flow:
           </p>
 
-          <ol className="list-decimal pl-5 space-y-2 text-neutral-700 mb-6">
+          <ol className="list-decimal pl-5 space-y-2 text-muted-foreground mb-6">
             <li><span className="font-bold">Awareness</span> - User forms the awareness of what to ask - assumption: user knows clearly what to ask</li>
             <li><span className="font-bold">Expression</span> - User the conversation by expressing the question - assumption: user express through typing (or clicking on the prompt buttons)</li>
             <li><span className="font-bold">Processing</span> - User waits for AI to generate response - assumption: waiting is boring</li>
@@ -102,10 +103,10 @@ function CollectionComponent() {
           <img
             src="/articles/task-assumptions.png"
             alt="Assumptions made at each step of the interaction"
-            className="w-full rounded-2xl my-6 border border-neutral-200"
+            className="w-full rounded-2xl my-6 border border-border"
           />
 
-          <p className="text-sm text-neutral-500 italic mb-6">
+          <p className="text-sm text-subtle-foreground italic mb-6">
             Every step carries hidden assumptions about what users know, what the system can do, and how they work together.
           </p>
 
@@ -117,7 +118,6 @@ function CollectionComponent() {
             id={sectionId("Explorations")}
             title="Explorations"
             tabs={explorationTabs}
-            variant="gallery"
             aspectRatio={1.78}
           />
 
@@ -127,7 +127,7 @@ function CollectionComponent() {
             Prototypes, in my opinion, serve two goals:
           </p>
 
-          <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+          <ol className="list-decimal pl-5 space-y-1 text-muted-foreground mb-6">
             <li>Produce knowledge or principles</li>
             <li>Be turned into production</li>
           </ol>
@@ -174,6 +174,8 @@ function CollectionComponent() {
             More to come. And hopefully, as the technology changes, we get more room to imagine what those other solutions could be.
           </p>
 
+        {/* floating table-of-contents pill, same as the other case studies */}
+        <DynamicIslandTOC visible />
       </ArticleContent>
     </ArticleLayout>
   );

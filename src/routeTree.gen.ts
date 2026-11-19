@@ -17,9 +17,11 @@ import { Route as DesignAsAResearchToolRouteImport } from './routes/design-as-a-
 import { Route as DesigningForConversationsThatEarnTrustRouteImport } from './routes/designing-for-conversations-that-earn-trust'
 import { Route as DesigningNextGenAiProductsRouteImport } from './routes/designing-next-gen-ai-products'
 import { Route as GoogleCloudRouteImport } from './routes/google-cloud'
+import { Route as GrowMyselfRouteImport } from './routes/grow-myself'
 import { Route as HahaRouteImport } from './routes/haha'
 import { Route as HelloHumansRouteImport } from './routes/hello-humans'
 import { Route as HumanAiResearchRouteImport } from './routes/human-ai-research'
+import { Route as InspireOthersRouteImport } from './routes/inspire-others'
 import { Route as ListenRouteImport } from './routes/listen'
 import { Route as MakingDesignFunRouteImport } from './routes/making-design-fun'
 import { Route as PersonalizationRouteImport } from './routes/personalization'
@@ -29,6 +31,8 @@ import { Route as ProductLaunchFrom01RouteImport } from './routes/product-launch
 import { Route as ReflectionNotesRouteImport } from './routes/reflection-notes'
 import { Route as ReimaginingTheChatbotRouteImport } from './routes/reimagining-the-chatbot'
 import { Route as ThinkRouteImport } from './routes/think'
+import { Route as UnderstandHumansRouteImport } from './routes/understand-humans'
+import { Route as UnderstandMyselfRouteImport } from './routes/understand-myself'
 import { Route as WhatDoPrototypesPrototypeRouteImport } from './routes/what-do-prototypes-prototype'
 
 const IndexRoute = IndexRouteImport.update({
@@ -73,6 +77,11 @@ const GoogleCloudRoute = GoogleCloudRouteImport.update({
   path: '/google-cloud',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GrowMyselfRoute = GrowMyselfRouteImport.update({
+  id: '/grow-myself',
+  path: '/grow-myself',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HahaRoute = HahaRouteImport.update({
   id: '/haha',
   path: '/haha',
@@ -86,6 +95,11 @@ const HelloHumansRoute = HelloHumansRouteImport.update({
 const HumanAiResearchRoute = HumanAiResearchRouteImport.update({
   id: '/human-ai-research',
   path: '/human-ai-research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InspireOthersRoute = InspireOthersRouteImport.update({
+  id: '/inspire-others',
+  path: '/inspire-others',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ListenRoute = ListenRouteImport.update({
@@ -133,6 +147,16 @@ const ThinkRoute = ThinkRouteImport.update({
   path: '/think',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UnderstandHumansRoute = UnderstandHumansRouteImport.update({
+  id: '/understand-humans',
+  path: '/understand-humans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnderstandMyselfRoute = UnderstandMyselfRouteImport.update({
+  id: '/understand-myself',
+  path: '/understand-myself',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WhatDoPrototypesPrototypeRoute =
   WhatDoPrototypesPrototypeRouteImport.update({
     id: '/what-do-prototypes-prototype',
@@ -149,9 +173,11 @@ export interface FileRoutesByFullPath {
   '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
+  '/grow-myself': typeof GrowMyselfRoute
   '/haha': typeof HahaRoute
   '/hello-humans': typeof HelloHumansRoute
   '/human-ai-research': typeof HumanAiResearchRoute
+  '/inspire-others': typeof InspireOthersRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
@@ -161,6 +187,8 @@ export interface FileRoutesByFullPath {
   '/reflection-notes': typeof ReflectionNotesRoute
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
+  '/understand-humans': typeof UnderstandHumansRoute
+  '/understand-myself': typeof UnderstandMyselfRoute
   '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
 }
 export interface FileRoutesByTo {
@@ -172,9 +200,11 @@ export interface FileRoutesByTo {
   '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
+  '/grow-myself': typeof GrowMyselfRoute
   '/haha': typeof HahaRoute
   '/hello-humans': typeof HelloHumansRoute
   '/human-ai-research': typeof HumanAiResearchRoute
+  '/inspire-others': typeof InspireOthersRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
@@ -184,6 +214,8 @@ export interface FileRoutesByTo {
   '/reflection-notes': typeof ReflectionNotesRoute
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
+  '/understand-humans': typeof UnderstandHumansRoute
+  '/understand-myself': typeof UnderstandMyselfRoute
   '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
 }
 export interface FileRoutesById {
@@ -196,9 +228,11 @@ export interface FileRoutesById {
   '/designing-for-conversations-that-earn-trust': typeof DesigningForConversationsThatEarnTrustRoute
   '/designing-next-gen-ai-products': typeof DesigningNextGenAiProductsRoute
   '/google-cloud': typeof GoogleCloudRoute
+  '/grow-myself': typeof GrowMyselfRoute
   '/haha': typeof HahaRoute
   '/hello-humans': typeof HelloHumansRoute
   '/human-ai-research': typeof HumanAiResearchRoute
+  '/inspire-others': typeof InspireOthersRoute
   '/listen': typeof ListenRoute
   '/making-design-fun': typeof MakingDesignFunRoute
   '/personalization': typeof PersonalizationRoute
@@ -208,6 +242,8 @@ export interface FileRoutesById {
   '/reflection-notes': typeof ReflectionNotesRoute
   '/reimagining-the-chatbot': typeof ReimaginingTheChatbotRoute
   '/think': typeof ThinkRoute
+  '/understand-humans': typeof UnderstandHumansRoute
+  '/understand-myself': typeof UnderstandMyselfRoute
   '/what-do-prototypes-prototype': typeof WhatDoPrototypesPrototypeRoute
 }
 export interface FileRouteTypes {
@@ -221,9 +257,11 @@ export interface FileRouteTypes {
     | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
+    | '/grow-myself'
     | '/haha'
     | '/hello-humans'
     | '/human-ai-research'
+    | '/inspire-others'
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
@@ -233,6 +271,8 @@ export interface FileRouteTypes {
     | '/reflection-notes'
     | '/reimagining-the-chatbot'
     | '/think'
+    | '/understand-humans'
+    | '/understand-myself'
     | '/what-do-prototypes-prototype'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -244,9 +284,11 @@ export interface FileRouteTypes {
     | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
+    | '/grow-myself'
     | '/haha'
     | '/hello-humans'
     | '/human-ai-research'
+    | '/inspire-others'
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
@@ -256,6 +298,8 @@ export interface FileRouteTypes {
     | '/reflection-notes'
     | '/reimagining-the-chatbot'
     | '/think'
+    | '/understand-humans'
+    | '/understand-myself'
     | '/what-do-prototypes-prototype'
   id:
     | '__root__'
@@ -267,9 +311,11 @@ export interface FileRouteTypes {
     | '/designing-for-conversations-that-earn-trust'
     | '/designing-next-gen-ai-products'
     | '/google-cloud'
+    | '/grow-myself'
     | '/haha'
     | '/hello-humans'
     | '/human-ai-research'
+    | '/inspire-others'
     | '/listen'
     | '/making-design-fun'
     | '/personalization'
@@ -279,6 +325,8 @@ export interface FileRouteTypes {
     | '/reflection-notes'
     | '/reimagining-the-chatbot'
     | '/think'
+    | '/understand-humans'
+    | '/understand-myself'
     | '/what-do-prototypes-prototype'
   fileRoutesById: FileRoutesById
 }
@@ -291,9 +339,11 @@ export interface RootRouteChildren {
   DesigningForConversationsThatEarnTrustRoute: typeof DesigningForConversationsThatEarnTrustRoute
   DesigningNextGenAiProductsRoute: typeof DesigningNextGenAiProductsRoute
   GoogleCloudRoute: typeof GoogleCloudRoute
+  GrowMyselfRoute: typeof GrowMyselfRoute
   HahaRoute: typeof HahaRoute
   HelloHumansRoute: typeof HelloHumansRoute
   HumanAiResearchRoute: typeof HumanAiResearchRoute
+  InspireOthersRoute: typeof InspireOthersRoute
   ListenRoute: typeof ListenRoute
   MakingDesignFunRoute: typeof MakingDesignFunRoute
   PersonalizationRoute: typeof PersonalizationRoute
@@ -303,6 +353,8 @@ export interface RootRouteChildren {
   ReflectionNotesRoute: typeof ReflectionNotesRoute
   ReimaginingTheChatbotRoute: typeof ReimaginingTheChatbotRoute
   ThinkRoute: typeof ThinkRoute
+  UnderstandHumansRoute: typeof UnderstandHumansRoute
+  UnderstandMyselfRoute: typeof UnderstandMyselfRoute
   WhatDoPrototypesPrototypeRoute: typeof WhatDoPrototypesPrototypeRoute
 }
 
@@ -364,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GoogleCloudRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/grow-myself': {
+      id: '/grow-myself'
+      path: '/grow-myself'
+      fullPath: '/grow-myself'
+      preLoaderRoute: typeof GrowMyselfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/haha': {
       id: '/haha'
       path: '/haha'
@@ -383,6 +442,13 @@ declare module '@tanstack/react-router' {
       path: '/human-ai-research'
       fullPath: '/human-ai-research'
       preLoaderRoute: typeof HumanAiResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inspire-others': {
+      id: '/inspire-others'
+      path: '/inspire-others'
+      fullPath: '/inspire-others'
+      preLoaderRoute: typeof InspireOthersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/listen': {
@@ -448,6 +514,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ThinkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/understand-humans': {
+      id: '/understand-humans'
+      path: '/understand-humans'
+      fullPath: '/understand-humans'
+      preLoaderRoute: typeof UnderstandHumansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/understand-myself': {
+      id: '/understand-myself'
+      path: '/understand-myself'
+      fullPath: '/understand-myself'
+      preLoaderRoute: typeof UnderstandMyselfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/what-do-prototypes-prototype': {
       id: '/what-do-prototypes-prototype'
       path: '/what-do-prototypes-prototype'
@@ -468,9 +548,11 @@ const rootRouteChildren: RootRouteChildren = {
     DesigningForConversationsThatEarnTrustRoute,
   DesigningNextGenAiProductsRoute: DesigningNextGenAiProductsRoute,
   GoogleCloudRoute: GoogleCloudRoute,
+  GrowMyselfRoute: GrowMyselfRoute,
   HahaRoute: HahaRoute,
   HelloHumansRoute: HelloHumansRoute,
   HumanAiResearchRoute: HumanAiResearchRoute,
+  InspireOthersRoute: InspireOthersRoute,
   ListenRoute: ListenRoute,
   MakingDesignFunRoute: MakingDesignFunRoute,
   PersonalizationRoute: PersonalizationRoute,
@@ -480,6 +562,8 @@ const rootRouteChildren: RootRouteChildren = {
   ReflectionNotesRoute: ReflectionNotesRoute,
   ReimaginingTheChatbotRoute: ReimaginingTheChatbotRoute,
   ThinkRoute: ThinkRoute,
+  UnderstandHumansRoute: UnderstandHumansRoute,
+  UnderstandMyselfRoute: UnderstandMyselfRoute,
   WhatDoPrototypesPrototypeRoute: WhatDoPrototypesPrototypeRoute,
 }
 export const routeTree = rootRouteImport

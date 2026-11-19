@@ -6,6 +6,7 @@ import { ArticleRefCard } from "./-ArticleRefCard";
 import { HELLO_HUMANS } from "./-helloHumansData";
 import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
+import { Eyebrow, Panel } from "@/components/system";
 export const Route = createFileRoute("/what-do-prototypes-prototype")({
   head: () => ({
     meta: [
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/what-do-prototypes-prototype")({
 
 function ArticleComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
+    <div className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-3xl px-6 py-12">
         <ArticleHeader
           title={ARTICLE_META["what-do-prototypes-prototype"].title}
@@ -55,20 +56,20 @@ function ArticleComponent() {
           </ul>
 
           <div className="not-prose my-10">
-            <div className="rounded-2xl bg-neutral-50 border border-neutral-200 p-8 flex flex-col items-center gap-4">
+            <Panel kind="callout" className="flex flex-col items-center gap-4">
               <img
                 src="/articles/prototype-triangle.png"
                 alt="Figure 1. A model of what prototypes prototype — Role, Implementation, Look and feel"
                 className="w-full max-w-md mx-auto"
               />
-              <p className="text-xs text-neutral-400 text-center">
+              <p className="text-xs text-subtle-foreground text-center">
                 Fig. 1 — Houde & Hill,{" "}
-                <a href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-neutral-700">
+                <a href="https://hci.stanford.edu/courses/cs247/2012/readings/WhatDoPrototypesPrototype.pdf" target="_blank" rel="noopener noreferrer" className="underline hover:text-muted-foreground">
                   "What Do Prototypes Prototype?"
                 </a>
                 {" "}(1997). Stanford HCI.
               </p>
-            </div>
+            </Panel>
           </div>
 
           {/* Category sections — image then text */}
@@ -76,53 +77,53 @@ function ArticleComponent() {
 
             {/* Look & Feel */}
             <div>
-              <h3 id="look-and-feel" className="text-lg font-semibold text-neutral-900 mb-6">Look & Feel</h3>
+              <h3 id="look-and-feel" className="text-lg font-semibold text-foreground mb-6">Look & Feel</h3>
               <ArticleRefCard slug="reimagining-the-chatbot" category="Implementation" meta="Collection · Design system" fromSlug="what-do-prototypes-prototype" />
-              <p className="text-base text-neutral-900 leading-[1.75] mt-6">Prototypes that test how something <em>feels</em> to interact with—motion, tone, visual language. Does it feel right? Does it feel trustworthy? You can't answer this with a spec doc.</p>
+              <p className="text-base text-foreground leading-[1.75] mt-6">Prototypes that test how something <em>feels</em> to interact with—motion, tone, visual language. Does it feel right? Does it feel trustworthy? You can't answer this with a spec doc.</p>
 
               <div className="space-y-3 mt-6">
-                <a href="/ai-ai-interaction" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
+                <a href="/ai-ai-interaction" className="group flex items-center justify-between rounded-xl border border-border px-5 py-4 hover:shadow-md transition-shadow">
                   <div>
-                    <p className="font-semibold text-neutral-900 text-sm">AI–AI Interaction</p>
-                    <p className="text-xs text-neutral-500 mt-0.5">When two AI agents communicate, what happens? Invisible communication made visible.</p>
+                    <p className="font-semibold text-foreground text-sm">AI–AI Interaction</p>
+                    <p className="text-xs text-subtle-foreground mt-0.5">When two AI agents communicate, what happens? Invisible communication made visible.</p>
                   </div>
-                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors text-sm ml-4">→</span>
+                  <span className="text-subtle-foreground group-hover:text-foreground transition-colors text-sm ml-4">→</span>
                 </a>
-                <a href="/always-here" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
+                <a href="/always-here" className="group flex items-center justify-between rounded-xl border border-border px-5 py-4 hover:shadow-md transition-shadow">
                   <div>
-                    <p className="font-semibold text-neutral-900 text-sm">I Am Always Here—Just Let Me Know</p>
-                    <p className="text-xs text-neutral-500 mt-0.5">What if the AI didn't wait to be asked? Exploring proactive presence.</p>
+                    <p className="font-semibold text-foreground text-sm">I Am Always Here—Just Let Me Know</p>
+                    <p className="text-xs text-subtle-foreground mt-0.5">What if the AI didn't wait to be asked? Exploring proactive presence.</p>
                   </div>
-                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors text-sm ml-4">→</span>
+                  <span className="text-subtle-foreground group-hover:text-foreground transition-colors text-sm ml-4">→</span>
                 </a>
-                <a href="/knowledge-graph-visualization" className="group flex items-center justify-between rounded-xl border border-neutral-200 px-5 py-4 hover:shadow-md transition-shadow">
+                <a href="/knowledge-graph-visualization" className="group flex items-center justify-between rounded-xl border border-border px-5 py-4 hover:shadow-md transition-shadow">
                   <div>
-                    <p className="font-semibold text-neutral-900 text-sm">Knowledge Graph Visualization</p>
-                    <p className="text-xs text-neutral-500 mt-0.5">Making AI reasoning visible, tangible, and navigable.</p>
+                    <p className="font-semibold text-foreground text-sm">Knowledge Graph Visualization</p>
+                    <p className="text-xs text-subtle-foreground mt-0.5">Making AI reasoning visible, tangible, and navigable.</p>
                   </div>
-                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors text-sm ml-4">→</span>
+                  <span className="text-subtle-foreground group-hover:text-foreground transition-colors text-sm ml-4">→</span>
                 </a>
               </div>
             </div>
 
             {/* Implementation */}
             <div>
-              <h3 id="implementation" className="text-lg font-semibold text-neutral-900 mb-6">Implementation</h3>
+              <h3 id="implementation" className="text-lg font-semibold text-foreground mb-6">Implementation</h3>
               <ArticleRefCard slug="a2ui-generative" category="Look & Feel" meta="Research · AI" fromSlug="what-do-prototypes-prototype" />
-              <p className="text-base text-neutral-900 leading-[1.75] mt-6">Prototypes that test whether it actually <em>works</em>—the underlying logic, the data flow, the edge cases. These expose what can't be assumed and what the tech genuinely can and can't do.</p>
+              <p className="text-base text-foreground leading-[1.75] mt-6">Prototypes that test whether it actually <em>works</em>—the underlying logic, the data flow, the edge cases. These expose what can't be assumed and what the tech genuinely can and can't do.</p>
             </div>
 
             {/* Role */}
             <div>
-              <h3 id="role" className="text-lg font-semibold text-neutral-900 mb-6">Role</h3>
+              <h3 id="role" className="text-lg font-semibold text-foreground mb-6">Role</h3>
               <ArticleRefCard slug="designing-for-conversations-that-earn-trust" category="Role" meta="Research · Design" fromSlug="what-do-prototypes-prototype" />
-              <p className="text-base text-neutral-900 leading-[1.75] mt-6">Prototypes that test what role the AI <em>plays</em>—is it a tool, a collaborator, or a caregiver? When AI supports elder care, it can't just be accurate. It has to be present, patient, and human in the ways that matter most.</p>
+              <p className="text-base text-foreground leading-[1.75] mt-6">Prototypes that test what role the AI <em>plays</em>—is it a tool, a collaborator, or a caregiver? When AI supports elder care, it can't just be accurate. It has to be present, patient, and human in the ways that matter most.</p>
 
-              <div className="mt-6 p-5 rounded-xl border border-neutral-200 bg-neutral-50">
-                <p className="text-sm font-semibold text-neutral-900 mb-1">A specific case: Audio AI — built to elicit errors</p>
-                <p className="text-sm text-neutral-600">The goal wasn't to prove AI works. It was to surface what could go wrong before it actually goes wrong—designing around errors, not hiding them.</p>
-                <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-neutral-400 hover:text-neutral-900 transition-colors mt-2 block">See example: Conversations that earn trust →</a>
-              </div>
+              <Panel kind="callout" className="mt-6">
+                <p className="text-sm font-semibold text-foreground mb-1">A specific case: Audio AI — built to elicit errors</p>
+                <p className="text-sm text-muted-foreground">The goal wasn't to prove AI works. It was to surface what could go wrong before it actually goes wrong—designing around errors, not hiding them.</p>
+                <a href="/designing-for-conversations-that-earn-trust" className="text-xs text-subtle-foreground hover:text-foreground transition-colors mt-2 block">See example: Conversations that earn trust →</a>
+              </Panel>
             </div>
 
           </div>
@@ -178,20 +179,20 @@ function ArticleComponent() {
                 <div key={item.title} className="relative group">
                   {/* Hover image preview */}
                   {item.image && (
-                    <div className="absolute bottom-full left-0 mb-2 w-52 rounded-xl overflow-hidden shadow-xl ring-1 ring-neutral-200 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-200 pointer-events-none z-20">
+                    <div className="absolute bottom-full left-0 mb-2 w-52 rounded-xl overflow-hidden shadow-xl ring-1 ring-border opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-200 pointer-events-none z-20">
                       <img src={item.image} alt={item.title} className="w-full h-36 object-cover" />
                     </div>
                   )}
                   <Tag
                     {...(props as any)}
-                    className={`flex items-center justify-between gap-4 rounded-2xl border border-neutral-200 bg-white px-6 py-5 w-full ${item.href ? "hover:border-neutral-300 hover:shadow-sm transition-all" : ""}`}
+                    className={`flex items-center justify-between gap-4 rounded-2xl border border-border bg-card px-6 py-5 w-full ${item.href ? "hover:border-border-strong hover:shadow-sm transition-all" : ""}`}
                   >
                     <div>
-                      <p className="font-semibold text-neutral-900 text-[15px]">{item.title}</p>
-                      <p className="text-sm text-neutral-500 mt-0.5">{item.description}</p>
+                      <p className="font-semibold text-foreground text-base">{item.title}</p>
+                      <p className="text-sm text-subtle-foreground mt-0.5">{item.description}</p>
                     </div>
                     {item.href && (
-                      <span className="text-neutral-400 group-hover:text-neutral-700 transition-colors shrink-0 text-lg">→</span>
+                      <span className="text-subtle-foreground group-hover:text-muted-foreground transition-colors shrink-0 text-lg">→</span>
                     )}
                   </Tag>
                 </div>
@@ -202,9 +203,9 @@ function ArticleComponent() {
 
         </ArticleContent>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-3xl mx-auto px-6">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related reading</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
+        <div className="mt-20 border-t border-border pt-10 max-w-3xl mx-auto px-6">
+          <Eyebrow as="div" className="mb-6">Related reading</Eyebrow>
+          <ul className="space-y-3 text-sm text-muted-foreground">
 <li><a href="/claude-code-research" className="font-medium hover:underline">My story with Claude Code</a> — How AI can amplify thinking</li>
           </ul>
         </div>

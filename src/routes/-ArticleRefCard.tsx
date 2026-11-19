@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { ARTICLE_META } from "./-articleMeta";
 
+import { Eyebrow } from "@/components/system";
 type Props = {
   slug: string;
   category: string;
@@ -18,9 +19,9 @@ export function ArticleRefCard({ slug, category, meta, fromSlug }: Props) {
   return (
     <a
       href={href}
-      className="group relative rounded-2xl p-3 shadow-[0_1px_2px_rgba(0,0,0,0.06)] bg-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] block"
+      className="group relative rounded-2xl p-3 shadow-sm bg-card transition-all hover:-translate-y-0.5 hover:shadow-md block"
     >
-      <div className="relative flex h-[50vh] items-center justify-center overflow-hidden rounded-xl bg-white">
+      <div className="relative flex h-[50vh] items-center justify-center overflow-hidden rounded-xl bg-card">
         {thumbnail ? (
           <img
             src={thumbnail}
@@ -36,19 +37,19 @@ export function ArticleRefCard({ slug, category, meta, fromSlug }: Props) {
             }
           />
         ) : (
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">{title}</span>
+          <Eyebrow>{title}</Eyebrow>
         )}
-        <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-neutral-700 opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+        <span className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-card/90 text-muted-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
           <ArrowUpRight className="h-4 w-4" />
         </span>
       </div>
       <div className="px-2 pb-2 pt-4">
-        <div className="flex items-center gap-1.5 text-xs text-neutral-500">
+        <div className="flex items-center gap-1.5 text-xs text-subtle-foreground">
           <span>{category}</span>
           <span>·</span>
           <span>{meta}</span>
         </div>
-        <h3 className="mt-1 text-[15px] font-medium text-neutral-900">{title}</h3>
+        <h3 className="mt-1 text-base font-medium text-foreground">{title}</h3>
       </div>
     </a>
   );

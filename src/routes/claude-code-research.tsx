@@ -4,6 +4,7 @@ import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { HighlightedText } from "@/components/ArticleContent";
 
+import { Eyebrow } from "@/components/system";
 export const Route = createFileRoute("/claude-code-research")({
   head: () => ({
     meta: [
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/claude-code-research")({
 
 function ResearchComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
+    <div className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-2xl px-6 py-12">
         <ArticleHeader
           title={ARTICLE_META["claude-code-research"].title}
@@ -36,7 +37,7 @@ function ResearchComponent() {
 
 
 
-          <h2 id={sectionId("What AI can't do")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"What AI can't do"}</h2>
+          <h2 id={sectionId("What AI can't do")} className="mt-20 mb-4 text-2xl font-semibold text-foreground">{"What AI can't do"}</h2>
 
           <p>
             After collaborating intensely with Claude Code, the limits became very specific. There are three things that stand out:
@@ -72,7 +73,7 @@ function ResearchComponent() {
             Experience over time is something only humans can have. Being in the system, noticing the effects of your decisions on real people, learning from those effects—that's lived knowledge. AI can simulate that knowledge, but it doesn't have it.
           </p>
 
-          <h2 id={sectionId("Don't be AI's agent")} className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">{"Don't be AI's agent"}</h2>
+          <h2 id={sectionId("Don't be AI's agent")} className="mt-20 mb-4 text-2xl font-semibold text-foreground">{"Don't be AI's agent"}</h2>
 
           <p>
             A lot of things about AI are unteachable lessons — just go and try it out. And you may find it addictive.
@@ -95,7 +96,7 @@ function ResearchComponent() {
           <img
             src="/articles/ai-fatigue.png"
             alt="AI fatigue visualization"
-            className="w-full rounded-lg my-8 border border-neutral-200"
+            className="w-full rounded-lg my-8 border border-border"
           />
 
           <h3 className="mt-8 mb-4 text-lg font-semibold">2. Don't chase the tool</h3>
@@ -127,9 +128,9 @@ function ResearchComponent() {
           
         </div>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related reading</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
+        <div className="mt-20 border-t border-border pt-10">
+          <Eyebrow as="div" className="mb-6">Related reading</Eyebrow>
+          <ul className="space-y-3 text-sm text-muted-foreground">
             <li><a href="/what-do-prototypes-prototype" className="font-medium hover:underline">What do prototypes prototype?</a> — Research mindset & error handling</li>
             <li><a href="/designing-for-conversations-that-earn-trust" className="font-medium hover:underline">Making AI feel human</a> — Designer role in the AI era</li>
           </ul>

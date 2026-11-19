@@ -3,6 +3,23 @@
 
 export type QuadrantId = "work" | "hhi" | "help-others" | "reflection";
 
+// Deep-link slugs — match the quadrants' own canonical Overview labels
+// (QuadrantSection's OVERVIEW_LABELS: "Grow myself" / "Understand Humans" /
+// "Inspire Others" / "Understand myself"), lowercased/hyphenated, so a URL
+// like "/?q=inspire-others" reads the same as the label the quadrant already
+// shows itself. QuadrantSection reads `q` on mount to jump straight there,
+// and keeps it in sync (replacing, not pushing) as you navigate.
+export const QUADRANT_SLUGS: Record<QuadrantId, string> = {
+  work: "grow-myself",
+  hhi: "understand-humans",
+  "help-others": "inspire-others",
+  reflection: "understand-myself",
+};
+
+export const SLUG_TO_QUADRANT: Record<string, QuadrantId> = Object.fromEntries(
+  Object.entries(QUADRANT_SLUGS).map(([quadrant, slug]) => [slug, quadrant as QuadrantId])
+);
+
 // Cursor-proximity "grow" effect, ported from the original work matrix
 // (commit adb5b2d) and shared by every card grid in this system — the
 // matrix's own 4 quadrant-selector cards (QuadrantSection) and each
@@ -114,11 +131,20 @@ export const BRACKET: Record<QuadrantId, { hTop: "top" | "bottom"; vSide: "left"
 // "work"'s pair is the original copy from the old single-view matrix; the
 // other three are placeholders — swap the words here when there's real copy.
 export const AXIS_LABELS: Record<QuadrantId, { top: string; bottom: string; left: string; right: string }> = {
-  work: { top: "OTHERS", bottom: "SELF", left: "PRODUCTION", right: "FUTURE CONCEPTS" },
+  work: { top: "Screen-less", bottom: "On-screen", left: "PRODUCTION", right: "FUTURE CONCEPTS" },
   hhi: { top: "PHYSICAL", bottom: "DIGITAL", left: "IMPROMPTU", right: "DESIGNED" },
   "help-others": { top: "INDIVIDUAL", bottom: "COMMUNITY", left: "ONLINE", right: "IN-PERSON" },
   reflection: { top: "PRIVATE", bottom: "SHARED", left: "PAST", right: "PRESENT" },
 };
+
+// The "work" quadrant's two tabs plot cards against different axes
+// (Augment Capability: production-stage x pillarTheme y; Break the Rule:
+// disDISCOMFORT-level x, target-audience-size y) — so its idle (nothing hovered)
+// axis-end words need to be its own set, not AXIS_LABELS.work's. Generalized
+// versions of the same per-card yAxisLabel/xAxisLabel text a hovered card
+// swaps in (e.g. "N(human) = 2", "DISCOMFORT LEVEL: 90%"), so idle and
+// hover read as the same axis, not two unrelated labeling schemes.
+export const WORK_SELF_AXIS_LABELS = { top: "Many people", bottom: "One person", left: "UNDISCOMFORTABLE", right: "DISCOMFORTABLE" };
 
 export interface DestinationCard {
   title: string;
@@ -137,46 +163,164 @@ export interface DestinationCard {
   externalLink?: string;
   // A prototype/concept with no real page built yet — opens the same
   // CardModal as `slug` would, but rendering this text (plus `thumbnail` as
-  // an image) directly instead of loading a page in an iframe. Takes
-  // priority over onClick and slug, but not externalLink.
+  // an image, or `video` below) directly instead of loading a page in an
+  // iframe. Takes priority over onClick and slug, but not externalLink.
   description?: string;
+  // A screen recording shown in the description modal INSTEAD of
+  // `thumbnail` (when both are set, video wins) — for a prototype that's
+  // easier to show working than to show a single static frame of.
+  video?: string;
+  // Rendered after the description text as a system/Carousel (one slide at
+  // a time, swipeable) — for a multi-step flow, or just several standalone
+  // snapshots, where a single image/video isn't enough to carry it.
+  gallery?: { src: string; caption: string }[];
   // Shown on the cursor-tracking crosshair lines while this card is hovered
   // (same technique as the original work matrix's pillarTheme/workType hover
   // labels). Optional — quadrants without this kind of axis data just show
   // no label on hover.
   yAxisLabel?: string;
   xAxisLabel?: string;
+  // A different-looking card: a dark tile with this quote text shown
+  // directly on it, in place of the usual thumbnail/"coming soon" square —
+  // for a card that's more of a standalone statement than a prototype
+  // preview. Doesn't change its click behavior — still goes through
+  // whichever of externalLink/description/onClick/slug is actually set.
+  quote?: string;
+  // Swaps the plain dark quote tile above for a circular ring of `quote`'s
+  // characters rotating around a center icon (hover swaps which of two
+  // arrow icons shows). Requires `quote` — ignored without it.
+  spinningQuote?: boolean;
 }
 
 export const SELF_UNDERSTANDING_CARDS: DestinationCard[] = [
-  { title: "Digital Twin", x: 0.32, y: 0.45, comingSoon: true },
   {
-    title: "Affinity Clustering Wall",
-    x: 0.52, y: 0.6,
-    thumbnail: "/articles/affinity-clustering-wall-thumb.png",
+    title: "Call Out the Elephant in the Room",
+    subtitle: "For Surfacing Misalignment",
+    x: 0.84, y: 0.45,
+    yAxisLabel: "N(human) = 2",
+    xAxisLabel: "DISCOMFORT LEVEL: 90%",
+    // The reveal screen is the card's thumbnail; the modal still opens on the demo video
+    // (video takes precedence over the thumbnail there).
+    thumbnail: "/articles/between-us-reveal-gap.jpg",
+    video: "/articles/between-us-demo.mp4",
     description:
-      "“Knowing what u want” is a question that needs more analysis than i thought. I tried many tech/ non-tech ways, way more to learn.\n\nMy current approach is sticking notes on the wall next to my desk to jot down thoughts and do affinity clustering.\n\n• columns = emotions (happy/proud/sad…)\n• rows = senses (hear/do/think…), \nso each cell is like “what I hear that makes me happy.”\n\nBeen doing this for a month, not sure if there is a better way. Issue is using too many sticky notes and might miss the ones I stick elsewhere. If it's a design question, I'd love to hear how folks figure it out..",
+      "This one's basically me trying to stop assuming I know what the person across from me actually wants.\n\nSo I built a tiny iOS prototype with Samar: an LLM generates a believable, neutral weekly scenario — not an abstract feeling, something specific like \"Samar has several tight deadlines and doesn't know how late he'll need to work.\" Then the phone splits in half, face-to-face. I pick what I'd feel good RECEIVING. Samar, on his own half, picks what he could disDISCOMFORTably DO. Not predicting each other — just answering honestly about ourselves. Neither of us sees the other's answer until we both lock in.\n\nThen it just... reveals. No score, no right/wrong, no \"you're 73% compatible\" nonsense — just both answers stated plainly, side by side. Turns out most relationship friction isn't disagreement, it's two people confidently assuming something about each other and never actually saying it out loud.\n\nStill very much a prototype (Samar's own entry flow isn't even built yet), but even this rough version made us talk about things we'd been quietly assuming for months.\n\nHere's exactly how it works, screen by screen — both the LLM side (what's generating the scenario) and the two-person side (what it actually feels like to use):",
+    gallery: [
+      {
+        src: "/articles/between-us-LLM-starting-point.jpg",
+        caption:
+          "LLM side, starting point: a blank \"What's on your mind?\" prompt. There's a toggle to fall back to saved local scenarios instead of a live model call — useful for reviewing the UX without waiting on generation — plus a log of past conversations underneath.",
+      },
+      {
+        src: "/articles/between-us-given-context.jpg",
+        caption:
+          "The LLM turns that into a believable, neutral weekly premise instead of an abstract feeling — a specific, swipeable situation we're both reacting to, not a vague prompt either of us has to interpret from scratch.",
+      },
+      {
+        src: "/articles/between-us-set-expectations.jpg",
+        caption:
+          "User side, before anyone picks anything: the app states the actual rule out loud — Qiyu chooses what she'd feel good receiving, Samar chooses what he could disDISCOMFORTably do. The point isn't to match. It's to see where we already meet, and where we might need to talk.",
+      },
+      {
+        src: "/articles/between-us-compare-options.jpg",
+        caption:
+          "The face-to-face mechanic — the top half is upside-down on purpose, so it reads right-side-up for whoever's sitting across the table. Same underlying scenario, but the LLM rewords and reorders the options differently per person, so neither of us can just glance over and copy the other's visible list.",
+      },
+      {
+        src: "/articles/between-us-reveal-gap.jpg",
+        caption:
+          "The reveal, side by side, no score: \"Qiyu would feel good with → Name the next update\" vs. \"Samar could disDISCOMFORTably do → Respond after Qiyu asks.\" That's the actual gap — I want proactive updates, his disDISCOMFORT zone is reactive-only. Nothing to fix here, just something to talk about now that it's a sentence instead of a feeling.",
+      },
+    ],
   },
+  // {
+  //   title: "Throw It at the Wall",
+  //   x: 0.52, y: 0.6,
+  //   thumbnail: "/articles/affinity-clustering-wall-thumb.png",
+  //   description:
+  //     "I know I have many AI stuffs, but technology is NEVER the only solution when it comes to solving human problems. I am trying to solve the problem of ”what's on my mind“ by using 2 walls in my place. /n Wall 1 is the Affinity Clustering Wall, where I jot down things I observed/ do/ think and cluster them. Wall 2 is much less organized, I just stick whatever ideas I have so I won't lose them (e.g. What if my trash bag could resize itself based on how much trash I have）",
+  // },
   {
-    title: "/question-me",
-    x: 0.72, y: 0.4,
+    title: "Cut to the Chase",
+    subtitle: "Rational v.s. Irrational Self",
+    x: 0.50, y: 0.65,
+    yAxisLabel: "N(human) = 1",
+    xAxisLabel: "DISCOMFORT LEVEL: 78%",
     thumbnail: "/articles/aios-thumb.png",
     externalLink: "https://www.figma.com/deck/XrETQCua0LT0bqdg8POEw5/Untitled?node-id=1-103&t=hHlDkVSRk3YmBUV9-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1",
+  },
+  {
+    title: "Ask Harsh Questions",
+    subtitle: "Extra Deep Self-Reflection",
+    x: 0.72, y: 0.65,
+    yAxisLabel: "N(human) = 1",
+    xAxisLabel: "DISCOMFORT LEVEL: 84%",
+    // TODO: video — recording at ~/Desktop/Screen Recording 2026-11-12 at
+    // 3.24.28 PM.mov isn't reachable yet (macOS Desktop-folder privacy; this
+    // session can reach Desktop/JOB/❤️portfolio/ but not the Desktop root
+    // directly). Add `video: "/articles/ask-harsh-questions-demo.mp4"` here
+    // once the file's been moved somewhere reachable and processed.
+    description:
+      "I built this one (I call it Inquiry) because I kept noticing AI tools jump to conclusions about what I \"really mean\" way too fast — one message in, and it's already confidently handing my own motive back to me. So the whole thing is built around one rule: AI can help me dig into what actually matters to me, through my own writing, but I'M still the one who decides what that writing means. Not the AI.\n\nThe hard part: what I actually need almost never shows up as one clean sentence. It shows up in repeated words, specific moments, the choices I keep making, contradictions I don't notice, the times I quietly change my mind. Just asking \"what do you really want\" gets me an idealized answer back. Having AI announce my \"hidden motive\" shuts the investigation down too early. And normal chat makes it worse — my own thinking gets fragmented across a dozen back-and-forth messages, so I can never actually see how my understanding developed, or go back and revise something I said three messages ago.\n\nSo instead: it's a document, not a chat. I write wherever, revise whenever, connect ideas without following some rigid question list — AI only steps in when I actually ask it to review. Feedback shows up right next to whatever it's about (highlight a passage, get a question on that passage; general stuff shows up inline in the doc), so I can always trace exactly what my own words triggered.\n\nThe AI acts less like an oracle and more like a good qualitative interviewer. It notices patterns, connections, and tensions I've actually written — then asks about whichever one is most unresolved, instead of getting more \"confident\" about who I secretly am. And every earlier answer stays editable — changing one can reshape the rounds that came after it, because that's actually how understanding yourself works. The first answer was never supposed to be the final one.\n\nWhat's actually in it:\n– a big free-write space, no form fields\n– AI review only on-demand, never uninvited\n– visible commentary before every follow-up, so I know WHY it's asking\n– passage-specific + general questions, both living right in the doc\n– consistent multiple-choice / multi-select / free-text response formats\n– color coding so AI feedback, my active answers, and my regular writing never blur together\n– completed answers collapse into footnoted sentences (typed ones stay exactly as I wrote them)\n– footnotes + a Back button to reopen any past round\n– editable past answers that can regenerate later rounds, old version kept around\n– later rounds stay progressive — finished questions show up even while the rest is still generating\n\nEnd goal: a writing space where AI makes my own patterns easier to actually see — and every round leaves me with a better question to sit with, not a more confident answer about who I am.",
+  },
+  // Moved here from "Augment Capability" (MATRIX_ARTICLES, index.tsx) — same
+  // slug, so it still opens through the normal onCardClick -> CardModal
+  // path, just reachable from this tab now instead of that one.
+  {
+    title: "AI= messsenger/ mediator/ caregiver..?",
+    subtitle: "AI Caring Inst.",
+    x: 0.16, y: 0.30,
+    yAxisLabel: "N(human) > 2",
+    xAxisLabel: "DISCOMFORT LEVEL: 16%",
+    thumbnail: "/articles/conversation-trust-icon.svg",
+    slug: "designing-for-conversations-that-earn-trust",
+  },
+  {
+    title: "Don't answer me",
+    subtitle: "Claude Code Skill",
+    x: 0.32, y: 0.65,
+    yAxisLabel: "N(human) = 1",
+    xAxisLabel: "DISCOMFORT LEVEL: 32%",
+    thumbnail: "/articles/teach-me-skill.jpg",
+    description:
+      "Challenge: Every time I asked Claude Code to fix something, I'd get a working patch — but I wasn't actually learning anything. I was just collecting fixes.\n\nBoundary I broke: the default AI-coding contract is ask → fix → move on, no memory of it afterward. I rebuilt that into a real teaching loop instead — a \"teach me\" mode that explains the thinking process (not just the fix), logs each exchange to a persistent memory file, and a /reflect skill that quizzes me on past sessions later. The AI isn't just doing the work anymore; it's keeping score on what I've actually retained.\n\nImpact: understanding compounds instead of evaporating. Patches used to disappear the moment the terminal scrolled past them — now every \"teach me\" question becomes something I can get re-quizzed on days later, so the knowledge actually sticks instead of just the code.",
   },
 ];
 
 export const HHI_CARDS: DestinationCard[] = [
   {
-    title: "Catch Up",
+    title: "Skip the Small Talk",
+    subtitle: "Multimodal Convo",
     x: 0.28, y: 0.65,
     thumbnail: "/articles/meet-stranger-calendly.png",
     externalLink: "https://calendly.com/qiyuhu/new-meeting",
   },
-  { title: "Give a Stranger a Flower", x: 0.52, y: 0.42, comingSoon: true },
+  { title: "Break the Meaning", subtitle: "Give Strangers Flowers @AlamoSquare", x: 0.52, y: 0.42, comingSoon: true },
   // `slug` (not a custom onClick) — routes through the same onCardClick ->
   // CardModal path every other real card uses, instead of navigating
   // straight to /hello-humans the way this one used to.
-  { title: "Hello Humans Table Stand", x: 0.75, y: 0.3, thumbnail: "/articles/hello-humans-notebook.jpg", slug: "hello-humans" },
+  { title: "Break the Time Limit", subtitle: "Async Interaction @Apple", x: 0.75, y: 0.3, thumbnail: "/articles/hello-humans-notebook.jpg", slug: "hello-humans" },
+  
+  {
+    title: "Break the Control",
+    subtitle: "Let Strangers Decide Where to Go",
+    x: 0.75, y: 0.68,
+    description:
+      "I ask a stranger where to go, then completely follow their suggestion — no matter where it leads. Full of randomness.",
+  },
+  // The "different style" card — a ring of rotating text around a center
+  // icon (spinningQuote) instead of the plain dark quote tile, and
+  // externalLink (not description) so it leads straight out to the Figma
+  // board instead of opening the in-site modal. Short/punchy text, not the
+  // full question — individual characters spaced around a circle read best
+  // as a short phrase, not a long sentence.
+  {
+    title: "Assumptions I Wanna Break",
+    x: 0.3, y: 0.3,
+    quote: "ASSUMPTIONS I WANNA BREAK • ",
+    spinningQuote: true,
+    externalLink: "https://www.figma.com/board/XKmj67Wpwa2w24TS5NTT0B/mental-models-i-wanna-break?node-id=0-1&t=Tu57O9Wz6gbyT5ia-1",
+  },
 ];
 
 export const HELP_OTHERS_CARDS: DestinationCard[] = [
@@ -186,12 +330,32 @@ export const HELP_OTHERS_CARDS: DestinationCard[] = [
     thumbnail: "/articles/friends-marketplace-thumb.png",
     description: "My intention is for friends to share their own \"prompt shortcuts\" with each other — this one's still in the prototyping stage.",
   },
-  { title: "Events I've Hosted @ Apple", x: 0.8, y: 0.7, thumbnail: "/articles/events-thumb.svg", comingSoon: true },
+  {
+    title: "Events I've Hosted @ Apple",
+    x: 0.8, y: 0.7,
+    thumbnail: "/articles/events-thumb.svg",
+    description:
+      "I like hosting these because nobody has to prepare anything — just show up, see what people are actually building/thinking about lately, and leave with something to steal. A few I've run:",
+    gallery: [
+      { src: "/articles/events-apple-1.jpg", caption: "Vibe Coding & Designing — an outdoor AP meetup for anyone using AI in design/dev. 22 people showed up." },
+      { src: "/articles/events-apple-2.jpg", caption: "Claude Code Chat — a quick 30-min sync on what's new (agent teams, the AGUI concept) since things move so fast." },
+      { src: "/articles/events-apple-3.jpg", caption: "Fun Projects Show and Tell — 5-min demos of whatever people vibe-coded for fun, doesn't have to be work-related." },
+      { src: "/articles/events-apple-4.jpg", caption: "Where to Use AI and Where to NOT — an open chat on AI's limits, hallucinations, and when it actually helps vs. just feels easier." },
+      { src: "/articles/events-apple-5.jpg", caption: "What's New, Lunch @ Alves — Tracy's idea for a recurring lunch just to talk about what's new in the market, no agenda." },
+    ],
+  },
   {
     title: "Snack Website",
     x: 0.3, y: 0.3,
     thumbnail: "/articles/snack-website-thumb.png",
     comingSoon: true,
+  },
+  {
+    title: "Guest on a Podcast w/ Professors & Alumni",
+    subtitle: "AI, PMs & Design Talk",
+    x: 0.55, y: 0.78,
+    thumbnail: "/articles/podcast-guest-cover.jpg",
+    externalLink: "https://open.spotify.com/episode/5znzVbdH6O0krSQP5hfDTT",
   },
 ];
 

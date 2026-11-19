@@ -1,3 +1,4 @@
+import { ArticleLayout } from "@/components/ArticleLayout";
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
@@ -20,8 +21,7 @@ export const Route = createFileRoute("/designing-for-conversations-that-earn-tru
 
 function ArticleComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-4xl px-6 py-12">
+    <ArticleLayout cover>
         <ArticleHeader
           title={ARTICLE_META["designing-for-conversations-that-earn-trust"].title}
           meta="Bot for Multi-Stakeholder Eldercare"
@@ -64,6 +64,7 @@ function ArticleComponent() {
 
 
           <OutcomeSection
+            variant="tabs"
             id={sectionId("Outcome")}
             tabs={[
               {
@@ -80,7 +81,7 @@ function ArticleComponent() {
                       Through literature review, I proposed a conversational framework about what the bot could do when caregiver and elder goals conflict:
                     </p>
 
-                    <div className="bg-neutral-900 border-2 border-neutral-700 rounded-xl p-8 my-8">
+                    <div className="bg-foreground border-2 border-neutral-700 rounded-xl p-8 my-8">
                       <pre className="text-xs leading-relaxed overflow-x-auto text-white" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`┌──────────────────────────────────────────────────┐
 │ 1 · acknowledge the instruction                  │
 ├──────────────────────────────────────────────────┤
@@ -152,7 +153,7 @@ function ArticleComponent() {
                       We mapped different scenarios into a decision tree and looked at the variables that could change the outcome.
                     </p>
 
-                    <div className="bg-neutral-900 border-2 border-neutral-700 rounded-xl p-6 my-8 overflow-x-auto">
+                    <div className="bg-foreground border-2 border-neutral-700 rounded-xl p-6 my-8 overflow-x-auto">
                       <pre className="text-xs leading-relaxed text-white" style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{`Scenario: An older adult had a fall
 Question: Should the bot tell their kids?
 
@@ -234,7 +235,7 @@ from the bot to maintain both trust and safety.`}</pre>
                     </p>
 
                     <p>
-                      It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, "What would you want the bot to do in this scenario?", and ended with a survey about how comfortable they felt with different levels of bot intervention.
+                      It was mixed-method research. So I started with personal stories, then showed participants the storyboards and asked, "What would you want the bot to do in this scenario?", and ended with a survey about how disDISCOMFORTable they felt with different levels of bot intervention.
                     </p>
 
                     <p>
@@ -348,7 +349,6 @@ from the bot to maintain both trust and safety.`}</pre>
 
         </ArticleContent>
 
-      </article>
-    </div>
+      </ArticleLayout>
   );
 }

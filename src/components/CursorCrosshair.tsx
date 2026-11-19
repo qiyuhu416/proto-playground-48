@@ -36,15 +36,15 @@ export function CursorCrosshairMarks({
   const hX2 = clipToQuadrant ? (cursorPos.x < W / 2 ? W / 2 : W - edge) : W - edge;
   return (
     <>
-      <line x1={cursorPos.x} y1={vY1} x2={cursorPos.x} y2={vY2} stroke={active ? "#d32f2f" : "#b3b3b3"} strokeWidth="1.5" opacity={active ? 0.75 : 0.55} />
-      <line x1={hX1} y1={cursorPos.y} x2={hX2} y2={cursorPos.y} stroke={active ? "#d32f2f" : "#b3b3b3"} strokeWidth="1.5" opacity={active ? 0.75 : 0.55} />
+      <line x1={cursorPos.x} y1={vY1} x2={cursorPos.x} y2={vY2} stroke={active ? "var(--destructive)" : "var(--faint-foreground)"} strokeWidth="1.5" opacity={active ? 0.75 : 0.55} />
+      <line x1={hX1} y1={cursorPos.y} x2={hX2} y2={cursorPos.y} stroke={active ? "var(--destructive)" : "var(--faint-foreground)"} strokeWidth="1.5" opacity={active ? 0.75 : 0.55} />
       {showMarker && (
         <>
           {/* Circle + a proper arrow (shaft + an L-shaped arrowhead at the
               tip, same construction as a standard "arrow-up-left" icon)
               pointing upper-left — reads as a "back" affordance: clicking a
               destination's open background returns to the matrix. */}
-          <circle cx={cursorPos.x} cy={cursorPos.y} r="11" fill={active ? "#d32f2f" : "#ff9800"} />
+          <circle cx={cursorPos.x} cy={cursorPos.y} r="11" fill={active ? "var(--destructive)" : "#ff9800"} />
           <path d={`M ${cursorPos.x + 4} ${cursorPos.y + 4} L ${cursorPos.x - 4} ${cursorPos.y - 4}`} stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
           <path
             d={`M ${cursorPos.x - 4} ${cursorPos.y + 4} L ${cursorPos.x - 4} ${cursorPos.y - 4} L ${cursorPos.x + 4} ${cursorPos.y - 4}`}

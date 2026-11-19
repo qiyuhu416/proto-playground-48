@@ -3,9 +3,10 @@
 
 import { HighlightedText, Bold } from "@/components/ArticleContent";
 
+import { Eyebrow, Panel } from "@/components/system";
 export const DesigningTheRelationship = () => (
   <>
-    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Designing the relationship (when AI has hard inferences)</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-foreground">Designing the relationship (when AI has hard inferences)</h2>
 
     <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Elder care Bot</h3>
 
@@ -17,8 +18,8 @@ export const DesigningTheRelationship = () => (
       The core challenge: How do we design trust when AI must handle conflicting interests? A bot caring for an elder knows sensitive information from both the elder and their caregiver. But the elder might not want the bot to tell everything to the caregiver.
     </p>
 
-    <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-      <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-4">Key insight</div>
+    <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
+      <Eyebrow as="div" className="mb-4">Key insight</Eyebrow>
       <p className="m-0"><Bold>Trust is scripted.</Bold> Trust is usually built through small interactions. Each step a bot takes is a design decision that either builds or breaks trust.</p>
     </div>
 
@@ -26,26 +27,26 @@ export const DesigningTheRelationship = () => (
       When facing a conflict (e.g., elder wants privacy but caregiver needs health updates), a well-designed bot doesn't decide alone. It follows this structure:
     </p>
 
-    <div className="bg-neutral-100 rounded-lg p-6 my-8 text-sm font-mono text-neutral-700 overflow-x-auto">
+    <div className="bg-muted rounded-lg p-6 my-8 text-sm font-mono text-muted-foreground overflow-x-auto">
       <div className="mb-4 font-bold">1 · Acknowledge the instruction</div>
-      <div className="ml-4 mb-4 text-neutral-600">"I understand you want to [elder's instruction]"<br/>"I notice a conflict between your goal, your caregiver's goal, and the potential outcome."<br/>→ name the conflict openly</div>
+      <div className="ml-4 mb-4 text-muted-foreground">"I understand you want to [elder's instruction]"<br/>"I notice a conflict between your goal, your caregiver's goal, and the potential outcome."<br/>→ name the conflict openly</div>
 
       <div className="mb-4 font-bold">2 · Evaluate the outcome</div>
-      <div className="ml-4 mb-4 text-neutral-600">"From our past interactions, I know you value privacy."<br/>→ derive what the system should optimize for<br/>"If I follow your instruction, your caregiver may make decisions that impact your independence."</div>
+      <div className="ml-4 mb-4 text-muted-foreground">"From our past interactions, I know you value privacy."<br/>→ derive what the system should optimize for<br/>"If I follow your instruction, your caregiver may make decisions that impact your independence."</div>
 
       <div className="mb-4 font-bold">3 · Show affiliation behavior</div>
-      <div className="ml-4 mb-4 text-neutral-600">"I'm programmed to work for you, to maximize your welfare."<br/>"I support you to [your goal], and I've always tried to do what's best for you."<br/>→ eliminate conflicts of interest by design</div>
+      <div className="ml-4 mb-4 text-muted-foreground">"I'm programmed to work for you, to maximize your welfare."<br/>"I support you to [your goal], and I've always tried to do what's best for you."<br/>→ eliminate conflicts of interest by design</div>
 
       <div className="font-bold">4 · Ask to reconfirm</div>
-      <div className="ml-4 text-neutral-600">"Are you sure about [your original instruction]?"<br/>→ get explicit consent for the edge case</div>
+      <div className="ml-4 text-muted-foreground">"Are you sure about [your original instruction]?"<br/>→ get explicit consent for the edge case</div>
     </div>
 
-    <p className="text-sm text-neutral-500 italic">
+    <p className="text-sm text-subtle-foreground italic">
       Each line is a design hypothesis to test in user research. The structure builds transparency before the moment of conflict.
     </p>
 
-    <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-      <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Understanding affiliation</div>
+    <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
+      <Eyebrow as="div" className="mb-3">Understanding affiliation</Eyebrow>
       <p className="m-0">In social science, <em>affiliation</em> means being on someone's side—displaying empathy and matching their preference. It's distinct from <em>alignment</em>, which is just structural cooperation. When designing for trust, affiliation is the emotional bridge.</p>
     </div>
 
@@ -61,7 +62,7 @@ export const DesigningTheRelationship = () => (
 
 export const DesigningTheFeel = () => (
   <>
-    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Designing the feeling (when AI has easy inferences)</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-foreground">Designing the feeling (when AI has easy inferences)</h2>
 
     <h3 className="mt-8 mb-4 text-lg font-semibold">Case study: Human–AI co-writing tool</h3>
 
@@ -77,16 +78,16 @@ export const DesigningTheFeel = () => (
       So how do you design a feeling? First, break down what "writing" actually is through task analysis:
     </p>
 
-    <div className="bg-white rounded-lg p-6 my-8">
+    <div className="bg-card rounded-lg p-6 my-8">
       <div className="space-y-3 text-sm">
         <div>1. you think about what to write</div>
-        <div className="text-center text-neutral-400">↓</div>
+        <div className="text-center text-subtle-foreground">↓</div>
         <div>2. you get ready to write</div>
-        <div className="text-center text-neutral-400">↓</div>
+        <div className="text-center text-subtle-foreground">↓</div>
         <div>3. you type while watching your sentence form</div>
-        <div className="text-center text-neutral-400">↓</div>
+        <div className="text-center text-subtle-foreground">↓</div>
         <div>4. you pause and think about the next sentence</div>
-        <div className="text-center text-neutral-400">↓</div>
+        <div className="text-center text-subtle-foreground">↓</div>
         <div>5. you decide whether to edit, continue, or move on</div>
       </div>
     </div>
@@ -98,26 +99,26 @@ export const DesigningTheFeel = () => (
     <h3 className="mt-8 mb-4 text-lg font-semibold">Three trigger mechanisms</h3>
 
     <div className="space-y-8 my-8">
-      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-        <h4 className="font-semibold text-neutral-900 mb-2">Tick (every 1 second)</h4>
-        <p className="text-sm text-neutral-600 mb-2">AI judges every keystroke. There's always an eye on you.</p>
-        <p className="text-xs text-neutral-500"><Bold>Economics:</Bold> ~60 calls/min, $0.08/min, ~$53/month per user</p>
-        <p className="text-xs text-neutral-500 mt-1"><Bold>Feeling:</Bold> Constant correction feels like surveillance. Users report: "I was just about to fix that."</p>
-      </div>
+      <Panel kind="callout">
+        <h4 className="font-semibold text-foreground mb-2">Tick (every 1 second)</h4>
+        <p className="text-sm text-muted-foreground mb-2">AI judges every keystroke. There's always an eye on you.</p>
+        <p className="text-xs text-subtle-foreground"><Bold>Economics:</Bold> ~60 calls/min, $0.08/min, ~$53/month per user</p>
+        <p className="text-xs text-subtle-foreground mt-1"><Bold>Feeling:</Bold> Constant correction feels like surveillance. Users report: "I was just about to fix that."</p>
+      </Panel>
 
-      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-        <h4 className="font-semibold text-neutral-900 mb-2">Pause (after 2 seconds of pause)</h4>
-        <p className="text-sm text-neutral-600 mb-2">AI mistakes your pause for a finished thought.</p>
-        <p className="text-xs text-neutral-500"><Bold>Economics:</Bold> ~4-8 calls/min, $0.015/min, ~$10/month per user</p>
-        <p className="text-xs text-neutral-500 mt-1"><Bold>Feeling:</Bold> Interrupts thinking mid-flow. Users report: "I'm thinking, don't interrupt me."</p>
-      </div>
+      <Panel kind="callout">
+        <h4 className="font-semibold text-foreground mb-2">Pause (after 2 seconds of pause)</h4>
+        <p className="text-sm text-muted-foreground mb-2">AI mistakes your pause for a finished thought.</p>
+        <p className="text-xs text-subtle-foreground"><Bold>Economics:</Bold> ~4-8 calls/min, $0.015/min, ~$10/month per user</p>
+        <p className="text-xs text-subtle-foreground mt-1"><Bold>Feeling:</Bold> Interrupts thinking mid-flow. Users report: "I'm thinking, don't interrupt me."</p>
+      </Panel>
 
-      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-        <h4 className="font-semibold text-neutral-900 mb-2">Blur event (when you leave the field)</h4>
-        <p className="text-sm text-neutral-600 mb-2">AI stays quiet while you write, then speaks when you move to the next field.</p>
-        <p className="text-xs text-neutral-500"><Bold>Economics:</Bold> ~1-3 calls/min, $0.018/min, ~$12/month per user</p>
-        <p className="text-xs text-neutral-500 mt-1"><Bold>Feeling:</Bold> Respectful partnership. Users report: "The tool felt like it was supporting me, not watching me."</p>
-      </div>
+      <Panel kind="callout">
+        <h4 className="font-semibold text-foreground mb-2">Blur event (when you leave the field)</h4>
+        <p className="text-sm text-muted-foreground mb-2">AI stays quiet while you write, then speaks when you move to the next field.</p>
+        <p className="text-xs text-subtle-foreground"><Bold>Economics:</Bold> ~1-3 calls/min, $0.018/min, ~$12/month per user</p>
+        <p className="text-xs text-subtle-foreground mt-1"><Bold>Feeling:</Bold> Respectful partnership. Users report: "The tool felt like it was supporting me, not watching me."</p>
+      </Panel>
     </div>
 
     <p>
@@ -132,7 +133,7 @@ export const DesigningTheFeel = () => (
 
 export const WhereNotToUseAI = () => (
   <>
-    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">Where to NOT use AI</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-foreground">Where to NOT use AI</h2>
 
     <p>
       AI should never be a default solution. The "double diamond model" for design thinking is there for a reason.
@@ -141,11 +142,11 @@ export const WhereNotToUseAI = () => (
     <img
       src="/articles/ai-fatigue.png"
       alt="AI fatigue by feeling"
-      className="w-full rounded-lg my-8 border border-neutral-200"
+      className="w-full rounded-lg my-8 border border-border"
     />
 
-    <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-      <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
+    <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
+      <Eyebrow as="div" className="mb-3">Design principle</Eyebrow>
       <p className="m-0">Great AI product design knows its boundaries. It's not about pushing the edges of what's possible—it's about <Bold>honoring what matters most.</Bold></p>
     </div>
   </>
@@ -153,12 +154,12 @@ export const WhereNotToUseAI = () => (
 
 export const ForOthersToPrototype = () => (
   <>
-    <h2 className="mt-20 mb-4 text-2xl font-semibold text-neutral-900">For others to prototype</h2>
+    <h2 className="mt-20 mb-4 text-2xl font-semibold text-foreground">For others to prototype</h2>
 
     <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 my-8 border-4 border-yellow-200">
       <div className="text-center mb-4">
         <div className="text-4xl mb-3">🚀</div>
-        <h3 className="font-semibold text-neutral-900 mb-2">Enable. Hand over. Collaborate.</h3>
+        <h3 className="font-semibold text-foreground mb-2">Enable. Hand over. Collaborate.</h3>
       </div>
     </div>
 
@@ -171,15 +172,15 @@ export const ForOthersToPrototype = () => (
     </p>
 
     <div className="space-y-4 my-8">
-      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-        <h4 className="font-semibold text-neutral-900 mb-2">Control Panel</h4>
-        <p className="text-sm text-neutral-600">A prototype that exposes the variables. Let stakeholders change parameters and see the impact. This is how you move from "here's my idea" to "here's the space we can explore together."</p>
-      </div>
+      <Panel kind="callout">
+        <h4 className="font-semibold text-foreground mb-2">Control Panel</h4>
+        <p className="text-sm text-muted-foreground">A prototype that exposes the variables. Let stakeholders change parameters and see the impact. This is how you move from "here's my idea" to "here's the space we can explore together."</p>
+      </Panel>
 
-      <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-        <h4 className="font-semibold text-neutral-900 mb-2">Claude Code Design Agent</h4>
-        <p className="text-sm text-neutral-600">A prototype that can be extended. When the tool itself becomes part of the exploration—when others can use it to test their own what-ifs—that's when the real collaboration begins.</p>
-      </div>
+      <Panel kind="callout">
+        <h4 className="font-semibold text-foreground mb-2">Claude Code Design Agent</h4>
+        <p className="text-sm text-muted-foreground">A prototype that can be extended. When the tool itself becomes part of the exploration—when others can use it to test their own what-ifs—that's when the real collaboration begins.</p>
+      </Panel>
     </div>
 
     <p>
@@ -189,7 +190,7 @@ export const ForOthersToPrototype = () => (
     <img
       src="/articles/how-i-prototype.png"
       alt="Three types of prototypes as collaboration tools: Explore what-ifs, Explain the prototype, For others to prototype"
-      className="w-full rounded-2xl my-12 border-4 border-neutral-900"
+      className="w-full rounded-2xl my-12 border-4 border-foreground"
     />
   </>
 );

@@ -4,6 +4,8 @@ import { ArticleLayout } from "@/components/ArticleLayout";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleContent, ArticleHeading2, HighlightedText, OutcomeSection, ProcessSection, ContextBox, Bold } from "@/components/ArticleContent";
 
+import { Panel } from "@/components/system";
+import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 export const Route = createFileRoute("/physical-ai")({
   head: () => ({
     meta: [
@@ -19,7 +21,7 @@ export const Route = createFileRoute("/physical-ai")({
 
 function ArticleComponent() {
   return (
-    <ArticleLayout>
+    <ArticleLayout cover>
       <ArticleHeader
           title={ARTICLE_META["physical-ai"].title}
           meta="Understanding Behavioral Intent"
@@ -33,7 +35,7 @@ function ArticleComponent() {
             summary={
               <>
                 <p>This was a fast-paced, experimental concept design project in partnership with Strange VC and two clients:</p>
-                <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+                <ol className="list-decimal pl-5 space-y-1 text-muted-foreground mb-6">
                   <li>Archetype AI, focused on physical AI</li>
                   <li>Roche, in healthcare</li>
                 </ol>
@@ -49,7 +51,7 @@ function ArticleComponent() {
           <p>
             The problems we wanted to solve were:
           </p>
-          <ol className="list-decimal pl-5 space-y-1 text-neutral-700 mb-6">
+          <ol className="list-decimal pl-5 space-y-1 text-muted-foreground mb-6">
             <li>Errors in the hospital-to-lab experience, with the goal of minimizing errors and reducing waste.</li>
             <li>How to be technology-driven but not tech-centered: finding the right intervention point to maximize the model's capabilities without forcing the technology into the experience.</li>
           </ol>
@@ -57,7 +59,6 @@ function ArticleComponent() {
 
           <OutcomeSection
             id={sectionId("Outcome")}
-            variant="gallery"
             aspectRatio={2.6}
             tabs={[
               {
@@ -106,24 +107,24 @@ function ArticleComponent() {
                     <img
                       src="/articles/physical-ai-17.png"
                       alt="Diagnostic testing phases and error opportunities"
-                      className="w-full rounded-2xl my-8 border border-neutral-200"
+                      className="w-full rounded-2xl my-8 border border-border"
                     />
 
-                    <p className="text-sm text-neutral-500 italic">
+                    <p className="text-sm text-subtle-foreground italic">
                       Three phases of the diagnostic journey: pre-analytical (collection), analytical (testing), post-analytical (reporting). The pre-analytical phase is where most errors occur.
                     </p>
 
                     <img
                       src="/articles/physical-ai-18.png"
                       alt="Current flow showing errors at each step"
-                      className="w-full rounded-2xl my-8 border border-neutral-200"
+                      className="w-full rounded-2xl my-8 border border-border"
                     />
 
-                    <p className="text-sm text-neutral-500 italic">
+                    <p className="text-sm text-subtle-foreground italic">
                       Phlebotomists and patients navigate a series of critical checkpoints. Each is an opportunity for error:
                     </p>
 
-                    <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+                    <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-6">
                       <li>Wrong patient info (9%)</li>
                       <li>Order misinterpretation (1%)</li>
                       <li>Incorrect container (8%)</li>
@@ -147,7 +148,7 @@ function ArticleComponent() {
                       Compare with the current workflow which relies entirely on human attention and memory. AI excels at:
                     </p>
 
-                    <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+                    <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-6">
                       <li>Tracking multiple variables simultaneously</li>
                       <li>Remembering complex sequences</li>
                       <li>Validating against large datasets</li>
@@ -159,24 +160,24 @@ function ArticleComponent() {
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6 my-8">
-                      <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
-                        <h4 className="text-base font-semibold text-neutral-900 mb-4">Short-term: AI as Assistant</h4>
-                        <ul className="space-y-3 text-sm text-neutral-700">
+                      <Panel kind="callout">
+                        <h4 className="text-base font-semibold text-foreground mb-4">Short-term: AI as Assistant</h4>
+                        <ul className="space-y-3 text-sm text-muted-foreground">
                           <li><Bold>Confirmation:</Bold> Compare label info & patient ID</li>
                           <li><Bold>Selection:</Bold> Evaluate vial-label match, find correct filling status</li>
                           <li><Bold>Extraction:</Bold> Monitor tube filling status, detect incorrect amount</li>
                           <li><Bold>Storage:</Bold> Generate summary, identify storage location, notice unusual sample changes</li>
                         </ul>
-                      </div>
+                      </Panel>
 
-                      <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
-                        <h4 className="text-base font-semibold text-neutral-900 mb-4">Long-term: AI as Performer</h4>
-                        <ul className="space-y-3 text-sm text-neutral-700">
+                      <Panel kind="callout">
+                        <h4 className="text-base font-semibold text-foreground mb-4">Long-term: AI as Performer</h4>
+                        <ul className="space-y-3 text-sm text-muted-foreground">
                           <li><Bold>Automation:</Bold> Detect face ID, select correct vial, extract to right amount, store based on instruction</li>
                           <li><Bold>Integration:</Bold> Act on human feedback, refine based on patterns</li>
                           <li><Bold>Reliability:</Bold> Reduce human error to near-zero through consistent, tireless execution</li>
                         </ul>
-                      </div>
+                      </Panel>
                     </div>
                   </>
                 )
@@ -197,7 +198,7 @@ function ArticleComponent() {
                     <img
                       src="/articles/physical-ai-21.png"
                       alt="AI capability mapping to errors - short term and long term vision"
-                      className="w-full rounded-2xl my-8 border border-neutral-200"
+                      className="w-full rounded-2xl my-8 border border-border"
                     />
                   </>
                 )
@@ -215,7 +216,7 @@ function ArticleComponent() {
                       So there are questions I was thinking about but didn't have an answer to yet:
                     </p>
 
-                    <ul className="list-disc pl-5 space-y-1 text-neutral-700 mb-6">
+                    <ul className="list-disc pl-5 space-y-1 text-muted-foreground mb-6">
                       <li><HighlightedText>Who is responsible for error correction?</HighlightedText></li>
                       <li><HighlightedText>How does one AI error affect the larger service system?</HighlightedText></li>
                       <li><HighlightedText>Does AI remove work, or move the work to someone else?</HighlightedText></li>
@@ -227,6 +228,8 @@ function ArticleComponent() {
             ]}
           />
 
+        {/* floating table-of-contents pill, same as the other case studies */}
+        <DynamicIslandTOC visible />
       </ArticleContent>
     </ArticleLayout>
   );

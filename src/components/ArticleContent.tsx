@@ -1,9 +1,11 @@
 import { TextHighlighter } from "@/components/TextHighlighter"
 import { Accordion } from "@/components/Accordion"
 import { AnimatedTabs } from "@/components/AnimatedTabs"
-import { GalleryWithinArticle, type GallerySlide } from "@/components/GalleryWithinArticle"
 import { ReactNode, useState } from "react"
 
+import { Panel } from "@/components/system/Panel";
+import { Media } from "@/components/system/Media";
+import { Carousel } from "@/components/system/Carousel";
 interface ArticleContentProps {
   children: React.ReactNode
 }
@@ -12,7 +14,7 @@ export const ArticleContent = ({ children }: ArticleContentProps) => {
   return (
     <div className="mx-auto px-6 md:px-8 py-12 md:py-16">
       <div
-        className="mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-neutral-900 [&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-[0.3em] [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline"
+        className={`mx-auto max-w-3xl font-overusedGrotesk text-lg leading-8 text-foreground [&>p]:mb-8 [&_strong]:bg-[hsl(25,90%,80%)] [&_strong]:rounded-highlight [&_strong]:px-0.5 [&_strong]:font-medium [&_strong]:no-underline`}
       >
         {children}
       </div>
@@ -21,7 +23,7 @@ export const ArticleContent = ({ children }: ArticleContentProps) => {
 }
 
 export const ArticleTitle = ({ children }: { children: React.ReactNode }) => (
-  <h1 className="text-5xl md:text-5xl font-medium mb-12 font-calendas tracking-tight text-neutral-900">
+  <h1 className="text-5xl md:text-5xl font-medium mb-12 font-calendas tracking-tight text-foreground">
     {children}
   </h1>
 )
@@ -33,13 +35,13 @@ export const ArticleParagraph = ({ children }: { children: React.ReactNode }) =>
 )
 
 export const ArticleHeading2 = ({ children, id }: { children: React.ReactNode; id?: string }) => (
-  <h2 id={id} className="text-3xl font-medium mt-20 mb-8 font-calendas tracking-tight text-neutral-900">
+  <h2 id={id} className="text-3xl font-medium mt-20 mb-8 font-calendas tracking-tight text-foreground">
     {children}
   </h2>
 )
 
 export const ArticleHeading3 = ({ children, id }: { children: React.ReactNode; id?: string }) => (
-  <h3 id={id} className="text-2xl font-medium mt-12 mb-6 font-overusedGrotesk text-neutral-900">
+  <h3 id={id} className="text-2xl font-semibold mt-12 mb-6 font-overusedGrotesk text-foreground">
     {children}
   </h3>
 )
@@ -49,7 +51,7 @@ export const HighlightedText = ({ children }: { children: React.ReactNode }) => 
     triggerType="auto"
     direction="ltr"
     highlightColor="hsl(25, 90%, 80%)"
-    className="inline rounded-[0.3em] px-0.5"
+    className="inline rounded-highlight px-0.5"
   >
     {children}
   </TextHighlighter>
@@ -67,18 +69,18 @@ interface ContextBoxProps {
 }
 
 export const ContextBox = ({ summary, role, duration, team }: ContextBoxProps) => (
-  <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-6 my-8">
-    <div className="mb-6 text-neutral-900">
+  <Panel kind="context-box" className="my-8">
+    <div className="mb-6 text-foreground">
       {summary}
     </div>
     {(role || duration || team) && (
-      <ul className="list-disc pl-5 space-y-2 text-sm text-neutral-700">
+      <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
         {role && <li><Bold>Role:</Bold> {role}</li>}
         {duration && <li><Bold>Duration:</Bold> {duration}</li>}
         {team && <li><Bold>Team:</Bold> {team}</li>}
       </ul>
     )}
-  </div>
+  </Panel>
 )
 
 // ============================================================================
@@ -147,34 +149,52 @@ interface OutcomeSectionProps {
   id?: string;
   tabs: OutcomeTab[];
   title?: string;
-  variant?: "tabs" | "gallery";
+  /** carousel (default) — slides that scroll past the column; tabs — only for the AI Caring case study */
+  variant?: "carousel" | "tabs";
   aspectRatio?: number | string;
 }
 
-export const OutcomeSection = ({ id, tabs, title = "Outcome", variant = "tabs", aspectRatio }: OutcomeSectionProps) => {
-  if (variant === "gallery") {
-    const gallerySlides: GallerySlide[] = tabs.map((tab) => ({
-      src: tab.src || "",
-      alt: tab.alt || tab.title,
-      title: tab.title,
-      subtitle: tab.subtitle,
-      description: tab.description,
-      type: tab.type || "image",
-    }));
+export const OutcomeSection = ({ id, tabs, title = "Outcome", variant = "carousel", aspectRatio }: OutcomeSectionProps) => {
+  if (variant === "carousel") {
+    const slides = tabs.map((tab) => {
+      const caption = (
+        <>
+          <Bold>{tab.title}</Bold>
+          {tab.subtitle && <span className="block text-muted-foreground">{tab.subtitle}</span>}
+          {tab.description && <span className="mt-1 block">{tab.description}</span>}
+        </>
+      );
+      return {
+        id: tab.id,
+        content: tab.src ? (
+          <>
+            <Media
+              src={tab.src}
+              alt={tab.alt || tab.title}
+              type={tab.type}
+              aspectRatio={aspectRatio}
+              caption={caption}
+            />
+            {tab.children && <div className="mt-4 space-y-4 text-base leading-7">{tab.children}</div>}
+          </>
+        ) : (
+          // text-only slide: same width as a media slide, content in a card
+          <Panel kind="card">
+            <div className="space-y-4 text-base leading-7">
+              <Bold>{tab.title}</Bold>
+              {tab.subtitle && <p className="text-sm text-muted-foreground">{tab.subtitle}</p>}
+              {tab.description && <p>{tab.description}</p>}
+              {tab.children}
+            </div>
+          </Panel>
+        ),
+      };
+    });
 
     return (
       <>
         <ArticleHeading2 id={id}>{title}</ArticleHeading2>
-        <div className="mx-auto max-w-4xl -mx-6">
-          <GalleryWithinArticle
-            slides={gallerySlides}
-            label={title}
-            showCaption={true}
-            showPagination={true}
-            showNavigation={false}
-            aspectRatio={aspectRatio}
-          />
-        </div>
+        <Carousel slides={slides} label={title} />
       </>
     );
   }
@@ -200,7 +220,7 @@ export const OutcomeSection = ({ id, tabs, title = "Outcome", variant = "tabs", 
         <div className="space-y-4">
           <div>
             <Bold>{tab.title}</Bold>
-            {tab.subtitle && <p className="text-sm text-neutral-600 mt-1">{tab.subtitle}</p>}
+            {tab.subtitle && <p className="text-sm text-muted-foreground mt-1">{tab.subtitle}</p>}
           </div>
           {tab.description && <p>{tab.description}</p>}
           {tab.children}

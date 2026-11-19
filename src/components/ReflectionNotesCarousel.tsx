@@ -1,26 +1,28 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { REFLECTIONS } from "@/data/reflections";
 import type { DestinationCard } from "@/data/quadrantCards";
 import { FlippableBook } from "@/components/FlippableBook";
+import { CursorPill, NoteCard } from "@/components/system";
 
 // All of /reflection-notes' content, shown directly inside the matrix's
 // "reflection" destination instead of behind an extra click-through to that
-// separate route — paged into a carousel (PAGE_SIZE per page) since there
-// are too many notes to fit on screen at once. Reuses the same REFLECTIONS
-// data and date-descending sort as that standalone page.
-const PAGE_SIZE = 6;
-
+// separate route — every entry at once in a scrollable grid (not paged)
+// since there are too many to fit on screen together. Reuses the same
+// REFLECTIONS data and date-descending sort as that standalone page.
 const SORTED = [...REFLECTIONS].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-const TOTAL_PAGES = Math.ceil(SORTED.length / PAGE_SIZE);
 
 export function ReflectionNotesCarousel({
   rect,
   pageWidth,
+  pageHeight,
   tab,
   setHoveredCard,
   onBackgroundClick,
   onDescriptionCard,
+  onScrollProgress,
+  cursorPos,
+  onNavigateHHI,
+  onSpecialCursorChange,
 }: {
   rect: { top: number; left: number; width: number; height: number };
   // The reflection quadrant's own contentRect (`rect`) is bracket-bounded —
@@ -33,6 +35,12 @@ export function ReflectionNotesCarousel({
   // computed asymmetrically instead, landing the content on the PAGE's true
   // center rather than `rect`'s.
   pageWidth: number;
+  // Same idea as pageWidth, but for height — `rect`'s own bottom boundary
+  // (the horizontal bracket line) stops short of the true bottom edge too.
+  // List's scrollable grid uses this to reach all the way down instead of
+  // stopping at that boundary (Journal/the book is unaffected — it's
+  // vertically centered either way).
+  pageHeight: number;
   // Owned by QuadrantDestinationView (not local state here) so the toggle
   // itself can be positioned up there, on the same line as the badge/work
   // tab (BADGE_POSITION.top) instead of flowing inside this component's own
@@ -43,23 +51,101 @@ export function ReflectionNotesCarousel({
   // Same CardModal every other card on the site opens (description/image
   // mode, not a slug — a reflection note has no routed page of its own).
   onDescriptionCard: (card: DestinationCard) => void;
+  // 0 (top) to 1 (bottom) — fed up to QuadrantSection, which repurposes the
+  // Qiyu dot as this grid's scrollbar thumb instead of showing a native
+  // scrollbar (see the grid's own className below for the native one being
+  // hidden).
+  onScrollProgress: (p: number) => void;
+  // QuadrantDestinationView's own tracked mouse position — reused here (not
+  // tracked separately) to position the "how I break the models" pill that
+  // follows the cursor while hovering the Jess Hammer quote below.
+  cursorPos: { x: number; y: number };
+  // jumpTo("hhi"), forwarded from QuadrantSection via QuadrantDestinationView
+  // — clicking the quote jumps straight to the HHI quadrant.
+  onNavigateHHI: () => void;
+  // True while this view draws its own cursor (the quote pill), so the parent
+  // can hide the default cursor marker instead of showing both.
+  onSpecialCursorChange?: (on: boolean) => void;
 }) {
-  const [page, setPage] = useState(0);
-  const items = SORTED.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
-
-  // Content keeps the same ~70%-of-rect width as before; only WHERE that
-  // width sits within `rect` changes — its left edge is placed so the
-  // content block itself is centered on the full page, not on `rect`.
-  const contentWidth = rect.width * 0.7;
+  // Content keeps ~85% of rect's width (wide, closer to full-bleed — the
+  // List grid in particular should read as a real scrollable page, not a
+  // narrow centered box); only WHERE that width sits within `rect` changes
+  // — its left edge is placed so the content block itself is centered on
+  // the full page, not on `rect`.
+  const contentWidth = rect.width * 0.85;
   const contentLeftOnPage = pageWidth / 2 - contentWidth / 2;
   const paddingLeft = Math.max(0, contentLeftOnPage - rect.left);
   const paddingRight = Math.max(0, rect.width - paddingLeft - contentWidth);
+  // List reaches the true bottom edge of the page; Journal keeps rect's own
+  // (bracket-bounded) height, since the book is centered within it anyway.
+  const containerHeight = tab === "list" ? pageHeight - rect.top : rect.height;
+
+  // The quote's bottom edge needs to land on the book's actual bottom edge —
+  // bookFrameRef is passed as FlippableBook's frameRef, landing directly on
+  // its .fbk-frame div specifically, NOT the Prev/Next controls below it
+  // (those are a separate sibling in FlippableBook's own markup, outside
+  // .fbk-frame), so measuring it doesn't include that row's height. Width
+  // also needs to shrink as the screen narrows instead of overlapping the
+  // book — FlippableBook has a fixed CSS size (not responsive), so on a
+  // narrower screen the book (still centered in a shrinking contentWidth)
+  // drifts closer to the left edge where the quote sits. Measuring both
+  // dimensions live via ResizeObserver, rather than hardcoding either,
+  // means this reacts correctly to both the book's own size (if it ever
+  // changes) and the screen's.
+  //
+  // A CALLBACK ref (not useRef + a one-time useEffect) on purpose: Journal's
+  // <FlippableBook> fully unmounts/remounts every time you switch away to
+  // List and back (it's conditionally rendered, not just hidden), so its
+  // .fbk-frame is a BRAND NEW DOM node each time. A useEffect with an empty
+  // dep array only ever attaches the observer to whichever node existed on
+  // the very first mount — after the first switch back to Journal, it's
+  // watching a detached, removed node while the real one goes unobserved,
+  // leaving bookSize stale (quoteWidth's math then blows up, overlapping
+  // the book instead of sitting beside it). A callback ref fires on EVERY
+  // mount, so the observer reattaches to the actual current node each time.
+  const bookObserverRef = useRef<ResizeObserver | null>(null);
+  const [bookSize, setBookSize] = useState({ width: 0, height: 0 });
+  const bookFrameRef = useCallback((el: HTMLDivElement | null) => {
+    bookObserverRef.current?.disconnect();
+    bookObserverRef.current = null;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) =>
+      setBookSize({ width: entry.contentRect.width, height: entry.contentRect.height })
+    );
+    observer.observe(el);
+    bookObserverRef.current = observer;
+  }, []);
+  // Half the leftover space to one side of the centered book, minus a fixed
+  // gap — shrinks as contentWidth narrows or the book's own width grows,
+  // instead of a fixed w-60 that would eventually run into the book. Floor
+  // of 120px so the text doesn't get unreadably narrow before there's
+  // simply no room left for it at all.
+  // 64 (space/16) of clear space between the quote's hover box and the book;
+  // +16 because the box extends 16px past the text on each side (p-4 / -m-4).
+  const QUOTE_GAP = 64 + 16;
+  const quoteWidth = Math.max(120, (contentWidth - bookSize.width) / 2 - QUOTE_GAP);
+  const [quoteHovered, setQuoteHovered] = useState(false);
+  const specialCursor = tab === "journal" && quoteHovered;
+  useEffect(() => {
+    onSpecialCursorChange?.(specialCursor);
+    return () => onSpecialCursorChange?.(false);
+  }, [specialCursor, onSpecialCursorChange]);
 
   return (
     <div
-      className="absolute flex flex-col gap-4"
+      // justify-center here is vertical, not horizontal — this is a
+      // flex-col container, so justify-content governs its main axis
+      // (top-to-bottom), not align-items' usual horizontal job on a row
+      // container. Only matters for the Journal tab now (the book is
+      // smaller than the available height) — List's grid fills the full
+      // height itself via flex-1, so there's rarely leftover space there
+      // for this to redistribute.
+      className="absolute flex flex-col justify-center gap-4"
       style={{
         ...rect,
+        // See containerHeight above — List overrides rect's own height to
+        // reach the true bottom edge.
+        height: containerHeight,
         // See paddingLeft/paddingRight above — asymmetric on purpose, so the
         // content lands at the page's true center rather than `rect`'s own
         // (off-center, bracket-bounded) center. The outer div itself still
@@ -68,8 +154,8 @@ export function ReflectionNotesCarousel({
         // back to the matrix (see onClick below).
         paddingLeft,
         paddingRight,
-        paddingTop: 88,
-        paddingBottom: 28,
+        paddingTop: 120,
+        paddingBottom: 0,
       }}
       // Same "only the exact open background, not a descendant" check
       // QuadrantDestinationView's own root uses — NOT a blanket
@@ -84,96 +170,110 @@ export function ReflectionNotesCarousel({
       {/* Extra paddingTop (88 vs 28 on the other 3 sides) keeps the first row
           clear of the fixed badge, which floats independently at the top of
           the viewport. */}
-      {/* This grid div has its own bounding box spanning the full flex-1
-          height (filling whatever's left below the padding-top), which is
-          taller than the 2 rows of cards actually need — so blank space
-          below/around the cards (not covered by any card's own div) is
-          still part of THIS element, not the outer root div above. Without
-          its own matching "exact target" check, such a click would bubble
-          up with e.target stuck at this grid div, never matching the root's
-          own e.currentTarget — same bug the outer root's check alone can't
+      {/* All cards at once (no pagination), filling the full flex-1 height
+          and scrolling within it — a real scrollable page, not a smaller
+          box capped partway down. content-start (not content-center) so
+          rows read top-down from the scroll position, same as any normal
+          scrollable list; centering rows made sense for one fixed page of
+          6, not an open-ended list. Without its own matching "exact
+          target" check, a background click here would bubble up with
+          e.target stuck at this grid div, never matching the root's own
+          e.currentTarget — same bug the outer root's check alone can't
           catch, needing the identical check at this level too. */}
       <div
-        className={tab === "journal" ? "flex-1 flex items-center justify-center min-h-0" : "flex-1 grid grid-cols-3 content-center justify-center gap-3 min-h-0 max-h-[50vh]"}
+        className={
+          tab === "journal"
+            ? "relative flex-1 flex items-center justify-center min-h-0"
+            // [&::-webkit-scrollbar]:hidden covers Chrome/Safari/Edge; the
+            // inline scrollbarWidth/msOverflowStyle below cover Firefox and
+            // old Edge — no single CSS property hides it everywhere. Still
+            // fully scrollable (wheel, trackpad, touch, keyboard), just
+            // -m-3 p-3: a hovered card grows to 105% and would be clipped by
+            // this scroll box at its edges. The padding gives it room to grow
+            // inside the clip; the equal negative margin cancels it out so the
+            // layout doesn't move.
+            // without the visible native bar — the Qiyu dot is the visible
+            // scroll indicator instead (see onScroll below).
+            : "relative flex-1 grid grid-cols-3 content-start justify-center gap-3 min-h-0 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden -m-3 p-3"
+        }
+        style={tab === "list" ? { scrollbarWidth: "none", msOverflowStyle: "none" } : undefined}
+        onScroll={
+          tab === "list"
+            ? (e) => {
+                const el = e.currentTarget;
+                const max = el.scrollHeight - el.clientHeight;
+                onScrollProgress(max > 0 ? el.scrollTop / max : 0);
+              }
+            : undefined
+        }
         onClick={(e) => {
           if (e.target === e.currentTarget) onBackgroundClick();
         }}
       >
-        {tab === "journal" && <FlippableBook />}
-        {tab === "list" && items.map((note, i) => {
+        {tab === "journal" && (
+          <>
+            <FlippableBook frameRef={bookFrameRef} />
+            {/* Independently positioned, not a flex sibling of the book —
+                the book is centered in this container (via items-center
+                above), so its vertical center always sits at the
+                container's own 50% mark. `bottom: calc(50% - bookSize.height/2)`
+                reaches down from that same center point to the book's
+                actual (measured, not guessed) bottom edge — correct at any
+                screen size and automatically if the book's own size ever
+                changes. Width is the measured leftover space beside the
+                book (see quoteWidth above), not a fixed value, so it
+                shrinks instead of overlapping the book as the screen
+                narrows. */}
+            <div
+              className="group absolute left-0 box-content -m-4 cursor-none rounded-xl p-4 transition-colors duration-150 hover:bg-foreground"
+              style={{ bottom: `calc(50% - ${bookSize.height / 2}px)`, width: quoteWidth }}
+              onMouseEnter={() => setQuoteHovered(true)}
+              onMouseLeave={() => setQuoteHovered(false)}
+              onClick={onNavigateHHI}
+            >
+              <p className="text-foreground text-base leading-relaxed transition-colors duration-150 group-hover:text-background">
+                "Be careful with this urge to model everything, because the real world is very likely to be messier."
+                <br />
+                — Prof. Jess Hammer
+              </p>
+            </div>
+          </>
+        )}
+        {tab === "list" && SORTED.map((note, i) => {
           // Same hover-reacts-and-activates-the-crosshair idea as every other
           // quadrant's cards, just via plain CSS :hover rather than the
           // cursor-proximity distance math (cardGrowScale) those use — these
           // sit in a CSS grid, not freely-positioned x/y coordinates, so a
           // hover-triggered scale is the natural fit here instead.
-          const id = `reflection-${page}-${i}`;
-          // No separate title field on a reflection — derived the same way
-          // the standalone /reflection-notes page already does (first 7
-          // words of content), so both read consistently.
-          const words = note.content.split(/\s+/);
-          const title = words.slice(0, 7).join(" ") + (words.length > 7 ? "…" : "");
-          return (
-            <div
-              key={id}
-              onMouseEnter={() => setHoveredCard(id)}
-              onMouseLeave={() => setHoveredCard(null)}
-              onClick={() => onDescriptionCard({ title: note.date, description: note.content, thumbnail: note.image, x: 0, y: 0 })}
-              // Fixed height (not content-sized) so every card — whether it
-              // has an image or not — reads as the same size, instead of
-              // each one being only as tall as its own content needed. No
-              // text visible at rest — this is meant to read as a wall of
-              // images at a glance; the title only appears as a hover
-              // overlay, and the full text lives in the modal after a click.
-              className="group relative w-full h-48 rounded-2xl bg-neutral-100 border border-neutral-200/70 overflow-hidden transition-transform duration-150 hover:scale-105 cursor-pointer"
-            >
-              {note.image ? (
-                <>
-                  <img src={note.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                  {/* Dark overlay + bottom-aligned title, hidden until
-                      hover — only for image cards, since a text-only card
-                      (below) already shows its text directly, with nothing
-                      extra worth revealing on hover. */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-150" />
-                  <div className="absolute inset-x-0 bottom-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                    <p className="text-white text-sm font-medium leading-snug line-clamp-2">{title}</p>
-                  </div>
-                </>
-              ) : (
-                <div className="absolute inset-0 flex flex-col gap-2 p-4">
-                  <div className="text-[10px] text-neutral-500 font-medium flex-shrink-0">{note.date}</div>
-                  <p className="text-neutral-700 text-xs leading-snug line-clamp-4">{note.content}</p>
-                </div>
-              )}
-            </div>
+          const id = `reflection-${i}`;
+          const onClick = () => onDescriptionCard({ title: note.date, description: note.content, thumbnail: note.image, x: 0, y: 0 });
+          const onMouseEnter = () => setHoveredCard(id);
+          const onMouseLeave = () => setHoveredCard(null);
+          // Both kinds are the design system's NoteCard (fixed height, so every
+          // card reads as the same size whether or not it has an image).
+          const handlers = { onClick, onMouseEnter, onMouseLeave };
+          return note.image ? (
+            <NoteCard key={id} kind="image" title={note.title} date={note.date} preview={note.content} image={note.image} {...handlers} />
+          ) : (
+            <NoteCard key={id} kind="text" title={note.title} date={note.date} preview={note.content} {...handlers} />
           );
         })}
       </div>
 
-      {/* Page controls — same arrow-button language as the Pillar carousels
-          elsewhere on the site, plus a simple "page X of Y" indicator since
-          there are too many pages for dots to read well. */}
-      {tab === "list" && TOTAL_PAGES > 1 && (
-        <div className="flex items-center justify-center gap-3 flex-shrink-0">
-          <button
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-            aria-label="Previous page"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50 disabled:opacity-25 transition-all cursor-pointer disabled:cursor-default"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <span className="text-xs text-neutral-500 tabular-nums">
-            {page + 1} / {TOTAL_PAGES}
-          </span>
-          <button
-            onClick={() => setPage((p) => Math.min(TOTAL_PAGES - 1, p + 1))}
-            disabled={page === TOTAL_PAGES - 1}
-            aria-label="Next page"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-50 disabled:opacity-25 transition-all cursor-pointer disabled:cursor-default"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
+      {/* Hovering Jess's quote swaps the cursor for a pill, centred exactly on
+          the pointer. Rendered here (a direct child of this root, which is
+          absolutely positioned at `rect`) rather than inside the Journal box:
+          that box has its own offset, which pushed the pill away from the
+          cursor. cursorPos is relative to the destination root, so subtract
+          this root's own offset. */}
+      {tab === "journal" && quoteHovered && (
+        <CursorPill
+          tone="light" // the quote turns dark on hover, so the pill inverts to stay visible
+          className="absolute z-50"
+          style={{ left: cursorPos.x - rect.left, top: cursorPos.y - rect.top, transform: "translate(-50%, -50%)" }}
+        >
+          how I break the models
+        </CursorPill>
       )}
     </div>
   );

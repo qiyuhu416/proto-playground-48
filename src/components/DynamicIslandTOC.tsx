@@ -53,11 +53,14 @@ function CircleProgress({ percentage }: { percentage: number }) {
 
 type DynamicIslandTOCProps = {
   children?: ReactNode;
+  /** Off by default (the pill is hidden site-wide); case-study modals opt in. */
+  visible?: boolean;
   selector?: string;
 };
 
 export function DynamicIslandTOC({
   children,
+  visible = false,
   selector = "article h1, article h2, article h3, article h4, .prose h1, .prose h2, .prose h3, .prose h4, [data-toc]",
 }: DynamicIslandTOCProps) {
   const [headings, setHeadings] = useState<HeadingData[]>([]);
@@ -147,8 +150,8 @@ export function DynamicIslandTOC({
     return Math.min(...headings.map((h) => h.level));
   }, [headings]);
 
-  // Hidden for now - component kept for future use
-  if (true) {
+  // Hidden unless a page opts in with `visible`
+  if (!visible) {
     return <>{children}</>;
   }
 
@@ -233,7 +236,7 @@ export function DynamicIslandTOC({
             className={cn("absolute inset-0 flex flex-col", !isExpanded && "pointer-events-none")}
           >
             <div className="flex shrink-0 items-center justify-between px-6 pb-3 pt-5">
-              <span className="text-[11px] font-semibold tracking-[0.08em] text-muted-foreground">
+              <span className="text-xs font-semibold tracking-[0.08em] text-muted-foreground">
                 TABLE OF CONTENTS
               </span>
               <button

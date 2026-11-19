@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
 import type { MatrixArticle } from "@/routes/index";
 import { QuadrantDestinationView } from "@/components/QuadrantDestinationView";
 import { LinkedInBadge, OVERVIEW_TEXT, MATRIX_TEXT, SELF_UNDERSTANDING_TEXT, HHI_TEXT, HELP_OTHERS_TEXT, REFLECTION_TEXT } from "@/components/LinkedInBadge";
 import { CursorCrosshairMarks } from "@/components/CursorCrosshair";
 import { CardModal } from "@/components/CardModal";
+import { CursorPill } from "@/components/system";
 import {
   BRACKET,
   EDGE,
@@ -24,6 +24,8 @@ import {
   HHI_CARDS,
   HELP_OTHERS_CARDS,
   getReflectionCards,
+  QUADRANT_SLUGS,
+  SLUG_TO_QUADRANT,
   type QuadrantId,
   type DestinationCard,
 } from "@/data/quadrantCards";
@@ -240,6 +242,18 @@ export function QuadrantSection({
   const clickSettleTimerRef = useRef<number | null>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [workTab, setWorkTab] = useState<"others" | "self">("others");
+  // Lifted up here (not local to QuadrantDestinationView) for the same
+  // reason workTab is — this component needs to know which sub-tab is
+  // active to hide the vertical bracket line while List is open (see the
+  // vLineGrown render below), not just to pass it down for content choice.
+  const [reflectionTab, setReflectionTab] = useState<"journal" | "list">("journal");
+  // 0 (top) to 1 (bottom) — mirrors the List grid's own scroll position
+  // (set via ReflectionNotesCarousel's onScroll, threaded down through
+  // QuadrantDestinationView same as reflectionTab above). Drives the Qiyu
+  // dot below, repurposed as a scrollbar thumb while List is open — not
+  // used for anything else, so it doesn't matter that it goes stale while
+  // on a different tab/quadrant.
+  const [reflectionScrollProgress, setReflectionScrollProgress] = useState(0);
   // A card with no real page yet (DestinationCard.description) opens the
   // same CardModal every other card does, just rendered right here instead
   // of routed up through index.tsx's slug-based lookup — there's no slug to
@@ -419,6 +433,18 @@ export function QuadrantSection({
     // over, undoing it.
     if (clickSettleTimerRef.current) window.clearTimeout(clickSettleTimerRef.current);
     setClickTarget(stop);
+    // URL updates happen ONLY here — the direct result of an explicit click
+    // (jumpTo is never called from scroll, only by card/button clicks and
+    // the deep-link effect below) — not a continuous reflection of scroll
+    // position. So passively scrolling to "work" (the first stop right after
+    // Hero, reached on every visit before anyone clicks anything) never
+    // touches the URL; it only changes once you actually click into a
+    // quadrant, and reverts to "/" on the back-arrow's jumpTo("center").
+    const urlPath =
+      stop === "work" || stop === "hhi" || stop === "help-others" || stop === "reflection" ? `/${QUADRANT_SLUGS[stop]}` : "/";
+    if (urlPath !== window.location.pathname) {
+      window.history.replaceState(null, "", urlPath + window.location.search);
+    }
     const scrollIdx = SCROLL_STOPS.indexOf(stop);
     if (scrollIdx === -1) return;
     clickSettleTimerRef.current = window.setTimeout(() => {
@@ -438,6 +464,38 @@ export function QuadrantSection({
       clickSettleTimerRef.current = null;
     }, FULL_SETTLE_MS);
   };
+
+  // Deep-linking: landing on one of the 4 quadrant slug routes (grow-myself,
+  // understand-humans, inspire-others, understand-myself — each a real
+  // TanStack route in src/routes/ that renders this exact same Index
+  // component) jumps straight to that quadrant on load instead of needing to
+  // scroll/click in from the matrix. Runs once real layout is measured (W/H
+  // — needed for the scroll-position math below to be accurate) and only
+  // once (initialJumpDone), since later path changes come FROM the sync
+  // effect below, not the other way around.
+  const initialJumpDone = useRef(false);
+  useEffect(() => {
+    if (initialJumpDone.current || W === 0 || H === 0) return;
+    initialJumpDone.current = true;
+    const slug = window.location.pathname.replace(/^\/+/, "");
+    const target = slug ? SLUG_TO_QUADRANT[slug] : undefined;
+    if (!target) return;
+    // `jumpTo` alone skips the hero entry animation fine (clickTarget being
+    // non-null makes `entering` false outright, see below) but only scrolls
+    // the actual page for a SCROLL_STOPS member ("work") — a click-only
+    // quadrant (hhi/help-others/reflection) would render correctly while the
+    // page itself stayed scrolled to the very top, under the Hero section,
+    // with nothing visible to show for it. Scrolling to "work"'s position
+    // first (same formula jumpTo's own settle step uses) brings the section
+    // into view regardless of which quadrant target actually is.
+    const vh = window.innerHeight;
+    const docTop = outerRef.current ? window.scrollY + outerRef.current.getBoundingClientRect().top : 0;
+    const workIdx = SCROLL_STOPS.indexOf("work");
+    window.scrollTo({ top: docTop + workIdx * vh, behavior: "auto" });
+    setScrolledPast(workIdx * vh);
+    jumpTo(target, target === "work" ? "others" : undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [W, H]);
 
   // A click-only quadrant (hhi/help-others/reflection — no SCROLL_STOPS slot
   // of its own, see jumpTo above) has no scroll position that corresponds to
@@ -613,7 +671,25 @@ export function QuadrantSection({
   // *along* the line away from this same corner, so the two tiers don't
   // compete for the same spot.
   const topLabelVX = vLine.left;
-  const topLabelHY = hLine.top;
+  // While Reflection's List tab is open, the horizontal line (and Think,
+  // which sits at its left end — Do sits at its right end but is already
+  // invisible for this quadrant, doOpacity 0) drops well past the bottom
+  // edge instead of resting at its normal hLine.top — List's own
+  // scrollable grid reaches the true bottom edge now (QuadrantDestinationView
+  // passes H through for that), so the line would otherwise read as a
+  // stray cut across scrolled-past content. isClickJumping already covers
+  // reflection continuously (clickTarget stays set the whole time you're on
+  // a click-only quadrant), so this change rides the SAME existing
+  // top-position transition useLabelTransition already applies — no new
+  // transition plumbing needed, just a different target value.
+  const reflectionListActive = heldStop === "reflection" && reflectionTab === "list";
+  const topLabelHY = reflectionListActive ? H + 60 : hLine.top;
+  // The Qiyu dot, repurposed as the List grid's own scrollbar thumb while
+  // that tab is open — rides the SAME vertical line (EDGE to H - EDGE,
+  // vLine's own resting span, so "the common edge spacing" at both ends)
+  // instead of a separate custom-styled scrollbar. 1:1 with scroll
+  // progress, not eased, so it tracks like an actual scrollbar would.
+  const qiyuDotTop = EDGE + reflectionScrollProgress * (H - 2 * EDGE);
 
   // No transition on the line itself — it's a pure, continuous function of
   // scroll (see hLine/vLine above), already getting a new value every
@@ -725,8 +801,25 @@ export function QuadrantSection({
             cards (below) wait for this to finish before they start. */}
         <div className="absolute flex flex-col items-center gap-1.5" style={{ transition: qiyuTransition, left: topLabelVX, top: EDGE, transform: "translate(-50%, -100%)", opacity: qiyuOpacity, pointerEvents: "none" }}>
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Qiyu</span>
-          <Dot />
+          {/* Detaches from the label and becomes a scroll-position thumb
+              only while Reflection's List tab is open (see qiyuDotTop) —
+              otherwise it's the normal, static dot right under "Qiyu". */}
+          {!reflectionListActive && <Dot />}
         </div>
+        {reflectionListActive && (
+          <Dot
+            style={{
+              position: "absolute",
+              left: topLabelVX,
+              top: qiyuDotTop,
+              transform: "translate(-50%, -50%)",
+              // No eased transition — a real scrollbar thumb tracks the
+              // scroll position directly, not with a lag behind it.
+              transition: "none",
+              pointerEvents: "none",
+            }}
+          />
+        )}
         <div className="absolute flex flex-col items-center gap-1.5" style={{ transition: othersTransition, left: topLabelVX, top: H - EDGE, transform: "translateX(-50%)", opacity: othersOpacity, pointerEvents: "none" }}>
           <Dot />
           <span className="text-sm font-semibold uppercase tracking-wide text-neutral-700">Others</span>
@@ -836,8 +929,8 @@ export function QuadrantSection({
               default DOM stacking order — right on top of a card is exactly
               where the cursor tends to be while hovering it, so that read as
               the pill vanishing behind whichever card you were pointing at. */}
-          <div
-            className="absolute z-50 flex items-center gap-1.5 rounded-full bg-neutral-900 text-white text-xs font-medium px-3 py-1.5 whitespace-nowrap pointer-events-none"
+          <CursorPill
+            className="absolute z-50"
             style={{
               left: matrixCursorPos.x,
               top: matrixCursorPos.y,
@@ -850,8 +943,7 @@ export function QuadrantSection({
             }}
           >
             {QUADRANT_LABEL[cursorQuadrant]}
-            <ArrowUpRight className="size-3.5 shrink-0" />
-          </div>
+          </CursorPill>
 
           {/* Replaces the cursor pill above while a specific card is
               hovered: the actual LinkedIn badge, acting as the cursor itself
@@ -905,8 +997,8 @@ export function QuadrantSection({
                   }, transform ${CARD_GROW_DURATION_MS}ms ease-out`,
                 }}
               >
-                <span className="w-28 h-28 rounded-3xl bg-neutral-100 flex items-center justify-center p-2 transition-shadow hover:shadow-md overflow-hidden">
-                  <img src={c.thumbnail} alt={c.title} className="w-full h-full object-contain mix-blend-multiply" />
+                <span className="w-28 h-28 rounded-3xl bg-muted flex items-center justify-center p-[10%] transition-shadow hover:shadow-md overflow-hidden">
+                  <img src={c.thumbnail} alt={c.title} className="w-full h-full object-cover mix-blend-multiply" />
                 </span>
                 <span className="text-sm text-neutral-700 whitespace-nowrap">{c.title}</span>
               </button>
@@ -930,6 +1022,9 @@ export function QuadrantSection({
               cards={activeCards}
               workTab={workTab}
               setWorkTab={setWorkTab}
+              reflectionTab={reflectionTab}
+              setReflectionTab={setReflectionTab}
+              setReflectionScrollProgress={setReflectionScrollProgress}
               W={W}
               H={H}
               hLine={hLine}
@@ -937,6 +1032,7 @@ export function QuadrantSection({
               onCardClick={onCardClick}
               onDescriptionCard={setDescriptionCard}
               onBackgroundClick={() => jumpTo("center")}
+              onNavigateHHI={() => jumpTo("hhi")}
               contentRect={quadrantContentRect}
               cardDelays={destinationCardDelays}
             />
@@ -986,9 +1082,19 @@ export function QuadrantSection({
             while scrolling; length transitions quickly on its own when grown
             by hovering Overview's cross; a click-jump instead CSS-animates
             everything together (hLineTransition/vLineTransition). */}
+        {/* Drops below the true bottom edge (not just hidden) while
+            Reflection's List tab is open — see reflectionListActive above
+            for why. Rides hLineTransition like any other click-jump move,
+            same mechanism, just a different target `top`. */}
         <div
           className="absolute bg-neutral-400 pointer-events-none z-20"
-          style={{ top: hLineGrown.top, left: hLineGrown.left, width: hLineGrown.width, height: LINE_THICKNESS, transition: hLineTransition }}
+          style={{
+            top: reflectionListActive ? H + 60 : hLineGrown.top,
+            left: hLineGrown.left,
+            width: hLineGrown.width,
+            height: LINE_THICKNESS,
+            transition: hLineTransition,
+          }}
         />
         <div
           className="absolute bg-neutral-400 pointer-events-none z-20"
@@ -1024,6 +1130,8 @@ export function QuadrantSection({
           title={descriptionCard.title}
           description={descriptionCard.description}
           image={descriptionCard.thumbnail}
+          video={descriptionCard.video}
+          gallery={descriptionCard.gallery}
           onClose={() => setDescriptionCard(null)}
         />
       )}

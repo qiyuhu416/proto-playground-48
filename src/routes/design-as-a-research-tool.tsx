@@ -1,9 +1,11 @@
+import { ArticleLayout } from "@/components/ArticleLayout";
 import { createFileRoute } from "@tanstack/react-router";
 import { DynamicIslandTOC } from "@/components/DynamicIslandTOC";
 import { ArticleHeader } from "./-ArticleHeader";
 import { ARTICLE_META, sectionId } from "./-articleMeta";
 import { ArticleContent, ArticleHeading2, HighlightedText, ProcessSection, OutcomeSection, ContextBox, Bold } from "@/components/ArticleContent";
 
+import { Carousel, Eyebrow, Media, Panel } from "@/components/system";
 export const Route = createFileRoute("/design-as-a-research-tool")({
   head: () => ({
     meta: [
@@ -19,8 +21,7 @@ export const Route = createFileRoute("/design-as-a-research-tool")({
 
 function CaseStudyComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
-      <article className="mx-auto max-w-4xl px-6 py-12">
+    <ArticleLayout cover>
         <ArticleHeader
           title={ARTICLE_META["design-as-a-research-tool"].title}
           meta="Case Study"
@@ -48,7 +49,7 @@ function CaseStudyComponent() {
             <li>What were the actual barriers to adoption?</li>
             <li>What would actually change driver behavior?</li>
           </ul>
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
+          <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
             <p className="m-0">Traditional research would ask drivers: "Would you use SLZ?" They'd say yes. But observed behavior told a different story entirely.</p>
           </div>
 
@@ -110,28 +111,28 @@ function CaseStudyComponent() {
                         <img
                           src="/articles/slz-survey-poster.png"
                           alt="Survey poster recruiting Pittsburgh SLZ study participants"
-                          className="w-full rounded-xl border border-neutral-200 object-cover"
+                          className="w-full rounded-xl border border-border object-cover"
                           style={{ height: "260px" }}
                         />
-                        <p className="text-xs text-neutral-500 mt-2 text-center">Survey Posters</p>
+                        <p className="text-xs text-subtle-foreground mt-2 text-center">Survey Posters</p>
                       </div>
                       <div>
                         <img
                           src="/articles/slz-onsite-observation.png"
                           alt="Researchers conducting on-site observation at a Pittsburgh loading zone"
-                          className="w-full rounded-xl border border-neutral-200 object-cover"
+                          className="w-full rounded-xl border border-border object-cover"
                           style={{ height: "260px" }}
                         />
-                        <p className="text-xs text-neutral-500 mt-2 text-center">On-site Observation</p>
+                        <p className="text-xs text-subtle-foreground mt-2 text-center">On-site Observation</p>
                       </div>
                       <div>
                         <img
                           src="/articles/slz-intercept-interviews.png"
                           alt="Researchers conducting intercept interviews with drivers"
-                          className="w-full rounded-xl border border-neutral-200 object-cover"
+                          className="w-full rounded-xl border border-border object-cover"
                           style={{ height: "260px" }}
                         />
-                        <p className="text-xs text-neutral-500 mt-2 text-center">Intercept Interviews</p>
+                        <p className="text-xs text-subtle-foreground mt-2 text-center">Intercept Interviews</p>
                       </div>
                     </div>
 
@@ -166,26 +167,26 @@ function CaseStudyComponent() {
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                      <img src="/articles/slz-speeddating-1.png" alt="Speed dating concept storyboard 1" className="w-full rounded-xl border border-neutral-200" />
-                      <img src="/articles/slz-speeddating-2.png" alt="Speed dating concept storyboard 2" className="w-full rounded-xl border border-neutral-200" />
+                      <img src="/articles/slz-speeddating-1.png" alt="Speed dating concept storyboard 1" className="w-full rounded-xl border border-border" />
+                      <img src="/articles/slz-speeddating-2.png" alt="Speed dating concept storyboard 2" className="w-full rounded-xl border border-border" />
                     </div>
 
-                    <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Physical artifacts from speed dating</p>
+                    <p className="text-sm font-semibold text-foreground mt-10 mb-4">Physical artifacts from speed dating</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
                       <div>
-                        <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-neutral-200" />
-                        <p className="text-xs text-neutral-500 mt-2"><Bold>Physical Kiosk</Bold> — get ticket → go on their errands → scan ticket upon return</p>
+                        <img src="/articles/slz-kiosk-artifact.png" alt="Physical Kiosk prototype — get ticket, go on errands, scan upon return" className="w-full rounded-xl border border-border" />
+                        <p className="text-xs text-subtle-foreground mt-2"><Bold>Physical Kiosk</Bold> — get ticket → go on their errands → scan ticket upon return</p>
                       </div>
                       <div>
-                        <img src="/articles/slz-digital-artifact.png" alt="Digital Automated System — SMS onboarding and reminders during parking" className="w-full rounded-xl border border-neutral-200" />
-                        <p className="text-xs text-neutral-500 mt-2"><Bold>Digital Automated System</Bold> — receive onboarding instructions and reminders during parking</p>
+                        <img src="/articles/slz-digital-artifact.png" alt="Digital Automated System — SMS onboarding and reminders during parking" className="w-full rounded-xl border border-border" />
+                        <p className="text-xs text-subtle-foreground mt-2"><Bold>Digital Automated System</Bold> — receive onboarding instructions and reminders during parking</p>
                       </div>
                     </div>
 
-                    <p className="text-sm font-semibold text-neutral-900 mt-10 mb-4">Testing with physical artifacts</p>
+                    <p className="text-sm font-semibold text-foreground mt-10 mb-4">Testing with physical artifacts</p>
 
-                    <img src="/articles/slz-testing.png" alt="Testing physical kiosk prototype with drivers on the street" className="w-full rounded-xl border border-neutral-200 my-4" />
+                    <img src="/articles/slz-testing.png" alt="Testing physical kiosk prototype with drivers on the street" className="w-full rounded-xl border border-border my-4" />
                   </>
                 )
               },
@@ -203,7 +204,7 @@ function CaseStudyComponent() {
                     <img
                       src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae57451_Frame%2093%20(1).png"
                       alt="Research methodology diagram"
-                      className="w-full rounded-2xl my-8 border border-neutral-200"
+                      className="w-full rounded-2xl my-8 border border-border"
                     />
                   </>
                 )
@@ -222,23 +223,23 @@ function CaseStudyComponent() {
           </p>
 
           <div className="space-y-6 my-8">
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">1. Awareness gap: 60%+ unaware</h4>
-              <p className="text-sm text-neutral-600 mb-2">Drivers saw the purple curbs but didn't know what they meant. Signage clarity was the #1 issue.</p>
-              <p className="text-xs text-neutral-500"><Bold>Design implication:</Bold> Information hierarchy and visibility became critical design requirements.</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">1. Awareness gap: 60%+ unaware</h4>
+              <p className="text-sm text-muted-foreground mb-2">Drivers saw the purple curbs but didn't know what they meant. Signage clarity was the #1 issue.</p>
+              <p className="text-xs text-subtle-foreground"><Bold>Design implication:</Bold> Information hierarchy and visibility became critical design requirements.</p>
+            </Panel>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">2. Confusion created workarounds: 95% used hazard lights</h4>
-              <p className="text-sm text-neutral-600 mb-2">Drivers didn't understand the rules, so they defaulted to the universal signal: hazard lights. This meant they were avoiding the system, not using it.</p>
-              <p className="text-xs text-neutral-500"><Bold>Design implication:</Bold> Rules must be immediately clear from the visual design alone.</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">2. Confusion created workarounds: 95% used hazard lights</h4>
+              <p className="text-sm text-muted-foreground mb-2">Drivers didn't understand the rules, so they defaulted to the universal signal: hazard lights. This meant they were avoiding the system, not using it.</p>
+              <p className="text-xs text-subtle-foreground"><Bold>Design implication:</Bold> Rules must be immediately clear from the visual design alone.</p>
+            </Panel>
 
-            <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200">
-              <h4 className="font-semibold text-neutral-900 mb-2">3. Friction killed adoption: upfront commitment required</h4>
-              <p className="text-sm text-neutral-600 mb-2">Drivers avoided unfamiliar services that required upfront registration or payment before they could test them.</p>
-              <p className="text-xs text-neutral-500"><Bold>Design implication:</Bold> Service model must reduce activation friction—pay after, not before.</p>
-            </div>
+            <Panel kind="callout">
+              <h4 className="font-semibold text-foreground mb-2">3. Friction killed adoption: upfront commitment required</h4>
+              <p className="text-sm text-muted-foreground mb-2">Drivers avoided unfamiliar services that required upfront registration or payment before they could test them.</p>
+              <p className="text-xs text-subtle-foreground"><Bold>Design implication:</Bold> Service model must reduce activation friction—pay after, not before.</p>
+            </Panel>
           </div>
 
           <blockquote>
@@ -256,28 +257,33 @@ function CaseStudyComponent() {
             <li><Bold>Success metrics framework</Bold> — Defining what "adoption" actually means behaviorally</li>
           </ul>
 
-          <img
-            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae5741f_empathy%20map.png"
-            alt="Empathy map visualization for driver types"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <img
-            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae574b8_Frame%20194.png"
-            alt="Synthesis wall - organizing research insights"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <img
-            src="https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae574cc_Frame%20195.png"
-            alt="Logical insight connections - linking findings to adoption barriers"
-            className="w-full rounded-2xl my-8 border border-neutral-200"
-          />
-
-          <img
-            src="/articles/design-research-3.png"
-            alt="Policy impact and implementation roadmap"
-            className="w-full rounded-2xl my-8"
+          <Carousel
+            label="Research frameworks"
+            slides={[
+              {
+                src: "https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae5741f_empathy%20map.png",
+                alt: "Empathy map visualization for driver types",
+                caption: "Empathy maps for each driver type",
+              },
+              {
+                src: "https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae574b8_Frame%20194.png",
+                alt: "Synthesis wall - organizing research insights",
+                caption: "Synthesis wall: organizing research insights",
+              },
+              {
+                src: "https://cdn.prod.website-files.com/67c5d8790deeb0d30e1c5bad/67d9caafd2d752ef4ae574cc_Frame%20195.png",
+                alt: "Logical insight connections - linking findings to adoption barriers",
+                caption: "Connection chart: linking findings to adoption barriers",
+              },
+              {
+                src: "/articles/design-research-3.png",
+                alt: "Policy impact and implementation roadmap",
+                caption: "Policy impact and implementation roadmap",
+              },
+            ].map((item, i) => ({
+              id: String(i),
+              content: <Media src={item.src} alt={item.alt} caption={item.caption} />,
+            }))}
           />
 
           <ArticleHeading2 id={sectionId("Why Design Was Essential")}>Why Design Was Essential</ArticleHeading2>
@@ -290,20 +296,21 @@ function CaseStudyComponent() {
             This insight only emerged by watching people interact with prototypes in real time. A survey could never uncover that. An analytics dashboard wouldn't show the frustration and hesitation in a driver's face. Only design—the act of making something tangible and testable—revealed what actually mattered.
           </p>
 
-          <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
+          <div className="bg-muted/50 border-l-4 border-border-strong p-6 my-8 rounded">
+            <Eyebrow as="div" className="mb-3">Design principle</Eyebrow>
             <p className="m-0"><Bold>Design is a research method because it forces clarity.</Bold> When you prototype something, you can't hide behind vague language. "Users want ease of use" is meaningless. But a prototype forces you to specify: Which button? What color? How much text on the sign? That specificity is where insights emerge.</p>
           </div>
 
-          <p className="mt-12 text-sm text-neutral-600">
+          <p className="mt-12 text-sm text-muted-foreground">
             For the full project documentation, prototypes, and detailed research findings, visit the{" "}
             <a href="https://www.key-you-who.com/projects/design-as-a-research-tool" target="_blank" rel="noopener noreferrer" className="font-medium hover:underline">
               complete case study →
             </a>
           </p>
 
-        </ArticleContent>
-      </article>
-    </div>
+          {/* floating table-of-contents pill, same as the other case studies */}
+        <DynamicIslandTOC visible />
+      </ArticleContent>
+      </ArticleLayout>
   );
 }

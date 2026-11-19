@@ -16,8 +16,8 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
       className={[
         "sticky top-0 z-40 backdrop-blur-sm border-b",
         dark
-          ? "bg-neutral-900/90 border-neutral-800/50"
-          : "bg-background/90 border-neutral-200/50",
+          ? "bg-foreground/90 border-neutral-800/50"
+          : "bg-background/90 border-border/50",
         headerProps?.className ?? "",
       ].join(" ")}
     >
@@ -28,8 +28,8 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
             className={[
               "hidden md:inline-flex group relative items-center gap-2 rounded-full px-3 py-1 text-xs overflow-hidden transition-all",
               dark
-                ? "bg-neutral-800 text-neutral-300 hover:bg-white hover:text-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
-                : "bg-white text-neutral-600 hover:bg-neutral-900 hover:text-white shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
+                ? "bg-neutral-800 text-neutral-300 hover:bg-card hover:text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
+                : "bg-card text-muted-foreground hover:bg-foreground hover:text-white shadow-[0_1px_2px_rgba(0,0,0,0.03)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
             ].join(" ")}
           >
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
@@ -42,7 +42,7 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
             "flex items-center gap-1 rounded-full border p-1",
             dark
               ? "border-neutral-700 bg-neutral-800 shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-              : "border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]",
+              : "border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.03)]",
           ].join(" ")}
         >
           {NAV_ITEMS.map((l) => (
@@ -53,11 +53,11 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
                 "rounded-full px-4 py-1.5 text-sm transition-colors",
                 l === active
                   ? dark
-                    ? "bg-white text-neutral-900"
-                    : "bg-neutral-900 text-white"
+                    ? "bg-card text-foreground"
+                    : "bg-foreground text-white"
                   : dark
                   ? "text-neutral-400 hover:text-white"
-                  : "text-neutral-600 hover:text-neutral-900",
+                  : "text-muted-foreground hover:text-foreground",
               ].join(" ")}
             >
               {l}
@@ -67,7 +67,7 @@ export function SiteNav({ active, theme = "light", headerProps }: SiteNavProps) 
         <div className="flex-1 flex justify-end">
           <Link
             to="/"
-            className={`hidden md:block text-sm font-medium ${dark ? "text-white" : "text-neutral-900"}`}
+            className={`hidden md:block text-sm font-medium ${dark ? "text-white" : "text-foreground"}`}
           >
             Qiyu
           </Link>

@@ -7,6 +7,7 @@ import { ArticleRefCard } from "./-ArticleRefCard";
 import { ArticleContent, ArticleHeading2, HighlightedText } from "@/components/ArticleContent";
 
 
+import { Eyebrow } from "@/components/system";
 export const Route = createFileRoute("/designing-next-gen-ai-products")({
   head: () => ({
     meta: [
@@ -128,30 +129,30 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
     <div>
       {/* Kicker + description */}
       <div className="mb-4">
-        <span className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400">{kicker}</span>
+        <Eyebrow size="2xs" className="text-neutral-400">{kicker}</Eyebrow>
         <p className="text-sm text-neutral-500 mt-0.5">{description}</p>
       </div>
 
       {/* Fields */}
       <div className="space-y-2 mb-5">
-        <div className={`rounded-xl border px-4 py-3 bg-white transition-all duration-300 ${
+        <div className={`rounded-xl border px-4 py-3 bg-card transition-all duration-300 ${
           activeField === 'A'
-            ? 'border-neutral-300 shadow-[0_0_0_3px_rgba(0,0,0,0.05)]'
-            : 'border-neutral-200 opacity-55'
+            ? 'border-neutral-300 ring-3 ring-foreground/5'
+            : 'border-border opacity-55'
         }`}>
-          {mode === 'leave' && <div className="text-[10px] text-neutral-400 mb-1 uppercase tracking-wider">Field A</div>}
+          {mode === 'leave' && <Eyebrow as="div" size="2xs" className="text-neutral-400 mb-1">Field A</Eyebrow>}
           <p className="text-sm font-mono text-neutral-800 min-h-[20px] leading-relaxed">
             <HighlightedTextRenderer text={text} pattern={highlight} />
             {activeField === 'A' && <span className="border-r-2 border-neutral-700 animate-pulse ml-px"> </span>}
           </p>
         </div>
         {mode === 'leave' && (
-          <div className={`rounded-xl border px-4 py-3 bg-white transition-all duration-300 ${
+          <div className={`rounded-xl border px-4 py-3 bg-card transition-all duration-300 ${
             activeField === 'B'
-              ? 'border-neutral-300 shadow-[0_0_0_3px_rgba(0,0,0,0.05)]'
-              : 'border-neutral-200 opacity-55'
+              ? 'border-neutral-300 ring-3 ring-foreground/5'
+              : 'border-border opacity-55'
           }`}>
-            <div className="text-[10px] text-neutral-400 mb-1 uppercase tracking-wider">Field B</div>
+            <Eyebrow as="div" size="2xs" className="text-neutral-400 mb-1">Field B</Eyebrow>
             <p className="text-sm font-mono text-neutral-400 min-h-[20px]">
               {activeField === 'B' && <span className="border-r-2 border-neutral-700 animate-pulse"> </span>}
             </p>
@@ -160,7 +161,7 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
 
         {/* AI chip */}
         <div className={`transition-all duration-200 ${chip ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1 pointer-events-none'}`}>
-          <span className="inline-flex items-center gap-1.5 bg-neutral-900 text-white text-xs rounded-full px-3 py-1.5">
+          <span className="inline-flex items-center gap-1.5 bg-foreground text-white text-xs rounded-full px-3 py-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
             {chip}
           </span>
@@ -169,7 +170,7 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
 
       {/* Mechanism indicator */}
       <div className="border-t border-neutral-100 pt-3 mb-4">
-        <div className="text-[10px] uppercase tracking-widest text-neutral-300 mb-2">Trigger mechanism</div>
+        <Eyebrow as="div" size="2xs" className="text-neutral-300 mb-2">Trigger mechanism</Eyebrow>
         {mechanism.kind === 'tick' && (
           <div className="flex items-center gap-2">
             <div className="flex gap-1">
@@ -186,16 +187,16 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
               <span className="text-xs text-neutral-400">silence timer</span>
               <span className="text-xs font-mono text-amber-500">{(sinceLastType / 1000).toFixed(1)}s / {(threshold / 1000).toFixed(0)}s</span>
             </div>
-            <div className="h-1 bg-neutral-100 rounded-full overflow-hidden">
+            <div className="h-1 bg-muted rounded-full overflow-hidden">
               <div className="h-full bg-amber-400 rounded-full transition-all duration-75" style={{ width: `${countdownPct * 100}%` }} />
             </div>
           </div>
         )}
         {mechanism.kind === 'focus' && (
           <div className="flex items-center gap-2 text-xs">
-            <span className={`px-2 py-0.5 rounded-full transition-colors ${activeField === 'A' ? 'bg-neutral-900 text-white' : 'text-neutral-400'}`}>Field A</span>
+            <span className={`px-2 py-0.5 rounded-full transition-colors ${activeField === 'A' ? 'bg-foreground text-white' : 'text-neutral-400'}`}>Field A</span>
             <span className="text-neutral-300">→</span>
-            <span className={`px-2 py-0.5 rounded-full transition-colors ${activeField === 'B' ? 'bg-neutral-900 text-white' : 'text-neutral-400'}`}>Field B</span>
+            <span className={`px-2 py-0.5 rounded-full transition-colors ${activeField === 'B' ? 'bg-foreground text-white' : 'text-neutral-400'}`}>Field B</span>
             <span className="text-neutral-300 ml-1">fires on leave</span>
           </div>
         )}
@@ -203,13 +204,13 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
 
       {/* Economics */}
       <div className="border-t border-neutral-100 pt-3">
-        <div className="text-[10px] uppercase tracking-widest text-neutral-300 mb-2">Cost estimate</div>
+        <Eyebrow as="div" size="2xs" className="text-neutral-300 mb-2">Cost estimate</Eyebrow>
         <div className="grid grid-cols-3 gap-3 text-xs">
           <div><div className="text-neutral-400 mb-0.5">Calls / min</div><div className="font-mono text-neutral-700">{economics.callsPerMin}</div></div>
           <div><div className="text-neutral-400 mb-0.5">Cost / call</div><div className="font-mono text-neutral-700">{economics.costPerCall}</div></div>
-          <div><div className="text-neutral-400 mb-0.5">$ / user / mo</div><div className="font-mono font-semibold text-neutral-900">{economics.costPerUserMonth}</div></div>
+          <div><div className="text-neutral-400 mb-0.5">$ / user / mo</div><div className="font-mono font-semibold text-foreground">{economics.costPerUserMonth}</div></div>
         </div>
-        <div className="text-[10px] text-neutral-300 mt-2">{economics.costPerUserMonthNote}</div>
+        <div className="text-2xs text-neutral-300 mt-2">{economics.costPerUserMonthNote}</div>
       </div>
     </div>
   );
@@ -219,11 +220,11 @@ function TriggerDemo({ mode, kicker, description, dialogue, mechanism, economics
 function TriggerTabGroup({ tabs }: { tabs: { label: string; content: React.ReactNode }[] }) {
   const [active, setActive] = useState(0);
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white overflow-hidden">
+    <div className="rounded-2xl border border-border bg-card overflow-hidden">
       <div className="flex items-center gap-1 px-4 pt-4 pb-3 border-b border-neutral-100">
         {tabs.map((tab, i) => (
           <button key={i} onClick={() => setActive(i)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${active === i ? 'bg-neutral-900 text-white' : 'text-neutral-400 hover:text-neutral-700'}`}>
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${active === i ? 'bg-foreground text-white' : 'text-neutral-400 hover:text-neutral-700'}`}>
             {tab.label}
           </button>
         ))}
@@ -235,7 +236,7 @@ function TriggerTabGroup({ tabs }: { tabs: { label: string; content: React.React
 
 function ArticleComponent() {
   return (
-    <div className="min-h-screen bg-background text-neutral-900">
+    <div className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-3xl px-6 py-12">
 
         <ArticleHeader
@@ -256,7 +257,7 @@ function ArticleComponent() {
 
 
           <div className="bg-neutral-50 border-l-4 border-neutral-300 p-6 my-8 rounded">
-            <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-semibold mb-3">Design principle</div>
+            <Eyebrow as="div" className="text-neutral-500 mb-3">Design principle</Eyebrow>
             <p className="m-0">Most successful AI products are either easy inferences with great performance, or hard inferences with fair performance.</p>
           </div>
 
@@ -301,7 +302,7 @@ function ArticleComponent() {
             So how do you design a feeling? First, break down what "writing" actually is through task analysis:
           </p>
 
-          <div className="bg-white rounded-lg p-6 my-8">
+          <div className="bg-card rounded-lg p-6 my-8">
             <div className="space-y-3 text-sm">
               <div>1. you think about what to write</div>
               <div className="text-left text-neutral-400">↓</div>
@@ -428,7 +429,7 @@ function ArticleComponent() {
           <img
             src="/articles/ai-fatigue.png"
             alt="AI fatigue by feeling"
-            className="w-full rounded-lg my-8 border border-neutral-200"
+            className="w-full rounded-lg my-8 border border-border"
           />
 
 
@@ -454,9 +455,9 @@ function ArticleComponent() {
 
         </ArticleContent>
 
-        <div className="mt-20 border-t border-neutral-200 pt-10 max-w-3xl mx-auto px-6">
-          <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6 font-semibold">Related experiences</div>
-          <ul className="space-y-3 text-sm text-neutral-600">
+        <div className="mt-20 border-t border-border pt-10 max-w-3xl mx-auto px-6">
+          <Eyebrow as="div" className="text-neutral-500 mb-6">Related experiences</Eyebrow>
+          <ul className="space-y-3 text-sm text-muted-foreground">
             <li>Apple — GenAI Prototyper (May 2025 – present)</li>
             <li>The Mentoring Partnership — Conversational AI (Feb 2024 – Aug 2024)</li>
             <li>AI-Caring Research — Conversational AI Researcher (Aug 2023 – Aug 2024)</li>
